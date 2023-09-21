@@ -1,0 +1,42 @@
+//
+//  Meshes.swift
+//  BeeKeeper
+//
+//  Created by Chaniel Ezzi on 9/8/23.
+//
+
+import SceneKit
+
+struct Meshes {
+    static let floor: SCNGeometry = {
+        let floor = SCNFloor()
+        let material = SCNMaterial();
+        material.diffuse.contents = UIColor.darkGray;
+        floor.materials = [material]
+        return floor
+    }()
+    
+    static let ground: SCNGeometry = {
+        let plane = SCNPlane(width: 5, height: 5)
+        let material = SCNMaterial();
+        material.diffuse.contents = UIColor.lightGray;
+        plane.materials = [material]
+        return plane
+    }()
+    
+    struct Bee {
+        static let body: SCNGeometry = {
+            let geo = SCNCylinder(radius: 0.1, height: 0.5)
+            geo.firstMaterial?.diffuse.contents = UIColor.red
+            return geo
+        }()
+    }
+    
+    struct Structure {
+        static let hive: SCNGeometry = {
+            let geo = SCNBox(width: 2, height: 1, length: 2, chamferRadius: 0.2)
+            geo.firstMaterial?.diffuse.contents = UIColor.red
+            return geo
+        }()
+    }
+}
