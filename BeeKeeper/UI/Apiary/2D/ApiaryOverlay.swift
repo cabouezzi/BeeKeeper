@@ -80,8 +80,4 @@ extension ApiaryOverlay: ModelVisitor {
     public func visitHive(_ model: Hive) -> Void {
         print("Overlay for hive")
     }
-    
-    public func visitHoneycomb(_ model: Honeycomb) -> Void {
-        print("Overlay for honeycomb")
-    }
 }

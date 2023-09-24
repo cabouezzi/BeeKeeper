@@ -29,10 +29,9 @@ public class ApiaryView: SCNView {
         self.cameraNode.camera = camera
         self.cameraNode.light = light
         self.cameraNode.position.x -= 5
-        self.cameraNode.position.y += 3
+        self.cameraNode.position.y += 8
         self.cameraNode.position.z -= 5
         self.cameraNode.eulerAngles.x -= .pi / 8
-        self.cameraNode.eulerAngles.y -= .pi / 2
         
         self.overlay = ApiaryOverlay()
         self.overlay.isUserInteractionEnabled = false
@@ -45,10 +44,9 @@ public class ApiaryView: SCNView {
         self.backgroundColor = .blue
         
         let floorNode = SCNNode(geometry: Meshes.floor)
-        floorNode.position.y -= 5
+        floorNode.position.y -= 1
         let groundNode = SCNNode(geometry: Meshes.ground)
         groundNode.eulerAngles.x -= .pi / 2
-        groundNode.position.y -= 4
         
         scene?.rootNode.addChildNode(cameraNode)
         scene?.rootNode.addChildNode(floorNode)
@@ -57,5 +55,14 @@ public class ApiaryView: SCNView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func loadNodes() {
+        for structure in apiary.structures {
+            let node = structure.accept(NodeService.shared)
+            node.position.x = Float(structure.area.x)
+            node.position.z = Float(structure.area.y)
+            scene?.rootNode.addChildNode(node)
+        }
     }
 }

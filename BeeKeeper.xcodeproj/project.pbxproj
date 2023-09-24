@@ -55,6 +55,7 @@
 		14835A7C2AB529A5006D0290 /* BubbleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A7B2AB529A5006D0290 /* BubbleStyle.swift */; };
 		14835A802ABBFFC2006D0290 /* ShopViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A7F2ABBFFC2006D0290 /* ShopViewModel.swift */; };
 		14835A832ABC001F006D0290 /* ShopItemRowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A822ABC001F006D0290 /* ShopItemRowModel.swift */; };
+		14835A892AC0E76B006D0290 /* NodeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A882AC0E76B006D0290 /* NodeService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -132,6 +133,7 @@
 		14835A7B2AB529A5006D0290 /* BubbleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleStyle.swift; sourceTree = "<group>"; };
 		14835A7F2ABBFFC2006D0290 /* ShopViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopViewModel.swift; sourceTree = "<group>"; };
 		14835A822ABC001F006D0290 /* ShopItemRowModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopItemRowModel.swift; sourceTree = "<group>"; };
+		14835A882AC0E76B006D0290 /* NodeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -279,6 +281,7 @@
 			isa = PBXGroup;
 			children = (
 				148359CC2AB01091006D0290 /* GameManager.swift */,
+				14835A882AC0E76B006D0290 /* NodeService.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -289,7 +292,6 @@
 				148359E22AB01091006D0290 /* ModelVisitor.swift */,
 				148359CF2AB01091006D0290 /* Apiary */,
 				148359E02AB01091006D0290 /* Evolution */,
-				148359E32AB01091006D0290 /* Bee.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -297,9 +299,10 @@
 		148359CF2AB01091006D0290 /* Apiary */ = {
 			isa = PBXGroup;
 			children = (
+				148359DF2AB01091006D0290 /* Apiary.swift */,
+				148359E32AB01091006D0290 /* Bee.swift */,
 				148359D02AB01091006D0290 /* Interface */,
 				148359D62AB01091006D0290 /* Structures */,
-				148359DF2AB01091006D0290 /* Apiary.swift */,
 			);
 			path = Apiary;
 			sourceTree = "<group>";
@@ -585,6 +588,7 @@
 				14835A092AB01091006D0290 /* Container.swift in Sources */,
 				14835A2B2AB01327006D0290 /* SKButton.swift in Sources */,
 				14835A1B2AB01091006D0290 /* ModelVisitor.swift in Sources */,
+				14835A892AC0E76B006D0290 /* NodeService.swift in Sources */,
 				14835A1D2AB01091006D0290 /* Bee.swift in Sources */,
 				14835A792AB51E2E006D0290 /* ShopResourceLabel.swift in Sources */,
 				148359F72AB01091006D0290 /* ApiaryOverlay.swift in Sources */,
