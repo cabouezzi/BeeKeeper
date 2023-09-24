@@ -13,7 +13,7 @@ public class ApiaryViewController: UIViewController {
     public init() {
         self.apiaryView = ApiaryView()
 #if DEBUG
-        self.apiaryView.allowsCameraControl = true
+//        self.apiaryView.allowsCameraControl = true
         self.apiaryView.showsStatistics = true
 #endif
         super.init(nibName: nil, bundle: nil)
@@ -30,7 +30,10 @@ public class ApiaryViewController: UIViewController {
     
     private func addGestureRecognizers() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapHandler))
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(panHandler))
+        
         apiaryView.addGestureRecognizer(tap)
+        apiaryView.addGestureRecognizer(pan)
     }
     
     @objc
@@ -53,6 +56,20 @@ public class ApiaryViewController: UIViewController {
         guard let node = hitResults.first?.node as? BKNode else { return }
         node.model?.accept(self)
         node.model?.accept(apiaryView.overlay)
+    }
+    
+    @objc
+    private func panHandler(_ gestureRecognizer: UIPanGestureRecognizer) {
+        // Translates the gesture into a number, the difference from start –> beginning
+        let xTranslation = Float(gestureRecognizer.translation(in: apiaryView).x)
+        let yTranslation = Float(gestureRecognizer.translation(in: apiaryView).y)
+        
+        // What the camera should move by
+        let ySpeed = -xTranslation / 10
+        let xSpeed = yTranslation / 10
+        
+        apiaryView.cameraNode.position.x = xSpeed
+        apiaryView.cameraNode.position.z = ySpeed
     }
 }
 

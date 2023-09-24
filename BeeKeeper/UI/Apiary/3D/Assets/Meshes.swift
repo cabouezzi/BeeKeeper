@@ -17,9 +17,9 @@ struct Meshes {
     }()
     
     static let ground: SCNGeometry = {
-        let plane = SCNPlane(width: 5, height: 5)
+        let plane = SCNPlane(width: 20, height: 20)
         let material = SCNMaterial();
-        material.diffuse.contents = UIColor.lightGray;
+        material.diffuse.contents = UIColor.red;
         plane.materials = [material]
         return plane
     }()
