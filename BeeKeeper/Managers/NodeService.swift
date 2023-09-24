@@ -14,12 +14,12 @@ final class NodeService: ModelVisitor {
         
     }
     
-    func visitBee(_ model: Bee) -> SCNNode {
-        return SCNNode()
+    func visitBee(_ model: Bee) -> BKNode {
+        return BKNode(model: model)
     }
     
-    func visitHive(_ model: Hive) -> SCNNode {
-        let node = SCNNode()
+    func visitHive(_ model: Hive) -> BKNode {
+        let node = BKNode(model: model)
         node.geometry = Meshes.Structure.hive
         node.position.y += 0.5
         return node
