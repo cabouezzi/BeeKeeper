@@ -31,9 +31,11 @@ public class ApiaryViewController: UIViewController {
     private func addGestureRecognizers() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapHandler))
         let pan = UIPanGestureRecognizer(target: self, action: #selector(panHandler))
+        let pinch = UIPinchGestureRecognizer(target: self, action: #selector(pinchHandler))
         
         apiaryView.addGestureRecognizer(tap)
         apiaryView.addGestureRecognizer(pan)
+        apiaryView.addGestureRecognizer(pinch)
     }
     
     @objc
@@ -80,7 +82,13 @@ public class ApiaryViewController: UIViewController {
     
     @objc
     private func pinchHandler(_ gestureRecognizer: UIPinchGestureRecognizer) {
+        let velocity = gestureRecognizer.velocity / 2
         
+        apiaryView.cameraNode.camera?.fieldOfView -= velocity
+        
+        if gestureRecognizer.state == .ended {
+            lastCameraPosition = apiaryView.cameraNode.position
+        }
     }
 }
 
