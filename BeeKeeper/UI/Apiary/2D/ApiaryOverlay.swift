@@ -34,7 +34,7 @@ public class ApiaryOverlay: SKScene {
         ])
     }
     
-    private func layoutButtons (_ buttons: [SKButton]) {
+    private func layoutButtons (title: String? = nil, _ buttons: [SKButton]) {
         for child in children {
             child.fadeDownAndRemove()
         }
@@ -65,6 +65,14 @@ public class ApiaryOverlay: SKScene {
             addChild(button)
             button.fadeUp()
         }
+        
+        if let title = title {
+            let label = SKLabelNode(text: title)
+            label.position.x = center
+            label.position.y = yPosition + paddedWidth / 2 + label.frame.height / 2
+            addChild(label)
+            label.fadeUp()
+        }
     }
     
     /// The label for a structure, located above the buttons. Contains the name, level, etc. of the selected entity.
@@ -81,7 +89,7 @@ extension ApiaryOverlay: ModelVisitor {
     }
     
     public func visitHive(_ model: Hive) -> Void {
-        layoutButtons([
+        layoutButtons(title: model.name, [
             SKButton(texture: Textures.check, onTap: { [weak self] in
                 self?.layoutButtons()
             }),

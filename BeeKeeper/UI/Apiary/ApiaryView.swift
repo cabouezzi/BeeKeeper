@@ -28,9 +28,9 @@ public class ApiaryView: SCNView {
         
         self.cameraNode.camera = camera
         self.cameraNode.light = light
-        self.cameraNode.position.x -= 5
+        self.cameraNode.position.x += 0
         self.cameraNode.position.y += 8
-        self.cameraNode.position.z -= 5
+        self.cameraNode.position.z += 15
         self.cameraNode.eulerAngles.x -= .pi / 8
         
         self.overlay = ApiaryOverlay()
