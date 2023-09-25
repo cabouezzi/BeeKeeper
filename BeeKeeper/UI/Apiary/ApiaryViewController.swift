@@ -58,6 +58,8 @@ public class ApiaryViewController: UIViewController {
         node.model?.accept(apiaryView.overlay)
     }
     
+    private lazy var lastCameraPosition = apiaryView.cameraNode.position
+    
     @objc
     private func panHandler(_ gestureRecognizer: UIPanGestureRecognizer) {
         // Translates the gesture into a number, the difference from start –> beginning
@@ -65,11 +67,20 @@ public class ApiaryViewController: UIViewController {
         let yTranslation = Float(gestureRecognizer.translation(in: apiaryView).y)
         
         // What the camera should move by
-        let ySpeed = -xTranslation / 10
-        let xSpeed = yTranslation / 10
+        let ySpeed = -xTranslation / 30
+        let xSpeed = yTranslation / 30
         
-        apiaryView.cameraNode.position.x = xSpeed
-        apiaryView.cameraNode.position.z = ySpeed
+        apiaryView.cameraNode.position.x = lastCameraPosition.x + xSpeed
+        apiaryView.cameraNode.position.z = lastCameraPosition.z + ySpeed
+        
+        if gestureRecognizer.state == .ended {
+            lastCameraPosition = apiaryView.cameraNode.position
+        }
+    }
+    
+    @objc
+    private func pinchHandler(_ gestureRecognizer: UIPinchGestureRecognizer) {
+        
     }
 }
 
