@@ -13,8 +13,21 @@ public enum ApiaryError: LocalizedError {
 }
 
 public struct Apiary {
-    public private(set) var bees: [Bee] = []
-    public private(set) var structures: [Structure] = []
+    public private(set) var bees: [Bee]
+    public private(set) var structures: [Structure]
+    
+    init() {
+        let hiveOne = Hive()
+        let hiveTwo = Hive()
+        hiveOne.area.x = 0
+        hiveTwo.area.x = hiveOne.area.width
+        
+        self.bees = []
+        self.structures = [
+            hiveOne,
+            hiveTwo
+        ]
+    }
     
     // MARK: - Bees
     

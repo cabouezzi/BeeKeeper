@@ -14,5 +14,4 @@ public protocol ModelVisitor {
     
     func visitBee(_ model: Bee) -> ReturnType
     func visitHive(_ model: Hive) -> ReturnType
-    func visitHoneycomb(_ model: Honeycomb) -> ReturnType
 }

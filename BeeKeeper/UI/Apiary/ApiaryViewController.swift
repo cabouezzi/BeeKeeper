@@ -26,6 +26,10 @@ public class ApiaryViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    public override func viewWillAppear(_ animated: Bool) {
+        apiaryView.loadNodes()
+    }
+    
     // MARK: - Gesture Recognizers
     
     private func addGestureRecognizers() {
@@ -69,8 +73,8 @@ public class ApiaryViewController: UIViewController {
         let yTranslation = Float(gestureRecognizer.translation(in: apiaryView).y)
         
         // What the camera should move by
-        let ySpeed = -xTranslation / 30
-        let xSpeed = yTranslation / 30
+        let xSpeed = -xTranslation / 30
+        let ySpeed = -yTranslation / 30
         
         apiaryView.cameraNode.position.x = lastCameraPosition.x + xSpeed
         apiaryView.cameraNode.position.z = lastCameraPosition.z + ySpeed
@@ -99,9 +103,5 @@ extension ApiaryViewController: ModelVisitor {
     
     public func visitHive(_ model: Hive) -> Void {
         print("Hive was tapped")
-    }
-    
-    public func visitHoneycomb(_ model: Honeycomb) -> Void {
-        print("Honeycomb was tapped")
     }
 }

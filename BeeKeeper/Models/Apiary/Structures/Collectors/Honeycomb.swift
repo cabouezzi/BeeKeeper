@@ -15,10 +15,6 @@ public class Honeycomb: Collector {
         self.hive = hive
     }
     
-    func accept<T>(_ visitor: T) -> T.ReturnType where T : ModelVisitor {
-        return visitor.visitHoneycomb(self)
-    }
-    
     public func accept(_ producer: some Producer) throws {
         _ = try? fill(Resources(honey: producer.production.honey))
     }

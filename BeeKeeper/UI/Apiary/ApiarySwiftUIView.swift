@@ -14,7 +14,7 @@ struct ApiarySwiftUIView: UIViewControllerRepresentable {
         let avc = ApiaryViewController()
         let frame = UIScreen.main.bounds.size
         avc.apiaryView.overlay.size = frame
-        avc.apiaryView.overlay.layoutButton()
+        avc.apiaryView.overlay.layoutButtons()
         return avc
     }
     

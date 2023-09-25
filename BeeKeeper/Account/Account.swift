@@ -11,7 +11,7 @@ final class Account {
     
     init() {
         apiaries = [
-            Apiary(bees: [], structures: [])
+            Apiary()
         ]
     }
 }
