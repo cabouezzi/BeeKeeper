@@ -40,7 +40,6 @@
 		14835A1F2AB01091006D0290 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 148359E52AB01091006D0290 /* Preview Assets.xcassets */; };
 		14835A212AB01091006D0290 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148359E72AB01091006D0290 /* Resource.swift */; };
 		14835A232AB01091006D0290 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148359E82AB01091006D0290 /* Account.swift */; };
-		14835A252AB01091006D0290 /* tp050630_01.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 148359E92AB01091006D0290 /* tp050630_01.jpg */; };
 		14835A2B2AB01327006D0290 /* SKButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A2A2AB01327006D0290 /* SKButton.swift */; };
 		14835A2E2AB013AE006D0290 /* Textures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A2D2AB013AE006D0290 /* Textures.swift */; };
 		14835A312AB02A60006D0290 /* SKNode+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A302AB02A60006D0290 /* SKNode+Animations.swift */; };
@@ -117,7 +116,6 @@
 		148359E52AB01091006D0290 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		148359E72AB01091006D0290 /* Resource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
 		148359E82AB01091006D0290 /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
-		148359E92AB01091006D0290 /* tp050630_01.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = tp050630_01.jpg; sourceTree = "<group>"; };
 		148359EA2AB01091006D0290 /* BeeKeeper.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = BeeKeeper.entitlements; sourceTree = "<group>"; };
 		14835A2A2AB01327006D0290 /* SKButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKButton.swift; sourceTree = "<group>"; };
 		14835A2D2AB013AE006D0290 /* Textures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Textures.swift; sourceTree = "<group>"; };
@@ -220,7 +218,6 @@
 				148359CD2AB01091006D0290 /* Assets.xcassets */,
 				148359CE2AB01091006D0290 /* Models */,
 				148359E42AB01091006D0290 /* Preview Content */,
-				148359E92AB01091006D0290 /* tp050630_01.jpg */,
 				148359EA2AB01091006D0290 /* BeeKeeper.entitlements */,
 			);
 			path = BeeKeeper;
@@ -548,7 +545,6 @@
 			files = (
 				14835A352AB396CD006D0290 /* EvolutionScene.sks in Resources */,
 				14835A1F2AB01091006D0290 /* Preview Assets.xcassets in Resources */,
-				14835A252AB01091006D0290 /* tp050630_01.jpg in Resources */,
 				14835A012AB01091006D0290 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
