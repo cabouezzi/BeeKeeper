@@ -9,7 +9,7 @@ import SceneKit
 import SpriteKit
 
 public class ApiaryView: SCNView {
-    public private(set) var apiary = Apiary()
+    public private(set) lazy var apiary = GameManager.shared.apiary
     
     public let cameraNode = SCNNode()
     

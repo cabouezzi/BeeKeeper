@@ -16,6 +16,10 @@ public final class Hive: Structure, Collector {
         super.init()
         self.name = "Hive"
         self.area = DiscreteRect(x: 0, y: 0, width: 2, height: 2)
+        
+        honeycombs = [
+            Honeycomb(hive: self)
+        ]
     }
     
     required init(from decoder: Decoder) throws {

@@ -64,3 +64,22 @@ internal extension AdditiveArithmetic where Self: Comparable {
     }
 }
 
+extension Resources: CustomStringConvertible {
+    public var description: String {
+        var s = "Resources("
+        if money > 0 {
+            s.append("money: \(money)")
+        }
+        if honey > 0 {
+            s.append("honey: \(honey)")
+        }
+        if pollen > 0 {
+            s.append("pollen: \(pollen)")
+        }
+        if beeBread > 0 {
+            s.append("beeBread: \(beeBread)")
+        }
+        s += ")"
+        return s
+    }
+}

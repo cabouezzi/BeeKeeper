@@ -46,7 +46,6 @@ public class ApiaryViewController: UIViewController {
     private func tapHandler (_ gestureRecognizer: UITapGestureRecognizer) {
         let point = gestureRecognizer.location(in: apiaryView)
         gestureRecognizer.numberOfTapsRequired = 1
-        print(apiaryView.overlay.convertPoint(fromView: point))
         
         // Check and handle 2D interaction
         if let spriteNode = apiaryView.overlay.nodes(at: apiaryView.overlay.convertPoint(fromView: point)).first {
@@ -97,11 +96,15 @@ public class ApiaryViewController: UIViewController {
 }
 
 extension ApiaryViewController: ModelVisitor {
+    public func visitHoneyStorage(_ model: HoneyStorage) -> () {
+        print("\(model.name) was tapped. \(model.containing) / \(model.maximum). \(GameManager.shared.getAllResources())")
+    }
+    
     public func visitBee(_ model: Bee) -> Void {
-        print("Bee was tapped")
+        print("\(model.name) was tapped")
     }
     
     public func visitHive(_ model: Hive) -> Void {
-        print("Hive was tapped")
+        print("\(model.name) was tapped. \(model.containing) / \(model.maximum)")
     }
 }

@@ -17,15 +17,15 @@ public struct Apiary {
     public private(set) var structures: [Structure]
     
     init() {
-        let hiveOne = Hive()
-        let hiveTwo = Hive()
-        hiveOne.area.x = 0
-        hiveTwo.area.x = hiveOne.area.width
+        let hive = Hive()
+        let honeyStorage = HoneyStorage()
+        hive.area.x = 0
+        honeyStorage.area.x = hive.area.width
         
         self.bees = []
         self.structures = [
-            hiveOne,
-            hiveTwo
+            hive,
+            honeyStorage
         ]
     }
     

@@ -84,6 +84,18 @@ public class ApiaryOverlay: SKScene {
 
 // MARK: ModelVisitor
 extension ApiaryOverlay: ModelVisitor {
+    
+    public func visitHoneyStorage(_ model: HoneyStorage) -> () {
+        layoutButtons(title: model.name, [
+            SKButton(texture: Textures.check, onTap: { [weak self] in
+                self?.layoutButtons()
+            }),
+            SKButton(texture: Textures.move, onTap: { [weak self] in
+                self?.layoutButtons()
+            })
+        ])
+    }
+    
     public func visitBee(_ model: Bee) -> Void {
         
     }
@@ -91,9 +103,11 @@ extension ApiaryOverlay: ModelVisitor {
     public func visitHive(_ model: Hive) -> Void {
         layoutButtons(title: model.name, [
             SKButton(texture: Textures.check, onTap: { [weak self] in
+                _ = try? model.fill(Resources(honey: 50))
                 self?.layoutButtons()
             }),
             SKButton(texture: Textures.move, onTap: { [weak self] in
+                GameManager.shared.collect(from: model)
                 self?.layoutButtons()
             })
         ])
