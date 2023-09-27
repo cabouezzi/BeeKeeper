@@ -27,8 +27,8 @@ final class NodeService: ModelVisitor {
     
     func visitHoneyStorage(_ model: HoneyStorage) -> BKNode {
         let node = BKNode(model: model)
-        node.geometry = Meshes.Structure.hive
-        node.position.y += 0.5
+        node.geometry = Meshes.Structure.honeyStorage
+        node.position.y += (node.geometry!.boundingBox.max.y - node.geometry!.boundingBox.min.y) / 2
         return node
     }
 }

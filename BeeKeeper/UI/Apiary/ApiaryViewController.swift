@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SceneKit
 
 public class ApiaryViewController: UIViewController {
     var apiaryView: ApiaryView
@@ -28,6 +29,20 @@ public class ApiaryViewController: UIViewController {
     
     public override func viewWillAppear(_ animated: Bool) {
         apiaryView.loadNodes()
+    }
+    
+    final func flashNode(_ node: SCNNode) {
+        SCNTransaction.begin()
+        for material in node.geometry?.materials ?? [] {
+            material.emission.contents = UIColor.systemYellow
+        }
+        
+        SCNTransaction.completionBlock = { [weak node] in
+            for material in node?.geometry?.materials ?? [] {
+                material.emission.contents = UIColor.black
+            }
+        }
+        SCNTransaction.commit()
     }
     
     // MARK: - Gesture Recognizers
@@ -59,6 +74,7 @@ public class ApiaryViewController: UIViewController {
         // Check and handle 3D interaction
         let hitResults = apiaryView.hitTest(point, options: [:])
         guard let node = hitResults.first?.node as? BKNode else { return }
+        flashNode(node)
         node.model?.accept(self)
         node.model?.accept(apiaryView.overlay)
     }

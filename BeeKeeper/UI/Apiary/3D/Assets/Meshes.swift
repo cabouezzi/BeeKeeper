@@ -38,5 +38,11 @@ struct Meshes {
             geo.firstMaterial?.diffuse.contents = UIColor.red
             return geo
         }()
+        
+        static let honeyStorage: SCNGeometry = {
+            let geo = SCNBox(width: 2, height: 2, length: 2, chamferRadius: 0.2)
+            geo.firstMaterial?.diffuse.contents = UIColor.red
+            return geo
+        }()
     }
 }
