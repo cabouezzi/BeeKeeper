@@ -33,7 +33,7 @@ public struct Apiary {
     
     /// Adds the bee if there doesn't already exist a bee with the same name
     internal mutating func addBee(_ bee: Bee) throws {
-        guard bees.contains(where: { $0.name == bee.name }) else { throw ApiaryError.sameBeeName }
+        guard !bees.contains(where: { $0.name == bee.name }) else { throw ApiaryError.sameBeeName }
         bees.append(bee)
     }
     

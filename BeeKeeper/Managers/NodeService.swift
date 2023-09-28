@@ -18,7 +18,9 @@ final class NodeService: ModelVisitor {
     }
     
     func visitBee(_ model: Bee) -> BKNode {
-        return BKNode(model: model)
+        let node = BKNode(model: model)
+        node.geometry = Meshes.Bee.body
+        return node
     }
     
     func visitHive(_ model: Hive) -> BKNode {

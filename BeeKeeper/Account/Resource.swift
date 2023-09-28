@@ -66,20 +66,22 @@ internal extension AdditiveArithmetic where Self: Comparable {
 
 extension Resources: CustomStringConvertible {
     public var description: String {
-        var s = "Resources("
+        var string = "Resources("
+        var components = [String]()
         if money > 0 {
-            s.append("money: \(money)")
+            components.append("money: \(money)")
         }
         if honey > 0 {
-            s.append("honey: \(honey)")
+            components.append("honey: \(honey)")
         }
         if pollen > 0 {
-            s.append("pollen: \(pollen)")
+            components.append("pollen: \(pollen)")
         }
         if beeBread > 0 {
-            s.append("beeBread: \(beeBread)")
+            components.append("beeBread: \(beeBread)")
         }
-        s += ")"
-        return s
+        string += components.joined(separator: ", ")
+        string += ")"
+        return string
     }
 }

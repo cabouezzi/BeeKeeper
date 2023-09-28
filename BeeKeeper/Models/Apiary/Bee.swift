@@ -5,8 +5,10 @@
 //  Created by Chaniel Ezzi on 9/8/23.
 //
 
+import Foundation
+
 public class Bee: Model, Producer, Codable {
-    var name: String = ""
+    var name: String = UUID().uuidString
     var genetics: Set<Gene>
     
     public var production: Resources

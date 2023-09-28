@@ -5,6 +5,8 @@
 //  Created by Chaniel Ezzi on 9/10/23.
 //
 
+import Foundation
+
 protocol GameObserver: AnyObject {
     func gameManager(_ account: Account, _ apiary: Apiary, didHatchBee bee: Bee)
     func gameManager(_ account: Account, _ apiary: Apiary, didUpdateResources resources: Resources)
