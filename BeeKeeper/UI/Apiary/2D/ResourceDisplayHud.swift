@@ -57,11 +57,11 @@ final class ResourceDisplayHud: SKNode {
         }
     }
     
-    func update() {
-        let resources = GameManager.shared.getAllResources()
-        let maximum = GameManager.shared.getAllResources()
-        honeyBar?.updateValues(containing: Float(resources.honey), capacity: Float(maximum.honey))
-        pollenBar?.updateValues(containing: Float(resources.pollen), capacity: Float(maximum.pollen))
-        beeBreadBar?.updateValues(containing: Float(resources.beeBread), capacity: Float(maximum.beeBread))
+    func update(_ resources: Resources? = nil) {
+        let containing = resources ?? GameManager.shared.getAllResources()
+        let maximum = GameManager.shared.getMaximumResources()
+        honeyBar?.updateValues(containing: Float(containing.honey), capacity: Float(maximum.honey))
+        pollenBar?.updateValues(containing: Float(containing.pollen), capacity: Float(maximum.pollen))
+        beeBreadBar?.updateValues(containing: Float(containing.beeBread), capacity: Float(maximum.beeBread))
     }
 }

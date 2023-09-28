@@ -11,7 +11,7 @@ class ResourceBar: SKSpriteNode {
     /// Represents the total capacity of the given resources. Origin begins in the top right corner.
     private var capacityNode: SKSpriteNode!
     
-    private var label: SKLabelNode = AnimatedIntLabel()
+    private var label: SKLabelNode = SKLabelNode()
     
     /// Represents how much is filled in terms of its capacity.
     private var filledNode: SKSpriteNode!
@@ -45,6 +45,7 @@ class ResourceBar: SKSpriteNode {
         } else {
             self.capacity = capacity
         }
+        
         updateFilledIndicator()
     }
     
@@ -58,7 +59,7 @@ class ResourceBar: SKSpriteNode {
         
         filledNode.size.width = width
         // Update the value of the label
-        label.text = String(format: "%d / %d", containing, capacity)
+        label.text = String(format: "%.0f / %.0f", containing, capacity)
     }
     
     private func setupCapacityNode() {

@@ -7,6 +7,9 @@
 
 import SceneKit
 
+/// ``ModelVisitor`` service that returns a ``BKNode`` for models to be displayed as.
+///
+/// - Note: This is a singleton object, meaning it can only be accessed through the ``shared`` property.
 final class NodeService: ModelVisitor {
     static let shared = NodeService()
     

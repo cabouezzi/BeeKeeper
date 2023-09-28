@@ -40,7 +40,10 @@ public class ApiaryOverlay: SKScene {
             SKButton(texture: Textures.check, onTap: { print("check") }),
             SKButton(texture: Textures.edit, onTap: { print("edit") }),
             SKButton(texture: Textures.move, onTap: { print("move") }),
-            SKButton(texture: Textures.evolution2, onTap: { print("lock") })
+            SKButton(texture: Textures.evolution2, onTap: {
+                print("lock")
+                _ = try? GameManager.shared.hatchBee(Bee())
+            })
         ])
     }
     
@@ -107,7 +110,7 @@ extension ApiaryOverlay: ModelVisitor {
     }
     
     public func visitBee(_ model: Bee) -> Void {
-        
+        print("Bee was tapped! \(model.production)")
     }
     
     public func visitHive(_ model: Hive) -> Void {

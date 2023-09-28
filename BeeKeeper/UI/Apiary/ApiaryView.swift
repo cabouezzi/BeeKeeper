@@ -51,18 +51,40 @@ public class ApiaryView: SCNView {
         scene?.rootNode.addChildNode(cameraNode)
         scene?.rootNode.addChildNode(floorNode)
         scene?.rootNode.addChildNode(groundNode)
+        
+        GameManager.shared.addObserver(self)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        GameManager.shared.removeObserver(self)
+    }
+    
     func loadNodes() {
+        for bee in apiary.bees {
+            let node = bee.accept(NodeService.shared)
+            node.position.y += 3
+            scene?.rootNode.addChildNode(node)
+        }
+        
         for structure in apiary.structures {
             let node = structure.accept(NodeService.shared)
             node.position.x = Float(structure.area.x)
             node.position.z = Float(structure.area.y)
             scene?.rootNode.addChildNode(node)
         }
+    }
+}
+
+extension ApiaryView: GameObserver {
+    func gameManager(_ account: Account, _ apiary: Apiary, didHatchBee bee: Bee) {
+        
+    }
+    
+    func gameManager(_ account: Account, _ apiary: Apiary, didUpdateResources resources: Resources) {
+        overlay.resources.update(resources)
     }
 }
