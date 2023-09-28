@@ -73,7 +73,10 @@ public class ApiaryViewController: UIViewController {
         
         // Check and handle 3D interaction
         let hitResults = apiaryView.hitTest(point, options: [:])
-        guard let node = hitResults.first?.node as? BKNode else { return }
+        guard let node = hitResults.first?.node as? BKNode else {
+            apiaryView.overlay.layoutDefaultButtons()
+            return
+        }
         flashNode(node)
         node.model?.accept(self)
         node.model?.accept(apiaryView.overlay)

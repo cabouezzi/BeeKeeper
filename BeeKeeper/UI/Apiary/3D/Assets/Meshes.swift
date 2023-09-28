@@ -27,7 +27,7 @@ struct Meshes {
     struct Bee {
         static let body: SCNGeometry = {
             let geo = SCNCylinder(radius: 0.1, height: 0.5)
-            geo.firstMaterial?.diffuse.contents = UIColor.red
+            geo.firstMaterial?.diffuse.contents = UIColor.yellow
             return geo
         }()
     }

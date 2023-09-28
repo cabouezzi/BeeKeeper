@@ -55,6 +55,8 @@
 		14835A802ABBFFC2006D0290 /* ShopViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A7F2ABBFFC2006D0290 /* ShopViewModel.swift */; };
 		14835A832ABC001F006D0290 /* ShopItemRowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A822ABC001F006D0290 /* ShopItemRowModel.swift */; };
 		14835A892AC0E76B006D0290 /* NodeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A882AC0E76B006D0290 /* NodeService.swift */; };
+		14835A8E2AC5FED3006D0290 /* ResourceDisplayHud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A8D2AC5FED3006D0290 /* ResourceDisplayHud.swift */; };
+		14835A912AC6000E006D0290 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A902AC6000E006D0290 /* UIColor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -132,6 +134,8 @@
 		14835A7F2ABBFFC2006D0290 /* ShopViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopViewModel.swift; sourceTree = "<group>"; };
 		14835A822ABC001F006D0290 /* ShopItemRowModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopItemRowModel.swift; sourceTree = "<group>"; };
 		14835A882AC0E76B006D0290 /* NodeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeService.swift; sourceTree = "<group>"; };
+		14835A8D2AC5FED3006D0290 /* ResourceDisplayHud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceDisplayHud.swift; sourceTree = "<group>"; };
+		14835A902AC6000E006D0290 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -228,6 +232,7 @@
 			children = (
 				14835A322AB3945E006D0290 /* AppDelegate.swift */,
 				148359CA2AB01091006D0290 /* BeeKeeperApp.swift */,
+				14835A8F2AC60001006D0290 /* Support */,
 				14835A7A2AB5299D006D0290 /* Styles */,
 				14835A702AB51852006D0290 /* Apiary */,
 				14835A712AB5185D006D0290 /* Shop */,
@@ -258,6 +263,7 @@
 				14835A342AB396CD006D0290 /* EvolutionScene.sks */,
 				148359C52AB01091006D0290 /* AnimatedNumberNode.swift */,
 				148359C62AB01091006D0290 /* ApiaryOverlay.swift */,
+				14835A8D2AC5FED3006D0290 /* ResourceDisplayHud.swift */,
 				148359C72AB01091006D0290 /* ResourceBar.swift */,
 				14835A2F2AB02A32006D0290 /* Animation */,
 				14835A2C2AB01355006D0290 /* Assets */,
@@ -441,6 +447,14 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+		14835A8F2AC60001006D0290 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				14835A902AC6000E006D0290 /* UIColor.swift */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -592,10 +606,12 @@
 				14835A172AB01091006D0290 /* Apiary.swift in Sources */,
 				14835A332AB3945E006D0290 /* AppDelegate.swift in Sources */,
 				14835A312AB02A60006D0290 /* SKNode+Animations.swift in Sources */,
+				14835A912AC6000E006D0290 /* UIColor.swift in Sources */,
 				148359FD2AB01091006D0290 /* BeeKeeperApp.swift in Sources */,
 				14835A0F2AB01091006D0290 /* HoneyStorage.swift in Sources */,
 				148359F12AB01091006D0290 /* ApiarySwiftUIView.swift in Sources */,
 				14835A832ABC001F006D0290 /* ShopItemRowModel.swift in Sources */,
+				14835A8E2AC5FED3006D0290 /* ResourceDisplayHud.swift in Sources */,
 				14835A232AB01091006D0290 /* Account.swift in Sources */,
 				14835A032AB01091006D0290 /* Producer.swift in Sources */,
 				148359EB2AB01091006D0290 /* Meshes.swift in Sources */,

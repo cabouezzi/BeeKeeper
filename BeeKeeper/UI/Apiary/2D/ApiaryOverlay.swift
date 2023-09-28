@@ -9,6 +9,8 @@ import SceneKit
 import SpriteKit
 
 public class ApiaryOverlay: SKScene {
+    let resources = ResourceDisplayHud()
+    
     convenience override init() {
         self.init(size: .zero)
     }
@@ -23,7 +25,15 @@ public class ApiaryOverlay: SKScene {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func layoutButtons() {
+    public func setup() {
+        addChild(resources)
+        
+        layoutDefaultButtons()
+        resources.layout()
+        resources.update()
+    }
+    
+    public func layoutDefaultButtons() {
         layoutButtons([
             SKButton(texture: Textures.blankOrange, onTap: { print("orange") }),
             SKButton(texture: Textures.blankWhite, onTap: { print("white") }),
@@ -35,7 +45,7 @@ public class ApiaryOverlay: SKScene {
     }
     
     private func layoutButtons (title: String? = nil, _ buttons: [SKButton]) {
-        for child in children {
+        for child in children where child !== resources {
             child.fadeDownAndRemove()
         }
         guard !buttons.isEmpty else { return }
@@ -88,10 +98,10 @@ extension ApiaryOverlay: ModelVisitor {
     public func visitHoneyStorage(_ model: HoneyStorage) -> () {
         layoutButtons(title: model.name, [
             SKButton(texture: Textures.check, onTap: { [weak self] in
-                self?.layoutButtons()
+                self?.layoutDefaultButtons()
             }),
             SKButton(texture: Textures.move, onTap: { [weak self] in
-                self?.layoutButtons()
+                self?.layoutDefaultButtons()
             })
         ])
     }
@@ -104,11 +114,11 @@ extension ApiaryOverlay: ModelVisitor {
         layoutButtons(title: model.name, [
             SKButton(texture: Textures.check, onTap: { [weak self] in
                 _ = try? model.fill(Resources(honey: 50))
-                self?.layoutButtons()
+                self?.layoutDefaultButtons()
             }),
             SKButton(texture: Textures.move, onTap: { [weak self] in
                 GameManager.shared.collect(from: model)
-                self?.layoutButtons()
+                self?.layoutDefaultButtons()
             })
         ])
     }

@@ -11,9 +11,8 @@ import SpriteKit
 public class ApiaryView: SCNView {
     public private(set) lazy var apiary = GameManager.shared.apiary
     
-    public let cameraNode = SCNNode()
-    
-    public var overlay: ApiaryOverlay
+    public let cameraNode: SCNNode
+    public let overlay: ApiaryOverlay
     
     convenience init() {
         self.init(frame: .zero)
@@ -26,6 +25,7 @@ public class ApiaryView: SCNView {
         let light = SCNLight()
         light.type = .omni
         
+        self.cameraNode = SCNNode()
         self.cameraNode.camera = camera
         self.cameraNode.light = light
         self.cameraNode.position.x += 0
