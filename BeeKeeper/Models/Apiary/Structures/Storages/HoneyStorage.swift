@@ -5,8 +5,6 @@
 //  Created by Chaniel Ezzi on 9/9/23.
 //
 
-import Foundation
-
 public final class HoneyStorage: Structure, Container {
     public var containing = Resources()
     public var maximum = Resources(honey: 5000)
@@ -14,7 +12,7 @@ public final class HoneyStorage: Structure, Container {
     public required init() {
         super.init()
         self.name = "Honey Storage"
-        self.area = DiscreteRect(x: 0, y: 0, width: 10, height: 10)
+        self.area = DiscreteRect(x: 0, y: 0, width: 2, height: 2)
     }
     
     required init(from decoder: Decoder) throws {

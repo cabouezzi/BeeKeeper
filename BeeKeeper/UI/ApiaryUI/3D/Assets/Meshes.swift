@@ -41,12 +41,18 @@ struct Meshes {
         
         static let honeyStorage: SCNGeometry = {
             let geo = SCNBox(width: 2, height: 2, length: 2, chamferRadius: 0.2)
-            geo.firstMaterial?.diffuse.contents = UIColor.brown
+            geo.firstMaterial?.diffuse.contents = UIColor.orange
+            return geo
+        }()
+        
+        static let pollenStorage: SCNGeometry = {
+            let geo = SCNBox(width: 2, height: 1.5, length: 2, chamferRadius: 0.2)
+            geo.firstMaterial?.diffuse.contents = UIColor.yellow
             return geo
         }()
         
         static let incubator: SCNGeometry = {
-            let geo = SCNBox(width: 2, height: 2, length: 2, chamferRadius: 0.2)
+            let geo = SCNBox(width: 2, height: 1, length: 2, chamferRadius: 0.2)
             geo.firstMaterial?.diffuse.contents = UIColor.green
             return geo
         }()

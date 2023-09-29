@@ -97,13 +97,20 @@ public class ApiaryOverlay: SKScene {
 
 // MARK: ModelVisitor
 extension ApiaryOverlay: ModelVisitor {
-    
     public func visitHoneyStorage(_ model: HoneyStorage) -> () {
         layoutButtons(title: model.name, [
             SKButton(texture: Textures.check, onTap: { [weak self] in
                 self?.layoutDefaultButtons()
             }),
             SKButton(texture: Textures.move, onTap: { [weak self] in
+                self?.layoutDefaultButtons()
+            })
+        ])
+    }
+    
+    public func visitPollenStorage(_ model: PollenStorage) -> () {
+        layoutButtons(title: model.name, [
+            SKButton(texture: Textures.check, onTap: { [weak self] in
                 self?.layoutDefaultButtons()
             })
         ])

@@ -37,6 +37,13 @@ final class NodeService: ModelVisitor {
         return node
     }
     
+    func visitPollenStorage(_ model: PollenStorage) -> BKNode {
+        let node = BKNode(model: model)
+        node.geometry = Meshes.Structure.pollenStorage
+        node.position.y += (node.geometry!.boundingBox.max.y - node.geometry!.boundingBox.min.y) / 2
+        return node
+    }
+    
     func visitIncubator(_ model: Incubator) -> BKNode {
         let node = BKNode(model: model)
         node.geometry = Meshes.Structure.incubator

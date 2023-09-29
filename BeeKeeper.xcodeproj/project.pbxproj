@@ -57,6 +57,7 @@
 		14835A892AC0E76B006D0290 /* NodeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A882AC0E76B006D0290 /* NodeService.swift */; };
 		14835A8E2AC5FED3006D0290 /* ResourceDisplayHud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A8D2AC5FED3006D0290 /* ResourceDisplayHud.swift */; };
 		14835A912AC6000E006D0290 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A902AC6000E006D0290 /* UIColor.swift */; };
+		14835A952AC6732E006D0290 /* PollenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A942AC6732E006D0290 /* PollenStorage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -136,6 +137,7 @@
 		14835A882AC0E76B006D0290 /* NodeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeService.swift; sourceTree = "<group>"; };
 		14835A8D2AC5FED3006D0290 /* ResourceDisplayHud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceDisplayHud.swift; sourceTree = "<group>"; };
 		14835A902AC6000E006D0290 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		14835A942AC6732E006D0290 /* PollenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollenStorage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -234,8 +236,8 @@
 				148359CA2AB01091006D0290 /* BeeKeeperApp.swift */,
 				14835A8F2AC60001006D0290 /* Support */,
 				14835A7A2AB5299D006D0290 /* Styles */,
-				14835A702AB51852006D0290 /* Apiary */,
-				14835A712AB5185D006D0290 /* Shop */,
+				14835A702AB51852006D0290 /* ApiaryUI */,
+				14835A712AB5185D006D0290 /* ShopUI */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -344,6 +346,7 @@
 			isa = PBXGroup;
 			children = (
 				148359DA2AB01091006D0290 /* HoneyStorage.swift */,
+				14835A942AC6732E006D0290 /* PollenStorage.swift */,
 			);
 			path = Storages;
 			sourceTree = "<group>";
@@ -407,7 +410,7 @@
 			path = Animation;
 			sourceTree = "<group>";
 		};
-		14835A702AB51852006D0290 /* Apiary */ = {
+		14835A702AB51852006D0290 /* ApiaryUI */ = {
 			isa = PBXGroup;
 			children = (
 				148359C22AB01091006D0290 /* ApiarySwiftUIView.swift */,
@@ -416,17 +419,17 @@
 				148359BD2AB01091006D0290 /* 3D */,
 				148359C42AB01091006D0290 /* 2D */,
 			);
-			path = Apiary;
+			path = ApiaryUI;
 			sourceTree = "<group>";
 		};
-		14835A712AB5185D006D0290 /* Shop */ = {
+		14835A712AB5185D006D0290 /* ShopUI */ = {
 			isa = PBXGroup;
 			children = (
 				14835A742AB51884006D0290 /* ShopView.swift */,
 				14835A7F2ABBFFC2006D0290 /* ShopViewModel.swift */,
 				14835A812ABC0010006D0290 /* Components */,
 			);
-			path = Shop;
+			path = ShopUI;
 			sourceTree = "<group>";
 		};
 		14835A7A2AB5299D006D0290 /* Styles */ = {
@@ -602,6 +605,7 @@
 				14835A1D2AB01091006D0290 /* Bee.swift in Sources */,
 				14835A792AB51E2E006D0290 /* ShopResourceLabel.swift in Sources */,
 				148359F72AB01091006D0290 /* ApiaryOverlay.swift in Sources */,
+				14835A952AC6732E006D0290 /* PollenStorage.swift in Sources */,
 				148359FB2AB01091006D0290 /* UserDefaults.swift in Sources */,
 				14835A172AB01091006D0290 /* Apiary.swift in Sources */,
 				14835A332AB3945E006D0290 /* AppDelegate.swift in Sources */,

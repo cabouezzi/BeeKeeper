@@ -38,9 +38,9 @@ public class ApiaryViewController: UIViewController {
                 SCNTransaction.begin()
                 SCNTransaction.animationDuration = CFTimeInterval(duration / 2)
                 SCNTransaction.animationTimingFunction = CAMediaTimingFunction(name: .easeIn)
-                node.scale.x = 0.9
+                node.scale.x = 0.95
                 node.scale.y = 1.1
-                node.scale.z = 0.9
+                node.scale.z = 0.95
                 SCNTransaction.commit()
             }),
             SCNAction.wait(duration: Double(duration) / 2),
@@ -125,9 +125,14 @@ public class ApiaryViewController: UIViewController {
     }
 }
 
+// MARK: - ModelVisitor
 extension ApiaryViewController: ModelVisitor {
     public func visitHoneyStorage(_ model: HoneyStorage) -> () {
-        print("\(model.name) was tapped. \(model.containing) / \(model.maximum). \(GameManager.shared.getAllResources())")
+        print("\(model.name) was tapped. \(model.containing) / \(model.maximum).")
+    }
+    
+    public func visitPollenStorage(_ model: PollenStorage) -> () {
+        print("\(model.name) was tapped. \(model.containing) / \(model.maximum).")
     }
     
     public func visitBee(_ model: Bee) -> () {
