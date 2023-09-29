@@ -15,4 +15,5 @@ public protocol ModelVisitor {
     func visitBee(_ model: Bee) -> ReturnType
     func visitHive(_ model: Hive) -> ReturnType
     func visitHoneyStorage(_ model: HoneyStorage) -> ReturnType
+    func visitIncubator(_ model: Incubator) -> ReturnType
 }

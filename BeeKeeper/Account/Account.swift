@@ -7,11 +7,13 @@
 
 final class Account {
     var apiaries: [Apiary]
-    var unlockedGenes: Set<Gene> = []
+    var unlockedGenes: Set<Gene>
     
     init() {
         apiaries = [
             Apiary()
         ]
+        
+        unlockedGenes = []
     }
 }

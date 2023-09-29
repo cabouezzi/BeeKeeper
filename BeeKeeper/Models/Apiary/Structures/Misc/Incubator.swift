@@ -7,12 +7,12 @@
 
 import Foundation
 
-enum IncubatorState {
+public enum IncubatorState {
     case idle, incubating, finished
 }
 
-class Incubator: Structure {
-    struct IncubationPeriod: Codable {
+public class Incubator: Structure {
+    public struct IncubationPeriod: Codable {
         private(set) var startTime: Date
         private(set) var finishTime: Date
         private(set) var incubatedBee: Bee
@@ -46,12 +46,17 @@ class Incubator: Structure {
         fatalError("init(from:) has not been implemented")
     }
     
+    override func accept<T>(_ visitor: T) -> T.ReturnType where T : ModelVisitor {
+        visitor.visitIncubator(self)
+    }
+    
     func startIncubating(_ period: TimeInterval) throws {
         currentPeriod = IncubationPeriod(started: Date(), incubationPeriod: period, bee: Bee())
     }
     
     func hatch() throws {
-        guard let currentPeriod else { return } // TODO: throw error
+        guard let currentPeriod = currentPeriod else { return } // TODO: throw error
+        guard state == .finished else { return } // TODO: throw error
         try GameManager.shared.hatchBee(currentPeriod.incubatedBee)
     }
 }

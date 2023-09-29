@@ -36,4 +36,11 @@ final class NodeService: ModelVisitor {
         node.position.y += (node.geometry!.boundingBox.max.y - node.geometry!.boundingBox.min.y) / 2
         return node
     }
+    
+    func visitIncubator(_ model: Incubator) -> BKNode {
+        let node = BKNode(model: model)
+        node.geometry = Meshes.Structure.incubator
+        node.position.y += (node.geometry!.boundingBox.max.y - node.geometry!.boundingBox.min.y) / 2
+        return node
+    }
 }

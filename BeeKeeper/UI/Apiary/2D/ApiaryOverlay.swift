@@ -125,4 +125,15 @@ extension ApiaryOverlay: ModelVisitor {
             })
         ])
     }
+    
+    public func visitIncubator(_ model: Incubator) -> () {
+        layoutButtons(title: model.name, [
+            SKButton(texture: Textures.blankWhite, onTap: {
+                try? model.startIncubating(3)
+            }),
+            SKButton(texture: Textures.check, onTap: {
+                try? model.hatch()
+            })
+        ])
+    }
 }

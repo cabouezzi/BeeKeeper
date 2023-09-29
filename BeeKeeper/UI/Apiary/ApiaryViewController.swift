@@ -31,18 +31,29 @@ public class ApiaryViewController: UIViewController {
         apiaryView.loadNodes()
     }
     
-    final func flashNode(_ node: SCNNode) {
-        SCNTransaction.begin()
-        for material in node.geometry?.materials ?? [] {
-            material.emission.contents = UIColor.systemYellow
-        }
-        
-        SCNTransaction.completionBlock = { [weak node] in
-            for material in node?.geometry?.materials ?? [] {
-                material.emission.contents = UIColor.black
-            }
-        }
-        SCNTransaction.commit()
+    final func flashNode(_ node: SCNNode, duration: Float = 0.25) {
+        let scale = node.scale
+        let action = SCNAction.sequence([
+            SCNAction.run({ node in
+                SCNTransaction.begin()
+                SCNTransaction.animationDuration = CFTimeInterval(duration / 2)
+                SCNTransaction.animationTimingFunction = CAMediaTimingFunction(name: .easeIn)
+                node.scale.x = 0.9
+                node.scale.y = 1.1
+                node.scale.z = 0.9
+                SCNTransaction.commit()
+            }),
+            SCNAction.wait(duration: Double(duration) / 2),
+            SCNAction.run({ node in
+                SCNTransaction.begin()
+                SCNTransaction.animationDuration = CFTimeInterval(duration / 2)
+                SCNTransaction.animationTimingFunction = CAMediaTimingFunction(name: .easeOut)
+                node.scale = scale
+                SCNTransaction.commit()
+            })
+        ])
+        action.duration = TimeInterval(duration)
+        node.runAction(action)
     }
     
     // MARK: - Gesture Recognizers
@@ -119,11 +130,15 @@ extension ApiaryViewController: ModelVisitor {
         print("\(model.name) was tapped. \(model.containing) / \(model.maximum). \(GameManager.shared.getAllResources())")
     }
     
-    public func visitBee(_ model: Bee) -> Void {
-        print("\(model.name) was tapped")
+    public func visitBee(_ model: Bee) -> () {
+        print("\(model.name) was tapped.")
     }
     
-    public func visitHive(_ model: Hive) -> Void {
+    public func visitHive(_ model: Hive) -> () {
         print("\(model.name) was tapped. \(model.containing) / \(model.maximum)")
+    }
+    
+    public func visitIncubator(_ model: Incubator) -> () {
+        print("\(model.name) was tapped. \(model.state)")
     }
 }

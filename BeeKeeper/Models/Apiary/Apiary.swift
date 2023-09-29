@@ -18,14 +18,17 @@ public struct Apiary {
     
     init() {
         let hive = Hive()
-        let honeyStorage = HoneyStorage()
         hive.area.x = 0
+        let honeyStorage = HoneyStorage()
         honeyStorage.area.x = hive.area.width
+        let incubator = Incubator()
+        incubator.area.y = hive.area.height
         
         self.bees = []
         self.structures = [
             hive,
-            honeyStorage
+            honeyStorage,
+            incubator
         ]
     }
     
