@@ -11,6 +11,7 @@ import SpriteKit
 public class ApiaryView: SCNView {
     public private(set) lazy var apiary = GameManager.shared.apiary
     
+    private let cameraAnchor: SCNNode
     public let cameraNode: SCNNode
     public let overlay: ApiaryOverlay
     
@@ -25,13 +26,18 @@ public class ApiaryView: SCNView {
         let light = SCNLight()
         light.type = .omni
         
+        self.cameraAnchor = SCNNode()
+        
         self.cameraNode = SCNNode()
         self.cameraNode.camera = camera
         self.cameraNode.light = light
         self.cameraNode.position.x += 0
-        self.cameraNode.position.y += 8
+        self.cameraNode.position.y += 15
         self.cameraNode.position.z += 15
-        self.cameraNode.eulerAngles.x -= .pi / 8
+        self.cameraNode.eulerAngles.x -= .pi / 5
+        
+        self.cameraAnchor.eulerAngles.y -= .pi / 4
+        self.cameraAnchor.addChildNode(cameraNode)
         
         self.overlay = ApiaryOverlay()
         self.overlay.isUserInteractionEnabled = false
@@ -48,7 +54,7 @@ public class ApiaryView: SCNView {
         let groundNode = SCNNode(geometry: Meshes.ground)
         groundNode.eulerAngles.x -= .pi / 2
         
-        scene?.rootNode.addChildNode(cameraNode)
+        scene?.rootNode.addChildNode(cameraAnchor)
         scene?.rootNode.addChildNode(floorNode)
         scene?.rootNode.addChildNode(groundNode)
         

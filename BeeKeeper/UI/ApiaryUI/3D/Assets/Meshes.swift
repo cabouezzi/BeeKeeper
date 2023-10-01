@@ -25,30 +25,46 @@ struct Meshes {
     }()
     
     struct Bee {
-        static let body: SCNGeometry = {
-            let geo = SCNCylinder(radius: 0.1, height: 0.5)
-            geo.firstMaterial?.diffuse.contents = UIColor.yellow
-            return geo
+        static let torso: SCNGeometry = {
+            let scene = SCNScene(named: "BeeBody.scn")!
+            let node = scene.rootNode.childNode(withName: "Stinger", recursively: true)!
+            return node.geometry!
+        }()
+        
+        static let stinger: SCNGeometry = {
+            let scene = SCNScene(named: "BeeBody.scn")!
+            let node = scene.rootNode.childNode(withName: "Stinger", recursively: true)!
+            return node.geometry!
+        }()
+        
+        static let head: SCNGeometry = {
+            let scene = SCNScene(named: "BeeBody.scn")!
+            let node = scene.rootNode.childNode(withName: "Head", recursively: true)!
+            return node.geometry!
+        }()
+        
+        static let abdomen: SCNGeometry = {
+            let scene = SCNScene(named: "BeeBody.scn")!
+            let node = scene.rootNode.childNode(withName: "Abdomen", recursively: true)!
+            return node.geometry!
         }()
     }
     
     struct Structure {
         static let hive: SCNGeometry = {
-            let geo = SCNBox(width: 2, height: 1, length: 2, chamferRadius: 0.2)
-            geo.firstMaterial?.diffuse.contents = UIColor.red
-            return geo
+            let scene = SCNScene(named: "Hive.scn")!
+            let node = scene.rootNode.childNode(withName: "hive", recursively: true)!
+            return node.geometry!
         }()
         
         static let honeyStorage: SCNGeometry = {
-            let geo = SCNBox(width: 2, height: 2, length: 2, chamferRadius: 0.2)
-            geo.firstMaterial?.diffuse.contents = UIColor.orange
-            return geo
+            let scene = SCNScene(named: "Rack.scn")!
+            let node = scene.rootNode.childNode(withName: "rack", recursively: true)!
+            return node.geometry!
         }()
         
         static let pollenStorage: SCNGeometry = {
-            let geo = SCNBox(width: 2, height: 1.5, length: 2, chamferRadius: 0.2)
-            geo.firstMaterial?.diffuse.contents = UIColor.yellow
-            return geo
+            return honeyStorage
         }()
         
         static let incubator: SCNGeometry = {

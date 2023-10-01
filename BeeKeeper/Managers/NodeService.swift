@@ -18,29 +18,33 @@ final class NodeService: ModelVisitor {
     }
     
     func visitBee(_ model: Bee) -> BKNode {
-        let node = BKNode(model: model)
-        node.geometry = Meshes.Bee.body
-        return node
+        let bodyScene = SCNScene(named: "BeeBody.scn")!
+        let wingsScene = SCNScene(named: "BeeWings.scn")!
+        let node = SCNNode()
+        node.addChildren(bodyScene.rootNode.childNodes)
+        node.addChildren(wingsScene.rootNode.childNodes)
+        let bknode = BKNode(model: model)
+        // TODO: Complete
+        
+        bknode.geometry = SCNCylinder(radius: 0.1, height: 0.5)
+        return bknode
     }
     
     func visitHive(_ model: Hive) -> BKNode {
         let node = BKNode(model: model)
         node.geometry = Meshes.Structure.hive
-        node.position.y += 0.5
         return node
     }
     
     func visitHoneyStorage(_ model: HoneyStorage) -> BKNode {
         let node = BKNode(model: model)
         node.geometry = Meshes.Structure.honeyStorage
-        node.position.y += (node.geometry!.boundingBox.max.y - node.geometry!.boundingBox.min.y) / 2
         return node
     }
     
     func visitPollenStorage(_ model: PollenStorage) -> BKNode {
         let node = BKNode(model: model)
         node.geometry = Meshes.Structure.pollenStorage
-        node.position.y += (node.geometry!.boundingBox.max.y - node.geometry!.boundingBox.min.y) / 2
         return node
     }
     
@@ -51,3 +55,4 @@ final class NodeService: ModelVisitor {
         return node
     }
 }
+

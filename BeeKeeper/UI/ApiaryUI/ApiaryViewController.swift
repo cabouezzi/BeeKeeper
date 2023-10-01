@@ -14,7 +14,7 @@ public class ApiaryViewController: UIViewController {
     public init() {
         self.apiaryView = ApiaryView()
 #if DEBUG
-//        self.apiaryView.allowsCameraControl = true
+        self.apiaryView.allowsCameraControl = true
         self.apiaryView.showsStatistics = true
 #endif
         super.init(nibName: nil, bundle: nil)
@@ -60,12 +60,16 @@ public class ApiaryViewController: UIViewController {
     
     private func addGestureRecognizers() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapHandler))
+        
+        #if !DEBUG
         let pan = UIPanGestureRecognizer(target: self, action: #selector(panHandler))
         let pinch = UIPinchGestureRecognizer(target: self, action: #selector(pinchHandler))
         
-        apiaryView.addGestureRecognizer(tap)
         apiaryView.addGestureRecognizer(pan)
         apiaryView.addGestureRecognizer(pinch)
+        #endif
+        
+        apiaryView.addGestureRecognizer(tap)
     }
     
     @objc
