@@ -17,6 +17,14 @@ final class NodeService: ModelVisitor {
         
     }
     
+    private func movePivotToCorner(_ node: SCNNode) {
+        node.pivot = SCNMatrix4MakeTranslation(
+            -(node.geometry!.boundingBox.max.x - node.geometry!.boundingBox.min.x) / 2,
+            0,
+            -(node.geometry!.boundingBox.max.z - node.geometry!.boundingBox.min.z) / 2
+        )
+    }
+    
     func visitBee(_ model: Bee) -> BKNode {
         let bodyScene = SCNScene(named: "BeeBody.scn")!
         let wingsScene = SCNScene(named: "BeeWings.scn")!
@@ -33,18 +41,21 @@ final class NodeService: ModelVisitor {
     func visitHive(_ model: Hive) -> BKNode {
         let node = BKNode(model: model)
         node.geometry = Meshes.Structure.hive
+        movePivotToCorner(node)
         return node
     }
     
     func visitHoneyStorage(_ model: HoneyStorage) -> BKNode {
         let node = BKNode(model: model)
         node.geometry = Meshes.Structure.honeyStorage
+        movePivotToCorner(node)
         return node
     }
     
     func visitPollenStorage(_ model: PollenStorage) -> BKNode {
         let node = BKNode(model: model)
         node.geometry = Meshes.Structure.pollenStorage
+        movePivotToCorner(node)
         return node
     }
     
@@ -52,6 +63,7 @@ final class NodeService: ModelVisitor {
         let node = BKNode(model: model)
         node.geometry = Meshes.Structure.incubator
         node.position.y += (node.geometry!.boundingBox.max.y - node.geometry!.boundingBox.min.y) / 2
+        movePivotToCorner(node)
         return node
     }
 }

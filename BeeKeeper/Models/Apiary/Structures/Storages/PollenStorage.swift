@@ -11,8 +11,8 @@ public final class PollenStorage: Structure, Container {
     
     public required init() {
         super.init()
-        self.name = "Honey Storage"
-        self.area = DiscreteRect(x: 0, y: 0, width: 2, height: 2)
+        self.name = "Pollen Storage"
+        self.area = DiscreteRect(x: 0, y: 0, width: 2, height: 1)
     }
     
     required init(from decoder: Decoder) throws {
