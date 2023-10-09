@@ -8,14 +8,36 @@
 import UIKit
 
 protocol ShopDelegate: AnyObject {
-    func shopView(_ shopView: UIView, didSelectItem item: ShopItem)
+    func shopViewController(_ shopViewController: ShopViewController, canSelectItem item: ShopItem) -> Bool
+    func shopViewController(_ shopViewController: ShopViewController, didSelectItem item: ShopItem)
 }
 
+// TODO: Make ShopView, and use under GameViewController
 class ShopViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     weak var delegate: ShopDelegate?
     
     let items: [ShopItem] = [
-        ShopItem(name: "Hive", description: nil, cost: Resources(honey: 10), display: UIImage(named: "world"), newProduct: { Hive() })
+        ShopItem(name: "Hive", description: nil, cost: Resources(), display: UIImage(named: "world.png")!, newProduct: { Hive() }),
+        ShopItem(name: "Incubator", description: nil, cost: Resources(honey: 10), display: UIImage(named: "world"), newProduct: { Incubator() }),
+        ShopItem(name: "Honey Jar Rack", description: nil, cost: Resources(honey: 100), display: UIImage(named: "world"), newProduct: { HoneyStorage() }),
+        ShopItem(name: "Hive", description: nil, cost: Resources(), display: UIImage(named: "world"), newProduct: { Hive() }),
+        ShopItem(name: "Incubator", description: nil, cost: Resources(honey: 10), display: UIImage(named: "world"), newProduct: { Incubator() }),
+        ShopItem(name: "Honey Jar Rack", description: nil, cost: Resources(honey: 100), display: UIImage(named: "world"), newProduct: { HoneyStorage() }),
+        ShopItem(name: "Hive", description: nil, cost: Resources(), display: UIImage(named: "world"), newProduct: { Hive() }),
+        ShopItem(name: "Incubator", description: nil, cost: Resources(honey: 10), display: UIImage(named: "world"), newProduct: { Incubator() }),
+        ShopItem(name: "Honey Jar Rack", description: nil, cost: Resources(honey: 100), display: UIImage(named: "world"), newProduct: { HoneyStorage() }),
+        ShopItem(name: "Hive", description: nil, cost: Resources(), display: UIImage(named: "world"), newProduct: { Hive() }),
+        ShopItem(name: "Incubator", description: nil, cost: Resources(honey: 10), display: UIImage(named: "world"), newProduct: { Incubator() }),
+        ShopItem(name: "Honey Jar Rack", description: nil, cost: Resources(honey: 100), display: UIImage(named: "world"), newProduct: { HoneyStorage() }),
+        ShopItem(name: "Hive", description: nil, cost: Resources(), display: UIImage(named: "world"), newProduct: { Hive() }),
+        ShopItem(name: "Incubator", description: nil, cost: Resources(honey: 10), display: UIImage(named: "world"), newProduct: { Incubator() }),
+        ShopItem(name: "Honey Jar Rack", description: nil, cost: Resources(honey: 100), display: UIImage(named: "world"), newProduct: { HoneyStorage() }),
+        ShopItem(name: "Hive", description: nil, cost: Resources(), display: UIImage(named: "world"), newProduct: { Hive() }),
+        ShopItem(name: "Incubator", description: nil, cost: Resources(honey: 10), display: UIImage(named: "world"), newProduct: { Incubator() }),
+        ShopItem(name: "Honey Jar Rack", description: nil, cost: Resources(honey: 100), display: UIImage(named: "world"), newProduct: { HoneyStorage() }),
+        ShopItem(name: "Hive", description: nil, cost: Resources(), display: UIImage(named: "world"), newProduct: { Hive() }),
+        ShopItem(name: "Incubator", description: nil, cost: Resources(honey: 10), display: UIImage(named: "world"), newProduct: { Incubator() }),
+        ShopItem(name: "Honey Jar Rack", description: nil, cost: Resources(honey: 100), display: UIImage(named: "world"), newProduct: { HoneyStorage() })
     ]
     
     var collectionView: UICollectionView?
@@ -74,11 +96,26 @@ class ShopViewController: UIViewController, UICollectionViewDelegate, UICollecti
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? ShopViewCell else {
             return UICollectionViewCell()
         }
-        cell.setItem(items[indexPath.row])
+        
+        let item = items[indexPath.row]
+        cell.setItem(item)
+        
+        if !(delegate?.shopViewController(self, canSelectItem: item) ?? true) {
+            cell.backgroundColor = .gray
+        } else {
+            cell.backgroundColor = .orange
+        }
+        
+        cell.nameLabel.text = item.name
+        cell.modelView.image = item.display
+        
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        delegate?.shopView(collectionView, didSelectItem: items[indexPath.row])
+        let item = items[indexPath.row]
+        
+        guard delegate?.shopViewController(self, canSelectItem: item) ?? true else { return }
+        delegate?.shopViewController(self, didSelectItem: item)
     }
 }

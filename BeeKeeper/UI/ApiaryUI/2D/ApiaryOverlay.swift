@@ -48,11 +48,11 @@ public class ApiaryOverlay: SKScene {
         ])
     }
     
-    private func layoutButtons (title: String? = nil, _ buttons: [SKButton]) {
+    public func layoutButtons (title: String? = nil, _ buttons: [SKButton]) {
         for child in children where child !== resources {
             child.fadeDownAndRemove()
         }
-        guard !buttons.isEmpty else { return }
+        
         /// The y-level where the buttons should be displayed
         let yPosition = size.height / 10
         let safeWidth = size.width - yPosition*2
@@ -82,6 +82,9 @@ public class ApiaryOverlay: SKScene {
         
         if let title = title {
             let label = SKLabelNode(text: title)
+            label.fontName = "ArialRoundedMTBold"
+            label.fontColor = .white
+            
             label.position.x = center
             label.position.y = yPosition + paddedWidth / 2 + label.frame.height / 2
             addChild(label)
@@ -99,22 +102,11 @@ public class ApiaryOverlay: SKScene {
 // MARK: ModelVisitor
 extension ApiaryOverlay: ModelVisitor {
     public func visitHoneyStorage(_ model: HoneyStorage) -> () {
-        layoutButtons(title: model.name, [
-            SKButton(texture: Textures.check, onTap: { [weak self] in
-                self?.layoutDefaultButtons()
-            }),
-            SKButton(texture: Textures.move, onTap: { [weak self] in
-                self?.layoutDefaultButtons()
-            })
-        ])
+        layoutButtons(title: model.name, [])
     }
     
     public func visitPollenStorage(_ model: PollenStorage) -> () {
-        layoutButtons(title: model.name, [
-            SKButton(texture: Textures.check, onTap: { [weak self] in
-                self?.layoutDefaultButtons()
-            })
-        ])
+        layoutButtons(title: model.name, [])
     }
     
     public func visitBee(_ model: Bee) -> Void {
@@ -122,26 +114,10 @@ extension ApiaryOverlay: ModelVisitor {
     }
     
     public func visitHive(_ model: Hive) -> Void {
-        layoutButtons(title: model.name, [
-            SKButton(texture: Textures.check, onTap: { [weak self] in
-                _ = try? model.fill(Resources(honey: 50))
-                self?.layoutDefaultButtons()
-            }),
-            SKButton(texture: Textures.move, onTap: { [weak self] in
-                GameManager.shared.collect(from: model)
-                self?.layoutDefaultButtons()
-            })
-        ])
+        layoutButtons(title: model.name, [])
     }
     
     public func visitIncubator(_ model: Incubator) -> () {
-        layoutButtons(title: model.name, [
-            SKButton(texture: Textures.blankWhite, onTap: {
-                try? model.startIncubating(3)
-            }),
-            SKButton(texture: Textures.check, onTap: {
-                try? model.hatch()
-            })
-        ])
+        layoutButtons(title: model.name, [])
     }
 }

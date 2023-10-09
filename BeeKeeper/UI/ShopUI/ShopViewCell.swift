@@ -10,9 +10,9 @@ import UIKit
 class ShopViewCell: UICollectionViewCell {
     var item: ShopItem?
     
-    private var nameLabel: UILabel!
-    private var modelView: UIView!
-    private var costLabel: UILabel!
+    var nameLabel: UILabel!
+    var modelView: UIImageView!
+    var costLabel: UILabel!
     
     private var nameLabelHeight: CGFloat { return frame.height * 2/10 }
     private var modelViewHeight: CGFloat { return frame.height * 5/10 }
@@ -22,7 +22,6 @@ class ShopViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         setupNameLabel()
         setupModelView()
         setupCostLabel()
@@ -37,44 +36,34 @@ class ShopViewCell: UICollectionViewCell {
     
     func setupNameLabel () {
         nameLabel = UILabel(frame: CGRect(x: horizontalTextInset, y: 0, width: frame.width - horizontalTextInset * 2, height: nameLabelHeight))
-        
         nameLabel.text = "Object"
-        
         nameLabel.font = UIFont(name: "ArialRoundedMTBold", size: nameLabel.frame.height / 2)
         nameLabel.textColor = .white
-        
         nameLabel.shadowOffset = CGSize(width: nameLabel.font.pointSize * 0.05, height: nameLabel.font.pointSize * 0.05)
         nameLabel.shadowColor = .black
-        
         nameLabel.adjustsFontSizeToFitWidth = true
-        
         nameLabel.backgroundColor = .clear
         
         addSubview(nameLabel)
     }
     
     func setupModelView () {
-        modelView = UIView()
-        modelView.backgroundColor = .white
+        modelView = UIImageView(frame: CGRect(x: 0, y: nameLabel.frame.maxY, width: frame.width, height: frame.height - nameLabelHeight - costLabelHeight))
+        
+        addSubview(modelView)
     }
     
     func setupCostLabel () {
         costLabel = UILabel(frame: CGRect(x: horizontalTextInset, y: nameLabel.frame.maxY + modelViewHeight, width: frame.width - horizontalTextInset * 2, height: costLabelHeight))
-        
         costLabel.text = "999999"
-        
         costLabel.font = UIFont(name: "ArialRoundedMTBold", size: costLabel.frame.height/2)
         costLabel.textColor = .white
         costLabel.textAlignment = .left
-            
         costLabel.shadowOffset = CGSize(width: costLabel.font.pointSize * 0.05, height: costLabel.font.pointSize * 0.05)
         costLabel.shadowColor = .black
-        
         costLabel.adjustsFontSizeToFitWidth = true
-        
         costLabel.numberOfLines = 4
         costLabel.lineBreakMode = .byClipping
-        
         costLabel.backgroundColor = .clear
         
         addSubview(costLabel)
@@ -98,11 +87,6 @@ class ShopViewCell: UICollectionViewCell {
         
         if item.cost.honey == 0, item.cost.pollen == 0, item.cost.beeBread == 0 {
             costLabel.text = "FREE!\n"
-        }
-        
-        if !GameManager.shared.getAllResources().canAfford(item.cost) {
-            //TODO: gray overlay
-            tintColor = .black
         }
     }
 }

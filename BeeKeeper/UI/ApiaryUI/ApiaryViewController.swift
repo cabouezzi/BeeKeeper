@@ -8,8 +8,14 @@
 import UIKit
 import SceneKit
 
+fileprivate enum GameState {
+    case idle
+    case moving(_ structure: Structure, _ node: BKNode, _ originalPosition: SCNVector3)
+}
+
 public class ApiaryViewController: UIViewController {
-    var apiaryView: ApiaryView
+    var apiaryView: ApiaryView!
+    private var state: GameState = .idle
     
     convenience init() {
         self.init(frame: .zero)
@@ -34,6 +40,14 @@ public class ApiaryViewController: UIViewController {
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         apiaryView.loadNodes()
+        showDefaultButtons()
+    }
+    
+    final func showDefaultButtons() {
+        apiaryView.overlay.layoutButtons([
+            SKButton(texture: Textures.blankOrange, onTap: popToShop),
+            SKButton(texture: Textures.evolutionLock, onTap: { _ = try? GameManager.shared.hatchBee(Bee()) })
+        ])
     }
     
     final func flashNode(_ node: SCNNode, duration: Float = 0.25) {
@@ -59,6 +73,45 @@ public class ApiaryViewController: UIViewController {
         ])
         action.duration = TimeInterval(duration)
         node.runAction(action)
+    }
+    
+    func beginAddingNewStructure(_ structure: Structure, completion: (() throws -> Void)? = nil) {
+        guard case .idle = state else { return }
+        
+        let bknode = structure.accept(NodeService.shared)
+        state = .moving(structure, bknode, SCNVector3(0, 0, 0))
+        apiaryView.scene?.rootNode.addChildNode(bknode)
+        
+        if apiaryView.apiary.structures.contains(where: { $0.overlaps(structure) }) {
+            bknode.geometry?.materials.first?.emission.contents = UIColor.red
+        }
+        
+        apiaryView.overlay.layoutButtons(title: structure.name, [
+            SKButton(texture: Textures.check, onTap: { [weak self] in
+                guard let self = self else { return }
+                do {
+                    try completion?()
+                    self.state = .idle
+                    self.apiaryView.overlay.layoutDefaultButtons()
+                } catch {
+                    print(error)
+                }
+            }),
+            SKButton(texture: Textures.blankWhite, onTap: { [weak self] in
+                guard let self = self else { return }
+                bknode.removeFromParentNode()
+                self.state = .idle
+                self.apiaryView.overlay.layoutDefaultButtons()
+            })
+        ])
+    }
+    
+    // MARK: - UI Navigation
+    
+    private func popToShop() {
+        let vc = ShopViewController(frame: apiaryView.frame)
+        vc.delegate = self
+        self.navigationController?.pushViewController(vc, animated: false)
     }
     
     // MARK: - Gesture Recognizers
@@ -93,13 +146,18 @@ public class ApiaryViewController: UIViewController {
         
         // Check and handle 3D interaction
         let hitResults = apiaryView.hitTest(point, options: [:])
-        guard let node = hitResults.first?.node as? BKNode else {
-            apiaryView.overlay.layoutDefaultButtons()
-            return
+        
+        switch state {
+        case .idle:
+            guard let node = hitResults.first?.node as? BKNode else {
+                showDefaultButtons()
+                return
+            }
+            node.model?.accept(self)
+            node.model?.accept(apiaryView.overlay)
+            flashNode(node)
+        default: break
         }
-        flashNode(node)
-        node.model?.accept(self)
-        node.model?.accept(apiaryView.overlay)
     }
     
     private lazy var lastCameraPosition = apiaryView.cameraNode.position
@@ -114,11 +172,29 @@ public class ApiaryViewController: UIViewController {
         let xSpeed = -xTranslation / 30
         let ySpeed = -yTranslation / 30
         
-        apiaryView.cameraNode.position.x = lastCameraPosition.x + xSpeed
-        apiaryView.cameraNode.position.z = lastCameraPosition.z + ySpeed
-        
-        if gestureRecognizer.state == .ended {
-            lastCameraPosition = apiaryView.cameraNode.position
+        switch state {
+        case .idle:
+            apiaryView.cameraNode.position.x = lastCameraPosition.x + xSpeed
+            apiaryView.cameraNode.position.z = lastCameraPosition.z + ySpeed
+            
+            if gestureRecognizer.state == .ended {
+                lastCameraPosition = apiaryView.cameraNode.position
+            }
+            
+        case .moving(let structure, let node, _):
+            structure.area.x = Int(xTranslation / 50)
+            structure.area.y = Int(yTranslation / 50)
+            node.position.x = Float(structure.area.x)
+            node.position.z = Float(structure.area.y)
+            
+            if apiaryView.apiary.structures.contains(where: { $0.overlaps(structure) }) {
+                node.geometry?.materials.first?.emission.contents = UIColor.red
+            } else {
+                node.geometry?.materials.first?.emission.contents = UIColor.black
+            }
+            
+        default:
+            break
         }
     }
     
@@ -135,8 +211,14 @@ public class ApiaryViewController: UIViewController {
 }
 
 extension ApiaryViewController: ShopDelegate {
-    func shopView(_ shopView: UIView, didSelectItem item: ShopItem) {
-        
+    func shopViewController(_ shopViewController: ShopViewController, didSelectItem item: ShopItem) {
+        let structure = item.newProduct()
+        beginAddingNewStructure(structure)
+        shopViewController.navigationController?.popViewController(animated: false)
+    }
+    
+    func shopViewController(_ shopViewController: ShopViewController, canSelectItem item: ShopItem) -> Bool {
+        return GameManager.shared.getAllResources().canAfford(item.cost)
     }
 }
 
@@ -159,10 +241,6 @@ extension ApiaryViewController: ModelVisitor {
     }
     
     public func visitIncubator(_ model: Incubator) -> () {
-        print("\(model.name) was tapped. \(model.state)")
-        
-        let vc = ShopViewController(frame: apiaryView.frame)
-        vc.delegate = self
-        self.navigationController?.pushViewController(vc, animated: false)
+        print("\(model.name) was tapped.")
     }
 }
