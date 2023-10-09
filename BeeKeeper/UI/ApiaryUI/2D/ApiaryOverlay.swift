@@ -19,6 +19,7 @@ public class ApiaryOverlay: SKScene {
         super.init(size: size)
         self.isHidden = false
         self.scaleMode = .aspectFit
+        setup()
     }
     
     required init?(coder aDecoder: NSCoder) {

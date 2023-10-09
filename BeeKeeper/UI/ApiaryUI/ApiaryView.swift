@@ -39,7 +39,7 @@ public class ApiaryView: SCNView {
         self.cameraAnchor.eulerAngles.y -= .pi / 4
         self.cameraAnchor.addChildNode(cameraNode)
         
-        self.overlay = ApiaryOverlay()
+        self.overlay = ApiaryOverlay(size: frameRect.size)
         self.overlay.isUserInteractionEnabled = false
         self.overlay.isHidden = false
         

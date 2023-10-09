@@ -11,8 +11,12 @@ import SceneKit
 public class ApiaryViewController: UIViewController {
     var apiaryView: ApiaryView
     
-    public init() {
-        self.apiaryView = ApiaryView()
+    convenience init() {
+        self.init(frame: .zero)
+    }
+    
+    public init(frame: CGRect) {
+        self.apiaryView = ApiaryView(frame: frame)
 #if DEBUG
         self.apiaryView.allowsCameraControl = true
         self.apiaryView.showsStatistics = true
@@ -28,6 +32,7 @@ public class ApiaryViewController: UIViewController {
     }
     
     public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         apiaryView.loadNodes()
     }
     
@@ -129,6 +134,12 @@ public class ApiaryViewController: UIViewController {
     }
 }
 
+extension ApiaryViewController: ShopDelegate {
+    func shopView(_ shopView: UIView, didSelectItem item: ShopItem) {
+        
+    }
+}
+
 // MARK: - ModelVisitor
 extension ApiaryViewController: ModelVisitor {
     public func visitHoneyStorage(_ model: HoneyStorage) -> () {
@@ -149,5 +160,9 @@ extension ApiaryViewController: ModelVisitor {
     
     public func visitIncubator(_ model: Incubator) -> () {
         print("\(model.name) was tapped. \(model.state)")
+        
+        let vc = ShopViewController(frame: apiaryView.frame)
+        vc.delegate = self
+        self.navigationController?.pushViewController(vc, animated: false)
     }
 }

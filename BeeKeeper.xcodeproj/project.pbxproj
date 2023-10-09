@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		142DF2062AD3806F00274986 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142DF1DA2AD3804C00274986 /* SceneDelegate.swift */; };
+		142DF2072AD3807B00274986 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142DF1D82AD3804C00274986 /* AppDelegate.swift */; };
 		148358D52AABBFC5006D0290 /* BeeKeeperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148358D42AABBFC5006D0290 /* BeeKeeperTests.swift */; };
 		1483594F2AAD2807006D0290 /* DiscreteRectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1483594E2AAD2807006D0290 /* DiscreteRectTests.swift */; };
 		1483595B2AAD50A1006D0290 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1483595A2AAD50A1006D0290 /* main.swift */; };
@@ -20,7 +22,6 @@
 		148359F72AB01091006D0290 /* ApiaryOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148359C62AB01091006D0290 /* ApiaryOverlay.swift */; };
 		148359F92AB01091006D0290 /* ResourceBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148359C72AB01091006D0290 /* ResourceBar.swift */; };
 		148359FB2AB01091006D0290 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148359C92AB01091006D0290 /* UserDefaults.swift */; };
-		148359FD2AB01091006D0290 /* BeeKeeperApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148359CA2AB01091006D0290 /* BeeKeeperApp.swift */; };
 		148359FF2AB01091006D0290 /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148359CC2AB01091006D0290 /* GameManager.swift */; };
 		14835A012AB01091006D0290 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 148359CD2AB01091006D0290 /* Assets.xcassets */; };
 		14835A032AB01091006D0290 /* Producer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148359D12AB01091006D0290 /* Producer.swift */; };
@@ -43,17 +44,11 @@
 		14835A2B2AB01327006D0290 /* SKButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A2A2AB01327006D0290 /* SKButton.swift */; };
 		14835A2E2AB013AE006D0290 /* Textures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A2D2AB013AE006D0290 /* Textures.swift */; };
 		14835A312AB02A60006D0290 /* SKNode+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A302AB02A60006D0290 /* SKNode+Animations.swift */; };
-		14835A332AB3945E006D0290 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A322AB3945E006D0290 /* AppDelegate.swift */; };
 		14835A352AB396CD006D0290 /* EvolutionScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 14835A342AB396CD006D0290 /* EvolutionScene.sks */; };
 		14835A372AB4C471006D0290 /* HoneycombTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A362AB4C471006D0290 /* HoneycombTests.swift */; };
 		14835A392AB4C4F2006D0290 /* IncubatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A382AB4C4F2006D0290 /* IncubatorTests.swift */; };
 		14835A412AB4DE0D006D0290 /* ResourcesTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A402AB4DE0D006D0290 /* ResourcesTest.swift */; };
-		14835A752AB51884006D0290 /* ShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A742AB51884006D0290 /* ShopView.swift */; };
-		14835A772AB518E8006D0290 /* ShopItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A762AB518E8006D0290 /* ShopItemRow.swift */; };
-		14835A792AB51E2E006D0290 /* ShopResourceLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A782AB51E2E006D0290 /* ShopResourceLabel.swift */; };
 		14835A7C2AB529A5006D0290 /* BubbleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A7B2AB529A5006D0290 /* BubbleStyle.swift */; };
-		14835A802ABBFFC2006D0290 /* ShopViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A7F2ABBFFC2006D0290 /* ShopViewModel.swift */; };
-		14835A832ABC001F006D0290 /* ShopItemRowModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A822ABC001F006D0290 /* ShopItemRowModel.swift */; };
 		14835A892AC0E76B006D0290 /* NodeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A882AC0E76B006D0290 /* NodeService.swift */; };
 		14835A8E2AC5FED3006D0290 /* ResourceDisplayHud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A8D2AC5FED3006D0290 /* ResourceDisplayHud.swift */; };
 		14835A912AC6000E006D0290 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A902AC6000E006D0290 /* UIColor.swift */; };
@@ -64,6 +59,9 @@
 		14835AA22AC679CE006D0290 /* Frame.scn in Resources */ = {isa = PBXBuildFile; fileRef = 14835A9E2AC679CE006D0290 /* Frame.scn */; };
 		14835AA52AC67CAB006D0290 /* BeeBody.dae in Resources */ = {isa = PBXBuildFile; fileRef = 14835AA32AC67CAB006D0290 /* BeeBody.dae */; };
 		14835AA62AC67CAB006D0290 /* BeeWings.dae in Resources */ = {isa = PBXBuildFile; fileRef = 14835AA42AC67CAB006D0290 /* BeeWings.dae */; };
+		14A7DE812AD3883C00D2FD4A /* ShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A7DE802AD3883C00D2FD4A /* ShopViewController.swift */; };
+		14A7DE832AD389DA00D2FD4A /* ShopItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A7DE822AD389DA00D2FD4A /* ShopItem.swift */; };
+		14A7DE852AD3906600D2FD4A /* ShopViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A7DE842AD3906600D2FD4A /* ShopViewCell.swift */; };
 		14E4487F2AC67F00008963C8 /* BeeBody.scn in Resources */ = {isa = PBXBuildFile; fileRef = 14E4487E2AC67F00008963C8 /* BeeBody.scn */; };
 		14E448812AC68013008963C8 /* BeeArmature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E448802AC68013008963C8 /* BeeArmature.swift */; };
 		14E448832AC68129008963C8 /* SCNNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E448822AC68129008963C8 /* SCNNode.swift */; };
@@ -93,6 +91,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		142DF1D82AD3804C00274986 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = ../../X/AppDelegate.swift; sourceTree = "<group>"; };
+		142DF1DA2AD3804C00274986 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		148358BF2AABBFC4006D0290 /* BeeKeeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeeKeeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		148358D02AABBFC5006D0290 /* BeeKeeperTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BeeKeeperTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		148358D42AABBFC5006D0290 /* BeeKeeperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeeKeeperTests.swift; sourceTree = "<group>"; };
@@ -109,7 +109,6 @@
 		148359C62AB01091006D0290 /* ApiaryOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiaryOverlay.swift; sourceTree = "<group>"; };
 		148359C72AB01091006D0290 /* ResourceBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResourceBar.swift; sourceTree = "<group>"; };
 		148359C92AB01091006D0290 /* UserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
-		148359CA2AB01091006D0290 /* BeeKeeperApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BeeKeeperApp.swift; sourceTree = "<group>"; };
 		148359CC2AB01091006D0290 /* GameManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameManager.swift; sourceTree = "<group>"; };
 		148359CD2AB01091006D0290 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		148359D12AB01091006D0290 /* Producer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Producer.swift; sourceTree = "<group>"; };
@@ -133,17 +132,11 @@
 		14835A2A2AB01327006D0290 /* SKButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKButton.swift; sourceTree = "<group>"; };
 		14835A2D2AB013AE006D0290 /* Textures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Textures.swift; sourceTree = "<group>"; };
 		14835A302AB02A60006D0290 /* SKNode+Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SKNode+Animations.swift"; sourceTree = "<group>"; };
-		14835A322AB3945E006D0290 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		14835A342AB396CD006D0290 /* EvolutionScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = EvolutionScene.sks; sourceTree = "<group>"; };
 		14835A362AB4C471006D0290 /* HoneycombTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoneycombTests.swift; sourceTree = "<group>"; };
 		14835A382AB4C4F2006D0290 /* IncubatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncubatorTests.swift; sourceTree = "<group>"; };
 		14835A402AB4DE0D006D0290 /* ResourcesTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcesTest.swift; sourceTree = "<group>"; };
-		14835A742AB51884006D0290 /* ShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopView.swift; sourceTree = "<group>"; };
-		14835A762AB518E8006D0290 /* ShopItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopItemRow.swift; sourceTree = "<group>"; };
-		14835A782AB51E2E006D0290 /* ShopResourceLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopResourceLabel.swift; sourceTree = "<group>"; };
 		14835A7B2AB529A5006D0290 /* BubbleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleStyle.swift; sourceTree = "<group>"; };
-		14835A7F2ABBFFC2006D0290 /* ShopViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopViewModel.swift; sourceTree = "<group>"; };
-		14835A822ABC001F006D0290 /* ShopItemRowModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopItemRowModel.swift; sourceTree = "<group>"; };
 		14835A882AC0E76B006D0290 /* NodeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeService.swift; sourceTree = "<group>"; };
 		14835A8D2AC5FED3006D0290 /* ResourceDisplayHud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceDisplayHud.swift; sourceTree = "<group>"; };
 		14835A902AC6000E006D0290 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
@@ -154,6 +147,10 @@
 		14835A9E2AC679CE006D0290 /* Frame.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Frame.scn; sourceTree = "<group>"; };
 		14835AA32AC67CAB006D0290 /* BeeBody.dae */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml.dae; path = BeeBody.dae; sourceTree = "<group>"; };
 		14835AA42AC67CAB006D0290 /* BeeWings.dae */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml.dae; path = BeeWings.dae; sourceTree = "<group>"; };
+		14A7DE7C2AD3866100D2FD4A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		14A7DE802AD3883C00D2FD4A /* ShopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopViewController.swift; sourceTree = "<group>"; };
+		14A7DE822AD389DA00D2FD4A /* ShopItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopItem.swift; sourceTree = "<group>"; };
+		14A7DE842AD3906600D2FD4A /* ShopViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopViewCell.swift; sourceTree = "<group>"; };
 		14E4487E2AC67F00008963C8 /* BeeBody.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeBody.scn; sourceTree = "<group>"; };
 		14E448802AC68013008963C8 /* BeeArmature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeeArmature.swift; sourceTree = "<group>"; };
 		14E448822AC68129008963C8 /* SCNNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCNNode.swift; sourceTree = "<group>"; };
@@ -237,6 +234,7 @@
 		148359BB2AB01091006D0290 /* BeeKeeper */ = {
 			isa = PBXGroup;
 			children = (
+				14A7DE7C2AD3866100D2FD4A /* Info.plist */,
 				14835A8F2AC60001006D0290 /* Support */,
 				148359BC2AB01091006D0290 /* UI */,
 				148359E62AB01091006D0290 /* Account */,
@@ -253,11 +251,11 @@
 		148359BC2AB01091006D0290 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				14835A322AB3945E006D0290 /* AppDelegate.swift */,
-				148359CA2AB01091006D0290 /* BeeKeeperApp.swift */,
+				142DF1D82AD3804C00274986 /* AppDelegate.swift */,
+				142DF1DA2AD3804C00274986 /* SceneDelegate.swift */,
+				14A7DE7F2AD3883300D2FD4A /* ShopUI */,
 				14835A7A2AB5299D006D0290 /* Styles */,
 				14835A702AB51852006D0290 /* ApiaryUI */,
-				14835A712AB5185D006D0290 /* ShopUI */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -443,32 +441,12 @@
 			path = ApiaryUI;
 			sourceTree = "<group>";
 		};
-		14835A712AB5185D006D0290 /* ShopUI */ = {
-			isa = PBXGroup;
-			children = (
-				14835A742AB51884006D0290 /* ShopView.swift */,
-				14835A7F2ABBFFC2006D0290 /* ShopViewModel.swift */,
-				14835A812ABC0010006D0290 /* Components */,
-			);
-			path = ShopUI;
-			sourceTree = "<group>";
-		};
 		14835A7A2AB5299D006D0290 /* Styles */ = {
 			isa = PBXGroup;
 			children = (
 				14835A7B2AB529A5006D0290 /* BubbleStyle.swift */,
 			);
 			path = Styles;
-			sourceTree = "<group>";
-		};
-		14835A812ABC0010006D0290 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				14835A762AB518E8006D0290 /* ShopItemRow.swift */,
-				14835A822ABC001F006D0290 /* ShopItemRowModel.swift */,
-				14835A782AB51E2E006D0290 /* ShopResourceLabel.swift */,
-			);
-			path = Components;
 			sourceTree = "<group>";
 		};
 		14835A8F2AC60001006D0290 /* Support */ = {
@@ -502,6 +480,16 @@
 				14835A9B2AC679CE006D0290 /* Rack.scn */,
 			);
 			path = "3D Assets";
+			sourceTree = "<group>";
+		};
+		14A7DE7F2AD3883300D2FD4A /* ShopUI */ = {
+			isa = PBXGroup;
+			children = (
+				14A7DE802AD3883C00D2FD4A /* ShopViewController.swift */,
+				14A7DE842AD3906600D2FD4A /* ShopViewCell.swift */,
+				14A7DE822AD389DA00D2FD4A /* ShopItem.swift */,
+			);
+			path = ShopUI;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -636,14 +624,15 @@
 			files = (
 				148359F32AB01091006D0290 /* ApiaryView.swift in Sources */,
 				148359F92AB01091006D0290 /* ResourceBar.swift in Sources */,
+				14A7DE832AD389DA00D2FD4A /* ShopItem.swift in Sources */,
 				14835A052AB01091006D0290 /* Collector.swift in Sources */,
 				14835A7C2AB529A5006D0290 /* BubbleStyle.swift in Sources */,
 				14835A192AB01091006D0290 /* Gene.swift in Sources */,
-				14835A772AB518E8006D0290 /* ShopItemRow.swift in Sources */,
 				14835A152AB01091006D0290 /* Boneset.swift in Sources */,
 				14835A112AB01091006D0290 /* Honeycomb.swift in Sources */,
 				14E448832AC68129008963C8 /* SCNNode.swift in Sources */,
-				14835A802ABBFFC2006D0290 /* ShopViewModel.swift in Sources */,
+				142DF2072AD3807B00274986 /* AppDelegate.swift in Sources */,
+				142DF2062AD3806F00274986 /* SceneDelegate.swift in Sources */,
 				14835A0D2AB01091006D0290 /* Incubator.swift in Sources */,
 				148359ED2AB01091006D0290 /* BKNode.swift in Sources */,
 				148359FF2AB01091006D0290 /* GameManager.swift in Sources */,
@@ -651,31 +640,28 @@
 				14835A072AB01091006D0290 /* Structure.swift in Sources */,
 				14835A0B2AB01091006D0290 /* Flower.swift in Sources */,
 				14835A132AB01091006D0290 /* Hive.swift in Sources */,
+				14A7DE812AD3883C00D2FD4A /* ShopViewController.swift in Sources */,
 				148359EF2AB01091006D0290 /* ApiaryViewController.swift in Sources */,
 				14835A212AB01091006D0290 /* Resource.swift in Sources */,
+				14A7DE852AD3906600D2FD4A /* ShopViewCell.swift in Sources */,
 				14835A092AB01091006D0290 /* Container.swift in Sources */,
 				14835A2B2AB01327006D0290 /* SKButton.swift in Sources */,
 				14835A1B2AB01091006D0290 /* ModelVisitor.swift in Sources */,
 				14835A892AC0E76B006D0290 /* NodeService.swift in Sources */,
 				14835A1D2AB01091006D0290 /* Bee.swift in Sources */,
-				14835A792AB51E2E006D0290 /* ShopResourceLabel.swift in Sources */,
 				148359F72AB01091006D0290 /* ApiaryOverlay.swift in Sources */,
 				14835A952AC6732E006D0290 /* PollenStorage.swift in Sources */,
 				148359FB2AB01091006D0290 /* UserDefaults.swift in Sources */,
 				14835A172AB01091006D0290 /* Apiary.swift in Sources */,
-				14835A332AB3945E006D0290 /* AppDelegate.swift in Sources */,
 				14835A312AB02A60006D0290 /* SKNode+Animations.swift in Sources */,
 				14835A912AC6000E006D0290 /* UIColor.swift in Sources */,
 				14E448812AC68013008963C8 /* BeeArmature.swift in Sources */,
-				148359FD2AB01091006D0290 /* BeeKeeperApp.swift in Sources */,
 				14835A0F2AB01091006D0290 /* HoneyStorage.swift in Sources */,
 				148359F12AB01091006D0290 /* ApiarySwiftUIView.swift in Sources */,
-				14835A832ABC001F006D0290 /* ShopItemRowModel.swift in Sources */,
 				14835A8E2AC5FED3006D0290 /* ResourceDisplayHud.swift in Sources */,
 				14835A232AB01091006D0290 /* Account.swift in Sources */,
 				14835A032AB01091006D0290 /* Producer.swift in Sources */,
 				148359EB2AB01091006D0290 /* Meshes.swift in Sources */,
-				14835A752AB51884006D0290 /* ShopView.swift in Sources */,
 				148359F52AB01091006D0290 /* AnimatedNumberNode.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -836,13 +822,14 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"BeeKeeper/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = K4ZMXMC2TC;
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_ON_DEMAND_RESOURCES = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BeeKeeper/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.simulation-games";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
@@ -873,13 +860,14 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"BeeKeeper/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = K4ZMXMC2TC;
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_ON_DEMAND_RESOURCES = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BeeKeeper/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.simulation-games";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
