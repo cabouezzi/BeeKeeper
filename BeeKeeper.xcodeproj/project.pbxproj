@@ -237,16 +237,16 @@
 		148359BB2AB01091006D0290 /* BeeKeeper */ = {
 			isa = PBXGroup;
 			children = (
+				148359CD2AB01091006D0290 /* Assets.xcassets */,
+				148359EA2AB01091006D0290 /* BeeKeeper.entitlements */,
 				14A7DE7C2AD3866100D2FD4A /* Info.plist */,
 				14835A8F2AC60001006D0290 /* Support */,
 				148359BC2AB01091006D0290 /* UI */,
 				148359E62AB01091006D0290 /* Account */,
 				148359CB2AB01091006D0290 /* Managers */,
-				148359CD2AB01091006D0290 /* Assets.xcassets */,
 				148359CE2AB01091006D0290 /* Models */,
 				148359E42AB01091006D0290 /* Preview Content */,
 				14835A9A2AC679BE006D0290 /* 3D Assets */,
-				148359EA2AB01091006D0290 /* BeeKeeper.entitlements */,
 			);
 			path = BeeKeeper;
 			sourceTree = "<group>";

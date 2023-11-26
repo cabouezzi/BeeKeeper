@@ -26,17 +26,20 @@ final class NodeService: ModelVisitor {
     }
     
     func visitBee(_ model: Bee) -> BKNode {
-        let bodyScene = SCNScene(named: "BeeBody1.scn")!
-        let animation = CAAnimation.animationWithSceneNamed(name: "BeeWiggle.scn")!
-//        let animation = wiggleScene?.entryWithIdentifier("action_container-BodyArmature", withClass: CAAnimation.self)
-        animation.repeatCount = 1
+        let bodyScene = SCNScene(named: "BeeBody.scn")!
         let node = SCNNode()
         node.addChildNode(bodyScene.rootNode.childNode(withName: "BodyArmature", recursively: true)!)
-        node.childNode(withName: "BodyArmature", recursively: true)?.addAnimation(animation, forKey: "wiggle")
+        node.eulerAngles.x = .pi / 2
         node.eulerAngles.x = .pi / 2
         
+        #if DEBUG
+        let animation = CAAnimation.animationWithSceneNamed(name: "BeeWiggle.scn")!
+        animation.repeatCount = 1
+        node.childNode(withName: "BodyArmature", recursively: true)?.addAnimation(animation, forKey: "wiggle")
+        #endif
+        
         let bknode = BKNode(model: model)
-        // TODO: Complete
+        // TODO: Complete: Modify model based on upgrades and assign to base armature fetched from BeeBody.scn
         bknode.addChildNode(node)
         return bknode
     }

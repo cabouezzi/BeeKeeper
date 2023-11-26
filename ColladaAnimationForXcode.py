@@ -10,6 +10,7 @@
 """
 Chaniel / Notes
 Process for exporting from Blender to SceneKit:
+-> When rigging model, make sure armature is being treated as a Modifier
 -> Export .dae file, uncheck Global Orientation/Apply, set Forward: Z, Up: Y
 -> Transform = Matrix
 -> Run this script for .dae files containing an animation
