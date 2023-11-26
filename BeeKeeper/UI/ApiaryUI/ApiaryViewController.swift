@@ -46,6 +46,7 @@ public class ApiaryViewController: UIViewController {
     final func showDefaultButtons() {
         apiaryView.overlay.layoutButtons([
             SKButton(texture: Textures.blankOrange, onTap: popToShop),
+            SKButton(texture: Textures.blankOrange, onTap: popToEvolution),
             SKButton(texture: Textures.evolutionLock, onTap: { _ = try? GameManager.shared.hatchBee(Bee()) })
         ])
     }
@@ -111,6 +112,11 @@ public class ApiaryViewController: UIViewController {
     private func popToShop() {
         let vc = ShopViewController(frame: apiaryView.frame)
         vc.delegate = self
+        self.navigationController?.pushViewController(vc, animated: false)
+    }
+    
+    private func popToEvolution() {
+        let vc = EvolutionViewController()
         self.navigationController?.pushViewController(vc, animated: false)
     }
     

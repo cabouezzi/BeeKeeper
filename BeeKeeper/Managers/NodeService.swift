@@ -26,15 +26,18 @@ final class NodeService: ModelVisitor {
     }
     
     func visitBee(_ model: Bee) -> BKNode {
-        let bodyScene = SCNScene(named: "BeeBody.scn")!
-        let wingsScene = SCNScene(named: "BeeWings.scn")!
+        let bodyScene = SCNScene(named: "BeeBody1.scn")!
+        let animation = CAAnimation.animationWithSceneNamed(name: "BeeWiggle.scn")!
+//        let animation = wiggleScene?.entryWithIdentifier("action_container-BodyArmature", withClass: CAAnimation.self)
+        animation.repeatCount = 1
         let node = SCNNode()
-        node.addChildren(bodyScene.rootNode.childNodes)
-        node.addChildren(wingsScene.rootNode.childNodes)
+        node.addChildNode(bodyScene.rootNode.childNode(withName: "BodyArmature", recursively: true)!)
+        node.childNode(withName: "BodyArmature", recursively: true)?.addAnimation(animation, forKey: "wiggle")
+        node.eulerAngles.x = .pi / 2
+        
         let bknode = BKNode(model: model)
         // TODO: Complete
-        
-        bknode.geometry = SCNCylinder(radius: 0.1, height: 0.5)
+        bknode.addChildNode(node)
         return bknode
     }
     
