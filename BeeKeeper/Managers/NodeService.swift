@@ -31,6 +31,7 @@ final class NodeService: ModelVisitor {
         node.addChildNode(bodyScene.rootNode.childNode(withName: "BodyArmature", recursively: true)!)
         node.eulerAngles.x = .pi / 2
         node.eulerAngles.x = .pi / 2
+        node.scale = SCNVector3(0.3, 0.3, 0.3)
         
         #if DEBUG
         let animation = CAAnimation.animationWithSceneNamed(name: "BeeWiggle.scn")!

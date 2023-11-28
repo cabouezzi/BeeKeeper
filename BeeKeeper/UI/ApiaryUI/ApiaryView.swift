@@ -23,14 +23,10 @@ public class ApiaryView: SCNView {
         let camera = SCNCamera()
         camera.usesOrthographicProjection = false
         
-        let light = SCNLight()
-        light.type = .omni
-        
         self.cameraAnchor = SCNNode()
         
         self.cameraNode = SCNNode()
         self.cameraNode.camera = camera
-        self.cameraNode.light = light
         self.cameraNode.position.x += 0
         self.cameraNode.position.y += 15
         self.cameraNode.position.z += 15
@@ -44,7 +40,8 @@ public class ApiaryView: SCNView {
         self.overlay.isHidden = false
         
         super.init(frame: frameRect, options: nil)
-        self.scene = SCNScene()
+        self.scene = SCNScene(named: "ModelBase.scn")
+        self.scene?.background.contents = UIColor(red: 0.5, green: 0.9, blue: 1, alpha: 1)
         self.overlaySKScene = overlay
         self.pointOfView = cameraNode
         self.backgroundColor = .blue
@@ -55,8 +52,6 @@ public class ApiaryView: SCNView {
         groundNode.eulerAngles.x -= .pi / 2
         
         scene?.rootNode.addChildNode(cameraAnchor)
-        scene?.rootNode.addChildNode(floorNode)
-        scene?.rootNode.addChildNode(groundNode)
         
         GameManager.shared.addObserver(self)
     }

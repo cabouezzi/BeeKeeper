@@ -45,9 +45,9 @@ public class ApiaryViewController: UIViewController {
     
     final func showDefaultButtons() {
         apiaryView.overlay.layoutButtons([
-            SKButton(texture: Textures.blankOrange, onTap: popToShop),
-            SKButton(texture: Textures.blankOrange, onTap: popToEvolution),
-            SKButton(texture: Textures.evolutionLock, onTap: { _ = try? GameManager.shared.hatchBee(Bee()) })
+            SKButton(texture: Textures.blankOrange, title: "Shop", onTap: popToShop),
+            SKButton(texture: Textures.blankOrange, title: "Evolution", onTap: popToEvolution),
+            SKButton(texture: Textures.evolutionLock,title: "Hatch bee", onTap: { _ = try? GameManager.shared.hatchBee(Bee()) })
         ])
     }
     
@@ -142,7 +142,7 @@ public class ApiaryViewController: UIViewController {
         gestureRecognizer.numberOfTapsRequired = 1
         
         // Check and handle 2D interaction
-        if let spriteNode = apiaryView.overlay.nodes(at: apiaryView.overlay.convertPoint(fromView: point)).first {
+        if let spriteNode = apiaryView.overlay.nodes(at: apiaryView.overlay.convertPoint(fromView: point)).first(where: { $0.isUserInteractionEnabled }) {
             if let button = spriteNode as? SKButton {
                 button.pop()
                 button.activate()
