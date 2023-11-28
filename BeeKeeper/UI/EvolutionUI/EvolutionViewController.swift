@@ -52,19 +52,19 @@ class EvolutionViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func loadView() {
+        super.loadView()
         evolutionView = SKView(frame: self.view.frame)
         evolutionView.presentScene(evolutionScene)
         self.view = evolutionView
-        addGestureRecognizers()
         
-        animateCenterNode()
         drawDirectedEdges()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        addGestureRecognizers()
+        animateCenterNode()
     }
     
     private func animateCenterNode() {

@@ -23,12 +23,11 @@ public class ApiaryViewController: UIViewController {
     
     public init(frame: CGRect) {
         self.apiaryView = ApiaryView(frame: frame)
-#if DEBUG
+        #if DEBUG
         self.apiaryView.allowsCameraControl = true
         self.apiaryView.showsStatistics = true
-#endif
+        #endif
         super.init(nibName: nil, bundle: nil)
-        self.view = apiaryView
         
         addGestureRecognizers()
     }
@@ -37,8 +36,9 @@ public class ApiaryViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    public override func loadView() {
+        super.loadView()
+        self.view = apiaryView
         apiaryView.loadNodes()
         showDefaultButtons()
     }
@@ -52,6 +52,7 @@ public class ApiaryViewController: UIViewController {
     }
     
     final func flashNode(_ node: SCNNode, duration: Float = 0.25) {
+        guard !node.hasActions else { return }
         let scale = node.scale
         let action = SCNAction.sequence([
             SCNAction.run({ node in
