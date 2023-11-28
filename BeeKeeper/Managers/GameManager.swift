@@ -52,7 +52,11 @@ final class GameManager {
     
     // MARK: - Account-Dependent
     
-    public func unlockGene(_ gene: Gene) {
+    public func unlockGene(_ gene: Gene) throws {
+        let prereq = GeneNetwork.shared.prerequisites(for: gene)
+        guard prereq.allSatisfy({ account.unlockedGenes.contains($0) }) else {
+            throw GeneError.missingPrerequisites(prereq.filter({ !account.unlockedGenes.contains($0) }))
+        }
         account.unlockedGenes.insert(gene)
     }
     

@@ -7,7 +7,7 @@
 
 import GameKit
 
-enum Gene: Codable {
+enum Gene: String, Codable, CaseIterable {
     case enzymesI
     case enzymesII
     case enzymesIII
@@ -38,7 +38,7 @@ enum Gene: Codable {
     
     case sustainability
     
-    case bioluminescene
+    case bioluminescence
     
     case royalJelly
     

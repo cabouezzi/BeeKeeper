@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		1405AC152B130547003B0079 /* BeeBody.scn in Resources */ = {isa = PBXBuildFile; fileRef = 1405AC142B130546003B0079 /* BeeBody.scn */; };
 		1405AC1B2B145310003B0079 /* ModelBase.scn in Resources */ = {isa = PBXBuildFile; fileRef = 1405AC1A2B145310003B0079 /* ModelBase.scn */; };
+		1405AC2B2B15895A003B0079 /* GeneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1405AC2A2B15895A003B0079 /* GeneTests.swift */; };
+		1405AC2D2B158C3F003B0079 /* GeneNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1405AC2C2B158C3F003B0079 /* GeneNetwork.swift */; };
+		1405AC2F2B1599D3003B0079 /* UIBezierPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1405AC2E2B1599D3003B0079 /* UIBezierPath.swift */; };
 		142DF2062AD3806F00274986 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142DF1DA2AD3804C00274986 /* SceneDelegate.swift */; };
 		147FD45E2B12FADF00764E9C /* BeeWiggle.scn in Resources */ = {isa = PBXBuildFile; fileRef = 147FD45D2B12FADF00764E9C /* BeeWiggle.scn */; };
 		147FD4622B12FB4A00764E9C /* ColladaAnimationForXcode.py in Resources */ = {isa = PBXBuildFile; fileRef = 147FD4612B12FB4A00764E9C /* ColladaAnimationForXcode.py */; };
@@ -95,6 +98,9 @@
 /* Begin PBXFileReference section */
 		1405AC142B130546003B0079 /* BeeBody.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeBody.scn; sourceTree = "<group>"; };
 		1405AC1A2B145310003B0079 /* ModelBase.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = ModelBase.scn; sourceTree = "<group>"; };
+		1405AC2A2B15895A003B0079 /* GeneTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneTests.swift; sourceTree = "<group>"; };
+		1405AC2C2B158C3F003B0079 /* GeneNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneNetwork.swift; sourceTree = "<group>"; };
+		1405AC2E2B1599D3003B0079 /* UIBezierPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBezierPath.swift; sourceTree = "<group>"; };
 		142DF1DA2AD3804C00274986 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		147FD45D2B12FADF00764E9C /* BeeWiggle.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeWiggle.scn; sourceTree = "<group>"; };
 		147FD4612B12FB4A00764E9C /* ColladaAnimationForXcode.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = ColladaAnimationForXcode.py; sourceTree = "<group>"; };
@@ -217,6 +223,7 @@
 				148359632AAE03D4006D0290 /* HiveTests.swift */,
 				14835A362AB4C471006D0290 /* HoneycombTests.swift */,
 				14835A382AB4C4F2006D0290 /* IncubatorTests.swift */,
+				1405AC2A2B15895A003B0079 /* GeneTests.swift */,
 			);
 			path = BeeKeeperTests;
 			sourceTree = "<group>";
@@ -261,7 +268,7 @@
 				14835A7A2AB5299D006D0290 /* Styles */,
 				14835A702AB51852006D0290 /* ApiaryUI */,
 				14A7DE7F2AD3883300D2FD4A /* ShopUI */,
-				14A7DE862AD3AA5800D2FD4A /* Evolution */,
+				14A7DE862AD3AA5800D2FD4A /* EvolutionUI */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -389,6 +396,7 @@
 			isa = PBXGroup;
 			children = (
 				148359E12AB01091006D0290 /* Gene.swift */,
+				1405AC2C2B158C3F003B0079 /* GeneNetwork.swift */,
 			);
 			path = Evolution;
 			sourceTree = "<group>";
@@ -468,6 +476,7 @@
 			children = (
 				14835A902AC6000E006D0290 /* UIColor.swift */,
 				14E448822AC68129008963C8 /* SCNNode.swift */,
+				1405AC2E2B1599D3003B0079 /* UIBezierPath.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -497,13 +506,13 @@
 			path = ShopUI;
 			sourceTree = "<group>";
 		};
-		14A7DE862AD3AA5800D2FD4A /* Evolution */ = {
+		14A7DE862AD3AA5800D2FD4A /* EvolutionUI */ = {
 			isa = PBXGroup;
 			children = (
 				14835A342AB396CD006D0290 /* EvolutionScene.sks */,
 				14A7DE872AD3AA6100D2FD4A /* EvolutionViewController.swift */,
 			);
-			path = Evolution;
+			path = EvolutionUI;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -650,6 +659,7 @@
 				14835A0D2AB01091006D0290 /* Incubator.swift in Sources */,
 				148359ED2AB01091006D0290 /* BKNode.swift in Sources */,
 				148359FF2AB01091006D0290 /* GameManager.swift in Sources */,
+				1405AC2D2B158C3F003B0079 /* GeneNetwork.swift in Sources */,
 				14835A2E2AB013AE006D0290 /* Textures.swift in Sources */,
 				14835A072AB01091006D0290 /* Structure.swift in Sources */,
 				14835A0B2AB01091006D0290 /* Flower.swift in Sources */,
@@ -677,6 +687,7 @@
 				14835A8E2AC5FED3006D0290 /* ResourceDisplayHud.swift in Sources */,
 				14835A232AB01091006D0290 /* Account.swift in Sources */,
 				14835A032AB01091006D0290 /* Producer.swift in Sources */,
+				1405AC2F2B1599D3003B0079 /* UIBezierPath.swift in Sources */,
 				148359EB2AB01091006D0290 /* Meshes.swift in Sources */,
 				148359F52AB01091006D0290 /* AnimatedNumberNode.swift in Sources */,
 			);
@@ -690,6 +701,7 @@
 				1483594F2AAD2807006D0290 /* DiscreteRectTests.swift in Sources */,
 				14835A372AB4C471006D0290 /* HoneycombTests.swift in Sources */,
 				148358D52AABBFC5006D0290 /* BeeKeeperTests.swift in Sources */,
+				1405AC2B2B15895A003B0079 /* GeneTests.swift in Sources */,
 				14835A392AB4C4F2006D0290 /* IncubatorTests.swift in Sources */,
 				14835A412AB4DE0D006D0290 /* ResourcesTest.swift in Sources */,
 			);
