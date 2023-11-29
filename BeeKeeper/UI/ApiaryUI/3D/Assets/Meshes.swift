@@ -51,6 +51,7 @@ struct Meshes {
     }
     
     struct Structure {
+        // TODO: Revisit: `node.geometry!.copy() as! SCNGeometry` will create new geometry objects as opposed to references to the same geometry. This allows for modifying a node independently
         static let hive: SCNGeometry = {
             let scene = SCNScene(named: "Hive.scn")!
             let node = scene.rootNode.childNode(withName: "hive", recursively: true)!

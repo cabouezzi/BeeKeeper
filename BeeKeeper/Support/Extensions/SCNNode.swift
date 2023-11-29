@@ -34,4 +34,17 @@ extension CAAnimation {
         }
         return animation
     }
+    
+    static func animationPlayerFromScene(_ name: String) -> SCNAnimationPlayer? {
+        var animation: SCNAnimationPlayer?
+        if let scene = SCNScene(named: name) {
+            scene.rootNode.enumerateChildNodes { child, stop in
+                guard let key = child.animationKeys.first else { return }
+                animation = child.animationPlayer(forKey: key)
+                animation?.stop()
+                stop.initialize(to: true)
+            }
+        }
+        return animation
+    }
 }
