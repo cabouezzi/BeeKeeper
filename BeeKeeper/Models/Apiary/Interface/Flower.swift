@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum FlowerGrowthState {
+enum FlowerGrowthState {
     case sprouting
     case seedling
     case budding
@@ -15,26 +15,30 @@ public enum FlowerGrowthState {
     case dead
 }
 
-/*
-open class Flower: Container, Collector {
-    open var growthState: FlowerGrowthState = .seedling
-    public private(set) var datePlanted: Date
-    public var lifespan: TimeInterval = 0
-    public var dateDies: Date { return datePlanted.advanced(by: lifespan)}
+class Flower: Container, Collector {
+    var growthState: FlowerGrowthState = .seedling
+    private(set) var datePlanted: Date
+    var lifespan: TimeInterval = 0
+    var dateDies: Date { return datePlanted.advanced(by: lifespan)}
     
-    public required init() {
+    required init() {
         self.datePlanted = Date()
         super.init()
+        self.maximum = Resources(pollen: 500)
+        self.name = "Flower"
+        self.area = DiscreteRect(x: 0, y: 0, width: 1, height: 1)
     }
     
-    required public init(from decoder: Decoder) throws {
+    required init(from decoder: Decoder) throws {
         fatalError("init(from:) has not been implemented")
     }
     
-    public func accept(_ producer: some Producer) throws {
-        var resources = Resources()
-        resources.pollen = producer.production.pollen
-        try fill(&resources)
+    func accept(_ producer: some Producer) throws {
+        var produce = Resources(pollen: producer.production.pollen)
+        try? fill(&produce)
+    }
+    
+    override func accept<T>(_ visitor: T) -> T.ReturnType where T : ModelVisitor {
+        return visitor.visitFlower(self)
     }
 }
-*/

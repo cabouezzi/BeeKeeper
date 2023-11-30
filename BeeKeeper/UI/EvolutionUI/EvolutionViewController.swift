@@ -26,19 +26,6 @@ class EvolutionViewController: UIViewController {
         middleStars = evolutionScene.childNode(withName: "MiddleStars")!
         super.init(nibName: nil, bundle: nil)
         
-        for node in evolutionScene.children where Gene(rawValue: node.name ?? "") != nil {
-            node.isUserInteractionEnabled = true
-            #if !RELEASE
-            let label = SKLabelNode(text: node.name)
-            label.fontSize = 20
-            label.fontColor = .black
-            label.position = node.position
-            label.zPosition = .infinity
-            evolutionScene.addChild(label)
-            label.isUserInteractionEnabled = false
-            #endif
-        }
-        
         #if !RELEASE
         centerNode.isUserInteractionEnabled = true
         #else
@@ -58,6 +45,25 @@ class EvolutionViewController: UIViewController {
         evolutionView.presentScene(evolutionScene)
         self.view = evolutionView
         
+        for node in evolutionScene.children {
+            guard let gene = Gene(rawValue: node.name ?? "") else { continue }
+            node.isUserInteractionEnabled = true
+#if !RELEASE
+            let label = SKLabelNode(text: node.name)
+            label.fontSize = 20
+            label.fontColor = .black
+            label.position = node.position
+            label.zPosition = .infinity
+            evolutionScene.addChild(label)
+            label.isUserInteractionEnabled = false
+#endif
+            
+            if !GameManager.shared.account.unlockedGenes.contains(gene) {
+                node.isHidden = true
+            }
+        }
+        
+        updateLockNodes()
         drawDirectedEdges()
     }
     
@@ -107,6 +113,28 @@ class EvolutionViewController: UIViewController {
         }
     }
     
+    private func updateLockNodes() {
+        let leaves = Gene.allCases
+            .filter { g in
+                guard !GameManager.shared.account.unlockedGenes.contains(g) else { return false }
+                let prereq = GeneNetwork.shared.prerequisites(for: g)
+                return prereq.isEmpty || prereq.contains(where: { GameManager.shared.account.unlockedGenes.contains($0) })
+            }
+        
+        for lockedGene in leaves {
+            guard let target = self.evolutionScene.childNode(withName: lockedGene.rawValue) else { continue }
+            var lockNode: SKNode! = target.childNode(withName: "lock")
+            if lockNode == nil {
+                lockNode = SKSpriteNode(texture: Textures.evolutionLock)
+                lockNode.name = "lock"
+                lockNode.isUserInteractionEnabled = false
+                lockNode.zPosition = target.zPosition + 1
+                target.addChild(lockNode)
+            }
+            target.isHidden = false
+        }
+    }
+    
     private var lastCameraPosition: CGPoint = CGPoint.zero
     
     private func addGestureRecognizers() {
@@ -128,11 +156,16 @@ class EvolutionViewController: UIViewController {
         
         guard let name = node.name, let gene = Gene(rawValue: name) else { return }
         node.pop()
-        do {
-            try GameManager.shared.unlockGene(gene)
-            print("Successfully unlocked \(gene)")
-        } catch {
-            print(error.localizedDescription)
+        
+        if !GameManager.shared.account.unlockedGenes.contains(gene) {
+            do {
+                try GameManager.shared.unlockGene(gene)
+                node.childNode(withName: "lock")?.removeFromParent()
+                updateLockNodes()
+                print("Successfully unlocked \(gene)")
+            } catch {
+                print(error.localizedDescription)
+            }
         }
     }
     

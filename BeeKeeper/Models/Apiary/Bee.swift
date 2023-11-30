@@ -7,11 +7,11 @@
 
 import Foundation
 
-public class Bee: Model, Producer, Codable {
+class Bee: Model, Producer, Codable {
     var name: String = UUID().uuidString
     var genetics: Set<Gene>
     
-    public var production: Resources
+    var production: Resources
     
     init() {
         self.genetics = GameManager.shared.account.unlockedGenes

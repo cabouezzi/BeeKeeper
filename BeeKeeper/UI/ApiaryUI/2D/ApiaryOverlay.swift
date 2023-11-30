@@ -8,7 +8,7 @@
 import SceneKit
 import SpriteKit
 
-public class ApiaryOverlay: SKScene {
+class ApiaryOverlay: SKScene {
     let resources = ResourceDisplayHud()
     
     convenience override init() {
@@ -26,7 +26,7 @@ public class ApiaryOverlay: SKScene {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func setup() {
+    func setup() {
         addChild(resources)
         
         layoutDefaultButtons()
@@ -34,7 +34,7 @@ public class ApiaryOverlay: SKScene {
         resources.update()
     }
     
-    public func layoutDefaultButtons() {
+    func layoutDefaultButtons() {
         layoutButtons([
             SKButton(texture: Textures.blankOrange, onTap: { print("orange") }),
             SKButton(texture: Textures.blankWhite, onTap: { print("white") }),
@@ -48,7 +48,7 @@ public class ApiaryOverlay: SKScene {
         ])
     }
     
-    public func layoutButtons (title: String? = nil, _ buttons: [SKButton]) {
+    func layoutButtons (title: String? = nil, _ buttons: [SKButton]) {
         for child in children where child !== resources {
             child.fadeDownAndRemove()
         }
@@ -101,23 +101,58 @@ public class ApiaryOverlay: SKScene {
 
 // MARK: ModelVisitor
 extension ApiaryOverlay: ModelVisitor {
-    public func visitHoneyStorage(_ model: HoneyStorage) -> () {
+    func visitHoneyStorage(_ model: HoneyStorage) -> () {
         layoutButtons(title: model.name, [])
     }
     
-    public func visitPollenStorage(_ model: PollenStorage) -> () {
+    func visitPollenStorage(_ model: PollenStorage) -> () {
         layoutButtons(title: model.name, [])
     }
     
-    public func visitBee(_ model: Bee) -> Void {
+    func visitBee(_ model: Bee) -> Void {
         print("Bee was tapped! \(model.production)")
     }
     
-    public func visitHive(_ model: Hive) -> Void {
+    func visitHive(_ model: Hive) -> Void {
+        layoutButtons(title: model.name, [
+            SKButton(texture: Textures.blankWhite, title: "Add Honeycomb", onTap: {
+                do {
+                    try model.addHoneycomb()
+                } catch {
+                    print(error)
+                }
+            }),
+            SKButton(texture: Textures.blankWhite, title: "Add Resources", onTap: {
+                var resources = Resources(honey: 100, pollen: 100)
+                do {
+                    try model.fill(&resources)
+                } catch {
+                    print(error)
+                }
+            }),
+            SKButton(texture: Textures.check, title: "Collect", onTap: {
+                GameManager.shared.collect(from: model)
+            })
+        ])
+    }
+    
+    func visitIncubator(_ model: Incubator) -> () {
         layoutButtons(title: model.name, [])
     }
     
-    public func visitIncubator(_ model: Incubator) -> () {
-        layoutButtons(title: model.name, [])
+    func visitFlower(_ model: Flower) -> () {
+        layoutButtons(title: model.name, [
+            SKButton(texture: Textures.blankWhite, title: "Add Resources", onTap: {
+                var resources = Resources(honey: 100, pollen: 100)
+                do {
+                    try model.fill(&resources)
+                } catch {
+                    print(error)
+                }
+            }),
+            SKButton(texture: Textures.check, title: "Collect", onTap: {
+                GameManager.shared.collect(from: model)
+            })
+        ])
     }
 }

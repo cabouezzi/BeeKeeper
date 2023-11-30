@@ -29,14 +29,14 @@ final class GameManager {
     
     private var observers: [() -> (any GameObserver)?] = []
     
-    public func addObserver(_ observer: any GameObserver) {
+    func addObserver(_ observer: any GameObserver) {
         guard !observers.contains(where: { $0() === observer }) else { return }
         observers.append { [weak observer] in
             return observer
         }
     }
     
-    public func removeObserver(_ observer: any GameObserver) {
+    func removeObserver(_ observer: any GameObserver) {
         observers.removeAll { closure in
             guard let other = closure() else { return true }
             return observer === other
@@ -52,7 +52,7 @@ final class GameManager {
     
     // MARK: - Account-Dependent
     
-    public func unlockGene(_ gene: Gene) throws {
+    func unlockGene(_ gene: Gene) throws {
         let prereq = GeneNetwork.shared.prerequisites(for: gene)
         guard prereq.allSatisfy({ account.unlockedGenes.contains($0) }) else {
             throw GeneError.missingPrerequisites(prereq.filter({ !account.unlockedGenes.contains($0) }))
@@ -62,22 +62,22 @@ final class GameManager {
     
     // MARK: - Apiary-Dependent
     
-    public func changeApiary(_ apiary: Apiary) {
+    func changeApiary(_ apiary: Apiary) {
         self.apiary = apiary
     }
     
     /// Calculates the resources contained in all containers.
-    public func getAllResources() -> Resources {
+    func getAllResources() -> Resources {
         let total = apiary.structures
-            .compactMap({ $0 as? Container })
+            .compactMap({ $0 is Collector ? nil : $0 as? Container })
             .reduce(Resources(), { $0.adding($1.containing) })
         return total
     }
     
     /// Calculates the maximum resources that all containers can collectively hold.
-    public func getMaximumResources() -> Resources {
+    func getMaximumResources() -> Resources {
         let total = apiary.structures
-            .compactMap({ $0 as? Container })
+            .compactMap({ $0 is Collector ? nil : $0 as? Container })
             .reduce(Resources(), { $0.adding($1.maximum) })
         return total
     }
@@ -85,7 +85,7 @@ final class GameManager {
     /// Removes resources from the apiary. Should be mainly called from the shop.
     ///
     /// - throws: ``ContainerError``
-    public func remove(_ cost: Resources) throws {
+    func remove(_ cost: Resources) throws {
         guard getAllResources().canAfford(cost) else { throw ContainerError.containerInsufficient }
         var resources = cost
         for structure in apiary.structures {
@@ -104,22 +104,18 @@ final class GameManager {
         notifyObservers({ $0.gameManager(account, apiary, didUpdateResources: getAllResources()) })
     }
     
-    /// Transfers resources from some ``Collector`` and stores them into an available ``Container`` .
-    public func collect(from collector: some Collector) {
-        var resources = collector.collect()
-        for structure in apiary.structures {
-            guard let storage = structure as? Container else { continue }
-            resources = (try? storage.fill(resources)) ?? resources
+    /// Transfers resources from a ``Collector`` and stores them into an available storage .
+    func collect(from collector: some Collector) {
+        for storage in apiary.structures.compactMap({ $0 is Collector ? nil : $0 as? Container }) {
+            try? collector.transfer(to: storage)
         }
-        _ = try? collector.fill(resources)
-        
         notifyObservers({ $0.gameManager(account, apiary, didUpdateResources: getAllResources()) })
     }
     
     /// Adds a new bee to the apiary.
     ///
     /// - throws: ``ApiaryError``
-    public func hatchBee(_ bee: Bee) throws {
+    func hatchBee(_ bee: Bee) throws {
         try apiary.addBee(bee)
         
         notifyObservers({ $0.gameManager(account, apiary, didHatchBee: bee) })
@@ -128,7 +124,7 @@ final class GameManager {
     /// Adds a new structure to the apiary.
     ///
     /// - throws: ``ApiaryError``
-    public func addStructure<T: Structure>(_ structure: T) throws {
+    func addStructure<T: Structure>(_ structure: T) throws {
         try apiary.addStructure(structure)
     }
 }

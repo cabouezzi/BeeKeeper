@@ -22,18 +22,19 @@ final class HiveTests: XCTestCase {
         let hive = Hive()
         XCTAssertTrue(hive.containing == Resources(honey: 0) && hive.maximum == Resources(honey: 0))
         var max = Resources()
-        for _ in 0..<3 {
-            let honeycomb = Honeycomb(hive: hive)
-            hive.honeycombs.append(honeycomb)
-            max =  max.adding(honeycomb.maximum)
+        for i in 0..<3 {
+            try hive.addHoneycomb()
+            max =  max.adding(hive.honeycombs[i].maximum)
         }
         XCTAssertTrue(hive.containing == Resources(honey: 0) && hive.maximum == max)
         
         for honeycomb in hive.honeycombs {
-            let excess = try honeycomb.fill(Resources(honey: 33, pollen: 1))
-            XCTAssertEqual(excess, Resources(pollen: 1))
+            var fill = Resources(honey: 33, pollen: 1)
+            try honeycomb.fill(&fill)
+            XCTAssertEqual(fill, Resources(pollen: 1))
         }
         XCTAssertTrue(hive.containing == Resources(honey: 99) && hive.maximum == max)
+        XCTAssertThrowsError(try hive.addHoneycomb())
     }
     
 }

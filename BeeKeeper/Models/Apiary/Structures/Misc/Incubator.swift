@@ -7,12 +7,12 @@
 
 import Foundation
 
-public enum IncubatorState {
+enum IncubatorState {
     case idle, incubating, finished
 }
 
-public class Incubator: Structure {
-    public struct IncubationPeriod: Codable {
+class Incubator: Structure {
+    struct IncubationPeriod: Codable {
         private(set) var startTime: Date
         private(set) var finishTime: Date
         private(set) var incubatedBee: Bee
@@ -26,9 +26,9 @@ public class Incubator: Structure {
         }
     }
     
-    public private(set) var currentPeriod: IncubationPeriod?
+    private(set) var currentPeriod: IncubationPeriod?
     
-    public var state: IncubatorState {
+    var state: IncubatorState {
         let now = Date()
         switch currentPeriod?.finishTime.compare(now) {
         case .orderedAscending: return .finished
@@ -37,7 +37,7 @@ public class Incubator: Structure {
         }
     }
     
-    public required init() {
+    required init() {
         super.init()
         self.area = DiscreteRect(x: 0, y: 0, width: 1, height: 1)
     }

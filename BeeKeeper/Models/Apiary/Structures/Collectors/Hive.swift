@@ -5,21 +5,33 @@
 //  Created by Chaniel Ezzi on 9/8/23.
 //
 
-public final class Hive: Structure, Collector {
+import Foundation
+
+class Hive: Container, Collector {
+    var honeycombs: [Honeycomb] = []
     
-    public internal(set) var honeycombs: [Honeycomb] = []
+    override var containing: Resources {
+        get {
+            honeycombs.reduce(Resources(), { $0.adding($1.containing) })
+        }
+        set {
+            var new = newValue.subtracting(containing)
+            try? fill(&new)
+        }
+    }
+    override var maximum: Resources {
+        get {
+            honeycombs.reduce(Resources(), { $0.adding($1.maximum) })
+        }
+        set {
+            // TODO: ?
+        }
+    }
     
-    public var containing: Resources { honeycombs.reduce(Resources(), { $0.adding($1.containing) }) }
-    public var maximum: Resources { honeycombs.reduce(Resources(), { $0.adding($1.maximum) }) }
-    
-    public required init() {
+    required init() {
         super.init()
         self.name = "Hive"
         self.area = DiscreteRect(x: 0, y: 0, width: 2, height: 2)
-        
-        honeycombs = [
-            Honeycomb(hive: self)
-        ]
     }
     
     required init(from decoder: Decoder) throws {
@@ -30,35 +42,37 @@ public final class Hive: Structure, Collector {
         return visitor.visitHive(self)
     }
     
-    // MARK: Collector
+    @discardableResult
+    func addHoneycomb() throws -> Honeycomb {
+        guard honeycombs.count < 3 else { throw NSError(domain: "BeeKeeper", code: 101) }
+        let honeycomb = Honeycomb(hive: self)
+        honeycombs.append(honeycomb)
+        return honeycomb
+    }
     
-    public func accept(_ producer: some Producer) throws {
-        var lastError: Error!
+    // MARK: Collector
+    func accept(_ producer: some Producer) throws {
         for honeycomb in honeycombs {
             do {
                 try honeycomb.accept(producer)
                 return
-            } catch {
-                lastError = error
+            } catch ContainerError.containerFull {
+                continue
             }
         }
-        throw lastError
     }
     
-    public func fill(_ resources: Resources) throws -> Resources {
-        var excess = resources
-        for honeycomb in honeycombs {
-            excess = (try? honeycomb.fill(excess)) ?? excess
+    func transfer(to container: Container) throws {
+        for honeycomb in honeycombs where !honeycomb.containing.isEmpty() {
+            try container.fill(&honeycomb.containing)
         }
-        guard !excess.canAfford(resources) else { throw ContainerError.containerFull }
-        return excess
     }
     
-    public func collect() -> Resources {
-        var commulative = Resources()
+    override func fill(_ resources: inout Resources) throws {
+        guard !containing.canAfford(maximum) else { throw ContainerError.containerFull }
         for honeycomb in honeycombs {
-            commulative = commulative.adding(honeycomb.collect())
+            guard !resources.isEmpty() else { return }
+            try? honeycomb.fill(&resources)
         }
-        return commulative
     }
 }

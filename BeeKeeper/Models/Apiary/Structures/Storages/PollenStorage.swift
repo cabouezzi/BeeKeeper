@@ -5,30 +5,16 @@
 //  Created by Chaniel Ezzi on 9/28/23.
 //
 
-public final class PollenStorage: Structure, Container {
-    public var containing = Resources()
-    public var maximum = Resources(pollen: 5000)
-    
-    public required init() {
+final class PollenStorage: Container {
+    required init() {
         super.init()
+        self.maximum = Resources(pollen: 5000)
         self.name = "Pollen Storage"
         self.area = DiscreteRect(x: 0, y: 0, width: 2, height: 1)
     }
     
     required init(from decoder: Decoder) throws {
         fatalError("init(from:) has not been implemented")
-    }
-    
-    public func fill(_ resources: Resources) throws -> Resources {
-        guard !containing.canAfford(maximum) else { throw ContainerError.containerFull }
-        var amount = resources
-        containing.fill(&amount, cap: maximum)
-        return amount
-    }
-    
-    public func remove(_ resources: Resources) throws {
-        guard containing.canAfford(resources) else { throw ContainerError.containerInsufficient }
-        containing = containing.subtracting(resources)
     }
     
     override func accept<T>(_ visitor: T) -> T.ReturnType where T : ModelVisitor {

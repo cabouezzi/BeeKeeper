@@ -13,7 +13,7 @@ fileprivate enum GameState {
     case moving(_ structure: Structure, _ node: BKNode, _ originalPosition: SCNVector3)
 }
 
-public class ApiaryViewController: UIViewController {
+class ApiaryViewController: UIViewController {
     var apiaryView: ApiaryView!
     private var state: GameState = .idle
     
@@ -21,7 +21,7 @@ public class ApiaryViewController: UIViewController {
         self.init(frame: .zero)
     }
     
-    public init(frame: CGRect) {
+    init(frame: CGRect) {
         self.apiaryView = ApiaryView(frame: frame)
         #if DEBUG
         self.apiaryView.allowsCameraControl = true
@@ -36,7 +36,7 @@ public class ApiaryViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override func loadView() {
+    override func loadView() {
         super.loadView()
         self.view = apiaryView
         apiaryView.loadNodes()
@@ -93,6 +93,7 @@ public class ApiaryViewController: UIViewController {
                 guard let self = self else { return }
                 do {
                     try completion?()
+                    try GameManager.shared.addStructure(structure)
                     self.state = .idle
                     self.apiaryView.overlay.layoutDefaultButtons()
                 } catch {
@@ -231,23 +232,27 @@ extension ApiaryViewController: ShopDelegate {
 
 // MARK: - ModelVisitor
 extension ApiaryViewController: ModelVisitor {
-    public func visitHoneyStorage(_ model: HoneyStorage) -> () {
+    func visitHoneyStorage(_ model: HoneyStorage) -> () {
         print("\(model.name) was tapped. \(model.containing) / \(model.maximum).")
     }
     
-    public func visitPollenStorage(_ model: PollenStorage) -> () {
+    func visitPollenStorage(_ model: PollenStorage) -> () {
         print("\(model.name) was tapped. \(model.containing) / \(model.maximum).")
     }
     
-    public func visitBee(_ model: Bee) -> () {
+    func visitBee(_ model: Bee) -> () {
         print("\(model.name) was tapped.")
     }
     
-    public func visitHive(_ model: Hive) -> () {
+    func visitHive(_ model: Hive) -> () {
         print("\(model.name) was tapped. \(model.containing) / \(model.maximum)")
     }
     
-    public func visitIncubator(_ model: Incubator) -> () {
+    func visitIncubator(_ model: Incubator) -> () {
         print("\(model.name) was tapped.")
+    }
+    
+    func visitFlower(_ model: Flower) -> () {
+        print("\(model.name) was tapped. \(model.containing) / \(model.maximum).")
     }
 }

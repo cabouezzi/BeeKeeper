@@ -5,30 +5,28 @@
 //  Created by Chaniel Ezzi on 9/10/23.
 //
 
-public class Honeycomb: Collector {
+class Honeycomb {
     unowned var hive: Hive
     
-    public var containing: Resources = Resources()
-    public var maximum: Resources = Resources(honey: 100)
+    var containing: Resources = Resources()
+    var maximum: Resources = Resources(honey: 100)
     
     init(hive: Hive) {
         self.hive = hive
     }
     
-    public func accept(_ producer: some Producer) throws {
-        _ = try? fill(Resources(honey: producer.production.honey))
+    func accept(_ producer: some Producer) throws {
+        var produce = Resources(honey: producer.production.honey)
+        try? fill(&produce)
     }
     
-    public func fill(_ resources: Resources) throws -> Resources {
+    func fill(_ resources: inout Resources) throws {
         guard !containing.canAfford(maximum) else { throw ContainerError.containerFull }
-        var excess = resources
-        containing.fill(&excess, cap: maximum)
-        return excess
+        containing.fill(&resources, cap: maximum)
     }
     
-    public func collect() -> Resources {
-        let holder = containing
-        containing = Resources()
-        return holder
+    func remove(_ resources: Resources) throws {
+        guard containing.canAfford(resources) else { throw ContainerError.containerInsufficient }
+        containing = containing.subtracting(resources)
     }
 }

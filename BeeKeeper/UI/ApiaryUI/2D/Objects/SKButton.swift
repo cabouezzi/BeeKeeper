@@ -11,7 +11,7 @@ import SpriteKit
 open class SKButton: SKSpriteNode {
     private var block: (() -> Void)?
     
-    public convenience init(texture: SKTexture, title: String? = nil, onTap block: @escaping () -> Void) {
+    convenience init(texture: SKTexture, title: String? = nil, onTap block: @escaping () -> Void) {
         self.init()
         self.isUserInteractionEnabled = true
         self.texture = texture
@@ -25,11 +25,11 @@ open class SKButton: SKSpriteNode {
         #endif
     }
     
-    public convenience init(imageNamed name: String, title: String? = nil, onTap block: @escaping () -> Void) {
+    convenience init(imageNamed name: String, title: String? = nil, onTap block: @escaping () -> Void) {
         self.init(texture: SKTexture(imageNamed: name), title: title, onTap: block)
     }
     
-    public func activate() {
+    func activate() {
         block?()
     }
 }

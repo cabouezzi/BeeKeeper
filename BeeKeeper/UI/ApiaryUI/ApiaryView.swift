@@ -8,12 +8,12 @@
 import SceneKit
 import SpriteKit
 
-public class ApiaryView: SCNView {
-    public private(set) lazy var apiary = GameManager.shared.apiary
+class ApiaryView: SCNView {
+    var apiary: Apiary { GameManager.shared.apiary }
     
     private let cameraAnchor: SCNNode
-    public let cameraNode: SCNNode
-    public let overlay: ApiaryOverlay
+    let cameraNode: SCNNode
+    let overlay: ApiaryOverlay
     
     convenience init() {
         self.init(frame: .zero)

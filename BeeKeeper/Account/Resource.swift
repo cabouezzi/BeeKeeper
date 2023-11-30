@@ -5,7 +5,7 @@
 //  Created by Chaniel Ezzi on 9/9/23.
 //
 
-public struct Resources: Codable, Equatable {
+struct Resources: Codable, Equatable {
     var money: Float = 0
     var honey: Int = 0
     var pollen: Int = 0
@@ -65,7 +65,7 @@ internal extension AdditiveArithmetic where Self: Comparable {
 }
 
 extension Resources: CustomStringConvertible {
-    public var description: String {
+    var description: String {
         var string = "Resources("
         var components = [String]()
         if money > 0 {

@@ -17,14 +17,6 @@ final class NodeService: ModelVisitor {
         
     }
     
-    private func movePivotToCorner(_ node: SCNNode) {
-        node.pivot = SCNMatrix4MakeTranslation(
-            -(node.geometry!.boundingBox.max.x - node.geometry!.boundingBox.min.x) / 2,
-            0,
-            -(node.geometry!.boundingBox.max.z - node.geometry!.boundingBox.min.z) / 2
-        )
-    }
-    
     func visitBee(_ model: Bee) -> BKNode {
         let bodyScene = SCNScene(named: "BeeBody.scn")!
         let node = SCNNode()
@@ -48,21 +40,21 @@ final class NodeService: ModelVisitor {
     func visitHive(_ model: Hive) -> BKNode {
         let node = BKNode(model: model)
         node.geometry = Meshes.Structure.hive
-        movePivotToCorner(node)
+        node.movePivotToCorner()
         return node
     }
     
     func visitHoneyStorage(_ model: HoneyStorage) -> BKNode {
         let node = BKNode(model: model)
         node.geometry = Meshes.Structure.honeyStorage
-        movePivotToCorner(node)
+        node.movePivotToCorner()
         return node
     }
     
     func visitPollenStorage(_ model: PollenStorage) -> BKNode {
         let node = BKNode(model: model)
         node.geometry = Meshes.Structure.pollenStorage
-        movePivotToCorner(node)
+        node.movePivotToCorner()
         return node
     }
     
@@ -70,8 +62,25 @@ final class NodeService: ModelVisitor {
         let node = BKNode(model: model)
         node.geometry = Meshes.Structure.incubator
         node.position.y += (node.geometry!.boundingBox.max.y - node.geometry!.boundingBox.min.y) / 2
-        movePivotToCorner(node)
+        node.movePivotToCorner()
+        return node
+    }
+    
+    func visitFlower(_ model: Flower) -> BKNode {
+        let node = BKNode(model: model)
+        node.geometry = Meshes.Flowers.blackfoot
+        node.movePivotToCorner()
+        node.rotation.y += .pi
         return node
     }
 }
 
+fileprivate extension SCNNode {
+    func movePivotToCorner() {
+        self.pivot = SCNMatrix4MakeTranslation(
+            -(self.geometry!.boundingBox.max.x - self.geometry!.boundingBox.min.x) / 2,
+            0,
+            -(self.geometry!.boundingBox.max.z - self.geometry!.boundingBox.min.z) / 2
+        )
+    }
+}

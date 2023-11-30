@@ -7,14 +7,14 @@
 
 import Foundation
 
-public enum ApiaryError: LocalizedError {
+enum ApiaryError: LocalizedError {
     case overlappingStructures
     case sameBeeName
 }
 
-public struct Apiary {
-    public private(set) var bees: [Bee]
-    public private(set) var structures: [Structure]
+struct Apiary {
+    private(set) var bees: [Bee]
+    private(set) var structures: [Structure]
     
     init() {
         let hive = Hive()

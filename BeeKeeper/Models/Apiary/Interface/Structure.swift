@@ -11,7 +11,7 @@ import Foundation
 ///
 /// The `x` axis increases from left to right.
 /// The `y` axis increases from top to bottom.
-public struct DiscreteRect: Codable {
+struct DiscreteRect: Codable {
     var x, y, width, height: Int
     
     /// Returns whether it overlaps the given rectangle.
@@ -20,15 +20,15 @@ public struct DiscreteRect: Codable {
     }
 }
 
-open class Structure: Model, Codable {
+class Structure: Model, Codable {
     open var name: String = "Structure"
     // Encoding is done automatically
     private(set) var level: UInt = 1
     /// The bounding rectangle of the structure on the apiary grid layout.
     /// In 3D space, this is the x-z plane.
-    open var area = DiscreteRect(x: 0, y: 0, width: 0, height: 0)
+    var area = DiscreteRect(x: 0, y: 0, width: 0, height: 0)
     
-    required public init() {}
+    required init() {}
     
     /// Increments the ``level``.
     final func levelUp() {
@@ -42,7 +42,7 @@ open class Structure: Model, Codable {
     open func onLevelUp() {}
     
     /// Returns whether it overlaps the given structure.
-    final public func overlaps(_ structure: Structure) -> Bool {
+    final func overlaps(_ structure: Structure) -> Bool {
         return area.intersets(structure.area)
     }
     

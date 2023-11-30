@@ -39,7 +39,6 @@
 		14835A0F2AB01091006D0290 /* HoneyStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148359DA2AB01091006D0290 /* HoneyStorage.swift */; };
 		14835A112AB01091006D0290 /* Honeycomb.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148359DC2AB01091006D0290 /* Honeycomb.swift */; };
 		14835A132AB01091006D0290 /* Hive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148359DD2AB01091006D0290 /* Hive.swift */; };
-		14835A152AB01091006D0290 /* Boneset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148359DE2AB01091006D0290 /* Boneset.swift */; };
 		14835A172AB01091006D0290 /* Apiary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148359DF2AB01091006D0290 /* Apiary.swift */; };
 		14835A192AB01091006D0290 /* Gene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148359E12AB01091006D0290 /* Gene.swift */; };
 		14835A1B2AB01091006D0290 /* ModelVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148359E22AB01091006D0290 /* ModelVisitor.swift */; };
@@ -131,7 +130,6 @@
 		148359DA2AB01091006D0290 /* HoneyStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HoneyStorage.swift; sourceTree = "<group>"; };
 		148359DC2AB01091006D0290 /* Honeycomb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Honeycomb.swift; sourceTree = "<group>"; };
 		148359DD2AB01091006D0290 /* Hive.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hive.swift; sourceTree = "<group>"; };
-		148359DE2AB01091006D0290 /* Boneset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Boneset.swift; sourceTree = "<group>"; };
 		148359DF2AB01091006D0290 /* Apiary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Apiary.swift; sourceTree = "<group>"; };
 		148359E12AB01091006D0290 /* Gene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gene.swift; sourceTree = "<group>"; };
 		148359E22AB01091006D0290 /* ModelVisitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelVisitor.swift; sourceTree = "<group>"; };
@@ -347,9 +345,9 @@
 			isa = PBXGroup;
 			children = (
 				148359D12AB01091006D0290 /* Producer.swift */,
-				148359D22AB01091006D0290 /* Collector.swift */,
 				148359D32AB01091006D0290 /* Structure.swift */,
 				148359D42AB01091006D0290 /* Container.swift */,
+				148359D22AB01091006D0290 /* Collector.swift */,
 				148359D52AB01091006D0290 /* Flower.swift */,
 			);
 			path = Interface;
@@ -387,7 +385,6 @@
 			children = (
 				148359DC2AB01091006D0290 /* Honeycomb.swift */,
 				148359DD2AB01091006D0290 /* Hive.swift */,
-				148359DE2AB01091006D0290 /* Boneset.swift */,
 			);
 			path = Collectors;
 			sourceTree = "<group>";
@@ -652,7 +649,6 @@
 				14835A052AB01091006D0290 /* Collector.swift in Sources */,
 				14835A7C2AB529A5006D0290 /* BubbleStyle.swift in Sources */,
 				14835A192AB01091006D0290 /* Gene.swift in Sources */,
-				14835A152AB01091006D0290 /* Boneset.swift in Sources */,
 				14835A112AB01091006D0290 /* Honeycomb.swift in Sources */,
 				14E448832AC68129008963C8 /* SCNNode.swift in Sources */,
 				142DF2062AD3806F00274986 /* SceneDelegate.swift in Sources */,

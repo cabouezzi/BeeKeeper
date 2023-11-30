@@ -13,19 +13,23 @@ enum ContainerError: LocalizedError {
     var errorDescription: String? { nil }
 }
 
-public protocol Container: AnyObject {
-    /// The resources that the container holds.
-    var containing: Resources { get }
-    /// The maximum resources that the container can hold.
-    var maximum: Resources { get }
+class Container: Structure {
+    var containing = Resources()
+    var maximum: Resources = Resources()
     
     /// Fills the container with the amount, limited by the ``maximum``. Returns the excess resources.
     ///
     /// - throws: ``ContainerError``
-    func fill(_ resources: Resources) throws -> Resources
+    func fill(_ resources: inout Resources) throws {
+        guard !containing.canAfford(maximum) else { throw ContainerError.containerFull }
+        containing.fill(&resources, cap: maximum)
+    }
     
     /// Removes the resources from the container, only if able to.
     ///
     /// - throws: ``ContainerError``
-    func remove(_ resources: Resources) throws
+    func remove(_ resources: Resources) throws {
+        guard containing.canAfford(resources) else { throw ContainerError.containerInsufficient }
+        containing = containing.subtracting(resources)
+    }
 }

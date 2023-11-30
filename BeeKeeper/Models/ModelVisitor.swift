@@ -9,7 +9,7 @@ protocol Model {
     func accept<T:ModelVisitor>(_ visitor: T) -> T.ReturnType
 }
 
-public protocol ModelVisitor {
+protocol ModelVisitor {
     associatedtype ReturnType
     
     func visitBee(_ model: Bee) -> ReturnType
@@ -17,4 +17,5 @@ public protocol ModelVisitor {
     func visitHoneyStorage(_ model: HoneyStorage) -> ReturnType
     func visitPollenStorage(_ model: PollenStorage) -> ReturnType
     func visitIncubator(_ model: Incubator) -> ReturnType
+    func visitFlower(_ model: Flower) -> ReturnType
 }

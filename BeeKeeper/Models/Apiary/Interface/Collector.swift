@@ -5,16 +5,22 @@
 //  Created by Chaniel Ezzi on 9/8/23.
 //
 
-/// An interface for objects acting as a resource collector.
-public protocol Collector {
+protocol Collector {
     /// Called whenever the producer sends a call to produce.
     func accept(_ producer: some Producer) throws
     
-    /// Fills the container with the amount, limited by the ``maximum``. Returns the excess resources.
+    /// Transfers the contents of ``Container/containing`` into the `container` up to its maximum.
     ///
-    /// - throws: ``ContainerError``
-    func fill(_ resources: Resources) throws -> Resources
+    /// - throws: Rethrows the errors thrown in ``Container1/fill(_:)``.
+    func transfer(to container: Container) throws
+}
+
+extension Collector where Self: Container {
+    func accept(_ producer: some Producer) throws {
+        print("`Collector` subclass `\(Self.self)` doesn't implement `accept` method for producers. Calling this function will have no effect")
+    }
     
-    /// Empties the collector and returns resources that were collected over time.
-    func collect() -> Resources
+    func transfer(to container: Container) throws {
+        try container.fill(&containing)
+    }
 }

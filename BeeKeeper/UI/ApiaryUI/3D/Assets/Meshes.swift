@@ -74,4 +74,12 @@ struct Meshes {
             return geo
         }()
     }
+    
+    struct Flowers {
+        static let blackfoot: SCNGeometry = {
+            let scene = SCNScene(named: "Blackfoot.scn")!
+            let node = scene.rootNode.childNode(withName: "blackfoot", recursively: true)!
+            return node.geometry!
+        }()
+    }
 }
