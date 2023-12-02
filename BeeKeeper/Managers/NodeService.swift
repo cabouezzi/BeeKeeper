@@ -26,9 +26,10 @@ final class NodeService: ModelVisitor {
         node.scale = SCNVector3(0.3, 0.3, 0.3)
         
         #if DEBUG
-        let animation = CAAnimation.animationWithSceneNamed(name: "BeeWiggle.scn")!
-        animation.repeatCount = 1
-        node.childNode(withName: "BodyArmature", recursively: true)?.addAnimation(animation, forKey: "wiggle")
+        let animatPlayer = CAAnimation.animationPlayerFromScene("BeeWiggle.scn")!
+        animatPlayer.animation.repeatCount = 1
+        node.childNode(withName: "BodyArmature", recursively: true)?.addAnimationPlayer(animatPlayer, forKey: "wiggle")
+        animatPlayer.play()
         #endif
         
         let bknode = BKNode(model: model)

@@ -41,6 +41,8 @@ class ApiaryViewController: UIViewController {
         self.view = apiaryView
         apiaryView.loadNodes()
         showDefaultButtons()
+        
+        apiaryView.scene?.rootNode.childNode(withName: "Island", recursively: true)?.categoryBitMask = 1
     }
     
     final func showDefaultButtons() {
@@ -190,8 +192,16 @@ class ApiaryViewController: UIViewController {
             }
             
         case .moving(let structure, let node, _):
-            structure.area.x = Int(xTranslation / 50)
-            structure.area.y = Int(yTranslation / 50)
+            let hitTest = apiaryView.hitTest(gestureRecognizer.location(in: apiaryView), options: [.categoryBitMask: 1])
+            guard let pos = hitTest.first?.worldCoordinates else { break }
+            // The `if` statements stop the "glitching"
+            let clipMargin: Float = 0.3
+            if abs(pos.x - roundf(pos.x)) >= clipMargin {
+                structure.area.x = Int(round(pos.x)) - structure.area.width / 2
+            }
+            if abs(pos.z - roundf(pos.z)) >= clipMargin {
+                structure.area.y = Int(round(pos.z)) - structure.area.height / 2
+            }
             node.position.x = Float(structure.area.x)
             node.position.z = Float(structure.area.y)
             

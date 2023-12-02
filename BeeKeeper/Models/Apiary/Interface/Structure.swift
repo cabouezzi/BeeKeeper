@@ -25,7 +25,8 @@ class Structure: Model, Codable {
     // Encoding is done automatically
     private(set) var level: UInt = 1
     /// The bounding rectangle of the structure on the apiary grid layout.
-    /// In 3D space, this is the x-z plane.
+    /// In 3D space, this is the x-z plane:
+    /// `width` corresponds to its size in the x plane, and `height` corresponds to its size in the y plane.
     var area = DiscreteRect(x: 0, y: 0, width: 0, height: 0)
     
     required init() {}

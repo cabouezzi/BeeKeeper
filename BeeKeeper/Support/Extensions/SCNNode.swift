@@ -22,6 +22,7 @@ extension SCNNode {
 }
 
 extension CAAnimation {
+    @available(*, deprecated, renamed: "animationPlayerFromScene")
     static func animationWithSceneNamed(name: String) -> CAAnimation? {
         var animation: CAAnimation?
         if let scene = SCNScene(named: name) {
