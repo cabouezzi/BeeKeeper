@@ -79,9 +79,9 @@ final class NodeService: ModelVisitor {
 fileprivate extension SCNNode {
     func movePivotToCorner() {
         self.pivot = SCNMatrix4MakeTranslation(
-            -(self.geometry!.boundingBox.max.x - self.geometry!.boundingBox.min.x) / 2,
+            -(self.boundingBox.max.x - self.boundingBox.min.x) / 2,
             0,
-            -(self.geometry!.boundingBox.max.z - self.geometry!.boundingBox.min.z) / 2
+            -(self.boundingBox.max.z - self.boundingBox.min.z) / 2
         )
     }
 }
