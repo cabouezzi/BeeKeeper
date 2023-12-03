@@ -62,6 +62,9 @@
 		14835AA02AC679CE006D0290 /* Hive.scn in Resources */ = {isa = PBXBuildFile; fileRef = 14835A9C2AC679CE006D0290 /* Hive.scn */; };
 		14835AA12AC679CE006D0290 /* Blackfoot.scn in Resources */ = {isa = PBXBuildFile; fileRef = 14835A9D2AC679CE006D0290 /* Blackfoot.scn */; };
 		14835AA22AC679CE006D0290 /* Frame.scn in Resources */ = {isa = PBXBuildFile; fileRef = 14835A9E2AC679CE006D0290 /* Frame.scn */; };
+		148BBEC82B1BCC0D00C86AB5 /* IncubationHud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148BBEC72B1BCC0D00C86AB5 /* IncubationHud.swift */; };
+		148BBECA2B1BD03F00C86AB5 /* TimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148BBEC92B1BD03F00C86AB5 /* TimeInterval.swift */; };
+		148BBECC2B1C115100C86AB5 /* SKTextNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148BBECB2B1C115100C86AB5 /* SKTextNode.swift */; };
 		14A7DE812AD3883C00D2FD4A /* ShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A7DE802AD3883C00D2FD4A /* ShopViewController.swift */; };
 		14A7DE832AD389DA00D2FD4A /* ShopItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A7DE822AD389DA00D2FD4A /* ShopItem.swift */; };
 		14A7DE852AD3906600D2FD4A /* ShopViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A7DE842AD3906600D2FD4A /* ShopViewCell.swift */; };
@@ -154,6 +157,9 @@
 		14835A9C2AC679CE006D0290 /* Hive.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Hive.scn; sourceTree = "<group>"; };
 		14835A9D2AC679CE006D0290 /* Blackfoot.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Blackfoot.scn; sourceTree = "<group>"; };
 		14835A9E2AC679CE006D0290 /* Frame.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Frame.scn; sourceTree = "<group>"; };
+		148BBEC72B1BCC0D00C86AB5 /* IncubationHud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncubationHud.swift; sourceTree = "<group>"; };
+		148BBEC92B1BD03F00C86AB5 /* TimeInterval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeInterval.swift; sourceTree = "<group>"; };
+		148BBECB2B1C115100C86AB5 /* SKTextNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKTextNode.swift; sourceTree = "<group>"; };
 		14A7DE7C2AD3866100D2FD4A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		14A7DE802AD3883C00D2FD4A /* ShopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopViewController.swift; sourceTree = "<group>"; };
 		14A7DE822AD389DA00D2FD4A /* ShopItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopItem.swift; sourceTree = "<group>"; };
@@ -295,6 +301,7 @@
 				148359C52AB01091006D0290 /* AnimatedNumberNode.swift */,
 				148359C62AB01091006D0290 /* ApiaryOverlay.swift */,
 				14835A8D2AC5FED3006D0290 /* ResourceDisplayHud.swift */,
+				148BBEC72B1BCC0D00C86AB5 /* IncubationHud.swift */,
 				148359C72AB01091006D0290 /* ResourceBar.swift */,
 				14835A2F2AB02A32006D0290 /* Animation */,
 				14835A2C2AB01355006D0290 /* Assets */,
@@ -419,6 +426,7 @@
 			isa = PBXGroup;
 			children = (
 				14835A2A2AB01327006D0290 /* SKButton.swift */,
+				148BBECB2B1C115100C86AB5 /* SKTextNode.swift */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
@@ -474,6 +482,7 @@
 				14835A902AC6000E006D0290 /* UIColor.swift */,
 				14E448822AC68129008963C8 /* SCNNode.swift */,
 				1405AC2E2B1599D3003B0079 /* UIBezierPath.swift */,
+				148BBEC92B1BD03F00C86AB5 /* TimeInterval.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -644,6 +653,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				148359F32AB01091006D0290 /* ApiaryView.swift in Sources */,
+				148BBECA2B1BD03F00C86AB5 /* TimeInterval.swift in Sources */,
 				148359F92AB01091006D0290 /* ResourceBar.swift in Sources */,
 				14A7DE832AD389DA00D2FD4A /* ShopItem.swift in Sources */,
 				14835A052AB01091006D0290 /* Collector.swift in Sources */,
@@ -682,7 +692,9 @@
 				148359F12AB01091006D0290 /* ApiarySwiftUIView.swift in Sources */,
 				14835A8E2AC5FED3006D0290 /* ResourceDisplayHud.swift in Sources */,
 				14835A232AB01091006D0290 /* Account.swift in Sources */,
+				148BBEC82B1BCC0D00C86AB5 /* IncubationHud.swift in Sources */,
 				14835A032AB01091006D0290 /* Producer.swift in Sources */,
+				148BBECC2B1C115100C86AB5 /* SKTextNode.swift in Sources */,
 				1405AC2F2B1599D3003B0079 /* UIBezierPath.swift in Sources */,
 				148359EB2AB01091006D0290 /* Meshes.swift in Sources */,
 				148359F52AB01091006D0290 /* AnimatedNumberNode.swift in Sources */,

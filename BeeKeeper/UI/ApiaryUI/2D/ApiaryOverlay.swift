@@ -41,10 +41,6 @@ class ApiaryOverlay: SKScene {
             SKButton(texture: Textures.check, onTap: { print("check") }),
             SKButton(texture: Textures.edit, onTap: { print("edit") }),
             SKButton(texture: Textures.move, onTap: { print("move") }),
-            SKButton(texture: Textures.evolution2, onTap: {
-                print("lock")
-                _ = try? GameManager.shared.hatchBee(Bee())
-            })
         ])
     }
     
@@ -97,6 +93,14 @@ class ApiaryOverlay: SKScene {
         let node = SKLabelNode(text: structure.name + "Lvl.\(structure.level)")
         return node
     }
+    
+    /// Creates a new HUD to that displays information for the given incubator.
+    private func showIncubatorHud(_ incubator: Incubator) {
+        layoutButtons([])
+        let hud = IncubationHud(size: CGSize(width: size.width * 0.95, height: size.height / 2), incubator: incubator)
+        hud.position = convertPoint(fromView: self.view?.center ?? .zero)
+        addChild(hud)
+    }
 }
 
 // MARK: ModelVisitor
@@ -137,7 +141,11 @@ extension ApiaryOverlay: ModelVisitor {
     }
     
     func visitIncubator(_ model: Incubator) -> () {
-        layoutButtons(title: model.name, [])
+        layoutButtons(title: model.name, [
+            SKButton(texture: Textures.blankWhite, title: "Incubate", onTap: { [unowned self] in
+                self.showIncubatorHud(model)
+            }),
+        ])
     }
     
     func visitFlower(_ model: Flower) -> () {

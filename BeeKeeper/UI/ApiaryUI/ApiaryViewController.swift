@@ -49,7 +49,6 @@ class ApiaryViewController: UIViewController {
         apiaryView.overlay.layoutButtons([
             SKButton(texture: Textures.blankOrange, title: "Shop", onTap: popToShop),
             SKButton(texture: Textures.blankOrange, title: "Evolution", onTap: popToEvolution),
-            SKButton(texture: Textures.evolutionLock,title: "Hatch bee", onTap: { _ = try? GameManager.shared.hatchBee(Bee()) })
         ])
     }
     

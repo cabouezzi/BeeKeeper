@@ -11,11 +11,22 @@ enum IncubatorState {
     case idle, incubating, finished
 }
 
+enum IncubatorError: LocalizedError {
+    case notStarted, notFinished
+    
+    var errorDescription: String? {
+        switch self {
+        case .notStarted: return "Start incubating to hatch a new bee."
+        case .notFinished: return "Incubation is not finished yet"
+        }
+    }
+}
+
 class Incubator: Structure {
     struct IncubationPeriod: Codable {
-        private(set) var startTime: Date
-        private(set) var finishTime: Date
-        private(set) var incubatedBee: Bee
+        fileprivate(set) var startTime: Date
+        fileprivate(set) var finishTime: Date
+        fileprivate(set) var incubatedBee: Bee
         
         var timeLeft: TimeInterval { return finishTime.distance(to: Date()) }
         
@@ -39,6 +50,7 @@ class Incubator: Structure {
     
     required init() {
         super.init()
+        self.name = "Incubator"
         self.area = DiscreteRect(x: 0, y: 0, width: 1, height: 1)
     }
     
@@ -55,8 +67,18 @@ class Incubator: Structure {
     }
     
     func hatch() throws {
-        guard let currentPeriod = currentPeriod else { return } // TODO: throw error
-        guard state == .finished else { return } // TODO: throw error
+        guard let currentPeriod = currentPeriod else { throw IncubatorError.notStarted } // TODO: throw error
+        guard state == .finished else { throw IncubatorError.notFinished } // TODO: throw error
         try GameManager.shared.hatchBee(currentPeriod.incubatedBee)
+        self.currentPeriod = nil
+    }
+    
+    func forceFinish() throws {
+        #if !RELEASE
+        if currentPeriod == nil {
+            throw IncubatorError.notStarted
+        }
+        currentPeriod?.finishTime = .now
+        #endif
     }
 }
