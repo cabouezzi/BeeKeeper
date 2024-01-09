@@ -15,7 +15,7 @@ struct DiscreteRect: Codable {
     var x, y, width, height: Int
     
     /// Returns whether it overlaps the given rectangle.
-    func intersets(_ rect: DiscreteRect) -> Bool {
+    func intersects(_ rect: DiscreteRect) -> Bool {
         return max(x, rect.x) < min(x+width, rect.x+rect.width) && max(y, rect.y) < min(y+height, rect.y+rect.height)
     }
 }
@@ -44,7 +44,7 @@ class Structure: Model, Codable {
     
     /// Returns whether it overlaps the given structure.
     final func overlaps(_ structure: Structure) -> Bool {
-        return area.intersets(structure.area)
+        return area.intersects(structure.area)
     }
     
     func accept<T>(_ visitor: T) -> T.ReturnType where T : ModelVisitor {
