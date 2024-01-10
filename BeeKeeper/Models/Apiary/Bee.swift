@@ -16,7 +16,7 @@ class Bee: Model, Producer, Codable {
     
     init() {
         self.genetics = GameManager.shared.account.unlockedGenes
-        self.production = Resources(honey: 3, pollen: 2, beeBread: 1)
+        self.production = Resources(honey: 0.5, pollen: 0.25, beeBread: 1)
     }
     
     func accept<T>(_ visitor: T) -> T.ReturnType where T : ModelVisitor {

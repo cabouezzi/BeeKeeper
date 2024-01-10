@@ -126,14 +126,6 @@ extension ApiaryOverlay: ModelVisitor {
                     print(error)
                 }
             }),
-            SKButton(texture: Textures.blankWhite, title: "Add Resources", onTap: {
-                var resources = Resources(honey: 100, pollen: 100)
-                do {
-                    try model.fill(&resources)
-                } catch {
-                    print(error)
-                }
-            }),
             SKButton(texture: Textures.check, title: "Collect", onTap: {
                 GameManager.shared.collect(from: model)
             })

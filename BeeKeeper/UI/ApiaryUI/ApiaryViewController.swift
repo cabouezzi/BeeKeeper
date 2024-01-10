@@ -229,7 +229,7 @@ class ApiaryViewController: UIViewController {
         }
     }
     
-    private var beeTargetCache: UUID?
+    private var beeTargetCache: BKNode?
     
     @objc
     private func holdHandler(_ gestureReconizer: UILongPressGestureRecognizer) {
@@ -244,18 +244,22 @@ class ApiaryViewController: UIViewController {
         guard case GameState.assigning(_) = state else { return }
         
         if let node = hitTest.first?.node as? BKNode, let structure = node.model as? Structure {
-            beeTargetCache = structure.id
-            print("Assigning")
+            if node !== beeTargetCache {
+                beeTargetCache?.unhighlight()
+                beeTargetCache = node
+                beeTargetCache?.highlight()
+            }
         } else {
+            beeTargetCache?.unhighlight()
             beeTargetCache = nil
-            print("Clearing")
         }
         
         if gestureReconizer.state == .ended {
-            if case GameState.assigning(let bee) = state, let target = beeTargetCache {
-                bee.producerTarget = target
-                print("Assigning bee to \(target.uuidString)")
+            if case GameState.assigning(let bee) = state, let target = beeTargetCache?.model as? Structure {
+                bee.producerTarget = target.id
+                print("Assigning bee to \(target.id.uuidString)")
             }
+            beeTargetCache?.unhighlight()
             beeTargetCache = nil
             state = .idle
         }

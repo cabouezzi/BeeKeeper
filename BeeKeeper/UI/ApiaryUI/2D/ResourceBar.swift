@@ -59,7 +59,7 @@ class ResourceBar: SKSpriteNode {
         
         filledNode.size.width = width
         // Update the value of the label
-        label.text = String(format: "%.0f / %.0f", containing, capacity)
+        label.text = String(format: "%.0f / %.0f", floor(containing), floor(capacity))
     }
     
     private func setupCapacityNode() {

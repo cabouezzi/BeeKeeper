@@ -7,9 +7,9 @@
 
 struct Resources: Codable, Equatable {
     var money: Float = 0
-    var honey: Int = 0
-    var pollen: Int = 0
-    var beeBread: Int = 0
+    var honey: Float = 0
+    var pollen: Float = 0
+    var beeBread: Float = 0
     
     mutating func fill(_ amount: inout Resources, cap: Resources) {
         money.fill(amount: &amount.money, cap: cap.money)
