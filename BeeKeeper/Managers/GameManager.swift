@@ -5,7 +5,7 @@
 //  Created by Chaniel Ezzi on 9/10/23.
 //
 
-import Foundation
+import SceneKit
 
 protocol GameObserver: AnyObject {
     func gameManager(_ account: Account, _ apiary: Apiary, didHatchBee bee: Bee)
@@ -13,15 +13,34 @@ protocol GameObserver: AnyObject {
 }
 
 /// Global functionality that represents the user's capabilities and control over the game.
-final class GameManager {
+final class GameManager: NSObject {
     static let shared = GameManager()
     
     private(set) var account: Account
     private(set) var apiary: Apiary
     
-    private init() {
+    private let gameTicker = GameTicker()
+    
+    private override init() {
         account = Account()
         apiary = account.apiaries.first!
+        super.init()
+        gameTicker.setHandler { [weak self] timer in
+            self?.onTick()
+        }
+        gameTicker.start()
+    }
+    
+    private func onTick() {
+        // Handle production
+        for bee in apiary.bees where bee.producerTarget != nil {
+            guard let collector = apiary.structures.first(where: { $0.id == bee.producerTarget }) as? Collector else {
+                print("GAME TICK ERROR: Bee (\(bee.name)) is assigned to unrelated identifier \(bee.producerTarget?.uuidString ?? "[nil]")")
+                continue
+            }
+            try? collector.accept(bee)
+        }
+        
     }
     
     // MARK: - Observer Control

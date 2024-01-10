@@ -73,6 +73,7 @@
 		14E448812AC68013008963C8 /* BeeArmature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E448802AC68013008963C8 /* BeeArmature.swift */; };
 		14E448832AC68129008963C8 /* SCNNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E448822AC68129008963C8 /* SCNNode.swift */; };
 		14E448852AC6828A008963C8 /* BeeWings.scn in Resources */ = {isa = PBXBuildFile; fileRef = 14E448842AC6828A008963C8 /* BeeWings.scn */; };
+		14E7C8322B4D13A6002376BF /* GameTicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E7C8312B4D13A6002376BF /* GameTicker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -169,6 +170,7 @@
 		14E448802AC68013008963C8 /* BeeArmature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeeArmature.swift; sourceTree = "<group>"; };
 		14E448822AC68129008963C8 /* SCNNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCNNode.swift; sourceTree = "<group>"; };
 		14E448842AC6828A008963C8 /* BeeWings.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeWings.scn; sourceTree = "<group>"; };
+		14E7C8312B4D13A6002376BF /* GameTicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTicker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -322,6 +324,7 @@
 			isa = PBXGroup;
 			children = (
 				148359CC2AB01091006D0290 /* GameManager.swift */,
+				14E7C8312B4D13A6002376BF /* GameTicker.swift */,
 				14835A882AC0E76B006D0290 /* NodeService.swift */,
 			);
 			path = Managers;
@@ -676,6 +679,7 @@
 				14A7DE852AD3906600D2FD4A /* ShopViewCell.swift in Sources */,
 				14A7DE882AD3AA6100D2FD4A /* EvolutionViewController.swift in Sources */,
 				14835A092AB01091006D0290 /* Container.swift in Sources */,
+				14E7C8322B4D13A6002376BF /* GameTicker.swift in Sources */,
 				14835A2B2AB01327006D0290 /* SKButton.swift in Sources */,
 				14835A1B2AB01091006D0290 /* ModelVisitor.swift in Sources */,
 				14835A892AC0E76B006D0290 /* NodeService.swift in Sources */,
