@@ -12,6 +12,7 @@ class Bee: Model, Producer, Codable {
     var genetics: Set<Gene>
     
     var production: Resources
+    var producerTarget: UUID?
     
     init() {
         self.genetics = GameManager.shared.account.unlockedGenes

@@ -21,18 +21,24 @@ struct Apiary {
         hive.area.x = 0
         let honeyStorage = HoneyStorage()
         honeyStorage.area.x = hive.area.width
+        
         let pollenStorage = PollenStorage()
         pollenStorage.area.x = hive.area.width
         pollenStorage.area.y = honeyStorage.area.height
+        
         let incubator = Incubator()
-        incubator.area.y = hive.area.height
+        incubator.area.y = hive.area.height + 1
+        
+        let flower = Flower()
+        flower.area.x -= 4
         
         self.bees = []
         self.structures = [
             hive,
             honeyStorage,
             pollenStorage,
-            incubator
+            incubator,
+            flower
         ]
     }
     

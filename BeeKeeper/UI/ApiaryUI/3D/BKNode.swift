@@ -15,3 +15,15 @@ open class BKNode: SCNNode {
         self.model = model
     }
 }
+
+extension SCNNode {
+    func firstBKNodeParent() -> BKNode? {
+        if let bknode = self as? BKNode {
+            return bknode
+        } else if let parent = parent {
+            return parent.firstBKNodeParent()
+        } else {
+            return nil
+        }
+    }
+}

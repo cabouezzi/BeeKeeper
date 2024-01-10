@@ -22,6 +22,7 @@ struct DiscreteRect: Codable {
 
 class Structure: Model, Codable {
     open var name: String = "Structure"
+    public let id: UUID
     // Encoding is done automatically
     private(set) var level: UInt = 1
     /// The bounding rectangle of the structure on the apiary grid layout.
@@ -29,7 +30,9 @@ class Structure: Model, Codable {
     /// `width` corresponds to its size in the x plane, and `height` corresponds to its size in the y plane.
     var area = DiscreteRect(x: 0, y: 0, width: 0, height: 0)
     
-    required init() {}
+    required init() {
+        self.id = UUID()
+    }
     
     /// Increments the ``level``.
     final func levelUp() {

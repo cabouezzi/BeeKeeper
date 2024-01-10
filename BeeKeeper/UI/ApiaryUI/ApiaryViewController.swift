@@ -11,6 +11,7 @@ import SceneKit
 fileprivate enum GameState {
     case idle
     case moving(_ structure: Structure, _ node: BKNode, _ originalPosition: SCNVector3)
+    case assigning(_ bee: Bee)
 }
 
 class ApiaryViewController: UIViewController {
@@ -127,6 +128,7 @@ class ApiaryViewController: UIViewController {
     
     private func addGestureRecognizers() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapHandler))
+        let hold = UILongPressGestureRecognizer(target: self, action: #selector(holdHandler))
         
         #if !DEBUG
         let pan = UIPanGestureRecognizer(target: self, action: #selector(panHandler))
@@ -137,6 +139,7 @@ class ApiaryViewController: UIViewController {
         #endif
         
         apiaryView.addGestureRecognizer(tap)
+        apiaryView.addGestureRecognizer(hold)
     }
     
     @objc
@@ -158,7 +161,7 @@ class ApiaryViewController: UIViewController {
         
         switch state {
         case .idle:
-            guard let node = hitResults.first?.node as? BKNode else {
+            guard let node = hitResults.first?.node.firstBKNodeParent() else {
                 showDefaultButtons()
                 return
             }
@@ -223,6 +226,38 @@ class ApiaryViewController: UIViewController {
         
         if gestureRecognizer.state == .ended {
             lastCameraPosition = apiaryView.cameraNode.position
+        }
+    }
+    
+    private var beeTargetCache: UUID?
+    
+    @objc
+    private func holdHandler(_ gestureReconizer: UILongPressGestureRecognizer) {
+        let hitTest = apiaryView.hitTest(gestureReconizer.location(in: apiaryView))
+        
+        if gestureReconizer.state == .began {
+            if let bknode = hitTest.first?.node.firstBKNodeParent(), let bee = bknode.model as? Bee {
+                state = .assigning(bee)
+            }
+        }
+        
+        guard case GameState.assigning(_) = state else { return }
+        
+        if let node = hitTest.first?.node as? BKNode, let structure = node.model as? Structure {
+            beeTargetCache = structure.id
+            print("Assigning")
+        } else {
+            beeTargetCache = nil
+            print("Clearing")
+        }
+        
+        if gestureReconizer.state == .ended {
+            if case GameState.assigning(let bee) = state, let target = beeTargetCache {
+                bee.producerTarget = target
+                print("Assigning bee to \(target.uuidString)")
+            }
+            beeTargetCache = nil
+            state = .idle
         }
     }
 }
