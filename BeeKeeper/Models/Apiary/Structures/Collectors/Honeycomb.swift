@@ -5,6 +5,8 @@
 //  Created by Chaniel Ezzi on 9/10/23.
 //
 
+import Foundation
+
 class Honeycomb: Collector {
     unowned var hive: Hive
     
@@ -36,5 +38,39 @@ class Honeycomb: Collector {
     
     func transfer(to container: Container) throws {
         try container.fill(&containing)
+    }
+}
+
+
+class Pollencomb: Honeycomb {
+    // TODO: Refactor code to read how many bees with gene are assigned to hive
+    let beeBreadCounter = 1
+    
+    override init(hive: Hive) {
+        super.init(hive: hive)
+        maximum = Resources(pollen: 100)
+    }
+    
+    override func resourceTargets() -> Set<WritableKeyPath<Resources, Float>> {
+        return [\Resources.pollen]
+    }
+    
+    override func fill(_ resources: inout Resources) throws {
+        if containing.beeBread == 0 {
+            try super.fill(&resources)
+        }
+        if containing.canAfford(maximum) && beeBreadCounter > 0 {
+            containing = Resources(beeBread: 1)
+        }
+    }
+    
+    override func accept(_ producer: some Producer) throws {
+        // Max pollen production = 0.35 per second
+        // ==> pollen per hour ≈ 1265
+        // ==> pollen per hour / 12.5 ≈ 100 pollen per hour = 1 bee bread per hour
+        // Multiply by amount of bees with gene
+        var multiplier = pow(1.01, beeBreadCounter) / 12.5
+        var produce = Resources(pollen: producer.production.pollen / 12.5)
+        try? fill(&produce)
     }
 }
