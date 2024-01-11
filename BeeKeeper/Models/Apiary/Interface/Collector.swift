@@ -6,6 +6,9 @@
 //
 
 protocol Collector {
+    /// The paths of the resource type which the collector should collect from a producer.
+    func resourceTargets() -> Set<WritableKeyPath<Resources, Float>>
+    
     /// Called whenever the producer sends a call to produce.
     func accept(_ producer: some Producer) throws
     
@@ -17,10 +20,15 @@ protocol Collector {
 
 extension Collector where Self: Container {
     func accept(_ producer: some Producer) throws {
-        print("`Collector` subclass `\(Self.self)` doesn't implement `accept` method for producers. Calling this function will have no effect")
+        var resources = Resources()
+        for key in resourceTargets() {
+            resources[keyPath: key] = producer.production[keyPath: key]
+        }
+        try fill(&resources)
     }
     
     func transfer(to container: Container) throws {
+        guard container !== self else { throw ContainerError.transferToSelf }
         try container.fill(&containing)
     }
 }
