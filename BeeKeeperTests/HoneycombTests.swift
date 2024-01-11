@@ -21,23 +21,26 @@ final class HoneycombTests: XCTestCase {
     func testFill() throws {
         let hive = Hive()
         let honeycomb = try hive.addHoneycomb()
+        // Assert initial stats
         XCTAssert(honeycomb.containing == Resources() && honeycomb.maximum == Resources(honey: 100))
+        // Fill with 50, none left over
         var excess = Resources(honey: 50)
         try honeycomb.fill(&excess)
         XCTAssert(excess.isEmpty())
         XCTAssert(honeycomb.containing == Resources(honey: 50) && honeycomb.maximum == Resources(honey: 100))
+        // Fill with 51, 1 left over
         excess = Resources(honey: 51)
         try honeycomb.fill(&excess)
         XCTAssert(excess == Resources(honey: 1))
         XCTAssert(honeycomb.containing == Resources(honey: 100) && honeycomb.maximum == Resources(honey: 100))
-        
-        try hive.transfer(to: hive)
+        // Hive matches honeycomb
         XCTAssert(hive.containing == honeycomb.containing)
+        
+        XCTAssertThrowsError(try hive.transfer(to: hive))
         
         let storage = HoneyStorage()
         try hive.transfer(to: storage)
         XCTAssert(storage.containing == Resources(honey: 100))
         XCTAssert(honeycomb.containing == Resources() && honeycomb.maximum == Resources(honey: 100))
     }
-
 }
