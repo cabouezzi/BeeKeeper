@@ -25,29 +25,49 @@ struct Meshes {
     }()
     
     struct Bee {
-        static let torso: SCNGeometry = {
-            let scene = SCNScene(named: "BeeBody.scn")!
-            let node = scene.rootNode.childNode(withName: "Stinger", recursively: true)!
-            return node.geometry!
-        }()
+        struct Torso {
+            static let plain: SCNGeometry = {
+                let scene = SCNScene(named: "BeePlain.scn")!
+                let node = scene.rootNode.childNode(withName: "Torso", recursively: true)!
+                return node.geometry!
+            }()
+            
+            static let yellowStripes: SCNGeometry = {
+                let scene = SCNScene(named: "BeeStripes.scn")!
+                let node = scene.rootNode.childNode(withName: "TorsoStripes", recursively: true)!
+                return node.geometry!
+            }()
+        }
         
-        static let stinger: SCNGeometry = {
-            let scene = SCNScene(named: "BeeBody.scn")!
-            let node = scene.rootNode.childNode(withName: "Stinger", recursively: true)!
-            return node.geometry!
-        }()
+        struct Stinger {
+            static let plain: SCNGeometry = {
+                let scene = SCNScene(named: "BeePlain.scn")!
+                let node = scene.rootNode.childNode(withName: "Stinger", recursively: true)!
+                return node.geometry!
+            }()
+        }
         
-        static let head: SCNGeometry = {
-            let scene = SCNScene(named: "BeeBody.scn")!
-            let node = scene.rootNode.childNode(withName: "Head", recursively: true)!
-            return node.geometry!
-        }()
+        struct Head {
+            static let plain: SCNGeometry = {
+                let scene = SCNScene(named: "BeePlain.scn")!
+                let node = scene.rootNode.childNode(withName: "Head", recursively: true)!
+                return node.geometry!
+            }()
+        }
         
-        static let abdomen: SCNGeometry = {
-            let scene = SCNScene(named: "BeeBody.scn")!
-            let node = scene.rootNode.childNode(withName: "Abdomen", recursively: true)!
-            return node.geometry!
-        }()
+        struct Abdomen {
+            static let plain: SCNGeometry = {
+                let scene = SCNScene(named: "BeePlain.scn")!
+                let node = scene.rootNode.childNode(withName: "Abdomen", recursively: true)!
+                return node.geometry!
+            }()
+            
+            static let yellowStripes: SCNGeometry = {
+                let scene = SCNScene(named: "BeeStripes.scn")!
+                let node = scene.rootNode.childNode(withName: "AbdomenStripes", recursively: true)!
+                return node.geometry!
+            }()
+        }
     }
     
     struct Structure {

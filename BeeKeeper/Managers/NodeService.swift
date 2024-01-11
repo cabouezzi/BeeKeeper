@@ -18,18 +18,32 @@ final class NodeService: ModelVisitor {
     }
     
     func visitBee(_ model: Bee) -> BKNode {
-        let bodyScene = SCNScene(named: "BeeBody.scn")!
+        // Load basic model
         let node = SCNNode()
-        node.addChildNode(bodyScene.rootNode.childNode(withName: "BodyArmature", recursively: true)!)
-        node.eulerAngles.x = .pi / 2
+        let bodyScene = SCNScene(named: "BeePlain.scn")
+        guard let armature = bodyScene?.rootNode.childNode(withName: "BodyArmature", recursively: true) else {
+            fatalError("Failed to load bee armature")
+        }
+        node.addChildNode(armature)
         node.eulerAngles.x = .pi / 2
         node.scale = SCNVector3(0.3, 0.3, 0.3)
         
+        let head = node.childNode(withName: "Head", recursively: true)
+        let torso = node.childNode(withName: "Torso", recursively: true)
+        let stinger = node.childNode(withName: "Stinger", recursively: true)
+        let abdomen = node.childNode(withName: "Abdomen", recursively: true)
+        
+        // Modify model based on genes
+        if model.genetics.contains(.stripesI) {
+            torso?.geometry = Meshes.Bee.Torso.yellowStripes
+            abdomen?.geometry = Meshes.Bee.Abdomen.yellowStripes
+        }
+        
         #if DEBUG
-        let animatPlayer = CAAnimation.animationPlayerFromScene("BeeWiggle.scn")!
-        animatPlayer.animation.repeatCount = 1
-        node.childNode(withName: "BodyArmature", recursively: true)?.addAnimationPlayer(animatPlayer, forKey: "wiggle")
-        animatPlayer.play()
+        let animationPlayer = CAAnimation.animationPlayerFromScene("BeeWiggle.scn")!
+        animationPlayer.animation.repeatCount = 5
+        node.childNode(withName: "BodyArmature", recursively: true)?.addAnimationPlayer(animationPlayer, forKey: "wiggle")
+        animationPlayer.play()
         #endif
         
         let bknode = BKNode(model: model)

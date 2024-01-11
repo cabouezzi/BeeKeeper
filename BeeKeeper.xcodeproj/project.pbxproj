@@ -7,13 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1405AC152B130547003B0079 /* BeeBody.scn in Resources */ = {isa = PBXBuildFile; fileRef = 1405AC142B130546003B0079 /* BeeBody.scn */; };
 		1405AC1B2B145310003B0079 /* ModelBase.scn in Resources */ = {isa = PBXBuildFile; fileRef = 1405AC1A2B145310003B0079 /* ModelBase.scn */; };
 		1405AC2B2B15895A003B0079 /* GeneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1405AC2A2B15895A003B0079 /* GeneTests.swift */; };
 		1405AC2D2B158C3F003B0079 /* GeneNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1405AC2C2B158C3F003B0079 /* GeneNetwork.swift */; };
 		1405AC2F2B1599D3003B0079 /* UIBezierPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1405AC2E2B1599D3003B0079 /* UIBezierPath.swift */; };
+		141AC48F2B5063A9006DD1F8 /* BeePlain.scn in Resources */ = {isa = PBXBuildFile; fileRef = 141AC48E2B5063A9006DD1F8 /* BeePlain.scn */; };
+		141AC4932B50643C006DD1F8 /* BeeStripes.scn in Resources */ = {isa = PBXBuildFile; fileRef = 141AC4922B50643C006DD1F8 /* BeeStripes.scn */; };
+		141AC4972B50651B006DD1F8 /* BeeWiggle.scn in Resources */ = {isa = PBXBuildFile; fileRef = 141AC4962B50651B006DD1F8 /* BeeWiggle.scn */; };
 		142DF2062AD3806F00274986 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142DF1DA2AD3804C00274986 /* SceneDelegate.swift */; };
-		147FD45E2B12FADF00764E9C /* BeeWiggle.scn in Resources */ = {isa = PBXBuildFile; fileRef = 147FD45D2B12FADF00764E9C /* BeeWiggle.scn */; };
 		147FD4622B12FB4A00764E9C /* ColladaAnimationForXcode.py in Resources */ = {isa = PBXBuildFile; fileRef = 147FD4612B12FB4A00764E9C /* ColladaAnimationForXcode.py */; };
 		148358D52AABBFC5006D0290 /* BeeKeeperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148358D42AABBFC5006D0290 /* BeeKeeperTests.swift */; };
 		1483594F2AAD2807006D0290 /* DiscreteRectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1483594E2AAD2807006D0290 /* DiscreteRectTests.swift */; };
@@ -100,13 +101,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		1405AC142B130546003B0079 /* BeeBody.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeBody.scn; sourceTree = "<group>"; };
 		1405AC1A2B145310003B0079 /* ModelBase.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = ModelBase.scn; sourceTree = "<group>"; };
 		1405AC2A2B15895A003B0079 /* GeneTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneTests.swift; sourceTree = "<group>"; };
 		1405AC2C2B158C3F003B0079 /* GeneNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneNetwork.swift; sourceTree = "<group>"; };
 		1405AC2E2B1599D3003B0079 /* UIBezierPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBezierPath.swift; sourceTree = "<group>"; };
+		141AC48E2B5063A9006DD1F8 /* BeePlain.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeePlain.scn; sourceTree = "<group>"; };
+		141AC4922B50643C006DD1F8 /* BeeStripes.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeStripes.scn; sourceTree = "<group>"; };
+		141AC4962B50651B006DD1F8 /* BeeWiggle.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeWiggle.scn; sourceTree = "<group>"; };
 		142DF1DA2AD3804C00274986 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		147FD45D2B12FADF00764E9C /* BeeWiggle.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeWiggle.scn; sourceTree = "<group>"; };
 		147FD4612B12FB4A00764E9C /* ColladaAnimationForXcode.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = ColladaAnimationForXcode.py; sourceTree = "<group>"; };
 		148358BF2AABBFC4006D0290 /* BeeKeeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeeKeeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		148358D02AABBFC5006D0290 /* BeeKeeperTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BeeKeeperTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -173,6 +175,7 @@
 		14E448842AC6828A008963C8 /* BeeWings.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeWings.scn; sourceTree = "<group>"; };
 		14E7C8312B4D13A6002376BF /* GameTicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTicker.swift; sourceTree = "<group>"; };
 		14EB4BD92B4F493700BCDAAA /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		14ECDA742B4FC12A00760320 /* ColladaExportNotes.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ColladaExportNotes.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -203,6 +206,7 @@
 		148358B62AABBFC4006D0290 = {
 			isa = PBXGroup;
 			children = (
+				14ECDA742B4FC12A00760320 /* ColladaExportNotes.md */,
 				147FD4612B12FB4A00764E9C /* ColladaAnimationForXcode.py */,
 				148359592AAD50A1006D0290 /* Executable */,
 				148359BB2AB01091006D0290 /* BeeKeeper */,
@@ -496,9 +500,10 @@
 		14835A9A2AC679BE006D0290 /* 3D Assets */ = {
 			isa = PBXGroup;
 			children = (
+				141AC4962B50651B006DD1F8 /* BeeWiggle.scn */,
+				141AC4922B50643C006DD1F8 /* BeeStripes.scn */,
+				141AC48E2B5063A9006DD1F8 /* BeePlain.scn */,
 				1405AC1A2B145310003B0079 /* ModelBase.scn */,
-				1405AC142B130546003B0079 /* BeeBody.scn */,
-				147FD45D2B12FADF00764E9C /* BeeWiggle.scn */,
 				14E448842AC6828A008963C8 /* BeeWings.scn */,
 				14835A9D2AC679CE006D0290 /* Blackfoot.scn */,
 				14835A9E2AC679CE006D0290 /* Frame.scn */,
@@ -630,18 +635,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				14835AA02AC679CE006D0290 /* Hive.scn in Resources */,
-				1405AC152B130547003B0079 /* BeeBody.scn in Resources */,
 				14835A9F2AC679CE006D0290 /* Rack.scn in Resources */,
 				14835A352AB396CD006D0290 /* EvolutionScene.sks in Resources */,
 				14835AA12AC679CE006D0290 /* Blackfoot.scn in Resources */,
 				14835A1F2AB01091006D0290 /* Preview Assets.xcassets in Resources */,
+				141AC4932B50643C006DD1F8 /* BeeStripes.scn in Resources */,
 				1405AC1B2B145310003B0079 /* ModelBase.scn in Resources */,
+				141AC48F2B5063A9006DD1F8 /* BeePlain.scn in Resources */,
 				14EB4BDA2B4F493700BCDAAA /* LaunchScreen.storyboard in Resources */,
 				14E448852AC6828A008963C8 /* BeeWings.scn in Resources */,
 				14835AA22AC679CE006D0290 /* Frame.scn in Resources */,
 				147FD4622B12FB4A00764E9C /* ColladaAnimationForXcode.py in Resources */,
+				141AC4972B50651B006DD1F8 /* BeeWiggle.scn in Resources */,
 				14835A012AB01091006D0290 /* Assets.xcassets in Resources */,
-				147FD45E2B12FADF00764E9C /* BeeWiggle.scn in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
