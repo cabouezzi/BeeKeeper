@@ -11,21 +11,16 @@ class Hive: Container, Collector {
     var honeycombs: [Honeycomb] = []
     
     override var containing: Resources {
-        get {
-            honeycombs.reduce(Resources(), { $0.adding($1.containing) })
-        }
+        get { honeycombs.reduce(Resources(), { $0.adding($1.containing) }) }
         set {
-            var new = newValue.subtracting(containing)
-            try? fill(&new)
+            var new = newValue.canAfford(containing) ? newValue.subtracting(containing) : containing.subtracting(newValue)
+            newValue.canAfford(containing) ? try? fill(&new) : try? remove(new)
         }
     }
+    
     override var maximum: Resources {
-        get {
-            honeycombs.reduce(Resources(), { $0.adding($1.maximum) })
-        }
-        set {
-            // TODO: ?
-        }
+        get { honeycombs.reduce(Resources(), { $0.adding($1.maximum) }) }
+        set { /* TODO: ? */ }
     }
     
     required init() {
@@ -51,18 +46,12 @@ class Hive: Container, Collector {
     }
     
     // MARK: Collector
-    func accept(_ producer: some Producer) throws {
-        for honeycomb in honeycombs {
-            do {
-                try honeycomb.accept(producer)
-                return
-            } catch ContainerError.containerFull {
-                continue
-            }
-        }
+    func resourceTargets() -> Set<WritableKeyPath<Resources, Float>> {
+        return honeycombs.reduce([], { $0.union($1.resourceTargets()) })
     }
     
     func transfer(to container: Container) throws {
+        guard container !== self else { throw ContainerError.transferToSelf }
         for honeycomb in honeycombs where !honeycomb.containing.isEmpty() {
             try container.fill(&honeycomb.containing)
         }
@@ -73,6 +62,21 @@ class Hive: Container, Collector {
         for honeycomb in honeycombs {
             guard !resources.isEmpty() else { return }
             try? honeycomb.fill(&resources)
+        }
+    }
+    
+    override func remove(_ resources: Resources) throws {
+        guard containing.canAfford(resources) else { throw ContainerError.containerInsufficient }
+        var remaining = resources
+        for honeycomb in honeycombs {
+            guard !resources.isEmpty() else { return }
+            if honeycomb.containing.canAfford(remaining) {
+                try! honeycomb.remove(remaining)
+                return
+            } else {
+                remaining = remaining.subtracting(honeycomb.containing)
+                try! honeycomb.remove(honeycomb.containing)
+            }
         }
     }
 }

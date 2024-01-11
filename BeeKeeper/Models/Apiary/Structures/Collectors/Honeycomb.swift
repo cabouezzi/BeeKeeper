@@ -5,7 +5,7 @@
 //  Created by Chaniel Ezzi on 9/10/23.
 //
 
-class Honeycomb {
+class Honeycomb: Collector {
     unowned var hive: Hive
     
     var containing: Resources = Resources()
@@ -13,6 +13,10 @@ class Honeycomb {
     
     init(hive: Hive) {
         self.hive = hive
+    }
+    
+    func resourceTargets() -> Set<WritableKeyPath<Resources, Float>> {
+        return [\Resources.honey]
     }
     
     func accept(_ producer: some Producer) throws {
@@ -28,5 +32,9 @@ class Honeycomb {
     func remove(_ resources: Resources) throws {
         guard containing.canAfford(resources) else { throw ContainerError.containerInsufficient }
         containing = containing.subtracting(resources)
+    }
+    
+    func transfer(to container: Container) throws {
+        try container.fill(&containing)
     }
 }

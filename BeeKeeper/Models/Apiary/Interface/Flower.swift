@@ -33,6 +33,10 @@ class Flower: Container, Collector {
         fatalError("init(from:) has not been implemented")
     }
     
+    func resourceTargets() -> Set<WritableKeyPath<Resources, Float>> {
+        return [\Resources.pollen]
+    }
+    
     func accept(_ producer: some Producer) throws {
         var produce = Resources(pollen: producer.production.pollen)
         try? fill(&produce)
