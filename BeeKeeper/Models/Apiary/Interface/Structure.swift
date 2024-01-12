@@ -23,13 +23,20 @@ struct DiscreteRect: Codable {
 class Structure: Model, Codable {
     open var name: String
     public let id: UUID
+    
+    /// A set of bees assigned to the structure.For collectors, the bees with produce resources.
     fileprivate(set) var assignedBees: Set<Bee>
+    
     // Encoding is done automatically
     private(set) var level: UInt
+    
     /// The bounding rectangle of the structure on the apiary grid layout.
     /// In 3D space, this is the x-z plane:
     /// `width` corresponds to its size in the x plane, and `height` corresponds to its size in the y plane.
     var area: DiscreteRect
+    
+    /// The maximum number of bees that can be assigned to the structure.
+    var maximumBees: Int
     
     required init() {
         self.name = "Structure"
@@ -37,6 +44,7 @@ class Structure: Model, Codable {
         self.assignedBees = []
         self.level = 1
         self.area = DiscreteRect(x: 0, y: 0, width: 0, height: 0)
+        self.maximumBees = 0
     }
     
     /// Increments the ``level``.
@@ -61,7 +69,8 @@ class Structure: Model, Codable {
 }
 
 extension Bee {
-    func assign(to structure: Structure) {
+    func assign(to structure: Structure) throws {
+        guard structure.assignedBees.count < structure.maximumBees else { throw ContainerError.maximumBeesReached }
         producerTarget?.assignedBees.remove(self)
         structure.assignedBees.insert(self)
         producerTarget = structure

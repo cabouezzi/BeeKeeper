@@ -27,6 +27,7 @@ class Hive: Container, Collector {
         super.init()
         self.name = "Hive"
         self.area = DiscreteRect(x: 0, y: 0, width: 2, height: 2)
+        self.maximumBees = 4
     }
     
     required init(from decoder: Decoder) throws {

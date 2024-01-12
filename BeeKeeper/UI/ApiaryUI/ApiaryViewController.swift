@@ -238,6 +238,7 @@ class ApiaryViewController: UIViewController {
         if gestureReconizer.state == .began {
             if let bknode = hitTest.first?.node.firstBKNodeParent(), let bee = bknode.model as? Bee {
                 state = .assigning(bee)
+                apiaryView.overlay.layoutButtons(title: "Choose a Target for \(bee.name.prefix(10))", [])
             }
         }
         
@@ -256,11 +257,12 @@ class ApiaryViewController: UIViewController {
         
         if gestureReconizer.state == .ended {
             if case GameState.assigning(let bee) = state, let target = beeTargetCache?.model as? Structure {
-                bee.assign(to: target)
+                try? bee.assign(to: target)
             }
             beeTargetCache?.unhighlight()
             beeTargetCache = nil
             state = .idle
+            showDefaultButtons()
         }
     }
 }

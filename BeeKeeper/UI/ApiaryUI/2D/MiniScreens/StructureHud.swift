@@ -73,6 +73,19 @@ class StructureHud: SKNode {
                 addChild(collect)
             }
         }
+        
+        var offset = size.height / 2 - button.size.height * 4
+        for bee in structure.assignedBees.sorted(by: { $0.name < $1.name }) {
+            let beeName = bee.name.count > 15 ? bee.name.prefix(12) + "..." : bee.name
+            let beeInfo = SKLabelNode(text: beeName + " " + bee.production.description)
+            beeInfo.horizontalAlignmentMode = .left
+            beeInfo.verticalAlignmentMode = .top
+            beeInfo.position.x = -size.width / 2 + button.size.width
+            beeInfo.position.y = offset
+            addChild(beeInfo)
+            
+            offset -= button.size.width
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
