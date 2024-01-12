@@ -256,8 +256,7 @@ class ApiaryViewController: UIViewController {
         
         if gestureReconizer.state == .ended {
             if case GameState.assigning(let bee) = state, let target = beeTargetCache?.model as? Structure {
-                bee.producerTarget = target.id
-                print("Assigning bee to \(target.id.uuidString)")
+                bee.assign(to: target)
             }
             beeTargetCache?.unhighlight()
             beeTargetCache = nil
