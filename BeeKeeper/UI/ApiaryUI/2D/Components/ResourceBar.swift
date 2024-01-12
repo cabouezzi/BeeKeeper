@@ -38,7 +38,7 @@ class ResourceBar: SKSpriteNode {
     }
     
     /// Update the values of the bar.
-    func updateValues(containing: Float, capacity: Float) {
+    func updateValues(containing: Float, capacity: Float, animated: Bool = true) {
         self.containing = containing
         if capacity == .infinity || capacity == 0 {
             self.capacity = containing
@@ -46,19 +46,24 @@ class ResourceBar: SKSpriteNode {
             self.capacity = capacity
         }
         
-        updateFilledIndicator()
+        updateFilledIndicator(animated: animated)
     }
     
-    /// Resizes each bar to represent the current values, should be called after changing the vlaues. Animated.
-    func updateFilledIndicator() {
+    /// Resizes each bar to represent the current values, should be called after changing the vlaues.
+    func updateFilledIndicator(animated: Bool = true) {
         // Calculate the new width
         var width: CGFloat = 1
         if capacity != 0 {
             width = CGFloat(containing / capacity) * capacityNode.frame.width
         }
-        
-        filledNode.size.width = width
-        // Update the value of the label
+        // TODO: Animate number as well
+        if !animated {
+            filledNode.size.width = width
+        } else {
+            let action = SKAction.resize(toWidth: width, duration: 1)
+            action.timingMode = .easeOut
+            filledNode.run(action)
+        }
         label.text = String(format: "%.0f / %.0f", floor(containing), floor(capacity))
     }
     
@@ -87,6 +92,6 @@ class ResourceBar: SKSpriteNode {
         addChild(filledNode)
         addChild(label)
         
-        updateFilledIndicator()
+        updateFilledIndicator(animated: false)
     }
 }

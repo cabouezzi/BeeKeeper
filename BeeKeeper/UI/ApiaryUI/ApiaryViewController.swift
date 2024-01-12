@@ -97,7 +97,7 @@ class ApiaryViewController: UIViewController {
                     try completion?()
                     try GameManager.shared.addStructure(structure)
                     self.state = .idle
-                    self.apiaryView.overlay.layoutDefaultButtons()
+                    self.showDefaultButtons()
                 } catch {
                     print(error)
                 }
@@ -106,7 +106,7 @@ class ApiaryViewController: UIViewController {
                 guard let self = self else { return }
                 bknode.removeFromParentNode()
                 self.state = .idle
-                self.apiaryView.overlay.layoutDefaultButtons()
+                self.showDefaultButtons()
             })
         ])
     }

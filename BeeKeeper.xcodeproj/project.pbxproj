@@ -203,6 +203,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		141AC49B2B509C41006DD1F8 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				14835A2A2AB01327006D0290 /* SKButton.swift */,
+				148BBECB2B1C115100C86AB5 /* SKTextNode.swift */,
+				148359C72AB01091006D0290 /* ResourceBar.swift */,
+				148359C52AB01091006D0290 /* AnimatedNumberNode.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		141AC49C2B509C4B006DD1F8 /* MiniScreens */ = {
+			isa = PBXGroup;
+			children = (
+				14835A8D2AC5FED3006D0290 /* ResourceDisplayHud.swift */,
+				148BBEC72B1BCC0D00C86AB5 /* IncubationHud.swift */,
+			);
+			path = MiniScreens;
+			sourceTree = "<group>";
+		};
 		148358B62AABBFC4006D0290 = {
 			isa = PBXGroup;
 			children = (
@@ -307,14 +327,11 @@
 		148359C42AB01091006D0290 /* 2D */ = {
 			isa = PBXGroup;
 			children = (
-				148359C52AB01091006D0290 /* AnimatedNumberNode.swift */,
 				148359C62AB01091006D0290 /* ApiaryOverlay.swift */,
-				14835A8D2AC5FED3006D0290 /* ResourceDisplayHud.swift */,
-				148BBEC72B1BCC0D00C86AB5 /* IncubationHud.swift */,
-				148359C72AB01091006D0290 /* ResourceBar.swift */,
+				141AC49C2B509C4B006DD1F8 /* MiniScreens */,
+				141AC49B2B509C41006DD1F8 /* Components */,
 				14835A2F2AB02A32006D0290 /* Animation */,
 				14835A2C2AB01355006D0290 /* Assets */,
-				14835A292AB0131C006D0290 /* Objects */,
 			);
 			path = 2D;
 			sourceTree = "<group>";
@@ -430,15 +447,6 @@
 				148359E82AB01091006D0290 /* Account.swift */,
 			);
 			path = Account;
-			sourceTree = "<group>";
-		};
-		14835A292AB0131C006D0290 /* Objects */ = {
-			isa = PBXGroup;
-			children = (
-				14835A2A2AB01327006D0290 /* SKButton.swift */,
-				148BBECB2B1C115100C86AB5 /* SKTextNode.swift */,
-			);
-			path = Objects;
 			sourceTree = "<group>";
 		};
 		14835A2C2AB01355006D0290 /* Assets */ = {

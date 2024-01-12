@@ -29,19 +29,8 @@ class ApiaryOverlay: SKScene {
     func setup() {
         addChild(resources)
         
-        layoutDefaultButtons()
         resources.layout()
-        resources.update()
-    }
-    
-    func layoutDefaultButtons() {
-        layoutButtons([
-            SKButton(texture: Textures.blankOrange, onTap: { print("orange") }),
-            SKButton(texture: Textures.blankWhite, onTap: { print("white") }),
-            SKButton(texture: Textures.check, onTap: { print("check") }),
-            SKButton(texture: Textures.edit, onTap: { print("edit") }),
-            SKButton(texture: Textures.move, onTap: { print("move") }),
-        ])
+        resources.update(animated: false)
     }
     
     func layoutButtons (title: String? = nil, _ buttons: [SKButton]) {
