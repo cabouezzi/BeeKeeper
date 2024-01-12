@@ -90,6 +90,14 @@ class ApiaryOverlay: SKScene {
         hud.position = convertPoint(fromView: self.view?.center ?? .zero)
         addChild(hud)
     }
+    
+    /// Creates a new HUD to that displays information for the given incubator.
+    private func showStructureHud(_ structure: Structure) {
+        layoutButtons([])
+        let hud = StructureHud(size: CGSize(width: size.width * 0.95, height: size.height / 2), structure: structure)
+        hud.position = convertPoint(fromView: self.view?.center ?? .zero)
+        addChild(hud)
+    }
 }
 
 // MARK: ModelVisitor
@@ -117,6 +125,9 @@ extension ApiaryOverlay: ModelVisitor {
             }),
             SKButton(texture: Textures.check, title: "Collect", onTap: {
                 GameManager.shared.collect(from: model)
+            }),
+            SKButton(texture: Textures.info, title: "Info", onTap: { [unowned self] in
+                self.showStructureHud(model)
             })
         ])
     }
