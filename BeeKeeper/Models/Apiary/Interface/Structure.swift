@@ -21,17 +21,22 @@ struct DiscreteRect: Codable {
 }
 
 class Structure: Model, Codable {
-    open var name: String = "Structure"
+    open var name: String
     public let id: UUID
+    fileprivate(set) var assignedBees: Set<Bee>
     // Encoding is done automatically
-    private(set) var level: UInt = 1
+    private(set) var level: UInt
     /// The bounding rectangle of the structure on the apiary grid layout.
     /// In 3D space, this is the x-z plane:
     /// `width` corresponds to its size in the x plane, and `height` corresponds to its size in the y plane.
-    var area = DiscreteRect(x: 0, y: 0, width: 0, height: 0)
+    var area: DiscreteRect
     
     required init() {
+        self.name = "Structure"
         self.id = UUID()
+        self.assignedBees = []
+        self.level = 1
+        self.area = DiscreteRect(x: 0, y: 0, width: 0, height: 0)
     }
     
     /// Increments the ``level``.
@@ -52,5 +57,13 @@ class Structure: Model, Codable {
     
     func accept<T>(_ visitor: T) -> T.ReturnType where T : ModelVisitor {
         fatalError("Attempt to call `Structure.accept(visitor:)`. `Structure` should serve as a prototype and shouldn't be initialized.")
+    }
+}
+
+extension Bee {
+    func assign(to structure: Structure) {
+        producerTarget?.assignedBees.remove(self)
+        structure.assignedBees.insert(self)
+        producerTarget = structure
     }
 }

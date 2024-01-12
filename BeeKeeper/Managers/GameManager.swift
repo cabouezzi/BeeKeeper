@@ -34,8 +34,10 @@ final class GameManager: NSObject {
     private func onTick() {
         // Handle production
         for bee in apiary.bees where bee.producerTarget != nil {
-            guard let collector = apiary.structures.first(where: { $0.id == bee.producerTarget }) as? Collector else {
-                print("GAME TICK ERROR: Bee (\(bee.name)) is assigned to unrelated identifier \(bee.producerTarget?.uuidString ?? "[nil]")")
+            guard let collector = bee.producerTarget as? Collector else {
+                if let producerTarget = bee.producerTarget {
+                    print("Bee functionality isn't provided when assigned to \(type(of: producerTarget))")
+                }
                 continue
             }
             try? collector.accept(bee)
