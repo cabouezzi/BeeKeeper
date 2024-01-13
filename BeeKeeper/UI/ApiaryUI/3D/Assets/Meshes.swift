@@ -78,6 +78,12 @@ struct Meshes {
             return node.geometry!
         }()
         
+        static let honeycombFrame: SCNGeometry = {
+            let scene = SCNScene(named: "Frame.scn")!
+            let node = scene.rootNode.childNode(withName: "frame", recursively: true)!
+            return node.geometry!
+        }()
+        
         static let honeyStorage: SCNGeometry = {
             let scene = SCNScene(named: "Rack.scn")!
             let node = scene.rootNode.childNode(withName: "rack", recursively: true)!

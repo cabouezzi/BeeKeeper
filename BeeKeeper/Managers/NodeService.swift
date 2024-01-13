@@ -56,6 +56,14 @@ final class NodeService: ModelVisitor {
         let node = BKNode(model: model)
         node.geometry = Meshes.Structure.hive
         node.movePivotToCorner()
+        
+        
+        for i in 0..<model.honeycombs.count {
+            let frame = SCNNode(geometry: Meshes.Structure.honeycombFrame)
+            node.addChildNode(frame)
+            frame.position.y += frame.geometry!.height * 0.7
+            frame.position.z = Float(i - 1) * node.geometry!.depth / 4
+        }
         return node
     }
     

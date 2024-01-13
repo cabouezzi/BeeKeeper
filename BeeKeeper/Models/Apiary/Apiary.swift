@@ -18,6 +18,9 @@ struct Apiary {
     
     init() {
         let hive = Hive()
+        try? hive.addHoneycomb()
+        try? hive.addHoneycomb()
+        try? hive.addHoneycomb()
         hive.area.x = 0
         let honeyStorage = HoneyStorage()
         honeyStorage.area.x = hive.area.width
