@@ -26,6 +26,7 @@ class Structure: Model, Codable {
     
     /// A set of bees assigned to the structure.For collectors, the bees with produce resources.
     fileprivate(set) var assignedBees: Set<Bee>
+    var maximumAssignedBees: Int
     
     // Encoding is done automatically
     private(set) var level: UInt
@@ -42,6 +43,7 @@ class Structure: Model, Codable {
         self.name = "Structure"
         self.id = UUID()
         self.assignedBees = []
+        self.maximumAssignedBees = 0
         self.level = 1
         self.area = DiscreteRect(x: 0, y: 0, width: 0, height: 0)
         self.maximumBees = 0
@@ -69,10 +71,19 @@ class Structure: Model, Codable {
 }
 
 extension Bee {
-    func assign(to structure: Structure) throws {
-        guard structure.assignedBees.count < structure.maximumBees else { throw ContainerError.maximumBeesReached }
-        producerTarget?.assignedBees.remove(self)
+    /// Links the bee to the given structure, if the structure hasn't reached the maximum number of assigned bees.
+    /// If structure is set to `nil`, the bee's assignment is cleared.
+    ///
+    /// - Throws: ``ContainerError/maximumAssignedBees``
+    func assign(to structure: Structure?) throws {
+        guard let structure = structure else {
+            producerAssignment?.assignedBees.remove(self)
+            producerAssignment = nil
+            return
+        }
+        guard structure.assignedBees.count < structure.maximumAssignedBees else { throw ContainerError.maximumAssignedBees }
+        producerAssignment?.assignedBees.remove(self)
         structure.assignedBees.insert(self)
-        producerTarget = structure
+        producerAssignment = structure
     }
 }

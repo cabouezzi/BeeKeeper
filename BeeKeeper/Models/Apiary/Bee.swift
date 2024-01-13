@@ -13,7 +13,7 @@ class Bee: Model, Producer, Codable {
     var genetics: Set<Gene>
     
     var production: Resources
-    var producerTarget: Structure?
+    var producerAssignment: Structure?
     
     var honeyConsumption: Float = 0.01
     var bodyTemperature: Float = 70

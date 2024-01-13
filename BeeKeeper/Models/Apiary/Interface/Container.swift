@@ -8,7 +8,7 @@
 import Foundation
 
 enum ContainerError: LocalizedError {
-    case containerFull, containerInsufficient, transferToSelf, maximumBeesReached
+    case containerFull, containerInsufficient, transferToSelf, maximumAssignedBees
     
     var errorDescription: String? { nil }
 }

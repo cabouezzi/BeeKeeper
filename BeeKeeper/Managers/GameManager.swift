@@ -34,9 +34,9 @@ final class GameManager: NSObject {
     private func onTick() {
         // FIXME: Loop through structures first, then bees per structure for efficiency. (Not fixed yet because maybe not important)
         // Handle production
-        for bee in apiary.bees where bee.producerTarget != nil {
-            guard let collector = bee.producerTarget as? Collector else {
-                if let producerTarget = bee.producerTarget {
+        for bee in apiary.bees where bee.producerAssignment != nil {
+            guard let collector = bee.producerAssignment as? Collector else {
+                if let producerTarget = bee.producerAssignment {
                     print("Bee functionality isn't provided when assigned to \(type(of: producerTarget))")
                 }
                 continue

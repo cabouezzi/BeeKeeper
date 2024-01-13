@@ -27,7 +27,7 @@ class Flower: Container, Collector {
         self.maximum = Resources(pollen: 500)
         self.name = "Flower"
         self.area = DiscreteRect(x: 0, y: 0, width: 1, height: 1)
-        self.maximumBees = 1
+        self.maximumAssignedBees = 1
     }
     
     required init(from decoder: Decoder) throws {
