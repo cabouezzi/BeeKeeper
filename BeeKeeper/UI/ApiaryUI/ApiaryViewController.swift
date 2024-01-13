@@ -159,6 +159,11 @@ class ApiaryViewController: UIViewController {
         // Check and handle 3D interaction
         let hitResults = apiaryView.hitTest(point, options: [:])
         
+        if let bubble = hitResults.first?.node as? Bubble {
+            bubble.burst()
+            return
+        }
+        
         switch state {
         case .idle:
             guard let node = hitResults.first?.node.firstBKNodeParent() else {

@@ -45,6 +45,10 @@ class ApiaryView: SCNView {
         self.overlaySKScene = overlay
         self.pointOfView = cameraNode
         self.backgroundColor = .blue
+        self.isPlaying = true
+        #if TEST
+        self.showsStatistics = true
+        #endif
         
         let floorNode = SCNNode(geometry: Meshes.floor)
         floorNode.position.y -= 1
@@ -78,6 +82,18 @@ class ApiaryView: SCNView {
             scene?.rootNode.addChildNode(node)
         }
     }
+    
+    func showBubble(node: SCNNode) {
+        let bubble = Bubble()
+        scene?.rootNode.addChildNode(bubble)
+        bubble.position = node.position
+        bubble.position.x += (node.geometry?.width ?? 0) / 2
+        bubble.position.z += (node.geometry?.depth ?? 0) / 2
+        bubble.position.y += (node.geometry?.height ?? 0) + 1
+        bubble.onTap {
+            print("Bubble burst!")
+        }
+    }
 }
 
 extension ApiaryView: GameObserver {
@@ -90,5 +106,11 @@ extension ApiaryView: GameObserver {
     
     func gameManager(_ account: Account, _ apiary: Apiary, didUpdateResources resources: Resources) {
         overlay.resources.update(resources)
+    }
+}
+
+extension ApiaryView: SCNNodeRendererDelegate {
+    func renderNode(_ node: SCNNode, renderer: SCNRenderer, arguments: [String : Any]) {
+        node.look(at: cameraNode.position)
     }
 }

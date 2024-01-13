@@ -108,4 +108,12 @@ struct Meshes {
             return node.geometry!
         }()
     }
+    
+    struct Bubble {
+        static let blank: SCNGeometry = {
+            let scene = SCNScene(named: "Bubble.scn")!
+            let node = scene.rootNode.childNode(withName: "plane", recursively: true)!
+            return node.geometry!
+        }()
+    }
 }

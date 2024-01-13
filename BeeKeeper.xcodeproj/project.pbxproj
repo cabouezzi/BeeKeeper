@@ -64,6 +64,9 @@
 		14835AA02AC679CE006D0290 /* Hive.scn in Resources */ = {isa = PBXBuildFile; fileRef = 14835A9C2AC679CE006D0290 /* Hive.scn */; };
 		14835AA12AC679CE006D0290 /* Blackfoot.scn in Resources */ = {isa = PBXBuildFile; fileRef = 14835A9D2AC679CE006D0290 /* Blackfoot.scn */; };
 		14835AA22AC679CE006D0290 /* Frame.scn in Resources */ = {isa = PBXBuildFile; fileRef = 14835A9E2AC679CE006D0290 /* Frame.scn */; };
+		148ACE8E2B534BC700A0F948 /* Bubble.scn in Resources */ = {isa = PBXBuildFile; fileRef = 148ACE8D2B534BC700A0F948 /* Bubble.scn */; };
+		148ACE902B534C2B00A0F948 /* assets.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 148ACE8F2B534C2B00A0F948 /* assets.scnassets */; };
+		148ACE932B53540800A0F948 /* Bubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148ACE922B53540800A0F948 /* Bubble.swift */; };
 		148BBEC82B1BCC0D00C86AB5 /* IncubationHud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148BBEC72B1BCC0D00C86AB5 /* IncubationHud.swift */; };
 		148BBECA2B1BD03F00C86AB5 /* TimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148BBEC92B1BD03F00C86AB5 /* TimeInterval.swift */; };
 		148BBECC2B1C115100C86AB5 /* SKTextNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148BBECB2B1C115100C86AB5 /* SKTextNode.swift */; };
@@ -163,6 +166,9 @@
 		14835A9C2AC679CE006D0290 /* Hive.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Hive.scn; sourceTree = "<group>"; };
 		14835A9D2AC679CE006D0290 /* Blackfoot.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Blackfoot.scn; sourceTree = "<group>"; };
 		14835A9E2AC679CE006D0290 /* Frame.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Frame.scn; sourceTree = "<group>"; };
+		148ACE8D2B534BC700A0F948 /* Bubble.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Bubble.scn; sourceTree = "<group>"; };
+		148ACE8F2B534C2B00A0F948 /* assets.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = assets.scnassets; sourceTree = "<group>"; };
+		148ACE922B53540800A0F948 /* Bubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bubble.swift; sourceTree = "<group>"; };
 		148BBEC72B1BCC0D00C86AB5 /* IncubationHud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncubationHud.swift; sourceTree = "<group>"; };
 		148BBEC92B1BD03F00C86AB5 /* TimeInterval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeInterval.swift; sourceTree = "<group>"; };
 		148BBECB2B1C115100C86AB5 /* SKTextNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKTextNode.swift; sourceTree = "<group>"; };
@@ -313,6 +319,7 @@
 			isa = PBXGroup;
 			children = (
 				148359C02AB01091006D0290 /* BKNode.swift */,
+				148ACE922B53540800A0F948 /* Bubble.swift */,
 				148359BE2AB01091006D0290 /* Assets */,
 			);
 			path = 3D;
@@ -511,6 +518,7 @@
 		14835A9A2AC679BE006D0290 /* 3D Assets */ = {
 			isa = PBXGroup;
 			children = (
+				148ACE8F2B534C2B00A0F948 /* assets.scnassets */,
 				141AC4962B50651B006DD1F8 /* BeeWiggle.scn */,
 				141AC4922B50643C006DD1F8 /* BeeStripes.scn */,
 				141AC48E2B5063A9006DD1F8 /* BeePlain.scn */,
@@ -520,6 +528,7 @@
 				14835A9E2AC679CE006D0290 /* Frame.scn */,
 				14835A9C2AC679CE006D0290 /* Hive.scn */,
 				14835A9B2AC679CE006D0290 /* Rack.scn */,
+				148ACE8D2B534BC700A0F948 /* Bubble.scn */,
 			);
 			path = "3D Assets";
 			sourceTree = "<group>";
@@ -651,6 +660,8 @@
 				14835AA12AC679CE006D0290 /* Blackfoot.scn in Resources */,
 				14835A1F2AB01091006D0290 /* Preview Assets.xcassets in Resources */,
 				141AC4932B50643C006DD1F8 /* BeeStripes.scn in Resources */,
+				148ACE902B534C2B00A0F948 /* assets.scnassets in Resources */,
+				148ACE8E2B534BC700A0F948 /* Bubble.scn in Resources */,
 				1405AC1B2B145310003B0079 /* ModelBase.scn in Resources */,
 				141AC48F2B5063A9006DD1F8 /* BeePlain.scn in Resources */,
 				14EB4BDA2B4F493700BCDAAA /* LaunchScreen.storyboard in Resources */,
@@ -701,6 +712,7 @@
 				14A7DE882AD3AA6100D2FD4A /* EvolutionViewController.swift in Sources */,
 				14835A092AB01091006D0290 /* Container.swift in Sources */,
 				14E7C8322B4D13A6002376BF /* GameTicker.swift in Sources */,
+				148ACE932B53540800A0F948 /* Bubble.swift in Sources */,
 				14835A2B2AB01327006D0290 /* SKButton.swift in Sources */,
 				14835A1B2AB01091006D0290 /* ModelVisitor.swift in Sources */,
 				14835A892AC0E76B006D0290 /* NodeService.swift in Sources */,
