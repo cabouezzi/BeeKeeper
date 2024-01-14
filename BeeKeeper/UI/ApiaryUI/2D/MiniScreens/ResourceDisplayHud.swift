@@ -24,19 +24,19 @@ final class ResourceDisplayHud: SKNode {
     func layout() {
         guard let size = scene?.frame.size else { return }
         
-        let barSize = CGSize(width: size.width / 3, height: size.height / 40)
+        let barSize = CGSize(width: 75 * 3, height: 15 * 3)
         let verticalBarSpacing = barSize.height * 0.8
         let yOffset = UIApplication.shared.windows[0].safeAreaInsets.top + verticalBarSpacing
         let xOffset = barSize.width * 0.1 + UIApplication.shared.windows[0].safeAreaInsets.right
         
         // Setup honey display
-        honeyBar = ResourceBar(containing: 1, capacity: 1, color: .orange, size: barSize)
+        honeyBar = ResourceBar(containing: 1, capacity: 1, color: .orange, size: barSize, symbolImageName: "honeySymbol")
         honeyBar?.position.x = size.width - xOffset
         honeyBar?.position.y = size.height - yOffset
         addChild(honeyBar!)
         
         // Setup pollen display
-        pollenBar = ResourceBar(containing: 1, capacity: 1, color: .systemYellow, size: barSize)
+        pollenBar = ResourceBar(containing: 1, capacity: 1, color: .systemYellow, size: barSize, symbolImageName: "pollenSymbol")
         pollenBar?.position.x = size.width - xOffset
         pollenBar?.position.y = (honeyBar?.frame.minY ?? size.height - yOffset) - verticalBarSpacing
         

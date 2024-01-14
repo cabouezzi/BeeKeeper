@@ -8,29 +8,38 @@
 import SpriteKit
 
 class ResourceBar: SKSpriteNode {
-    /// Represents the total capacity of the given resources. Origin begins in the top right corner.
-    private var capacityNode: SKSpriteNode!
-    
-    private var label: SKLabelNode = SKLabelNode()
-    
-    /// Represents how much is filled in terms of its capacity.
+    // Crops the filler node
+    private var cropNode: SKCropNode!
+    // Background
+    private var capacityNode: SKShapeNode!
+    // Shows fill progress
     private var filledNode: SKSpriteNode!
+    
+    private var outlineNode: SKShapeNode!
+    private var tintNode: SKShapeNode!
+    private var label: SKLabelNode!
+
+    
+    private var symbolNode: SKSpriteNode!
     
     var barColor: UIColor = .orange {
         didSet { filledNode.color = barColor }
     }
     
     var capacity: Float = 1
-    var containing: Float = 0
+    var containing: Float = 0.5
     
-    init(containing: Float, capacity: Float, color: UIColor, size: CGSize) {
+    init(containing: Float, capacity: Float, color: UIColor, size: CGSize, symbolImageName imageName: String = "honeySymbol") {
         super.init(texture: nil, color: .clear, size: size)
         self.containing = containing
         self.capacity = capacity
         self.barColor = color
         
+        setupCropNode()
         setupCapacityNode()
+        setupTintNode()
         setupFilledIndicator()
+        setupSymbolNode(imageName)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -54,44 +63,97 @@ class ResourceBar: SKSpriteNode {
         // Calculate the new width
         var width: CGFloat = 1
         if capacity != 0 {
-            width = CGFloat(containing / capacity) * capacityNode.frame.width
+            width = CGFloat(containing / capacity) * size.width
         }
+        let action = SKAction.resize(toWidth: width, duration: animated ? 1 : 0)
+        action.timingMode = .easeOut
+        filledNode.run(action)
         // TODO: Animate number as well
-        if !animated {
-            filledNode.size.width = width
-        } else {
-            let action = SKAction.resize(toWidth: width, duration: 1)
-            action.timingMode = .easeOut
-            filledNode.run(action)
-        }
         label.text = String(format: "%.0f / %.0f", floor(containing), floor(capacity))
     }
     
+    private func setupCropNode() {
+        var transform = CGAffineTransform(translationX: -size.width, y: -size.height / 2)
+        let path = CGPath(roundedRect: CGRect(x: 0, y: 0, width: size.width, height: size.height), cornerWidth: 12, cornerHeight: 12, transform: &transform)
+        let maskNode = SKShapeNode(path: path)
+        maskNode.position.x -= size.height
+        maskNode.fillColor = .black
+        maskNode.strokeColor = .black
+        maskNode.lineWidth = 2
+        cropNode = SKCropNode()
+        cropNode.maskNode = maskNode
+        cropNode.zPosition = 0
+        addChild(cropNode)
+    }
+    
     private func setupCapacityNode() {
-        capacityNode = SKSpriteNode(texture: nil, size: frame.size)
-        capacityNode.anchorPoint = CGPoint(x: 1, y: 1)
-        capacityNode.color = UIColor.lightGray.withAlphaComponent(0.7)
-        addChild(capacityNode)
+        var transform = CGAffineTransform(translationX: -size.width, y: -size.height / 2)
+        let path = CGPath(roundedRect: CGRect(x: 0, y: 0, width: size.width, height: size.height), cornerWidth: 12, cornerHeight: 12, transform: &transform)
+        capacityNode = SKShapeNode(path: path)
+        capacityNode.position.x -= size.height
+        capacityNode.fillColor = UIColor(white: 0.98, alpha: 0.5)
+        capacityNode.strokeColor = .clear
+        capacityNode.zPosition = 0
+        cropNode.addChild(capacityNode)
+        
+        outlineNode = SKShapeNode(path: path)
+        outlineNode.position.x -= size.height
+        outlineNode.fillColor = .clear
+        outlineNode.strokeColor = .white
+        outlineNode.lineWidth = 2
+        outlineNode.zPosition = 2
+        addChild(outlineNode)
+        
+    }
+    
+    private func setupTintNode() {
+        let inset: CGFloat = 5
+        let width: CGFloat = size.width - inset * 2
+        let height: CGFloat = size.height / 3
+        
+        var transform = CGAffineTransform(translationX: -width / 2, y: -height)
+        let path = CGPath(roundedRect: CGRect(x: 0, y: 0, width: width, height: height), cornerWidth: 6, cornerHeight: 6, transform: &transform)
+        tintNode = SKShapeNode(path: path)
+        tintNode.position.x = capacityNode.position.x - size.width / 2
+        tintNode.position.y = size.height / 2 - inset
+        tintNode.fillColor = UIColor(white: 1, alpha: 0.5)
+        tintNode.strokeColor = .clear
+        tintNode.zPosition = 2
+        cropNode.addChild(tintNode)
     }
     
     private func setupFilledIndicator() {
-        let height = capacityNode.frame.height
         let width = CGFloat(containing / capacity) * capacityNode.frame.width
         
-        filledNode = SKSpriteNode(color: barColor, size: CGSize(width: width, height: height))
-        filledNode.anchorPoint = CGPoint(x: 1, y: 1)
+        filledNode = SKSpriteNode(color: barColor, size: CGSize(width: width, height: size.height - capacityNode.lineWidth))
+        filledNode.anchorPoint = CGPoint(x: 1, y: 0.5)
         filledNode.color = barColor
+        filledNode.position.x = capacityNode.position.x
+        filledNode.zPosition = 1
+        cropNode.addChild(filledNode)
         
+        label = SKLabelNode()
         label.fontName = "ArialRoundedMTBold"
         label.fontColor = .white
-        label.fontSize = capacityNode.size.height * 0.5
+        label.fontSize = size.height * 0.5
         label.horizontalAlignmentMode = .left
         label.verticalAlignmentMode = .center
-        label.position = CGPoint(x: -capacityNode.size.width * 0.95, y: -capacityNode.size.height / 2)
-        
-        addChild(filledNode)
+        label.position.x = capacityNode.position.x - size.width + label.fontSize
+        label.zPosition = 4
         addChild(label)
         
         updateFilledIndicator(animated: false)
+    }
+    
+    private func setupSymbolNode(_ imageName: String) {
+        symbolNode = SKSpriteNode(imageNamed: imageName)
+        symbolNode.anchorPoint = CGPoint(x: 0.4, y: 0.5)
+        symbolNode.position.x = capacityNode.position.x
+        symbolNode.zPosition = 3
+        
+        let scale = size.height / symbolNode.size.height * 1.05
+        symbolNode.size.width *= scale
+        symbolNode.size.height *= scale
+        addChild(symbolNode)
     }
 }
