@@ -11,7 +11,13 @@ import SpriteKit
 class ApiaryOverlay: SKScene {
     let resources = ResourceDisplayHud()
     
-    private(set) var hudCache: Set<SKNode> = []
+    private var buttonsCache: Set<SKNode> = []
+    
+    private weak var currentHud: SKNode?
+    let achievementsButton: SKButton = SKButton(texture: Textures.achievements)
+    let tasksButton: SKButton = SKButton(texture: Textures.tasks)
+    let mapButton: SKButton = SKButton(texture: Textures.map)
+    let shopButton: SKButton = SKButton(texture: Textures.build)
     
     convenience override init() {
         self.init(size: .zero)
@@ -38,11 +44,7 @@ class ApiaryOverlay: SKScene {
         let section = size.height / 8
         let buttonSize = section * 0.85
         let spacing = section - buttonSize
-        let leftButtons = [
-            SKButton(texture: Textures.achievements, onTap: { print("Achievements") }),
-            SKButton(texture: Textures.tasks, onTap: { print("Tasks") }),
-            SKButton(texture: Textures.map, onTap: { print("Map") })
-        ]
+        let leftButtons = [achievementsButton, tasksButton, mapButton]
         
         for (index, button) in leftButtons.enumerated() {
             button.anchorPoint = CGPoint(x: 0.5, y: 0.5) // top left
@@ -52,16 +54,24 @@ class ApiaryOverlay: SKScene {
             
             addChild(button)
         }
+        
+        // Shop
+        let shopButtonSize = buttonSize * 1.5
+        shopButton.anchorPoint = CGPoint(x: 0.5, y: 0.5) // top left
+        shopButton.size = CGSize(width: shopButtonSize, height: shopButtonSize)
+        shopButton.position.x = shopButtonSize / 2 + spacing * 2
+        shopButton.position.y = shopButtonSize / 2 + spacing * 2
+        addChild(shopButton)
     }
     
-    func layoutButtons (title: String? = nil, _ buttons: SKButton...) {
-        layoutButtons(title: title, buttons)
+    func setButtons (title: String? = nil, _ buttons: SKButton...) {
+        setButtons(title: title, buttons)
     }
     
-    func layoutButtons (title: String? = nil, _ buttons: [SKButton]) {
-        for child in hudCache {
+    func setButtons (title: String? = nil, _ buttons: [SKButton]) {
+        for child in buttonsCache {
             child.fadeDownAndRemove()
-            hudCache.remove(child)
+            buttonsCache.remove(child)
         }
         
         /// The y-level where the buttons should be displayed
@@ -87,7 +97,7 @@ class ApiaryOverlay: SKScene {
             button.position.x = center - offset + inset
             button.position.y = yPosition
             
-            hudCache.insert(button)
+            buttonsCache.insert(button)
             addChild(button)
             button.fadeUp()
         }
@@ -100,10 +110,14 @@ class ApiaryOverlay: SKScene {
             label.position.x = center
             label.position.y = yPosition + paddedWidth / 2 + label.frame.height / 2
             
-            hudCache.insert(label)
+            buttonsCache.insert(label)
             addChild(label)
             label.fadeUp()
         }
+    }
+    
+    func closeHud() {
+        currentHud?.fadeDownAndRemove()
     }
     
     /// The label for a structure, located above the buttons. Contains the name, level, etc. of the selected entity.
@@ -114,17 +128,19 @@ class ApiaryOverlay: SKScene {
     
     /// Creates a new HUD to that displays information for the given incubator.
     private func showIncubatorHud(_ incubator: Incubator) {
-        layoutButtons([])
+        setButtons([])
         let hud = IncubationHud(size: CGSize(width: size.width * 0.95, height: size.height / 2), incubator: incubator)
         hud.position = convertPoint(fromView: self.view?.center ?? .zero)
+        currentHud = hud
         addChild(hud)
     }
     
     /// Creates a new HUD to that displays information for the given incubator.
     private func showStructureHud(_ structure: Structure) {
-        layoutButtons([])
+        setButtons([])
         let hud = StructureHud(size: CGSize(width: size.width * 0.95, height: size.height / 2), structure: structure)
         hud.position = convertPoint(fromView: self.view?.center ?? .zero)
+        currentHud = hud
         addChild(hud)
     }
 }
@@ -132,11 +148,11 @@ class ApiaryOverlay: SKScene {
 // MARK: ModelVisitor
 extension ApiaryOverlay: ModelVisitor {
     func visitHoneyStorage(_ model: HoneyStorage) -> () {
-        layoutButtons(title: model.name, [])
+        setButtons(title: model.name, [])
     }
     
     func visitPollenStorage(_ model: PollenStorage) -> () {
-        layoutButtons(title: model.name, [])
+        setButtons(title: model.name, [])
     }
     
     func visitBee(_ model: Bee) -> Void {
@@ -144,7 +160,7 @@ extension ApiaryOverlay: ModelVisitor {
     }
     
     func visitHive(_ model: Hive) -> Void {
-        layoutButtons(title: model.name, [
+        setButtons(title: model.name, [
             SKButton(texture: Textures.blankWhite, title: "Add Honeycomb", onTap: {
                 do {
                     try model.addHoneycomb()
@@ -162,7 +178,7 @@ extension ApiaryOverlay: ModelVisitor {
     }
     
     func visitIncubator(_ model: Incubator) -> () {
-        layoutButtons(title: model.name, [
+        setButtons(title: model.name, [
             SKButton(texture: Textures.blankWhite, title: "Incubate", onTap: { [unowned self] in
                 self.showIncubatorHud(model)
             }),
@@ -170,7 +186,7 @@ extension ApiaryOverlay: ModelVisitor {
     }
     
     func visitFlower(_ model: Flower) -> () {
-        layoutButtons(title: model.name, [
+        setButtons(title: model.name, [
             SKButton(texture: Textures.blankWhite, title: "Add Resources", onTap: {
                 var resources = Resources(honey: 100, pollen: 100)
                 do {

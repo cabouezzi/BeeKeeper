@@ -41,16 +41,24 @@ class ApiaryViewController: UIViewController {
         super.loadView()
         self.view = apiaryView
         apiaryView.loadNodes()
-        showDefaultButtons()
+        clearHud()
+        linkOverlay()
         
         apiaryView.scene?.rootNode.childNode(withName: "Island", recursively: true)?.categoryBitMask = 1
     }
     
-    final func showDefaultButtons() {
-        apiaryView.overlay.layoutButtons([
-            SKButton(texture: Textures.blankOrange, title: "Shop", onTap: popToShop),
-            SKButton(texture: Textures.blankOrange, title: "Evolution", onTap: popToEvolution),
-        ])
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    
+    final func linkOverlay() {
+        apiaryView.overlay.shopButton.onTap(popToShop)
+        apiaryView.overlay.mapButton.onTap(popToMap)
+    }
+    
+    final func clearHud() {
+        apiaryView.overlay.closeHud()
+        apiaryView.overlay.setButtons()
     }
     
     final func flashNode(_ node: SCNNode, duration: Float = 0.25) {
@@ -90,14 +98,14 @@ class ApiaryViewController: UIViewController {
             bknode.geometry?.materials.first?.emission.contents = UIColor.red
         }
         
-        apiaryView.overlay.layoutButtons(title: structure.name, [
+        apiaryView.overlay.setButtons(title: structure.name, [
             SKButton(texture: Textures.check, onTap: { [weak self] in
                 guard let self = self else { return }
                 do {
                     try completion?()
                     try GameManager.shared.addStructure(structure)
                     self.state = .idle
-                    self.showDefaultButtons()
+                    self.clearHud()
                 } catch {
                     print(error)
                 }
@@ -106,7 +114,7 @@ class ApiaryViewController: UIViewController {
                 guard let self = self else { return }
                 bknode.removeFromParentNode()
                 self.state = .idle
-                self.showDefaultButtons()
+                self.clearHud()
             })
         ])
     }
@@ -122,6 +130,10 @@ class ApiaryViewController: UIViewController {
     private func popToEvolution() {
         let vc = EvolutionViewController()
         self.navigationController?.pushViewController(vc, animated: false)
+    }
+    
+    private func popToMap() {
+        print("Not implemented yet")
     }
     
     // MARK: - Gesture Recognizers
@@ -158,21 +170,25 @@ class ApiaryViewController: UIViewController {
         
         // Check and handle 3D interaction
         let hitResults = apiaryView.hitTest(point, options: [:])
+        guard let node = hitResults.first?.node else {
+            clearHud()
+            return
+        }
         
-        if let bubble = hitResults.first?.node as? Bubble {
+        if let bubble = node as? Bubble {
             bubble.burst()
             return
         }
         
         switch state {
         case .idle:
-            guard let node = hitResults.first?.node.firstBKNodeParent() else {
-                showDefaultButtons()
+            guard let bknode = node as? BKNode else {
+                clearHud()
                 return
             }
-            node.model?.accept(self)
-            node.model?.accept(apiaryView.overlay)
-            flashNode(node)
+            bknode.model?.accept(self)
+            bknode.model?.accept(apiaryView.overlay)
+            flashNode(bknode)
         default: break
         }
     }
@@ -243,7 +259,7 @@ class ApiaryViewController: UIViewController {
         if gestureReconizer.state == .began {
             if let bknode = hitTest.first?.node.firstBKNodeParent(), let bee = bknode.model as? Bee {
                 state = .assigning(bee)
-                apiaryView.overlay.layoutButtons(title: "Choose a Target for \(bee.name.prefix(10))", [])
+                apiaryView.overlay.setButtons(title: "Choose a Target for \(bee.name.prefix(10))", [])
             }
         }
         
@@ -267,7 +283,7 @@ class ApiaryViewController: UIViewController {
             beeTargetCache?.unhighlight()
             beeTargetCache = nil
             state = .idle
-            showDefaultButtons()
+            clearHud()
         }
     }
 }

@@ -30,7 +30,7 @@ class ApiaryView: SCNView {
         self.cameraNode.position.x += 0
         self.cameraNode.position.y += 15
         self.cameraNode.position.z += 15
-        self.cameraNode.eulerAngles.x -= .pi / 5
+        self.cameraNode.eulerAngles.x -= .pi / 4
         
         self.cameraAnchor.eulerAngles.y -= .pi / 4
         self.cameraAnchor.addChildNode(cameraNode)
