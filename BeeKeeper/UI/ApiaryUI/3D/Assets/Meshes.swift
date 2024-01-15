@@ -115,5 +115,19 @@ struct Meshes {
             let node = scene.rootNode.childNode(withName: "plane", recursively: true)!
             return node.geometry!
         }()
+        
+        static let honey: SCNGeometry = {
+            var geometry = Bubble.blank.copy() as! SCNGeometry
+            guard let texture = UIImage(named: "honeyBubble") else { return geometry }
+            geometry.materials.first?.diffuse.contents = texture
+            return geometry
+        }()
+        
+        static let pollen: SCNGeometry = {
+            var geometry = Bubble.blank.copy() as! SCNGeometry
+            guard let texture = UIImage(named: "pollenBubble") else { return geometry }
+            geometry.materials.first?.diffuse.contents = texture
+            return geometry
+        }()
     }
 }
