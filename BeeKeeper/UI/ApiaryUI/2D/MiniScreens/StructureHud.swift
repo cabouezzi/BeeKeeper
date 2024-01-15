@@ -75,8 +75,8 @@ class StructureHud: SKNode {
         }
         
         var offset = size.height / 2 - button.size.height * 4
-        for bee in structure.assignedBees.sorted(by: { $0.name < $1.name }) {
-            let beeName = bee.name.count > 15 ? bee.name.prefix(12) + "..." : bee.name
+        for bee in structure.assignedBees.sorted(by: { $0.nickname < $1.nickname }) {
+            let beeName = bee.nickname.count > 15 ? bee.nickname.prefix(12) + "..." : bee.nickname
             let beeInfo = SKLabelNode(text: beeName + " " + bee.production.description)
             beeInfo.horizontalAlignmentMode = .left
             beeInfo.verticalAlignmentMode = .top

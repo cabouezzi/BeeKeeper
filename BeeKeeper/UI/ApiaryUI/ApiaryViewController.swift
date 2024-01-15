@@ -260,7 +260,7 @@ class ApiaryViewController: UIViewController {
         if gestureReconizer.state == .began {
             if let bknode = hitTest.first?.node.firstBKNodeParent(), let bee = bknode.model as? Bee {
                 state = .assigning(bee)
-                apiaryView.overlay.setButtons(title: "Choose a Target for \(bee.name.prefix(10))", [])
+                apiaryView.overlay.setButtons(title: "Choose a Target for \(bee.nickname.prefix(10))", [])
             }
         }
         

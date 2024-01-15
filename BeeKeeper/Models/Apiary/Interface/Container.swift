@@ -17,6 +17,22 @@ class Container: Structure {
     var containing = Resources()
     var maximum: Resources = Resources()
     
+    required init() {
+        super.init()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    required init(from decoder: Decoder) throws {
+        try super.init(from: decoder)
+    }
+    
+    override func encode(to encoder: Encoder) throws {
+        try super.encode(to: encoder)
+    }
+    
     /// Fills the container with the amount, limited by the ``maximum``. Returns the excess resources.
     ///
     /// - throws: ``ContainerError``

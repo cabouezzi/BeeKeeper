@@ -5,7 +5,7 @@
 //  Created by Chaniel Ezzi on 9/8/23.
 //
 
-import Foundation
+import SceneKit
 
 /// A rectangle in discrete space.
 ///
@@ -20,10 +20,7 @@ struct DiscreteRect: Codable {
     }
 }
 
-class Structure: Model, Codable {
-    open var name: String
-    public let id: UUID
-    
+class Structure: SCNNode, Model, Codable {
     /// A set of bees assigned to the structure.For collectors, the bees with produce resources.
     fileprivate(set) var assignedBees: Set<Bee>
     var maximumAssignedBees: Int
@@ -39,14 +36,26 @@ class Structure: Model, Codable {
     /// The maximum number of bees that can be assigned to the structure.
     var maximumBees: Int
     
-    required init() {
-        self.name = "Structure"
-        self.id = UUID()
+    required override init() {
         self.assignedBees = []
         self.maximumAssignedBees = 0
         self.level = 1
         self.area = DiscreteRect(x: 0, y: 0, width: 0, height: 0)
         self.maximumBees = 0
+        super.init()
+        self.name = "Structure"
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    required init(from decoder: Decoder) throws {
+        fatalError()
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        fatalError()
     }
     
     /// Increments the ``level``.

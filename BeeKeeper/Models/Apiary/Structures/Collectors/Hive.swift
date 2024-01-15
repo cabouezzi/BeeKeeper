@@ -30,8 +30,16 @@ class Hive: Container, Collector {
         self.maximumBees = 4
     }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     required init(from decoder: Decoder) throws {
-        fatalError("init(from:) has not been implemented")
+        try super.init(from: decoder)
+    }
+    
+    override func encode(to encoder: Encoder) throws {
+        try super.encode(to: encoder)
     }
     
     override func accept<T>(_ visitor: T) -> T.ReturnType where T : ModelVisitor {

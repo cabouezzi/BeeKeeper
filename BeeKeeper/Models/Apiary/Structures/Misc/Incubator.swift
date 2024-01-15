@@ -54,8 +54,16 @@ class Incubator: Structure {
         self.area = DiscreteRect(x: 0, y: 0, width: 1, height: 1)
     }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     required init(from decoder: Decoder) throws {
-        fatalError("init(from:) has not been implemented")
+        try super.init(from: decoder)
+    }
+    
+    override func encode(to encoder: Encoder) throws {
+        try super.encode(to: encoder)
     }
     
     override func accept<T>(_ visitor: T) -> T.ReturnType where T : ModelVisitor {

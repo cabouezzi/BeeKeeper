@@ -5,9 +5,9 @@
 //  Created by Chaniel Ezzi on 9/10/23.
 //
 
-import Foundation
+import SceneKit
 
-class Honeycomb: Collector {
+class Honeycomb: SCNNode, Collector, Codable {
     unowned var hive: Hive
     
     var containing: Resources = Resources()
@@ -15,6 +15,19 @@ class Honeycomb: Collector {
     
     init(hive: Hive) {
         self.hive = hive
+        super.init()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    required init(from decoder: Decoder) throws {
+        fatalError()
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        fatalError()
     }
     
     func resourceTargets() -> Set<WritableKeyPath<Resources, Float>> {
@@ -49,6 +62,18 @@ class Pollencomb: Honeycomb {
     override init(hive: Hive) {
         super.init(hive: hive)
         maximum = Resources(pollen: 100)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    required init(from decoder: Decoder) throws {
+        try super.init(from: decoder)
+    }
+    
+    override func encode(to encoder: Encoder) throws {
+        try super.encode(to: encoder)
     }
     
     override func resourceTargets() -> Set<WritableKeyPath<Resources, Float>> {

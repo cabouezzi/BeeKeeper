@@ -130,7 +130,7 @@ class ApiaryOverlay: SKScene {
     
     /// The label for a structure, located above the buttons. Contains the name, level, etc. of the selected entity.
     private func structureDescriptionNode(_ structure: Structure) -> SKNode {
-        let node = SKLabelNode(text: structure.name + "Lvl.\(structure.level)")
+        let node = SKLabelNode(text: (structure.name ?? "Structure") + "Lvl.\(structure.level)")
         return node
     }
     

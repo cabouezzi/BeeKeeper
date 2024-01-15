@@ -30,8 +30,16 @@ class Flower: Container, Collector {
         self.maximumAssignedBees = 1
     }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     required init(from decoder: Decoder) throws {
         fatalError("init(from:) has not been implemented")
+    }
+    
+    override func encode(to encoder: Encoder) throws {
+        try super.encode(to: encoder)
     }
     
     func resourceTargets() -> Set<WritableKeyPath<Resources, Float>> {
