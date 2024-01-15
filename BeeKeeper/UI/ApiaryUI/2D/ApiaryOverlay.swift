@@ -18,6 +18,7 @@ class ApiaryOverlay: SKScene {
     let tasksButton: SKButton = SKButton(texture: Textures.tasks)
     let mapButton: SKButton = SKButton(texture: Textures.map)
     let shopButton: SKButton = SKButton(texture: Textures.build)
+    let evolutionButton: SKButton = SKButton(texture: Textures.atom)
     
     convenience override init() {
         self.init(size: .zero)
@@ -62,6 +63,13 @@ class ApiaryOverlay: SKScene {
         shopButton.position.x = shopButtonSize / 2 + spacing * 2
         shopButton.position.y = shopButtonSize / 2 + spacing * 2
         addChild(shopButton)
+        
+        // Evolution
+        evolutionButton.anchorPoint = CGPoint(x: 0.5, y: 0.5) // top left
+        evolutionButton.size = CGSize(width: shopButtonSize, height: shopButtonSize)
+        evolutionButton.position.x = size.width - shopButtonSize / 2 - spacing * 2
+        evolutionButton.position.y = shopButtonSize / 2 + spacing * 2
+        addChild(evolutionButton)
     }
     
     func setButtons (title: String? = nil, _ buttons: SKButton...) {

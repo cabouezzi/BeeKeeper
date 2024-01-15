@@ -53,6 +53,7 @@ class ApiaryViewController: UIViewController {
     
     final func linkOverlay() {
         apiaryView.overlay.shopButton.onTap(popToShop)
+        apiaryView.overlay.evolutionButton.onTap(popToEvolution)
         apiaryView.overlay.mapButton.onTap(popToMap)
     }
     

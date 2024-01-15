@@ -23,7 +23,9 @@ class EvolutionViewController: UIViewController {
         evolutionScene.addChild(camera)
         centerNode = evolutionScene.childNode(withName: "Center")!
         backStars = evolutionScene.childNode(withName: "BackStars")!
+        backStars.setScale(2)
         middleStars = evolutionScene.childNode(withName: "MiddleStars")!
+        middleStars.setScale(2)
         super.init(nibName: nil, bundle: nil)
         
         #if !RELEASE
@@ -33,6 +35,19 @@ class EvolutionViewController: UIViewController {
         #endif
         middleStars.isUserInteractionEnabled = false
         backStars.isUserInteractionEnabled = false
+        
+        camera.constraints = [
+            SKConstraint.positionX(SKRange(lowerLimit: -1515, upperLimit: 1515)),
+            SKConstraint.positionY(SKRange(lowerLimit: -1515, upperLimit: 1515))
+        ]
+        backStars.constraints = [
+            SKConstraint.positionX(SKRange(lowerLimit: -1515 / 2, upperLimit: 1515 / 2)),
+            SKConstraint.positionY(SKRange(lowerLimit: -1515 / 2, upperLimit: 1515 / 2))
+        ]
+        middleStars.constraints = [
+            SKConstraint.positionX(SKRange(lowerLimit: -1515 / 3, upperLimit: 1515 / 3)),
+            SKConstraint.positionY(SKRange(lowerLimit: -1515 / 3, upperLimit: 1515 / 3))
+        ]
     }
     
     required init?(coder: NSCoder) {
@@ -180,12 +195,12 @@ class EvolutionViewController: UIViewController {
         let y = lastCameraPosition.y + point.y
         
         camera.position.x = x
-        backStars.position.x = x / 2
-        middleStars.position.x = x / 3
+        backStars.position.x = camera.position.x / 2
+        middleStars.position.x = camera.position.x / 3
         
         camera.position.y = y
-        backStars.position.y = y / 2
-        middleStars.position.y = y / 3
+        backStars.position.y = camera.position.y / 2
+        middleStars.position.y = camera.position.y / 3
         
         if gestureRecognizer.state == .ended {
             lastCameraPosition = camera.position
