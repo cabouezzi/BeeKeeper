@@ -8,6 +8,10 @@
 import SpriteKit
 
 struct Textures {
+    static let achievements: SKTexture = SKTexture(imageNamed: "achievementsButton")
+    static let map: SKTexture = SKTexture(imageNamed: "mapButton")
+    static let tasks: SKTexture = SKTexture(imageNamed: "tasksButton")
+    
     static let blankOrange: SKTexture = SKTexture(imageNamed: "blank")
     static let blankWhite: SKTexture = SKTexture(imageNamed: "blankButton")
     static let edit: SKTexture = SKTexture(imageNamed: "editButton-1")

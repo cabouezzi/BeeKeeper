@@ -11,6 +11,8 @@ import SpriteKit
 class ApiaryOverlay: SKScene {
     let resources = ResourceDisplayHud()
     
+    private(set) var hudCache: Set<SKNode> = []
+    
     convenience override init() {
         self.init(size: .zero)
     }
@@ -31,11 +33,35 @@ class ApiaryOverlay: SKScene {
         
         resources.layout()
         resources.update(animated: false)
+        
+        // Achievements, tasks, map
+        let section = size.height / 8
+        let buttonSize = section * 0.85
+        let spacing = section - buttonSize
+        let leftButtons = [
+            SKButton(texture: Textures.achievements, onTap: { print("Achievements") }),
+            SKButton(texture: Textures.tasks, onTap: { print("Tasks") }),
+            SKButton(texture: Textures.map, onTap: { print("Map") })
+        ]
+        
+        for (index, button) in leftButtons.enumerated() {
+            button.anchorPoint = CGPoint(x: 0.5, y: 0.5) // top left
+            button.size = CGSize(width: buttonSize, height: buttonSize)
+            button.position.x = section / 2 + spacing
+            button.position.y = size.height - CGFloat(index + 2) * section
+            
+            addChild(button)
+        }
+    }
+    
+    func layoutButtons (title: String? = nil, _ buttons: SKButton...) {
+        layoutButtons(title: title, buttons)
     }
     
     func layoutButtons (title: String? = nil, _ buttons: [SKButton]) {
-        for child in children where child !== resources {
+        for child in hudCache {
             child.fadeDownAndRemove()
+            hudCache.remove(child)
         }
         
         /// The y-level where the buttons should be displayed
@@ -43,7 +69,7 @@ class ApiaryOverlay: SKScene {
         let safeWidth = size.width - yPosition*2
         let center = size.width / 2
         /// The calculated max width of the button
-        let maxWidth = safeWidth / 5
+        let maxWidth = safeWidth / 7
         /// The width of the button, plus some empty space
         var paddedWidth = safeWidth / CGFloat(buttons.count)
         paddedWidth = min(paddedWidth, maxWidth)
@@ -61,6 +87,7 @@ class ApiaryOverlay: SKScene {
             button.position.x = center - offset + inset
             button.position.y = yPosition
             
+            hudCache.insert(button)
             addChild(button)
             button.fadeUp()
         }
@@ -72,6 +99,8 @@ class ApiaryOverlay: SKScene {
             
             label.position.x = center
             label.position.y = yPosition + paddedWidth / 2 + label.frame.height / 2
+            
+            hudCache.insert(label)
             addChild(label)
             label.fadeUp()
         }

@@ -69,8 +69,8 @@ class Pollencomb: Honeycomb {
         // ==> pollen per hour ≈ 1265
         // ==> pollen per hour / 12.5 ≈ 100 pollen per hour = 1 bee bread per hour
         // Multiply by amount of bees with gene
-        var multiplier = pow(1.01, beeBreadCounter) / 12.5
-        var produce = Resources(pollen: producer.production.pollen / 12.5)
+        let multiplier: Float = powf(1.01, Float(beeBreadCounter)) / 12.5
+        var produce = Resources(pollen: producer.production.pollen * multiplier)
         try? fill(&produce)
     }
 }

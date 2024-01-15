@@ -68,6 +68,12 @@ class ApiaryView: SCNView {
         GameManager.shared.removeObserver(self)
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        // FIXME: Make overlay aware of safe area
+        // let safeAreaSize = self.safeAreaLayoutGuide.layoutFrame.size
+    }
+    
     func loadNodes() {
         for bee in apiary.bees {
             let node = bee.accept(NodeService.shared)

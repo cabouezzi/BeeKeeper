@@ -76,7 +76,6 @@ class ResourceBar: SKSpriteNode {
         var transform = CGAffineTransform(translationX: -size.width, y: -size.height / 2)
         let path = CGPath(roundedRect: CGRect(x: 0, y: 0, width: size.width, height: size.height), cornerWidth: 12, cornerHeight: 12, transform: &transform)
         let maskNode = SKShapeNode(path: path)
-        maskNode.position.x -= size.height
         maskNode.fillColor = .black
         maskNode.strokeColor = .black
         maskNode.lineWidth = 2
@@ -90,14 +89,12 @@ class ResourceBar: SKSpriteNode {
         var transform = CGAffineTransform(translationX: -size.width, y: -size.height / 2)
         let path = CGPath(roundedRect: CGRect(x: 0, y: 0, width: size.width, height: size.height), cornerWidth: 12, cornerHeight: 12, transform: &transform)
         capacityNode = SKShapeNode(path: path)
-        capacityNode.position.x -= size.height
         capacityNode.fillColor = UIColor(white: 0.98, alpha: 0.5)
         capacityNode.strokeColor = .clear
         capacityNode.zPosition = 0
         cropNode.addChild(capacityNode)
         
         outlineNode = SKShapeNode(path: path)
-        outlineNode.position.x -= size.height
         outlineNode.fillColor = .clear
         outlineNode.strokeColor = .white
         outlineNode.lineWidth = 2
