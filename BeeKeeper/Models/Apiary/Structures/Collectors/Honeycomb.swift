@@ -16,6 +16,8 @@ class Honeycomb: SCNNode, Collector, Codable {
     init(hive: Hive) {
         self.hive = hive
         super.init()
+        
+        self.geometry = Meshes.Structure.honeycombFrame
     }
     
     required init?(coder: NSCoder) {

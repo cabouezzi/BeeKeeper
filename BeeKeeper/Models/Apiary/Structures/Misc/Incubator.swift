@@ -54,6 +54,11 @@ class Incubator: Structure {
         self.area = DiscreteRect(x: 0, y: 0, width: 1, height: 1)
     }
     
+    override func loadNode() {
+        self.geometry = Meshes.Structure.incubator
+        self.position.y += geometry!.height / 2
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

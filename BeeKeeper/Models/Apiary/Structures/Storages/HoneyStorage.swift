@@ -15,6 +15,10 @@ final class HoneyStorage: Container {
         self.area = DiscreteRect(x: 0, y: 0, width: 2, height: 1)
     }
     
+    override func loadNode() {
+        self.geometry = Meshes.Structure.honeyStorage
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

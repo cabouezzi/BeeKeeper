@@ -20,7 +20,7 @@ struct DiscreteRect: Codable {
     }
 }
 
-class Structure: SCNNode, Model, Codable {
+class Structure: BKNode, Model, Codable {
     /// A set of bees assigned to the structure.For collectors, the bees with produce resources.
     fileprivate(set) var assignedBees: Set<Bee>
     var maximumAssignedBees: Int
@@ -33,17 +33,16 @@ class Structure: SCNNode, Model, Codable {
     /// `width` corresponds to its size in the x plane, and `height` corresponds to its size in the y plane.
     var area: DiscreteRect
     
-    /// The maximum number of bees that can be assigned to the structure.
-    var maximumBees: Int
-    
     required override init() {
         self.assignedBees = []
         self.maximumAssignedBees = 0
         self.level = 1
         self.area = DiscreteRect(x: 0, y: 0, width: 0, height: 0)
-        self.maximumBees = 0
+        self.maximumAssignedBees = 0
         super.init()
         self.name = "Structure"
+        loadNode()
+        movePivotToCorner()
     }
     
     required init?(coder: NSCoder) {
@@ -56,6 +55,18 @@ class Structure: SCNNode, Model, Codable {
     
     func encode(to encoder: Encoder) throws {
         fatalError()
+    }
+    
+    private func movePivotToCorner() {
+        pivot = SCNMatrix4MakeTranslation(
+            -(geometry?.width ?? 0) / 2,
+            0,
+            -(geometry?.depth ?? 0) / 2
+        )
+    }
+    
+    open func loadNode() {
+        
     }
     
     /// Increments the ``level``.
@@ -90,7 +101,9 @@ extension Bee {
             producerAssignment = nil
             return
         }
-        guard structure.assignedBees.count < structure.maximumAssignedBees else { throw ContainerError.maximumAssignedBees }
+        guard structure.assignedBees.count < structure.maximumAssignedBees else {
+            print(structure.assignedBees)
+            throw ContainerError.maximumAssignedBees }
         producerAssignment?.assignedBees.remove(self)
         structure.assignedBees.insert(self)
         producerAssignment = structure

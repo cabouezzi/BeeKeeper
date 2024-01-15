@@ -56,7 +56,6 @@
 		14835A392AB4C4F2006D0290 /* IncubatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A382AB4C4F2006D0290 /* IncubatorTests.swift */; };
 		14835A412AB4DE0D006D0290 /* ResourcesTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A402AB4DE0D006D0290 /* ResourcesTest.swift */; };
 		14835A7C2AB529A5006D0290 /* BubbleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A7B2AB529A5006D0290 /* BubbleStyle.swift */; };
-		14835A892AC0E76B006D0290 /* NodeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A882AC0E76B006D0290 /* NodeService.swift */; };
 		14835A8E2AC5FED3006D0290 /* ResourceDisplayHud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A8D2AC5FED3006D0290 /* ResourceDisplayHud.swift */; };
 		14835A912AC6000E006D0290 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A902AC6000E006D0290 /* UIColor.swift */; };
 		14835A952AC6732E006D0290 /* PollenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A942AC6732E006D0290 /* PollenStorage.swift */; };
@@ -158,7 +157,6 @@
 		14835A382AB4C4F2006D0290 /* IncubatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncubatorTests.swift; sourceTree = "<group>"; };
 		14835A402AB4DE0D006D0290 /* ResourcesTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcesTest.swift; sourceTree = "<group>"; };
 		14835A7B2AB529A5006D0290 /* BubbleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleStyle.swift; sourceTree = "<group>"; };
-		14835A882AC0E76B006D0290 /* NodeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeService.swift; sourceTree = "<group>"; };
 		14835A8D2AC5FED3006D0290 /* ResourceDisplayHud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceDisplayHud.swift; sourceTree = "<group>"; };
 		14835A902AC6000E006D0290 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		14835A942AC6732E006D0290 /* PollenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PollenStorage.swift; sourceTree = "<group>"; };
@@ -359,7 +357,6 @@
 			children = (
 				148359CC2AB01091006D0290 /* GameManager.swift */,
 				14E7C8312B4D13A6002376BF /* GameTicker.swift */,
-				14835A882AC0E76B006D0290 /* NodeService.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -715,7 +712,6 @@
 				148ACE932B53540800A0F948 /* Bubble.swift in Sources */,
 				14835A2B2AB01327006D0290 /* SKButton.swift in Sources */,
 				14835A1B2AB01091006D0290 /* ModelVisitor.swift in Sources */,
-				14835A892AC0E76B006D0290 /* NodeService.swift in Sources */,
 				14835A1D2AB01091006D0290 /* Bee.swift in Sources */,
 				148359F72AB01091006D0290 /* ApiaryOverlay.swift in Sources */,
 				14835A952AC6732E006D0290 /* PollenStorage.swift in Sources */,

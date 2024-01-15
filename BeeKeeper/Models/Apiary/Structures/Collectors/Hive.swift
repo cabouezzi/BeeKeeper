@@ -8,7 +8,7 @@
 import Foundation
 
 class Hive: Container, Collector {
-    var honeycombs: [Honeycomb] = []
+    private(set) var honeycombs: [Honeycomb]
     
     override var containing: Resources {
         get { honeycombs.reduce(Resources(), { $0.adding($1.containing) }) }
@@ -24,10 +24,15 @@ class Hive: Container, Collector {
     }
     
     required init() {
+        self.honeycombs = []
         super.init()
-        self.name = "Hive"
+        name = "Hive"
         self.area = DiscreteRect(x: 0, y: 0, width: 2, height: 2)
-        self.maximumBees = 4
+        self.maximumAssignedBees = 4
+    }
+    
+    override func loadNode() {
+        self.geometry = Meshes.Structure.hive
     }
     
     required init?(coder: NSCoder) {
@@ -35,6 +40,7 @@ class Hive: Container, Collector {
     }
     
     required init(from decoder: Decoder) throws {
+        self.honeycombs = []
         try super.init(from: decoder)
     }
     
@@ -51,6 +57,10 @@ class Hive: Container, Collector {
         guard honeycombs.count < 3 else { throw NSError(domain: "BeeKeeper", code: 101) }
         let honeycomb = Honeycomb(hive: self)
         honeycombs.append(honeycomb)
+        addChildNode(honeycomb)
+        
+        honeycomb.position.y += (honeycomb.geometry?.height ?? 0) * 0.7
+        honeycomb.position.z = Float(honeycombs.count - 2) * (geometry?.depth ?? 0) / 4
         return honeycomb
     }
     

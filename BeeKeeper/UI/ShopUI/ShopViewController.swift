@@ -18,9 +18,9 @@ class ShopViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     let items: [ShopItem] = [
         ShopItem(name: "Hive", description: nil, cost: Resources(), display: UIImage(named: "world.png")!, newProduct: { Hive() }),
-        ShopItem(name: "Incubator", description: nil, cost: Resources(honey: 10), display: UIImage(named: "world"), newProduct: { Incubator() }),
-        ShopItem(name: "Honey Jar Rack", description: nil, cost: Resources(honey: 100), display: UIImage(named: "world"), newProduct: { HoneyStorage() }),
-        ShopItem(name: "Pollen Jar Rack", description: nil, cost: Resources(honey: 100), display: UIImage(named: "world"), newProduct: { PollenStorage() }),
+        ShopItem(name: "Incubator", description: nil, cost: Resources(), display: UIImage(named: "world"), newProduct: { Incubator() }),
+        ShopItem(name: "Honey Jar Rack", description: nil, cost: Resources(), display: UIImage(named: "world"), newProduct: { HoneyStorage() }),
+        ShopItem(name: "Pollen Jar Rack", description: nil, cost: Resources(), display: UIImage(named: "world"), newProduct: { PollenStorage() }),
         ShopItem(name: "Blackfoot", description: "A flower", cost: Resources(), display: UIImage(named: "world"), newProduct: { Flower() }),
     ]
     

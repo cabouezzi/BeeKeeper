@@ -8,15 +8,8 @@
 import SceneKit
 
 open class BKNode: SCNNode {
-    var model: (any Model)?
-    
     fileprivate var cacheSet = false
     fileprivate var materialCache: Any?
-    
-    convenience init(model: some Model) {
-        self.init()
-        self.model = model
-    }
     
     final func highlight(color: UIColor = .yellow) {
         cacheSet = true
@@ -33,11 +26,11 @@ open class BKNode: SCNNode {
 }
 
 extension SCNNode {
-    func firstBKNodeParent() -> BKNode? {
-        if let bknode = self as? BKNode {
+    func firstParentModelNode() -> (SCNNode & Model)? {
+        if let bknode = self as? (SCNNode & Model) {
             return bknode
         } else if let parent = parent {
-            return parent.firstBKNodeParent()
+            return parent.firstParentModelNode()
         } else {
             return nil
         }

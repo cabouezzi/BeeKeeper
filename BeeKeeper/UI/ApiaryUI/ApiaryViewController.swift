@@ -10,7 +10,7 @@ import SceneKit
 
 fileprivate enum GameState {
     case idle
-    case moving(_ structure: Structure, _ node: BKNode, _ originalPosition: SCNVector3)
+    case moving(_ structure: Structure, _ originalPosition: SCNVector3)
     case assigning(_ bee: Bee)
 }
 
@@ -91,12 +91,11 @@ class ApiaryViewController: UIViewController {
     func beginAddingNewStructure(_ structure: Structure, completion: (() throws -> Void)? = nil) {
         guard case .idle = state else { return }
         
-        let bknode = structure.accept(NodeService.shared)
-        state = .moving(structure, bknode, SCNVector3(0, 0, 0))
-        apiaryView.scene?.rootNode.addChildNode(bknode)
+        state = .moving(structure, SCNVector3(0, 0, 0))
+        apiaryView.scene?.rootNode.addChildNode(structure)
         
         if apiaryView.apiary.structures.contains(where: { $0.overlaps(structure) }) {
-            bknode.geometry?.materials.first?.emission.contents = UIColor.red
+            structure.geometry?.materials.first?.emission.contents = UIColor.red
         }
         
         apiaryView.overlay.setButtons(title: structure.name, [
@@ -113,7 +112,7 @@ class ApiaryViewController: UIViewController {
             }),
             SKButton(texture: Textures.blankWhite, onTap: { [weak self] in
                 guard let self = self else { return }
-                bknode.removeFromParentNode()
+                structure.removeFromParentNode()
                 self.state = .idle
                 self.clearHud()
             })
@@ -183,12 +182,12 @@ class ApiaryViewController: UIViewController {
         
         switch state {
         case .idle:
-            guard let bknode = node as? BKNode else {
+            guard let bknode = node.firstParentModelNode() else {
                 clearHud()
                 return
             }
-            bknode.model?.accept(self)
-            bknode.model?.accept(apiaryView.overlay)
+            bknode.accept(self)
+            bknode.accept(apiaryView.overlay)
             flashNode(bknode)
         default: break
         }
@@ -215,7 +214,7 @@ class ApiaryViewController: UIViewController {
                 lastCameraPosition = apiaryView.cameraNode.position
             }
             
-        case .moving(let structure, let node, _):
+        case .moving(let structure, _):
             let hitTest = apiaryView.hitTest(gestureRecognizer.location(in: apiaryView), options: [.categoryBitMask: 1])
             guard let pos = hitTest.first?.worldCoordinates else { break }
             // The `if` statements stop the "glitching"
@@ -226,13 +225,13 @@ class ApiaryViewController: UIViewController {
             if abs(pos.z - roundf(pos.z)) >= clipMargin {
                 structure.area.y = Int(round(pos.z)) - structure.area.height / 2
             }
-            node.position.x = Float(structure.area.x)
-            node.position.z = Float(structure.area.y)
+            structure.position.x = Float(structure.area.x)
+            structure.position.z = Float(structure.area.y)
             
             if apiaryView.apiary.structures.contains(where: { $0.overlaps(structure) }) {
-                node.geometry?.materials.first?.emission.contents = UIColor.red
+                structure.geometry?.materials.first?.emission.contents = UIColor.red
             } else {
-                node.geometry?.materials.first?.emission.contents = UIColor.black
+                structure.geometry?.materials.first?.emission.contents = UIColor.black
             }
             
         default:
@@ -251,14 +250,14 @@ class ApiaryViewController: UIViewController {
         }
     }
     
-    private var beeTargetCache: BKNode?
+    private var beeTargetCache: Structure?
     
     @objc
     private func holdHandler(_ gestureReconizer: UILongPressGestureRecognizer) {
         let hitTest = apiaryView.hitTest(gestureReconizer.location(in: apiaryView))
         
         if gestureReconizer.state == .began {
-            if let bknode = hitTest.first?.node.firstBKNodeParent(), let bee = bknode.model as? Bee {
+            if let bee = hitTest.first?.node.firstParentModelNode() as? Bee {
                 state = .assigning(bee)
                 apiaryView.overlay.setButtons(title: "Choose a Target for \(bee.nickname.prefix(10))", [])
             }
@@ -266,7 +265,7 @@ class ApiaryViewController: UIViewController {
         
         guard case GameState.assigning(_) = state else { return }
         
-        if let node = hitTest.first?.node as? BKNode, let structure = node.model as? Structure {
+        if let node = hitTest.first?.node.firstParentModelNode() as? Structure {
             if node !== beeTargetCache {
                 beeTargetCache?.unhighlight()
                 beeTargetCache = node
@@ -278,8 +277,8 @@ class ApiaryViewController: UIViewController {
         }
         
         if gestureReconizer.state == .ended {
-            if case GameState.assigning(let bee) = state, let target = beeTargetCache?.model as? Structure {
-                try? bee.assign(to: target)
+            if case GameState.assigning(let bee) = state, let target = beeTargetCache {
+                try! bee.assign(to: target)
             }
             beeTargetCache?.unhighlight()
             beeTargetCache = nil
@@ -292,7 +291,9 @@ class ApiaryViewController: UIViewController {
 extension ApiaryViewController: ShopDelegate {
     func shopViewController(_ shopViewController: ShopViewController, didSelectItem item: ShopItem) {
         let structure = item.newProduct()
-        beginAddingNewStructure(structure)
+        beginAddingNewStructure(structure) {
+            try GameManager.shared.remove(item.cost)
+        }
         shopViewController.navigationController?.popViewController(animated: false)
     }
     

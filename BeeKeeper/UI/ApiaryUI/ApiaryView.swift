@@ -76,16 +76,14 @@ class ApiaryView: SCNView {
     
     func loadNodes() {
         for bee in apiary.bees {
-            let node = bee.accept(NodeService.shared)
-            node.position.y += 3
-            scene?.rootNode.addChildNode(node)
+            bee.position.y += 3
+            scene?.rootNode.addChildNode(bee)
         }
         
         for structure in apiary.structures {
-            let node = structure.accept(NodeService.shared)
-            node.position.x = Float(structure.area.x)
-            node.position.z = Float(structure.area.y)
-            scene?.rootNode.addChildNode(node)
+            structure.position.x = Float(structure.area.x)
+            structure.position.z = Float(structure.area.y)
+            scene?.rootNode.addChildNode(structure)
         }
     }
     
@@ -104,10 +102,9 @@ class ApiaryView: SCNView {
 
 extension ApiaryView: GameObserver {
     func gameManager(_ account: Account, _ apiary: Apiary, didHatchBee bee: Bee) {
-        let node = bee.accept(NodeService.shared)
-        node.position.y += 3
-        node.position.x = Float.random(in: -10...10)
-        scene?.rootNode.addChildNode(node)
+        bee.position.y = 3
+        bee.position.x = Float.random(in: -10...10)
+        scene?.rootNode.addChildNode(bee)
     }
     
     func gameManager(_ account: Account, _ apiary: Apiary, didUpdateResources resources: Resources) {

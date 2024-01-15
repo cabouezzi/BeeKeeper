@@ -30,6 +30,10 @@ class Flower: Container, Collector {
         self.maximumAssignedBees = 1
     }
     
+    override func loadNode() {
+        self.geometry = Meshes.Flowers.blackfoot
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

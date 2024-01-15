@@ -15,6 +15,10 @@ final class PollenStorage: Container {
         self.area = DiscreteRect(x: 0, y: 0, width: 2, height: 1)
     }
     
+    override func loadNode() {
+        self.geometry = Meshes.Structure.pollenStorage
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
