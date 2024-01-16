@@ -76,7 +76,7 @@ class Incubator: Structure {
     }
     
     func startIncubating(_ period: TimeInterval) throws {
-        currentPeriod = IncubationPeriod(started: Date(), incubationPeriod: period, bee: Bee())
+        currentPeriod = IncubationPeriod(started: Date(), incubationPeriod: period, bee: Bee(GameManager.shared.account.unlockedGenes))
     }
     
     func hatch() throws {

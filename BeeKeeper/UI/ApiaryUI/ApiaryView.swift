@@ -103,7 +103,7 @@ class ApiaryView: SCNView {
 extension ApiaryView: GameObserver {
     func gameManager(_ account: Account, _ apiary: Apiary, didHatchBee bee: Bee) {
         bee.position.y = 3
-        bee.position.x = Float.random(in: -10...10)
+        bee.position.x = Float.random(in: -5...5)
         scene?.rootNode.addChildNode(bee)
     }
     

@@ -29,6 +29,7 @@ class ApiaryViewController: UIViewController {
         self.apiaryView.showsStatistics = true
         #endif
         super.init(nibName: nil, bundle: nil)
+        self.apiaryView.delegate = self
         
         addGestureRecognizers()
     }
@@ -326,5 +327,13 @@ extension ApiaryViewController: ModelVisitor {
     
     func visitFlower(_ model: Flower) -> () {
         print("\(model.name) was tapped. \(model.containing) / \(model.maximum).")
+    }
+}
+
+extension ApiaryViewController: SCNSceneRendererDelegate {
+    func renderer(_ renderer: SCNSceneRenderer, willRenderScene scene: SCNScene, atTime time: TimeInterval) {
+        for bee in apiaryView.apiary.bees {
+            bee.droneStep(in: scene.physicsWorld)
+        }
     }
 }

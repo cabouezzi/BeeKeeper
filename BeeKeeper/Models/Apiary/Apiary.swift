@@ -35,7 +35,7 @@ struct Apiary {
         let flower = Flower()
         flower.area.x -= 4
         
-        self.bees = []
+        self.bees = [Bee()]
         self.structures = [
             hive,
             honeyStorage,
