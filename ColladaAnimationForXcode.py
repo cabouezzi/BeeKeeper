@@ -6,20 +6,6 @@
 # Combines multiple animation sequences into a single animation
 # sequence for Xcode to use.
 
-
-"""
-Chaniel / Notes
-Process for exporting from Blender to SceneKit:
--> When rigging model, make sure armature is being treated as a Modifier
--> Export .dae file, uncheck Global Orientation/Apply, set Forward: Z, Up: Y
--> Transform = Matrix
--> Run this script for .dae files containing an animation
--> Convert to .scn file, have parent node rotate for
-
-*always* work in .scn files, seems like SceneKit does some modifications to .dae files under the hood
-"""
-
-
 import sys
 import os
 import re

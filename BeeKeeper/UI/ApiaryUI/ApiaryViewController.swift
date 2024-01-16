@@ -306,27 +306,27 @@ extension ApiaryViewController: ShopDelegate {
 // MARK: - ModelVisitor
 extension ApiaryViewController: ModelVisitor {
     func visitHoneyStorage(_ model: HoneyStorage) -> () {
-        print("\(model.name) was tapped. \(model.containing) / \(model.maximum).")
+        
     }
     
     func visitPollenStorage(_ model: PollenStorage) -> () {
-        print("\(model.name) was tapped. \(model.containing) / \(model.maximum).")
+        
     }
     
     func visitBee(_ model: Bee) -> () {
-        print("\(model.name) was tapped.")
+        model.wiggle(repeatCount: 1)
     }
     
     func visitHive(_ model: Hive) -> () {
-        print("\(model.name) was tapped. \(model.containing) / \(model.maximum)")
+        
     }
     
     func visitIncubator(_ model: Incubator) -> () {
-        print("\(model.name) was tapped.")
+        
     }
     
     func visitFlower(_ model: Flower) -> () {
-        print("\(model.name) was tapped. \(model.containing) / \(model.maximum).")
+        
     }
 }
 

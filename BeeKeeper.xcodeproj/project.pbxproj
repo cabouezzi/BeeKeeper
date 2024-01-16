@@ -16,6 +16,7 @@
 		141AC4972B50651B006DD1F8 /* BeeWiggle.scn in Resources */ = {isa = PBXBuildFile; fileRef = 141AC4962B50651B006DD1F8 /* BeeWiggle.scn */; };
 		141AC49E2B510C38006DD1F8 /* StructureHud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141AC49D2B510C38006DD1F8 /* StructureHud.swift */; };
 		142211062B56213E0060C51A /* SCNVector3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142211052B56213E0060C51A /* SCNVector3.swift */; };
+		142211102B564AFB0060C51A /* BeeWingsFlap.scn in Resources */ = {isa = PBXBuildFile; fileRef = 1422110F2B564AFB0060C51A /* BeeWingsFlap.scn */; };
 		142DF2062AD3806F00274986 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142DF1DA2AD3804C00274986 /* SceneDelegate.swift */; };
 		147FD4622B12FB4A00764E9C /* ColladaAnimationForXcode.py in Resources */ = {isa = PBXBuildFile; fileRef = 147FD4612B12FB4A00764E9C /* ColladaAnimationForXcode.py */; };
 		148358D52AABBFC5006D0290 /* BeeKeeperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148358D42AABBFC5006D0290 /* BeeKeeperTests.swift */; };
@@ -114,6 +115,7 @@
 		141AC4962B50651B006DD1F8 /* BeeWiggle.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeWiggle.scn; sourceTree = "<group>"; };
 		141AC49D2B510C38006DD1F8 /* StructureHud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructureHud.swift; sourceTree = "<group>"; };
 		142211052B56213E0060C51A /* SCNVector3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCNVector3.swift; sourceTree = "<group>"; };
+		1422110F2B564AFB0060C51A /* BeeWingsFlap.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeWingsFlap.scn; sourceTree = "<group>"; };
 		142DF1DA2AD3804C00274986 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		147FD4612B12FB4A00764E9C /* ColladaAnimationForXcode.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = ColladaAnimationForXcode.py; sourceTree = "<group>"; };
 		148358BF2AABBFC4006D0290 /* BeeKeeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeeKeeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -520,6 +522,7 @@
 			children = (
 				148ACE8F2B534C2B00A0F948 /* assets.scnassets */,
 				141AC4962B50651B006DD1F8 /* BeeWiggle.scn */,
+				1422110F2B564AFB0060C51A /* BeeWingsFlap.scn */,
 				141AC4922B50643C006DD1F8 /* BeeStripes.scn */,
 				141AC48E2B5063A9006DD1F8 /* BeePlain.scn */,
 				1405AC1A2B145310003B0079 /* ModelBase.scn */,
@@ -668,6 +671,7 @@
 				14E448852AC6828A008963C8 /* BeeWings.scn in Resources */,
 				14835AA22AC679CE006D0290 /* Frame.scn in Resources */,
 				147FD4622B12FB4A00764E9C /* ColladaAnimationForXcode.py in Resources */,
+				142211102B564AFB0060C51A /* BeeWingsFlap.scn in Resources */,
 				141AC4972B50651B006DD1F8 /* BeeWiggle.scn in Resources */,
 				14835A012AB01091006D0290 /* Assets.xcassets in Resources */,
 			);

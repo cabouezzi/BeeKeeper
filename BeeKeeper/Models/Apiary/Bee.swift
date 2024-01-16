@@ -21,7 +21,8 @@ class Bee: SCNNode, Model, Producer, Codable {
     var stingerDamage: Float = 5
     var venomDamage: Float = 20
     
-    private var armature: SCNNode?
+    private var bodyArmature: SCNNode?
+    private var wingArmature: SCNNode?
     private var head: SCNNode?
     private var torso: SCNNode?
     private var stinger: SCNNode?
@@ -72,9 +73,7 @@ class Bee: SCNNode, Model, Producer, Codable {
         loadArmature()
         loadGeneticEffects()
         
-        #if DEBUG
-        wiggle()
-        #endif
+        flapWings()
     }
     
     required init?(coder: NSCoder) {
@@ -91,16 +90,20 @@ class Bee: SCNNode, Model, Producer, Codable {
     
     func loadArmature() {
         let node = SCNNode()
-        let bodyScene = SCNScene(named: "BeePlain.scn")
-        guard let armature = bodyScene?.rootNode.childNode(withName: "BodyArmature", recursively: true) else {
+        let modelScene = SCNScene(named: "BeePlain.scn")
+        guard
+            let bodyArmature = modelScene?.rootNode.childNode(withName: "BodyArmature", recursively: true),
+            let wingArmature = modelScene?.rootNode.childNode(withName: "WingArmature", recursively: true)
+        else {
             fatalError("Failed to load bee armature")
         }
-        node.addChildNode(armature)
+        node.addChildren([bodyArmature, wingArmature])
         node.eulerAngles.x = .pi / 2
         node.eulerAngles.y = -.pi / 2
         node.scale = SCNVector3(0.3, 0.3, 0.3)
         
-        self.armature = armature
+        self.bodyArmature = bodyArmature
+        self.wingArmature = wingArmature
         head = node.childNode(withName: "Head", recursively: true)
         torso = node.childNode(withName: "Torso", recursively: true)
         stinger = node.childNode(withName: "Stinger", recursively: true)
@@ -123,9 +126,24 @@ class Bee: SCNNode, Model, Producer, Codable {
     // MARK: Animations
     
     func wiggle(repeatCount: Int = 1) {
-        let animationPlayer = CAAnimation.animationPlayerFromScene("BeeWiggle.scn")!
+        guard let animationPlayer = CAAnimation.animationPlayerFromScene("BeeWiggle.scn") else {
+            print("Failed to load wiggle animation")
+            return
+        }
         animationPlayer.animation.repeatCount = CGFloat(repeatCount)
-        armature?.addAnimationPlayer(animationPlayer, forKey: "wiggle")
+        animationPlayer.speed *= 1.75
+        bodyArmature?.addAnimationPlayer(animationPlayer, forKey: "wiggle")
+        animationPlayer.play()
+    }
+    
+    func flapWings(repeatCount: Int = .max) {
+        guard let animationPlayer = CAAnimation.animationPlayerFromScene("BeeWingsFlap.scn") else {
+            print("Failed to load flap animation")
+            return
+        }
+        animationPlayer.animation.repeatCount = CGFloat(repeatCount)
+        animationPlayer.speed *= 4
+        wingArmature?.addAnimationPlayer(animationPlayer, forKey: "flap")
         animationPlayer.play()
     }
     
