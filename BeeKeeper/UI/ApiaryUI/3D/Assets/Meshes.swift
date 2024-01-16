@@ -84,6 +84,12 @@ struct Meshes {
             return node.geometry!
         }()
         
+        static let hiveCover: SCNGeometry = {
+            let scene = SCNScene(named: "Hive.scn")!
+            let node = scene.rootNode.childNode(withName: "top", recursively: true)!
+            return node.geometry!
+        }()
+        
         static let honeyStorage: SCNGeometry = {
             let scene = SCNScene(named: "Rack.scn")!
             let node = scene.rootNode.childNode(withName: "rack", recursively: true)!

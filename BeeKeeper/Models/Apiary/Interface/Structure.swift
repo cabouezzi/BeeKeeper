@@ -38,7 +38,6 @@ class Structure: BKNode, Model, Codable {
         self.maximumAssignedBees = 0
         self.level = 1
         self.area = DiscreteRect(x: 0, y: 0, width: 0, height: 0)
-        self.maximumAssignedBees = 0
         super.init()
         self.name = "Structure"
         loadNode()
@@ -51,6 +50,10 @@ class Structure: BKNode, Model, Codable {
     
     required init(from decoder: Decoder) throws {
         fatalError()
+        /*
+        loadNode()
+        movePivotToCorner()
+        */
     }
     
     func encode(to encoder: Encoder) throws {
@@ -65,9 +68,11 @@ class Structure: BKNode, Model, Codable {
         )
     }
     
-    open func loadNode() {
-        
-    }
+    open func loadNode() {}
+    
+    open func onSelect() {}
+    
+    open func onUnselect() {}
     
     /// Increments the ``level``.
     final func levelUp() {

@@ -11,8 +11,7 @@ import SpriteKit
 class ApiaryView: SCNView {
     var apiary: Apiary { GameManager.shared.apiary }
     
-    private let cameraAnchor: SCNNode
-    let cameraNode: SCNNode
+    let camera: Camera
     let overlay: ApiaryOverlay
     
     convenience init() {
@@ -20,20 +19,7 @@ class ApiaryView: SCNView {
     }
     
     override init(frame frameRect: CGRect) {
-        let camera = SCNCamera()
-        camera.usesOrthographicProjection = false
-        
-        self.cameraAnchor = SCNNode()
-        
-        self.cameraNode = SCNNode()
-        self.cameraNode.camera = camera
-        self.cameraNode.position.x += 0
-        self.cameraNode.position.y += 15
-        self.cameraNode.position.z += 15
-        self.cameraNode.eulerAngles.x -= .pi / 4
-        
-        self.cameraAnchor.eulerAngles.y -= .pi / 4
-        self.cameraAnchor.addChildNode(cameraNode)
+        camera = Camera()
         
         self.overlay = ApiaryOverlay(size: frameRect.size)
         self.overlay.isUserInteractionEnabled = false
@@ -43,7 +29,7 @@ class ApiaryView: SCNView {
         self.scene = SCNScene(named: "ModelBase.scn")
         self.scene?.background.contents = UIColor(red: 0.5, green: 0.9, blue: 1, alpha: 1)
         self.overlaySKScene = overlay
-        self.pointOfView = cameraNode
+        self.pointOfView = camera.pointOfView
         self.backgroundColor = .blue
         self.isPlaying = true
         #if TEST
@@ -55,7 +41,7 @@ class ApiaryView: SCNView {
         let groundNode = SCNNode(geometry: Meshes.ground)
         groundNode.eulerAngles.x -= .pi / 2
         
-        scene?.rootNode.addChildNode(cameraAnchor)
+        scene?.rootNode.addChildNode(camera)
         
         GameManager.shared.addObserver(self)
     }
@@ -109,11 +95,5 @@ extension ApiaryView: GameObserver {
     
     func gameManager(_ account: Account, _ apiary: Apiary, didUpdateResources resources: Resources) {
         overlay.resources.update(resources)
-    }
-}
-
-extension ApiaryView: SCNNodeRendererDelegate {
-    func renderNode(_ node: SCNNode, renderer: SCNRenderer, arguments: [String : Any]) {
-        node.look(at: cameraNode.position)
     }
 }

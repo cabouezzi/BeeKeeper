@@ -12,6 +12,7 @@ fileprivate enum GameState {
     case idle
     case moving(_ structure: Structure, _ originalPosition: SCNVector3)
     case assigning(_ bee: Bee)
+    case following(_ node: SCNNode)
 }
 
 class ApiaryViewController: UIViewController {
@@ -61,6 +62,7 @@ class ApiaryViewController: UIViewController {
     final func clearHud() {
         apiaryView.overlay.closeHud()
         apiaryView.overlay.setButtons()
+        selectedNode = nil
     }
     
     final func flashNode(_ node: SCNNode, duration: Float = 0.25) {
@@ -108,7 +110,7 @@ class ApiaryViewController: UIViewController {
                     self.state = .idle
                     self.clearHud()
                 } catch {
-                    print(error)
+                    print(error.localizedDescription)
                 }
             }),
             SKButton(texture: Textures.blankWhite, onTap: { [weak self] in
@@ -155,6 +157,13 @@ class ApiaryViewController: UIViewController {
         apiaryView.addGestureRecognizer(hold)
     }
     
+    private weak var selectedNode: SCNNode? {
+        didSet {
+            (oldValue as? Structure)?.onUnselect()
+            (selectedNode as? Structure)?.onSelect()
+        }
+    }
+    
     @objc
     private func tapHandler (_ gestureRecognizer: UITapGestureRecognizer) {
         let point = gestureRecognizer.location(in: apiaryView)
@@ -175,9 +184,11 @@ class ApiaryViewController: UIViewController {
             clearHud()
             return
         }
+        print("Tapped \(node), \(state)")
         
         if let bubble = node as? Bubble {
             bubble.burst()
+            clearHud()
             return
         }
         
@@ -187,6 +198,8 @@ class ApiaryViewController: UIViewController {
                 clearHud()
                 return
             }
+            guard bknode !== selectedNode else { return }
+            selectedNode = bknode
             bknode.accept(self)
             bknode.accept(apiaryView.overlay)
             flashNode(bknode)
@@ -194,7 +207,7 @@ class ApiaryViewController: UIViewController {
         }
     }
     
-    private lazy var lastCameraPosition = apiaryView.cameraNode.position
+    private lazy var lastCameraPosition = apiaryView.camera.pointOfView.position
     
     @objc
     private func panHandler(_ gestureRecognizer: UIPanGestureRecognizer) {
@@ -207,12 +220,18 @@ class ApiaryViewController: UIViewController {
         let ySpeed = -yTranslation / 30
         
         switch state {
+        case .following(_):
+            apiaryView.camera.follow(nil)
+            clearHud()
+            state = .idle
+            lastCameraPosition = apiaryView.camera.pointOfView.position
+            fallthrough
         case .idle:
-            apiaryView.cameraNode.position.x = lastCameraPosition.x + xSpeed
-            apiaryView.cameraNode.position.z = lastCameraPosition.z + ySpeed
+            apiaryView.camera.pointOfView.position.x = lastCameraPosition.x + xSpeed
+            apiaryView.camera.pointOfView.position.z = lastCameraPosition.z + ySpeed
             
             if gestureRecognizer.state == .ended {
-                lastCameraPosition = apiaryView.cameraNode.position
+                lastCameraPosition = apiaryView.camera.pointOfView.position
             }
             
         case .moving(let structure, _):
@@ -243,15 +262,22 @@ class ApiaryViewController: UIViewController {
     @objc
     private func pinchHandler(_ gestureRecognizer: UIPinchGestureRecognizer) {
         let velocity = gestureRecognizer.velocity / 2
+        guard let camera = apiaryView.camera.camera else { return }
         
-        apiaryView.cameraNode.camera?.fieldOfView -= velocity
+        camera.fieldOfView -= velocity
+        
+        if camera.fieldOfView > 70 {
+            camera.fieldOfView = 70
+        } else if camera.fieldOfView < 25 {
+            camera.fieldOfView = 25
+        }
         
         if gestureRecognizer.state == .ended {
-            lastCameraPosition = apiaryView.cameraNode.position
+            lastCameraPosition = apiaryView.camera.pointOfView.position
         }
     }
     
-    private var beeTargetCache: Structure?
+    private weak var beeTargetCache: Structure?
     
     @objc
     private func holdHandler(_ gestureReconizer: UILongPressGestureRecognizer) {
@@ -315,6 +341,8 @@ extension ApiaryViewController: ModelVisitor {
     
     func visitBee(_ model: Bee) -> () {
         model.wiggle(repeatCount: 1)
+        apiaryView.camera.follow(model)
+        state = .following(model)
     }
     
     func visitHive(_ model: Hive) -> () {

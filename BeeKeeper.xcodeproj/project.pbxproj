@@ -17,6 +17,7 @@
 		141AC49E2B510C38006DD1F8 /* StructureHud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141AC49D2B510C38006DD1F8 /* StructureHud.swift */; };
 		142211062B56213E0060C51A /* SCNVector3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142211052B56213E0060C51A /* SCNVector3.swift */; };
 		142211102B564AFB0060C51A /* BeeWingsFlap.scn in Resources */ = {isa = PBXBuildFile; fileRef = 1422110F2B564AFB0060C51A /* BeeWingsFlap.scn */; };
+		142211162B56FAFE0060C51A /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142211152B56FAFE0060C51A /* Camera.swift */; };
 		142DF2062AD3806F00274986 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142DF1DA2AD3804C00274986 /* SceneDelegate.swift */; };
 		147FD4622B12FB4A00764E9C /* ColladaAnimationForXcode.py in Resources */ = {isa = PBXBuildFile; fileRef = 147FD4612B12FB4A00764E9C /* ColladaAnimationForXcode.py */; };
 		148358D52AABBFC5006D0290 /* BeeKeeperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148358D42AABBFC5006D0290 /* BeeKeeperTests.swift */; };
@@ -76,7 +77,6 @@
 		14A7DE852AD3906600D2FD4A /* ShopViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A7DE842AD3906600D2FD4A /* ShopViewCell.swift */; };
 		14A7DE882AD3AA6100D2FD4A /* EvolutionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A7DE872AD3AA6100D2FD4A /* EvolutionViewController.swift */; };
 		14BB763B2B12903300E15654 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BB763A2B12903300E15654 /* AppDelegate.swift */; };
-		14E448812AC68013008963C8 /* BeeArmature.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E448802AC68013008963C8 /* BeeArmature.swift */; };
 		14E448832AC68129008963C8 /* SCNNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E448822AC68129008963C8 /* SCNNode.swift */; };
 		14E448852AC6828A008963C8 /* BeeWings.scn in Resources */ = {isa = PBXBuildFile; fileRef = 14E448842AC6828A008963C8 /* BeeWings.scn */; };
 		14E7C8322B4D13A6002376BF /* GameTicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E7C8312B4D13A6002376BF /* GameTicker.swift */; };
@@ -116,6 +116,7 @@
 		141AC49D2B510C38006DD1F8 /* StructureHud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructureHud.swift; sourceTree = "<group>"; };
 		142211052B56213E0060C51A /* SCNVector3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCNVector3.swift; sourceTree = "<group>"; };
 		1422110F2B564AFB0060C51A /* BeeWingsFlap.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeWingsFlap.scn; sourceTree = "<group>"; };
+		142211152B56FAFE0060C51A /* Camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
 		142DF1DA2AD3804C00274986 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		147FD4612B12FB4A00764E9C /* ColladaAnimationForXcode.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = ColladaAnimationForXcode.py; sourceTree = "<group>"; };
 		148358BF2AABBFC4006D0290 /* BeeKeeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeeKeeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -180,7 +181,6 @@
 		14A7DE842AD3906600D2FD4A /* ShopViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopViewCell.swift; sourceTree = "<group>"; };
 		14A7DE872AD3AA6100D2FD4A /* EvolutionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvolutionViewController.swift; sourceTree = "<group>"; };
 		14BB763A2B12903300E15654 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		14E448802AC68013008963C8 /* BeeArmature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeeArmature.swift; sourceTree = "<group>"; };
 		14E448822AC68129008963C8 /* SCNNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCNNode.swift; sourceTree = "<group>"; };
 		14E448842AC6828A008963C8 /* BeeWings.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeWings.scn; sourceTree = "<group>"; };
 		14E7C8312B4D13A6002376BF /* GameTicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTicker.swift; sourceTree = "<group>"; };
@@ -232,6 +232,16 @@
 				141AC49D2B510C38006DD1F8 /* StructureHud.swift */,
 			);
 			path = MiniScreens;
+			sourceTree = "<group>";
+		};
+		142211142B56FAF10060C51A /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				148ACE922B53540800A0F948 /* Bubble.swift */,
+				148359C02AB01091006D0290 /* BKNode.swift */,
+				142211152B56FAFE0060C51A /* Camera.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		148358B62AABBFC4006D0290 = {
@@ -320,9 +330,8 @@
 		148359BD2AB01091006D0290 /* 3D */ = {
 			isa = PBXGroup;
 			children = (
-				148359C02AB01091006D0290 /* BKNode.swift */,
-				148ACE922B53540800A0F948 /* Bubble.swift */,
 				148359BE2AB01091006D0290 /* Assets */,
+				142211142B56FAF10060C51A /* Components */,
 			);
 			path = 3D;
 			sourceTree = "<group>";
@@ -331,7 +340,6 @@
 			isa = PBXGroup;
 			children = (
 				148359BF2AB01091006D0290 /* Meshes.swift */,
-				14E448802AC68013008963C8 /* BeeArmature.swift */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -729,7 +737,6 @@
 				14835A172AB01091006D0290 /* Apiary.swift in Sources */,
 				14835A312AB02A60006D0290 /* SKNode+Animations.swift in Sources */,
 				14835A912AC6000E006D0290 /* UIColor.swift in Sources */,
-				14E448812AC68013008963C8 /* BeeArmature.swift in Sources */,
 				14835A0F2AB01091006D0290 /* HoneyStorage.swift in Sources */,
 				148359F12AB01091006D0290 /* ApiarySwiftUIView.swift in Sources */,
 				14835A8E2AC5FED3006D0290 /* ResourceDisplayHud.swift in Sources */,
@@ -737,6 +744,7 @@
 				148BBEC82B1BCC0D00C86AB5 /* IncubationHud.swift in Sources */,
 				14835A032AB01091006D0290 /* Producer.swift in Sources */,
 				148BBECC2B1C115100C86AB5 /* SKTextNode.swift in Sources */,
+				142211162B56FAFE0060C51A /* Camera.swift in Sources */,
 				1405AC2F2B1599D3003B0079 /* UIBezierPath.swift in Sources */,
 				148359EB2AB01091006D0290 /* Meshes.swift in Sources */,
 				148359F52AB01091006D0290 /* AnimatedNumberNode.swift in Sources */,

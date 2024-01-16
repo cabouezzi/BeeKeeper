@@ -173,7 +173,7 @@ extension ApiaryOverlay: ModelVisitor {
                 do {
                     try model.addHoneycomb()
                 } catch {
-                    print(error)
+                    print(error.localizedDescription)
                 }
             }),
             SKButton(texture: Textures.check, title: "Collect", onTap: {
@@ -200,7 +200,7 @@ extension ApiaryOverlay: ModelVisitor {
                 do {
                     try model.fill(&resources)
                 } catch {
-                    print(error)
+                    print(error.localizedDescription)
                 }
             }),
             SKButton(texture: Textures.check, title: "Collect", onTap: {
