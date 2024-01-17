@@ -11,6 +11,7 @@
 		1405AC2B2B15895A003B0079 /* GeneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1405AC2A2B15895A003B0079 /* GeneTests.swift */; };
 		1405AC2D2B158C3F003B0079 /* GeneNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1405AC2C2B158C3F003B0079 /* GeneNetwork.swift */; };
 		1405AC2F2B1599D3003B0079 /* UIBezierPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1405AC2E2B1599D3003B0079 /* UIBezierPath.swift */; };
+		140A330F2B578D7A00C1086C /* BeeKeeperBase.scn in Resources */ = {isa = PBXBuildFile; fileRef = 140A330E2B578D7A00C1086C /* BeeKeeperBase.scn */; };
 		141AC48F2B5063A9006DD1F8 /* BeePlain.scn in Resources */ = {isa = PBXBuildFile; fileRef = 141AC48E2B5063A9006DD1F8 /* BeePlain.scn */; };
 		141AC4932B50643C006DD1F8 /* BeeStripes.scn in Resources */ = {isa = PBXBuildFile; fileRef = 141AC4922B50643C006DD1F8 /* BeeStripes.scn */; };
 		141AC4972B50651B006DD1F8 /* BeeWiggle.scn in Resources */ = {isa = PBXBuildFile; fileRef = 141AC4962B50651B006DD1F8 /* BeeWiggle.scn */; };
@@ -18,6 +19,7 @@
 		142211062B56213E0060C51A /* SCNVector3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142211052B56213E0060C51A /* SCNVector3.swift */; };
 		142211102B564AFB0060C51A /* BeeWingsFlap.scn in Resources */ = {isa = PBXBuildFile; fileRef = 1422110F2B564AFB0060C51A /* BeeWingsFlap.scn */; };
 		142211162B56FAFE0060C51A /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142211152B56FAFE0060C51A /* Camera.swift */; };
+		1422111A2B5740D00060C51A /* ShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142211192B5740CF0060C51A /* ShopView.swift */; };
 		142DF2062AD3806F00274986 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142DF1DA2AD3804C00274986 /* SceneDelegate.swift */; };
 		147FD4622B12FB4A00764E9C /* ColladaAnimationForXcode.py in Resources */ = {isa = PBXBuildFile; fileRef = 147FD4612B12FB4A00764E9C /* ColladaAnimationForXcode.py */; };
 		148358D52AABBFC5006D0290 /* BeeKeeperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148358D42AABBFC5006D0290 /* BeeKeeperTests.swift */; };
@@ -72,7 +74,6 @@
 		148BBEC82B1BCC0D00C86AB5 /* IncubationHud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148BBEC72B1BCC0D00C86AB5 /* IncubationHud.swift */; };
 		148BBECA2B1BD03F00C86AB5 /* TimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148BBEC92B1BD03F00C86AB5 /* TimeInterval.swift */; };
 		148BBECC2B1C115100C86AB5 /* SKTextNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148BBECB2B1C115100C86AB5 /* SKTextNode.swift */; };
-		14A7DE812AD3883C00D2FD4A /* ShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A7DE802AD3883C00D2FD4A /* ShopViewController.swift */; };
 		14A7DE832AD389DA00D2FD4A /* ShopItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A7DE822AD389DA00D2FD4A /* ShopItem.swift */; };
 		14A7DE852AD3906600D2FD4A /* ShopViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A7DE842AD3906600D2FD4A /* ShopViewCell.swift */; };
 		14A7DE882AD3AA6100D2FD4A /* EvolutionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A7DE872AD3AA6100D2FD4A /* EvolutionViewController.swift */; };
@@ -110,6 +111,7 @@
 		1405AC2A2B15895A003B0079 /* GeneTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneTests.swift; sourceTree = "<group>"; };
 		1405AC2C2B158C3F003B0079 /* GeneNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneNetwork.swift; sourceTree = "<group>"; };
 		1405AC2E2B1599D3003B0079 /* UIBezierPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBezierPath.swift; sourceTree = "<group>"; };
+		140A330E2B578D7A00C1086C /* BeeKeeperBase.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeKeeperBase.scn; sourceTree = "<group>"; };
 		141AC48E2B5063A9006DD1F8 /* BeePlain.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeePlain.scn; sourceTree = "<group>"; };
 		141AC4922B50643C006DD1F8 /* BeeStripes.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeStripes.scn; sourceTree = "<group>"; };
 		141AC4962B50651B006DD1F8 /* BeeWiggle.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeWiggle.scn; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 		142211052B56213E0060C51A /* SCNVector3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCNVector3.swift; sourceTree = "<group>"; };
 		1422110F2B564AFB0060C51A /* BeeWingsFlap.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeWingsFlap.scn; sourceTree = "<group>"; };
 		142211152B56FAFE0060C51A /* Camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
+		142211192B5740CF0060C51A /* ShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopView.swift; sourceTree = "<group>"; };
 		142DF1DA2AD3804C00274986 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		147FD4612B12FB4A00764E9C /* ColladaAnimationForXcode.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = ColladaAnimationForXcode.py; sourceTree = "<group>"; };
 		148358BF2AABBFC4006D0290 /* BeeKeeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeeKeeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -176,7 +179,6 @@
 		148BBEC92B1BD03F00C86AB5 /* TimeInterval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeInterval.swift; sourceTree = "<group>"; };
 		148BBECB2B1C115100C86AB5 /* SKTextNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKTextNode.swift; sourceTree = "<group>"; };
 		14A7DE7C2AD3866100D2FD4A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		14A7DE802AD3883C00D2FD4A /* ShopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopViewController.swift; sourceTree = "<group>"; };
 		14A7DE822AD389DA00D2FD4A /* ShopItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopItem.swift; sourceTree = "<group>"; };
 		14A7DE842AD3906600D2FD4A /* ShopViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopViewCell.swift; sourceTree = "<group>"; };
 		14A7DE872AD3AA6100D2FD4A /* EvolutionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvolutionViewController.swift; sourceTree = "<group>"; };
@@ -534,6 +536,7 @@
 				141AC4922B50643C006DD1F8 /* BeeStripes.scn */,
 				141AC48E2B5063A9006DD1F8 /* BeePlain.scn */,
 				1405AC1A2B145310003B0079 /* ModelBase.scn */,
+				140A330E2B578D7A00C1086C /* BeeKeeperBase.scn */,
 				14E448842AC6828A008963C8 /* BeeWings.scn */,
 				14835A9D2AC679CE006D0290 /* Blackfoot.scn */,
 				14835A9E2AC679CE006D0290 /* Frame.scn */,
@@ -547,7 +550,7 @@
 		14A7DE7F2AD3883300D2FD4A /* ShopUI */ = {
 			isa = PBXGroup;
 			children = (
-				14A7DE802AD3883C00D2FD4A /* ShopViewController.swift */,
+				142211192B5740CF0060C51A /* ShopView.swift */,
 				14A7DE842AD3906600D2FD4A /* ShopViewCell.swift */,
 				14A7DE822AD389DA00D2FD4A /* ShopItem.swift */,
 			);
@@ -679,6 +682,7 @@
 				14E448852AC6828A008963C8 /* BeeWings.scn in Resources */,
 				14835AA22AC679CE006D0290 /* Frame.scn in Resources */,
 				147FD4622B12FB4A00764E9C /* ColladaAnimationForXcode.py in Resources */,
+				140A330F2B578D7A00C1086C /* BeeKeeperBase.scn in Resources */,
 				142211102B564AFB0060C51A /* BeeWingsFlap.scn in Resources */,
 				141AC4972B50651B006DD1F8 /* BeeWiggle.scn in Resources */,
 				14835A012AB01091006D0290 /* Assets.xcassets in Resources */,
@@ -718,7 +722,6 @@
 				14835A072AB01091006D0290 /* Structure.swift in Sources */,
 				14835A0B2AB01091006D0290 /* Flower.swift in Sources */,
 				14835A132AB01091006D0290 /* Hive.swift in Sources */,
-				14A7DE812AD3883C00D2FD4A /* ShopViewController.swift in Sources */,
 				148359EF2AB01091006D0290 /* ApiaryViewController.swift in Sources */,
 				14835A212AB01091006D0290 /* Resource.swift in Sources */,
 				14A7DE852AD3906600D2FD4A /* ShopViewCell.swift in Sources */,
@@ -727,6 +730,7 @@
 				14E7C8322B4D13A6002376BF /* GameTicker.swift in Sources */,
 				148ACE932B53540800A0F948 /* Bubble.swift in Sources */,
 				14835A2B2AB01327006D0290 /* SKButton.swift in Sources */,
+				1422111A2B5740D00060C51A /* ShopView.swift in Sources */,
 				14835A1B2AB01091006D0290 /* ModelVisitor.swift in Sources */,
 				14835A1D2AB01091006D0290 /* Bee.swift in Sources */,
 				148359F72AB01091006D0290 /* ApiaryOverlay.swift in Sources */,
@@ -872,7 +876,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = cabouezzi.BeeKeeper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1062,7 +1066,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = cabouezzi.BeeKeeper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1101,7 +1105,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = cabouezzi.BeeKeeper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

@@ -16,6 +16,7 @@ class Camera: SCNNode {
     }
     
     private let followConstraint = SCNDistanceConstraint(target: nil)
+    var velocity: SCNVector3 = .zero
     
     override init() {
         let camera = SCNCamera()
@@ -24,9 +25,9 @@ class Camera: SCNNode {
         pointOfView = SCNNode()
         pointOfView.camera = camera
         pointOfView.position.x += 0
-        pointOfView.position.y += 15
+        pointOfView.position.y += 20
         pointOfView.position.z += 15
-        pointOfView.eulerAngles.x -= .pi / 4
+        pointOfView.eulerAngles.x -= .pi * 0.3
         super.init()
         
         eulerAngles.y -= .pi / 4

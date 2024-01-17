@@ -26,4 +26,9 @@ struct Textures {
     
     static let starsBackground: SKTexture = SKTexture(imageNamed: "Stars")
     static let starsMiddleground: SKTexture = SKTexture(imageNamed: "StarsMiddle")
+    
+    static let shopTabFront: SKTexture = SKTexture(imageNamed: "shop-tab-front")
+    static let shopTabBack: SKTexture = SKTexture(imageNamed: "shop-tab-back")
+    static let shopBar: SKTexture = SKTexture(imageNamed: "shop-bar")
+    static let shopSymbolFlower: SKTexture = SKTexture(imageNamed: "shop-flowers")
 }

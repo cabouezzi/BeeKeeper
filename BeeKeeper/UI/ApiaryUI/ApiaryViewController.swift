@@ -25,10 +25,10 @@ class ApiaryViewController: UIViewController {
     
     init(frame: CGRect) {
         self.apiaryView = ApiaryView(frame: frame)
-        #if DEBUG
+#if DEBUG
         self.apiaryView.allowsCameraControl = true
         self.apiaryView.showsStatistics = true
-        #endif
+#endif
         super.init(nibName: nil, bundle: nil)
         self.apiaryView.delegate = self
         
@@ -125,9 +125,9 @@ class ApiaryViewController: UIViewController {
     // MARK: - UI Navigation
     
     private func popToShop() {
-        let vc = ShopViewController(frame: apiaryView.frame)
-        vc.delegate = self
-        self.navigationController?.pushViewController(vc, animated: false)
+        let shopView = ShopView(frame: apiaryView.frame)
+        shopView.shopDelegate = self
+        apiaryView.addSubview(shopView)
     }
     
     private func popToEvolution() {
@@ -145,13 +145,13 @@ class ApiaryViewController: UIViewController {
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapHandler))
         let hold = UILongPressGestureRecognizer(target: self, action: #selector(holdHandler))
         
-        #if !DEBUG
+#if !DEBUG
         let pan = UIPanGestureRecognizer(target: self, action: #selector(panHandler))
         let pinch = UIPinchGestureRecognizer(target: self, action: #selector(pinchHandler))
         
         apiaryView.addGestureRecognizer(pan)
         apiaryView.addGestureRecognizer(pinch)
-        #endif
+#endif
         
         apiaryView.addGestureRecognizer(tap)
         apiaryView.addGestureRecognizer(hold)
@@ -184,7 +184,6 @@ class ApiaryViewController: UIViewController {
             clearHud()
             return
         }
-        print("Tapped \(node), \(state)")
         
         if let bubble = node as? Bubble {
             bubble.burst()
@@ -198,7 +197,6 @@ class ApiaryViewController: UIViewController {
                 clearHud()
                 return
             }
-            guard bknode !== selectedNode else { return }
             selectedNode = bknode
             bknode.accept(self)
             bknode.accept(apiaryView.overlay)
@@ -211,13 +209,12 @@ class ApiaryViewController: UIViewController {
     
     @objc
     private func panHandler(_ gestureRecognizer: UIPanGestureRecognizer) {
-        // Translates the gesture into a number, the difference from start –> beginning
-        let xTranslation = Float(gestureRecognizer.translation(in: apiaryView).x)
-        let yTranslation = Float(gestureRecognizer.translation(in: apiaryView).y)
-        
-        // What the camera should move by
-        let xSpeed = -xTranslation / 30
-        let ySpeed = -yTranslation / 30
+        let fov = apiaryView.camera.camera!.fieldOfView
+        let velocity = gestureRecognizer.velocity(in: apiaryView)
+        // Velocity is larger for the shorter dimension
+        let factor = 1 / max(apiaryView.frame.width, apiaryView.frame.height)
+        let scaledTranslationX = Float(velocity.x * fov * factor / 100)
+        let scaledTranslationY = Float(velocity.y * fov * factor / 100)
         
         switch state {
         case .following(_):
@@ -227,11 +224,16 @@ class ApiaryViewController: UIViewController {
             lastCameraPosition = apiaryView.camera.pointOfView.position
             fallthrough
         case .idle:
-            apiaryView.camera.pointOfView.position.x = lastCameraPosition.x + xSpeed
-            apiaryView.camera.pointOfView.position.z = lastCameraPosition.z + ySpeed
+            if gestureRecognizer.state == .began {
+                apiaryView.camera.velocity = .zero
+                lastCameraPosition = apiaryView.camera.pointOfView.position
+            }
+            
+            apiaryView.camera.pointOfView.position.x -= scaledTranslationX
+            apiaryView.camera.pointOfView.position.z -= scaledTranslationY
             
             if gestureRecognizer.state == .ended {
-                lastCameraPosition = apiaryView.camera.pointOfView.position
+                apiaryView.camera.velocity = SCNVector3(x: scaledTranslationX, y: 0, z: scaledTranslationY)
             }
             
         case .moving(let structure, _):
@@ -315,20 +317,6 @@ class ApiaryViewController: UIViewController {
     }
 }
 
-extension ApiaryViewController: ShopDelegate {
-    func shopViewController(_ shopViewController: ShopViewController, didSelectItem item: ShopItem) {
-        let structure = item.newProduct()
-        beginAddingNewStructure(structure) {
-            try GameManager.shared.remove(item.cost)
-        }
-        shopViewController.navigationController?.popViewController(animated: false)
-    }
-    
-    func shopViewController(_ shopViewController: ShopViewController, canSelectItem item: ShopItem) -> Bool {
-        return GameManager.shared.getAllResources().canAfford(item.cost)
-    }
-}
-
 // MARK: - ModelVisitor
 extension ApiaryViewController: ModelVisitor {
     func visitHoneyStorage(_ model: HoneyStorage) -> () {
@@ -360,8 +348,43 @@ extension ApiaryViewController: ModelVisitor {
 
 extension ApiaryViewController: SCNSceneRendererDelegate {
     func renderer(_ renderer: SCNSceneRenderer, willRenderScene scene: SCNScene, atTime time: TimeInterval) {
+        let accelerationFactor = (1 - scene.physicsWorld.timeStep) * (1 - scene.physicsWorld.timeStep)
+        apiaryView.camera.pointOfView.position -= apiaryView.camera.velocity
+        apiaryView.camera.velocity *= Float(accelerationFactor)
+        
         for bee in apiaryView.apiary.bees {
             bee.droneStep(in: scene.physicsWorld)
+        }
+    }
+}
+
+extension ApiaryViewController: ShopViewDelegate {
+    func shopView(_ shopView: ShopView, canSelectItem item: ShopItem) -> Bool {
+        return GameManager.shared.getAllResources().canAfford(item.cost)
+    }
+    
+    func shopView(_ shopView: ShopView, didSelectItem item: ShopItem) {
+        let structure = item.newProduct()
+        beginAddingNewStructure(structure) {
+            try GameManager.shared.remove(item.cost)
+        }
+        shopView.removeFromSuperview()
+    }
+    
+    func shopView(_ shopView: ShopView, itemsForSection section: ShopView.Section) -> [ShopItem] {
+        switch section {
+        case .structures:
+            return [
+                ShopItem(name: "Hive", description: nil, cost: Resources(), display: UIImage(named: "world.png")!, newProduct: { Hive() }),
+                ShopItem(name: "Incubator", description: nil, cost: Resources(), display: UIImage(named: "world"), newProduct: { Incubator() }),
+                ShopItem(name: "Honey Jar Rack", description: nil, cost: Resources(), display: UIImage(named: "world"), newProduct: { HoneyStorage() }),
+                ShopItem(name: "Pollen Jar Rack", description: nil, cost: Resources(), display: UIImage(named: "world"), newProduct: { PollenStorage() }),
+            ]
+        case .flowers:
+            return [
+                ShopItem(name: "Blackfoot", description: "A flower", cost: Resources(), display: UIImage(named: "world"), newProduct: { Flower() }),
+            ]
+        case .buy: return []
         }
     }
 }
