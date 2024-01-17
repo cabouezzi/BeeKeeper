@@ -51,4 +51,20 @@ class Camera: SCNNode {
             followConstraint.isEnabled = false
         }
     }
+    
+    func birdsEyeView(animated: Bool = false) {
+        let move = SCNAction.move(to: SCNVector3(0, 40, 0), duration: animated ? 1 : 0)
+        let rotate = SCNAction.rotateTo(x: -.pi / 2, y: 0, z: 0, duration: animated ? 1 : 0, usesShortestUnitArc: true)
+        let action = SCNAction.group([move, rotate])
+        action.timingMode = .easeInEaseOut
+        pointOfView.runAction(action)
+    }
+    
+    func defaultView(animated: Bool = false) {
+        let move = SCNAction.move(to: SCNVector3(0, 20, 0), duration: animated ? 1 : 0)
+        let rotate = SCNAction.rotateTo(x: -.pi * 0.3, y: 0, z: 0, duration: animated ? 1 : 0, usesShortestUnitArc: true)
+        let action = SCNAction.group([move, rotate])
+        action.timingMode = .easeInEaseOut
+        pointOfView.runAction(action)
+    }
 }

@@ -38,10 +38,10 @@ class ApiaryView: SCNView {
         
         let floorNode = SCNNode(geometry: Meshes.floor)
         floorNode.position.y -= 1
-        let groundNode = SCNNode(geometry: Meshes.ground)
-        groundNode.eulerAngles.x -= .pi / 2
+        floorNode.categoryBitMask = 1 << 1
         
         scene?.rootNode.addChildNode(camera)
+        scene?.rootNode.addChildNode(floorNode)
         
         GameManager.shared.addObserver(self)
     }
