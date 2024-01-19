@@ -56,7 +56,7 @@ class Incubator: Structure {
     
     override func loadNode() {
         self.geometry = Meshes.Structure.incubator
-        self.position.y += geometry!.height / 2
+        self.eulerAngles.y = -.pi / 2
     }
     
     required init?(coder: NSCoder) {

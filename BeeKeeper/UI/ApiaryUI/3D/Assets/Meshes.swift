@@ -101,9 +101,9 @@ struct Meshes {
         }()
         
         static let incubator: SCNGeometry = {
-            let geo = SCNBox(width: 1, height: 1, length: 1, chamferRadius: 0.2)
-            geo.firstMaterial?.diffuse.contents = UIColor.green
-            return geo
+            let scene = SCNScene(named: "ScienceStand.scn")!
+            let node = scene.rootNode.childNode(withName: "incubator", recursively: true)!
+            return node.flattenedClone().geometry!
         }()
     }
     
