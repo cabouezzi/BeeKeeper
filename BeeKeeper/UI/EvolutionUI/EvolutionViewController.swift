@@ -28,11 +28,13 @@ class EvolutionViewController: UIViewController {
         middleStars.setScale(2)
         super.init(nibName: nil, bundle: nil)
         
-        #if !RELEASE
+        evolutionScene.delegate = self
+        
+#if !RELEASE
         centerNode.isUserInteractionEnabled = true
-        #else
+#else
         centerNode.isUserInteractionEnabled = false
-        #endif
+#endif
         middleStars.isUserInteractionEnabled = false
         backStars.isUserInteractionEnabled = false
         
@@ -40,14 +42,14 @@ class EvolutionViewController: UIViewController {
             SKConstraint.positionX(SKRange(lowerLimit: -1515, upperLimit: 1515)),
             SKConstraint.positionY(SKRange(lowerLimit: -1515, upperLimit: 1515))
         ]
-        backStars.constraints = [
-            SKConstraint.positionX(SKRange(lowerLimit: -1515 / 2, upperLimit: 1515 / 2)),
-            SKConstraint.positionY(SKRange(lowerLimit: -1515 / 2, upperLimit: 1515 / 2))
-        ]
-        middleStars.constraints = [
-            SKConstraint.positionX(SKRange(lowerLimit: -1515 / 3, upperLimit: 1515 / 3)),
-            SKConstraint.positionY(SKRange(lowerLimit: -1515 / 3, upperLimit: 1515 / 3))
-        ]
+//        backStars.constraints = [
+//            SKConstraint.positionX(SKRange(lowerLimit: -1515 / 2, upperLimit: 1515 / 2)),
+//            SKConstraint.positionY(SKRange(lowerLimit: -1515 / 2, upperLimit: 1515 / 2))
+//        ]
+//        middleStars.constraints = [
+//            SKConstraint.positionX(SKRange(lowerLimit: -1515 / 3, upperLimit: 1515 / 3)),
+//            SKConstraint.positionY(SKRange(lowerLimit: -1515 / 3, upperLimit: 1515 / 3))
+//        ]
     }
     
     required init?(coder: NSCoder) {
@@ -155,6 +157,7 @@ class EvolutionViewController: UIViewController {
     private func addGestureRecognizers() {
         evolutionView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(panGestureRecognizer)))
         evolutionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapGestureRecognizer)))
+        evolutionView.addGestureRecognizer(UIPinchGestureRecognizer(target: self, action: #selector(pinchGestureRecognizer)))
     }
     
     @objc
@@ -162,12 +165,6 @@ class EvolutionViewController: UIViewController {
         let pointInView = gestureRecognizer.location(in: evolutionView)
         let point = evolutionView.convert(pointInView, to: evolutionScene)
         guard let node = evolutionScene.nodes(at: point).first(where: { !$0.isHidden && $0.isUserInteractionEnabled }) else { return }
-        
-        if node.name == "Center" {
-            let zoomInAction = SKAction.scale(by: 1.5, duration: 1)
-            camera.run(zoomInAction)
-            return
-        }
         
         guard let name = node.name, let gene = Gene(rawValue: name) else { return }
         node.pop()
@@ -184,26 +181,65 @@ class EvolutionViewController: UIViewController {
         }
     }
     
+    private var cameraVelocity: CGPoint = .zero
+    private var lastSceneTime: TimeInterval = 0
+    
     @objc
     private func panGestureRecognizer(_ gestureRecognizer: UIPanGestureRecognizer) {
         if gestureRecognizer.state == .began {
             lastCameraPosition = camera.position
+            cameraVelocity = .zero
         }
         
-        let point = gestureRecognizer.translation(in: evolutionView)
-        let x = lastCameraPosition.x - point.x
-        let y = lastCameraPosition.y + point.y
+        let translation = gestureRecognizer.translation(in: evolutionView)
+        let velocity = gestureRecognizer.velocity(in: evolutionView)
+        let x = lastCameraPosition.x - translation.x
+        let y = lastCameraPosition.y + translation.y
         
         camera.position.x = x
-        backStars.position.x = camera.position.x / 2
-        middleStars.position.x = camera.position.x / 3
-        
         camera.position.y = y
-        backStars.position.y = camera.position.y / 2
-        middleStars.position.y = camera.position.y / 3
         
         if gestureRecognizer.state == .ended {
             lastCameraPosition = camera.position
+            cameraVelocity = velocity
         }
+    }
+    
+    private var previousCameraScale: CGFloat = 1
+    
+    @objc
+    private func pinchGestureRecognizer(_ gestureRecognizer: UIPinchGestureRecognizer) {
+        guard let camera = evolutionScene.camera else {
+            return
+        }
+        if gestureRecognizer.state == .began {
+            previousCameraScale = camera.xScale
+        }
+        var newScale = previousCameraScale / gestureRecognizer.scale
+        if newScale < 1 {
+            newScale = 1
+        } else if newScale > 3 {
+            newScale = 3
+        }
+        camera.setScale(newScale)
+    }
+}
+
+extension EvolutionViewController: SKSceneDelegate {
+    func update(_ currentTime: TimeInterval, for scene: SKScene) {
+        camera.position.x -= cameraVelocity.x * (currentTime - lastSceneTime)
+        camera.position.y += cameraVelocity.y * (currentTime - lastSceneTime)
+        
+        cameraVelocity.x *= 0.95
+        cameraVelocity.y *= 0.95
+        lastSceneTime = currentTime
+    }
+    
+    func didApplyConstraints(for scene: SKScene) {
+        backStars.position.x = camera.position.x / 2
+        middleStars.position.x = camera.position.x / 3
+        
+        backStars.position.y = camera.position.y / 2
+        middleStars.position.y = camera.position.y / 3
     }
 }
