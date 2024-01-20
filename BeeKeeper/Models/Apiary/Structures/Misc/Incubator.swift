@@ -5,7 +5,7 @@
 //  Created by Chaniel Ezzi on 9/8/23.
 //
 
-import Foundation
+import SceneKit
 
 enum IncubatorState {
     case idle, incubating, finished
@@ -51,7 +51,7 @@ class Incubator: Structure {
     required init() {
         super.init()
         self.name = "Incubator"
-        self.area = DiscreteRect(x: 0, y: 0, width: 1, height: 1)
+        self.area = DiscreteRect(x: 0, y: 0, width: 2, height: 2)
     }
     
     override func loadNode() {
