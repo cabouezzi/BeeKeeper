@@ -31,7 +31,15 @@ class Structure: BKNode, Model, Codable {
     /// The bounding rectangle of the structure on the apiary grid layout.
     /// In 3D space, this is the x-z plane:
     /// `width` corresponds to its size in the x plane, and `height` corresponds to its size in the y plane.
-    var area: DiscreteRect
+    var area: DiscreteRect {
+        didSet {
+            border?.removeFromParentNode()
+            border = StructureBorder(self)
+        }
+    }
+    
+    /// An indicator of the bounding box of the structure, defined by ``area``
+    private(set) var border: StructureBorder?
     
     required override init() {
         self.assignedBees = []
@@ -61,11 +69,7 @@ class Structure: BKNode, Model, Codable {
     }
     
     private func movePivotToCorner() {
-        pivot = SCNMatrix4MakeTranslation(
-            -(geometry?.width ?? 0) / 2,
-            0,
-            -(geometry?.depth ?? 0) / 2
-        )
+        pivot = SCNMatrix4MakeTranslation(-Float(area.width) / 2, 0, -Float(area.height) / 2)
     }
     
     open func loadNode() {}

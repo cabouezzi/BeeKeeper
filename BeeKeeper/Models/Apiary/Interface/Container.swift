@@ -17,6 +17,10 @@ class Container: Structure {
     var containing = Resources()
     var maximum: Resources = Resources()
     
+    var isFull: Bool {
+        return containing.canAfford(maximum)
+    }
+    
     required init() {
         super.init()
     }

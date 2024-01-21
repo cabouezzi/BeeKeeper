@@ -12,12 +12,11 @@ final class PollenStorage: Container {
         super.init()
         self.maximum = Resources(pollen: 5000)
         self.name = "Pollen Storage"
-        self.area = DiscreteRect(x: 0, y: 0, width: 3, height: 2)
+        self.area = DiscreteRect(x: 0, y: 0, width: 2, height: 2)
     }
     
     override func loadNode() {
         self.geometry = Meshes.Structure.pollenStorage
-        self.scale = SCNVector3(1.5, 1.5, 1.5)
     }
     
     required init?(coder: NSCoder) {

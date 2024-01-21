@@ -62,7 +62,13 @@ class ApiaryViewController: UIViewController {
     final func clearHud() {
         apiaryView.overlay.closeHud()
         apiaryView.overlay.setButtons()
+        apiaryView.camera.follow(nil)
         selectedNode = nil
+    }
+    
+    final func showHud(for model: SCNNode & Model) {
+        model.accept(self)
+        model.accept(apiaryView.overlay)
     }
     
     final func flashNode(_ node: SCNNode, duration: Float = 0.25) {
@@ -95,11 +101,18 @@ class ApiaryViewController: UIViewController {
         guard case .idle = state else { return }
         apiaryView.camera.birdsEyeView(animated: true)
         
+        if structure.parent == nil {
+            apiaryView.scene?.rootNode.addChildNode(structure)
+        }
+        
         state = .moving(structure, SCNVector3(0, 0, 0))
-        apiaryView.scene?.rootNode.addChildNode(structure)
+        
+        for structure in apiaryView.apiary.structures {
+            structure.border?.isHidden = false
+        }
         
         if apiaryView.apiary.structures.contains(where: { $0.overlaps(structure) }) {
-            structure.geometry?.materials.first?.emission.contents = UIColor.red
+            structure.border?.setColor(.red)
         }
         
         apiaryView.overlay.setButtons(title: structure.name, [
@@ -108,6 +121,7 @@ class ApiaryViewController: UIViewController {
                 do {
                     try completion?()
                     try GameManager.shared.addStructure(structure)
+                    structure.border?.isHidden = true
                     self.state = .idle
                     self.clearHud()
                     self.apiaryView.camera.defaultView(animated: true)
@@ -148,13 +162,13 @@ class ApiaryViewController: UIViewController {
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapHandler))
         let hold = UILongPressGestureRecognizer(target: self, action: #selector(holdHandler))
         
-#if !DEBUG
+        #if !DEBUG
         let pan = UIPanGestureRecognizer(target: self, action: #selector(panHandler))
         let pinch = UIPinchGestureRecognizer(target: self, action: #selector(pinchHandler))
         
         apiaryView.addGestureRecognizer(pan)
         apiaryView.addGestureRecognizer(pinch)
-#endif
+        #endif
         
         apiaryView.addGestureRecognizer(tap)
         apiaryView.addGestureRecognizer(hold)
@@ -201,8 +215,7 @@ class ApiaryViewController: UIViewController {
                 return
             }
             selectedNode = bknode
-            bknode.accept(self)
-            bknode.accept(apiaryView.overlay)
+            showHud(for: bknode)
             flashNode(bknode)
         default: break
         }
@@ -223,7 +236,6 @@ class ApiaryViewController: UIViewController {
         switch state {
         case .following(_):
             clearHud()
-            apiaryView.camera.follow(nil)
             state = .idle
             lastCameraPosition = apiaryView.camera.pointOfView.position
             fallthrough
@@ -256,6 +268,9 @@ class ApiaryViewController: UIViewController {
             structure.position.x = Float(structure.area.x)
             structure.position.z = Float(structure.area.y)
             
+            let highlight = apiaryView.apiary.structures.contains(where: { $0.overlaps(structure) }) ? UIColor.red : .green
+            structure.border?.setColor(highlight)
+            
             // Moves the camera further towards direction of movement
             let glideMargin = 0.2
             if location.x < apiaryView.frame.width * glideMargin {
@@ -269,12 +284,6 @@ class ApiaryViewController: UIViewController {
             }
             if location.y > apiaryView.frame.height * (1 - glideMargin) {
                 apiaryView.camera.velocity.z = -0.1
-            }
-            
-            if apiaryView.apiary.structures.contains(where: { $0.overlaps(structure) }) {
-                structure.geometry?.materials.first?.emission.contents = UIColor.red
-            } else {
-                structure.geometry?.materials.first?.emission.contents = UIColor.black
             }
             
         default:
@@ -291,10 +300,12 @@ class ApiaryViewController: UIViewController {
         
         if camera.fieldOfView > 70 {
             camera.fieldOfView = 70
-        } else if camera.fieldOfView < 25 {
+        }
+        if camera.fieldOfView < 25 {
             camera.fieldOfView = 25
         }
         
+        // TODO: Change Z-pos instead of fov
         if gestureRecognizer.state == .ended {
             lastCameraPosition = apiaryView.camera.pointOfView.position
         }
@@ -367,6 +378,7 @@ extension ApiaryViewController: ModelVisitor {
     }
 }
 
+// MARK: - SCNSceneRendererDelegate
 extension ApiaryViewController: SCNSceneRendererDelegate {
     func renderer(_ renderer: SCNSceneRenderer, willRenderScene scene: SCNScene, atTime time: TimeInterval) {
         for bee in apiaryView.apiary.bees {
@@ -381,6 +393,7 @@ extension ApiaryViewController: SCNSceneRendererDelegate {
     }
 }
 
+// MARK: - ShopViewDelegate
 extension ApiaryViewController: ShopViewDelegate {
     func shopView(_ shopView: ShopView, canSelectItem item: ShopItem) -> Bool {
         return GameManager.shared.getAllResources().canAfford(item.cost)
