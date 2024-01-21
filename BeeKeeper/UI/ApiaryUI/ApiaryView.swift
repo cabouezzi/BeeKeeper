@@ -72,18 +72,6 @@ class ApiaryView: SCNView {
             scene?.rootNode.addChildNode(structure)
         }
     }
-    
-    func showBubble(node: SCNNode) {
-        let bubble = Bubble()
-        scene?.rootNode.addChildNode(bubble)
-        bubble.position = node.position
-        bubble.position.x += (node.geometry?.width ?? 0) / 2
-        bubble.position.z += (node.geometry?.depth ?? 0) / 2
-        bubble.position.y += (node.geometry?.height ?? 0) + 1
-        bubble.onTap {
-            print("Bubble burst!")
-        }
-    }
 }
 
 extension ApiaryView: GameObserver {

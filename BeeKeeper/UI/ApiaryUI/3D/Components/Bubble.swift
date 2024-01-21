@@ -10,12 +10,23 @@ import SceneKit
 class Bubble: SCNNode {
     private var block: (() -> Void)?
     
-    override init() {
+    init(_ texture: SCNGeometry = Meshes.Bubble.blank) {
         super.init()
-        self.geometry = Meshes.Bubble.honey
+        self.geometry = texture
+        self.geometry?.firstMaterial?.writesToDepthBuffer = false
+        self.geometry?.firstMaterial?.readsFromDepthBuffer = false
+        self.pivot = SCNMatrix4MakeTranslation(0, -1, 0)
         self.scale = SCNVector3(x: 1.5, y: 1.5, z: 1.5)
         self.constraints = [SCNBillboardConstraint()]
         self.castsShadow = false
+        
+        let duration: TimeInterval = 5
+        let bobUp = SCNAction.moveBy(x: 0, y: 0.5, z: 0, duration: duration / 2)
+        bobUp.timingMode = .easeInEaseOut
+        let bobDown = SCNAction.moveBy(x: 0, y: -0.5, z: 0, duration: duration / 2)
+        bobDown.timingMode = .easeInEaseOut
+        let action = SCNAction.repeatForever(SCNAction.sequence([bobUp, bobDown]))
+        runAction(action)
     }
     
     required init?(coder: NSCoder) {
@@ -34,6 +45,7 @@ class Bubble: SCNNode {
                 SCNAction.fadeOut(duration: duration)
             ])
         ])
+        block?()
         runAction(action) {
             self.removeFromParentNode()
         }

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SceneKit
 
 enum FlowerGrowthState {
     case sprouting
@@ -32,6 +33,10 @@ class Flower: Container, Collector {
     
     override func loadNode() {
         self.geometry = Meshes.Flowers.daisy
+    }
+    
+    override func showBubble(texture: SCNGeometry = Meshes.Bubble.blank, onTap: (() -> Void)? = nil) {
+        super.showBubble(texture: Meshes.Bubble.pollen, onTap: onTap)
     }
     
     required init?(coder: NSCoder) {

@@ -61,6 +61,10 @@ class Hive: Container, Collector {
         cover.runAction(action)
     }
     
+    override func showBubble(texture: SCNGeometry = Meshes.Bubble.blank, onTap: (() -> Void)? = nil) {
+        super.showBubble(texture: Meshes.Bubble.honey, onTap: onTap)
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

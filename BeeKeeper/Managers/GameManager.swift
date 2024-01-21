@@ -35,7 +35,7 @@ final class GameManager: NSObject {
         // TODO: Possibly change mechanics?
         for bee in apiary.bees {
             // Produce first
-            if let collector = bee.producerAssignment as? Collector {
+            if let collector = bee.producerAssignment as? (Structure & Collector) {
                 try? collector.accept(bee)
             }
             
@@ -43,6 +43,15 @@ final class GameManager: NSObject {
             try? remove(bee.consumption)
         }
         
+        for structure in apiary.structures {
+            if let collector = structure as? (Container & Collector), let resource = collector.resourceTargets().first {
+                if collector.containing[keyPath: resource] > collector.maximum[keyPath: resource] * 0.3 {
+                    collector.showBubble {
+                        self.collect(from: collector)
+                    }
+                }
+            }
+        }
     }
     
     // MARK: - Observer Control

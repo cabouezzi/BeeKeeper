@@ -11,7 +11,7 @@ final class HoneyStorage: Container {
     private var jars: [SCNNode] = []
     required init() {
         super.init()
-        self.maximum = Resources(honey: 5000)
+        self.maximum = Resources(honey: 200)
         self.name = "Honey Storage"
         self.area = DiscreteRect(x: 0, y: 0, width: 2, height: 2)
         updateJars()
