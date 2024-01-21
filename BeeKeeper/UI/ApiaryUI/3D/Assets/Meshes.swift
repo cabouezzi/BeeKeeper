@@ -108,10 +108,12 @@ struct Meshes {
     }
     
     struct Flowers {
-        static let blackfoot: SCNGeometry = {
-            let scene = SCNScene(named: "Blackfoot.scn")!
-            let node = scene.rootNode.childNode(withName: "blackfoot", recursively: true)!
-            return node.geometry!
+        static let daisy: SCNGeometry = {
+            return SCNScene(named: "Daisy.scn")!.rootNode.childNodes.first!.geometry!
+        }()
+        
+        static let lavender: SCNGeometry = {
+            return SCNScene(named: "Lavender.scn")!.rootNode.childNodes.first!.geometry!
         }()
     }
     

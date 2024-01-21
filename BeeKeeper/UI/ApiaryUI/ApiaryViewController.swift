@@ -62,6 +62,7 @@ class ApiaryViewController: UIViewController {
     final func clearHud() {
         apiaryView.overlay.closeHud()
         apiaryView.overlay.setButtons()
+        apiaryView.camera.follow(nil)
         selectedNode = nil
     }
     
@@ -148,13 +149,13 @@ class ApiaryViewController: UIViewController {
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapHandler))
         let hold = UILongPressGestureRecognizer(target: self, action: #selector(holdHandler))
         
-#if !DEBUG
+        #if !DEBUG
         let pan = UIPanGestureRecognizer(target: self, action: #selector(panHandler))
         let pinch = UIPinchGestureRecognizer(target: self, action: #selector(pinchHandler))
         
         apiaryView.addGestureRecognizer(pan)
         apiaryView.addGestureRecognizer(pinch)
-#endif
+        #endif
         
         apiaryView.addGestureRecognizer(tap)
         apiaryView.addGestureRecognizer(hold)
@@ -223,7 +224,6 @@ class ApiaryViewController: UIViewController {
         switch state {
         case .following(_):
             clearHud()
-            apiaryView.camera.follow(nil)
             state = .idle
             lastCameraPosition = apiaryView.camera.pointOfView.position
             fallthrough
@@ -328,7 +328,7 @@ class ApiaryViewController: UIViewController {
         
         if gestureReconizer.state == .ended {
             if case GameState.assigning(let bee) = state, let target = beeTargetCache {
-                try! bee.assign(to: target)
+                try? bee.assign(to: target)
             }
             beeTargetCache?.unhighlight()
             beeTargetCache = nil
@@ -367,6 +367,7 @@ extension ApiaryViewController: ModelVisitor {
     }
 }
 
+// MARK: - SCNSceneRendererDelegate
 extension ApiaryViewController: SCNSceneRendererDelegate {
     func renderer(_ renderer: SCNSceneRenderer, willRenderScene scene: SCNScene, atTime time: TimeInterval) {
         for bee in apiaryView.apiary.bees {
@@ -381,6 +382,7 @@ extension ApiaryViewController: SCNSceneRendererDelegate {
     }
 }
 
+// MARK: - ShopViewDelegate
 extension ApiaryViewController: ShopViewDelegate {
     func shopView(_ shopView: ShopView, canSelectItem item: ShopItem) -> Bool {
         return GameManager.shared.getAllResources().canAfford(item.cost)
@@ -405,7 +407,8 @@ extension ApiaryViewController: ShopViewDelegate {
             ]
         case .flowers:
             return [
-                ShopItem(name: "Blackfoot", description: "A flower", cost: Resources(), display: UIImage(named: "world"), newProduct: { Flower() }),
+                ShopItem(name: "Daisy", description: "A flower", cost: Resources(), display: UIImage(named: "world"), newProduct: { Flower() }),
+                ShopItem(name: "Lavender", description: "A purple flower", cost: Resources(), display: UIImage(named: "world"), newProduct: { Lavender() })
             ]
         case .buy: return []
         }

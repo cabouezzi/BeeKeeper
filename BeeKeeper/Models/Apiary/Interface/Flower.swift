@@ -26,12 +26,12 @@ class Flower: Container, Collector {
         super.init()
         self.maximum = Resources(pollen: 500)
         self.name = "Flower"
-        self.area = DiscreteRect(x: 0, y: 0, width: 1, height: 1)
+        self.area = DiscreteRect(x: 0, y: 0, width: 2, height: 2)
         self.maximumAssignedBees = 1
     }
     
     override func loadNode() {
-        self.geometry = Meshes.Flowers.blackfoot
+        self.geometry = Meshes.Flowers.daisy
     }
     
     required init?(coder: NSCoder) {

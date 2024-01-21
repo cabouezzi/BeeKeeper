@@ -12,10 +12,11 @@ class Bee: SCNNode, Model, Producer, Codable {
     
     var genetics: Set<Gene>
     
-    var production: Resources
+    var production: Resources = Resources(honey: 0.5, pollen: 0.5, beeBread: 1)
     var producerAssignment: Structure?
     
-    var honeyConsumption: Float = 0.01
+    var hunger: Float = 100
+    var consumption = Resources(honey: 0, pollen: 0.1)
     var bodyTemperature: Float = 70
     var intimidation: Float = 5
     var stingerDamage: Float = 5
@@ -61,7 +62,6 @@ class Bee: SCNNode, Model, Producer, Codable {
     
     init(_ genes: Set<Gene> = []) {
         self.genetics = genes
-        self.production = Resources(honey: 0.5, pollen: 0.25, beeBread: 1)
         self.nickname = UUID().uuidString
         self.velocity = SCNVector3(x: Float.random(in: -1...1), y: Float.random(in: -1...1), z: Float.random(in: -1...1)).normalized()
         self.minSpeed = 0
@@ -190,7 +190,11 @@ class Bee: SCNNode, Model, Producer, Codable {
             acceleration += velocity.normalized() * (maxSpeed * 0.67 / velocity.magnitude)
         }
         
-        acceleration += avoidanceForce(world)
+        acceleration += avoidanceForce(world) * 5
+        
+        if let target = producerAssignment {
+            acceleration += target.worldPosition - worldPosition
+        }
         
         if acceleration.magnitude > maxSteerForce {
             acceleration = acceleration.normalized() * maxSteerForce
