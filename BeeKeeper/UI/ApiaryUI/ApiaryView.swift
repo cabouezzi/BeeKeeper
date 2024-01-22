@@ -26,8 +26,9 @@ class ApiaryView: SCNView {
         self.overlay.isHidden = false
         
         super.init(frame: frameRect, options: nil)
-        self.scene = SCNScene(named: "BeeKeeperBase.scn")
+        self.scene = SCNScene(named: "BeeKeeperForest.scn")
         self.scene?.background.contents = UIColor(red: 0.5, green: 0.9, blue: 1, alpha: 1)
+        self.autoenablesDefaultLighting = false
         self.overlaySKScene = overlay
         self.pointOfView = camera.pointOfView
         self.backgroundColor = .blue

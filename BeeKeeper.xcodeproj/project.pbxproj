@@ -82,6 +82,7 @@
 		14D7C56A2B5CC40800CC35CB /* Daisy.scn in Resources */ = {isa = PBXBuildFile; fileRef = 14D7C5692B5CC40800CC35CB /* Daisy.scn */; };
 		14D7C5732B5CC8E200CC35CB /* Lavender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D7C5722B5CC8E200CC35CB /* Lavender.swift */; };
 		14D7C5772B5CC96A00CC35CB /* Lavender.scn in Resources */ = {isa = PBXBuildFile; fileRef = 14D7C5762B5CC96A00CC35CB /* Lavender.scn */; };
+		14D7C57B2B5E29DA00CC35CB /* BeeKeeperForest.scn in Resources */ = {isa = PBXBuildFile; fileRef = 14D7C57A2B5E29D900CC35CB /* BeeKeeperForest.scn */; };
 		14E448832AC68129008963C8 /* SCNNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E448822AC68129008963C8 /* SCNNode.swift */; };
 		14E448852AC6828A008963C8 /* BeeWings.scn in Resources */ = {isa = PBXBuildFile; fileRef = 14E448842AC6828A008963C8 /* BeeWings.scn */; };
 		14E7C8322B4D13A6002376BF /* GameTicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E7C8312B4D13A6002376BF /* GameTicker.swift */; };
@@ -191,6 +192,7 @@
 		14D7C5692B5CC40800CC35CB /* Daisy.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Daisy.scn; sourceTree = "<group>"; };
 		14D7C5722B5CC8E200CC35CB /* Lavender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lavender.swift; sourceTree = "<group>"; };
 		14D7C5762B5CC96A00CC35CB /* Lavender.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Lavender.scn; sourceTree = "<group>"; };
+		14D7C57A2B5E29D900CC35CB /* BeeKeeperForest.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeKeeperForest.scn; sourceTree = "<group>"; };
 		14E448822AC68129008963C8 /* SCNNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCNNode.swift; sourceTree = "<group>"; };
 		14E448842AC6828A008963C8 /* BeeWings.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeWings.scn; sourceTree = "<group>"; };
 		14E7C8312B4D13A6002376BF /* GameTicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTicker.swift; sourceTree = "<group>"; };
@@ -543,6 +545,7 @@
 				14D7C5702B5CC80E00CC35CB /* Bee */,
 				14D7C56F2B5CC80400CC35CB /* Flowers */,
 				1405AC1A2B145310003B0079 /* ModelBase.scn */,
+				14D7C57A2B5E29D900CC35CB /* BeeKeeperForest.scn */,
 				140A330E2B578D7A00C1086C /* BeeKeeperBase.scn */,
 				14835A9E2AC679CE006D0290 /* Frame.scn */,
 				14835A9C2AC679CE006D0290 /* Hive.scn */,
@@ -708,6 +711,7 @@
 				14835A9F2AC679CE006D0290 /* Rack.scn in Resources */,
 				148196922B5B363400328709 /* ScienceStand.scn in Resources */,
 				14D7C5772B5CC96A00CC35CB /* Lavender.scn in Resources */,
+				14D7C57B2B5E29DA00CC35CB /* BeeKeeperForest.scn in Resources */,
 				14835A352AB396CD006D0290 /* EvolutionScene.sks in Resources */,
 				14835AA12AC679CE006D0290 /* Blackfoot.scn in Resources */,
 				14835A1F2AB01091006D0290 /* Preview Assets.xcassets in Resources */,
