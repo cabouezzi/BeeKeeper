@@ -140,7 +140,7 @@ class Bee: SCNNode, Model, Producer, Codable {
         
         switch animationState {
         case .droning:
-            animationPlayer = flapWings(repeatCount: 60)
+            animationPlayer = flapWings(repeatCount: .random(in: 60...120))
             if let producerAssignment = producerAssignment {
                 attraction = SCNNode()
                 attraction?.worldPosition = producerAssignment.worldPosition
@@ -164,14 +164,19 @@ class Bee: SCNNode, Model, Producer, Codable {
             }
         case .working:
             if producerAssignment != nil {
-                animationPlayer = wiggle(repeatCount: 1)
-                nextState = .droning
+                if Int.random(in: 1...100) > 33 {
+                    animationPlayer = wiggle(repeatCount: 1)
+                    animationPlayer.animation.duration = .random(in: 2...5)
+                    nextState = .working
+                } else {
+                    animationPlayer = prepareFlight()
+                    nextState = .droning
+                }
             } else {
                 animationPlayer = prepareFlight()
                 nextState = .droning
             }
         }
-        print("State \(animationState), next state \(nextState)")
         animationPlayer.animation.animationDidStop = { [weak self] x, y, z in
             self?.animationState = nextState
             self?.animationLoop()
@@ -185,7 +190,7 @@ class Bee: SCNNode, Model, Producer, Codable {
             return SCNAnimationPlayer()
         }
         animationPlayer.animation.repeatCount = CGFloat(repeatCount)
-        animationPlayer.speed *= 1
+        animationPlayer.speed *= 1.75
         bodyArmature?.addAnimationPlayer(animationPlayer, forKey: "wiggle")
         return animationPlayer
     }
