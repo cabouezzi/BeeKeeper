@@ -94,7 +94,6 @@ class ApiaryViewController: UIViewController {
     
     func beginAddingNewStructure(_ structure: Structure, completion: (() throws -> Void)? = nil) {
         guard case .idle = state else { return }
-        apiaryView.camera.birdsEyeView(animated: true)
         
         state = .moving(structure, SCNVector3(0, 0, 0))
         apiaryView.scene?.rootNode.addChildNode(structure)
@@ -111,7 +110,6 @@ class ApiaryViewController: UIViewController {
                     try GameManager.shared.addStructure(structure)
                     self.state = .idle
                     self.clearHud()
-                    self.apiaryView.camera.defaultView(animated: true)
                 } catch {
                     print(error.localizedDescription)
                 }
@@ -121,7 +119,6 @@ class ApiaryViewController: UIViewController {
                 structure.removeFromParentNode()
                 self.state = .idle
                 self.clearHud()
-                self.apiaryView.camera.defaultView(animated: true)
             })
         ])
     }
@@ -209,8 +206,6 @@ class ApiaryViewController: UIViewController {
         }
     }
     
-    private lazy var lastCameraPosition = apiaryView.camera.pointOfView.position
-    
     @objc
     private func panHandler(_ gestureRecognizer: UIPanGestureRecognizer) {
         let fov = apiaryView.camera.camera!.fieldOfView
@@ -218,23 +213,22 @@ class ApiaryViewController: UIViewController {
         let velocity = gestureRecognizer.velocity(in: apiaryView)
         // Velocity is larger for the shorter dimension
         let factor = 1 / max(apiaryView.frame.width, apiaryView.frame.height)
-        let scaledVelocityX = Float(velocity.x * fov * factor / 100)
-        let scaledVelocityY = Float(velocity.y * fov * factor / 100)
+        let scaledVelocityX = Float(-velocity.x * fov * factor / 200)
+        let scaledVelocityY = Float(-velocity.y * fov * factor / 200)
         
         switch state {
         case .following(_):
             clearHud()
             state = .idle
-            lastCameraPosition = apiaryView.camera.pointOfView.position
             fallthrough
         case .idle:
             if gestureRecognizer.state == .began {
                 apiaryView.camera.velocity = .zero
-                lastCameraPosition = apiaryView.camera.pointOfView.position
             }
             
-            apiaryView.camera.pointOfView.position.x -= scaledVelocityX
-            apiaryView.camera.pointOfView.position.z -= scaledVelocityY
+            apiaryView.camera.translate(x: scaledVelocityX, y: 0, z: scaledVelocityY)
+            
+            print(apiaryView.camera.pointOfView.position)
             
             if gestureRecognizer.state == .ended {
                 apiaryView.camera.velocity = SCNVector3(x: scaledVelocityX, y: 0, z: scaledVelocityY)
@@ -259,16 +253,16 @@ class ApiaryViewController: UIViewController {
             // Moves the camera further towards direction of movement
             let glideMargin = 0.2
             if location.x < apiaryView.frame.width * glideMargin {
-                apiaryView.camera.velocity.x = 0.1
-            }
-            if location.x > apiaryView.frame.width * (1 - glideMargin) {
                 apiaryView.camera.velocity.x = -0.1
             }
+            if location.x > apiaryView.frame.width * (1 - glideMargin) {
+                apiaryView.camera.velocity.x = 0.1
+            }
             if location.y < apiaryView.frame.height * glideMargin {
-                apiaryView.camera.velocity.z = 0.1
+                apiaryView.camera.velocity.z = -0.1
             }
             if location.y > apiaryView.frame.height * (1 - glideMargin) {
-                apiaryView.camera.velocity.z = -0.1
+                apiaryView.camera.velocity.z = 0.1
             }
             
             if apiaryView.apiary.structures.contains(where: { $0.overlaps(structure) }) {
@@ -284,20 +278,8 @@ class ApiaryViewController: UIViewController {
     
     @objc
     private func pinchHandler(_ gestureRecognizer: UIPinchGestureRecognizer) {
-        let velocity = gestureRecognizer.velocity / 2
-        guard let camera = apiaryView.camera.camera else { return }
-        
-        camera.fieldOfView -= velocity
-        
-        if camera.fieldOfView > 70 {
-            camera.fieldOfView = 70
-        } else if camera.fieldOfView < 25 {
-            camera.fieldOfView = 25
-        }
-        
-        if gestureRecognizer.state == .ended {
-            lastCameraPosition = apiaryView.camera.pointOfView.position
-        }
+        let velocity = Float(gestureRecognizer.velocity) / 3
+        apiaryView.camera.zoom(velocity)
     }
     
     private weak var beeTargetCache: Structure?
@@ -376,7 +358,7 @@ extension ApiaryViewController: SCNSceneRendererDelegate {
         
         if apiaryView.camera.velocity.magnitude > 0.0001 {
             let accelerationFactor = (1 - scene.physicsWorld.timeStep) * (1 - scene.physicsWorld.timeStep)
-            apiaryView.camera.pointOfView.position -= apiaryView.camera.velocity
+            apiaryView.camera.translate(vector: apiaryView.camera.velocity)
             apiaryView.camera.velocity *= Float(accelerationFactor)
         }
     }

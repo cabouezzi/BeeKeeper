@@ -78,11 +78,12 @@
 		14A7DE832AD389DA00D2FD4A /* ShopItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A7DE822AD389DA00D2FD4A /* ShopItem.swift */; };
 		14A7DE852AD3906600D2FD4A /* ShopViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A7DE842AD3906600D2FD4A /* ShopViewCell.swift */; };
 		14A7DE882AD3AA6100D2FD4A /* EvolutionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A7DE872AD3AA6100D2FD4A /* EvolutionViewController.swift */; };
+		14AB5C992B5EE735002750B2 /* BeeKeeperForest.scn in Resources */ = {isa = PBXBuildFile; fileRef = 14AB5C982B5EE735002750B2 /* BeeKeeperForest.scn */; };
+		14AB5C9B2B5F1AED002750B2 /* Numeric.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14AB5C9A2B5F1AED002750B2 /* Numeric.swift */; };
 		14BB763B2B12903300E15654 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BB763A2B12903300E15654 /* AppDelegate.swift */; };
 		14D7C56A2B5CC40800CC35CB /* Daisy.scn in Resources */ = {isa = PBXBuildFile; fileRef = 14D7C5692B5CC40800CC35CB /* Daisy.scn */; };
 		14D7C5732B5CC8E200CC35CB /* Lavender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D7C5722B5CC8E200CC35CB /* Lavender.swift */; };
 		14D7C5772B5CC96A00CC35CB /* Lavender.scn in Resources */ = {isa = PBXBuildFile; fileRef = 14D7C5762B5CC96A00CC35CB /* Lavender.scn */; };
-		14D7C57B2B5E29DA00CC35CB /* BeeKeeperForest.scn in Resources */ = {isa = PBXBuildFile; fileRef = 14D7C57A2B5E29D900CC35CB /* BeeKeeperForest.scn */; };
 		14E448832AC68129008963C8 /* SCNNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E448822AC68129008963C8 /* SCNNode.swift */; };
 		14E448852AC6828A008963C8 /* BeeWings.scn in Resources */ = {isa = PBXBuildFile; fileRef = 14E448842AC6828A008963C8 /* BeeWings.scn */; };
 		14E7C8322B4D13A6002376BF /* GameTicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E7C8312B4D13A6002376BF /* GameTicker.swift */; };
@@ -188,11 +189,12 @@
 		14A7DE822AD389DA00D2FD4A /* ShopItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopItem.swift; sourceTree = "<group>"; };
 		14A7DE842AD3906600D2FD4A /* ShopViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopViewCell.swift; sourceTree = "<group>"; };
 		14A7DE872AD3AA6100D2FD4A /* EvolutionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvolutionViewController.swift; sourceTree = "<group>"; };
+		14AB5C982B5EE735002750B2 /* BeeKeeperForest.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeKeeperForest.scn; sourceTree = "<group>"; };
+		14AB5C9A2B5F1AED002750B2 /* Numeric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Numeric.swift; sourceTree = "<group>"; };
 		14BB763A2B12903300E15654 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		14D7C5692B5CC40800CC35CB /* Daisy.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Daisy.scn; sourceTree = "<group>"; };
 		14D7C5722B5CC8E200CC35CB /* Lavender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lavender.swift; sourceTree = "<group>"; };
 		14D7C5762B5CC96A00CC35CB /* Lavender.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Lavender.scn; sourceTree = "<group>"; };
-		14D7C57A2B5E29D900CC35CB /* BeeKeeperForest.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeKeeperForest.scn; sourceTree = "<group>"; };
 		14E448822AC68129008963C8 /* SCNNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCNNode.swift; sourceTree = "<group>"; };
 		14E448842AC6828A008963C8 /* BeeWings.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeWings.scn; sourceTree = "<group>"; };
 		14E7C8312B4D13A6002376BF /* GameTicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTicker.swift; sourceTree = "<group>"; };
@@ -530,6 +532,7 @@
 			isa = PBXGroup;
 			children = (
 				14835A902AC6000E006D0290 /* UIColor.swift */,
+				14AB5C9A2B5F1AED002750B2 /* Numeric.swift */,
 				14E448822AC68129008963C8 /* SCNNode.swift */,
 				142211052B56213E0060C51A /* SCNVector3.swift */,
 				1405AC2E2B1599D3003B0079 /* UIBezierPath.swift */,
@@ -545,7 +548,7 @@
 				14D7C5702B5CC80E00CC35CB /* Bee */,
 				14D7C56F2B5CC80400CC35CB /* Flowers */,
 				1405AC1A2B145310003B0079 /* ModelBase.scn */,
-				14D7C57A2B5E29D900CC35CB /* BeeKeeperForest.scn */,
+				14AB5C982B5EE735002750B2 /* BeeKeeperForest.scn */,
 				140A330E2B578D7A00C1086C /* BeeKeeperBase.scn */,
 				14835A9E2AC679CE006D0290 /* Frame.scn */,
 				14835A9C2AC679CE006D0290 /* Hive.scn */,
@@ -711,7 +714,6 @@
 				14835A9F2AC679CE006D0290 /* Rack.scn in Resources */,
 				148196922B5B363400328709 /* ScienceStand.scn in Resources */,
 				14D7C5772B5CC96A00CC35CB /* Lavender.scn in Resources */,
-				14D7C57B2B5E29DA00CC35CB /* BeeKeeperForest.scn in Resources */,
 				14835A352AB396CD006D0290 /* EvolutionScene.sks in Resources */,
 				14835AA12AC679CE006D0290 /* Blackfoot.scn in Resources */,
 				14835A1F2AB01091006D0290 /* Preview Assets.xcassets in Resources */,
@@ -728,6 +730,7 @@
 				140A330F2B578D7A00C1086C /* BeeKeeperBase.scn in Resources */,
 				142211102B564AFB0060C51A /* BeeWingsFlap.scn in Resources */,
 				141AC4972B50651B006DD1F8 /* BeeWiggle.scn in Resources */,
+				14AB5C992B5EE735002750B2 /* BeeKeeperForest.scn in Resources */,
 				14835A012AB01091006D0290 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -765,6 +768,7 @@
 				14835A072AB01091006D0290 /* Structure.swift in Sources */,
 				14835A0B2AB01091006D0290 /* Flower.swift in Sources */,
 				14835A132AB01091006D0290 /* Hive.swift in Sources */,
+				14AB5C9B2B5F1AED002750B2 /* Numeric.swift in Sources */,
 				148359EF2AB01091006D0290 /* ApiaryViewController.swift in Sources */,
 				14835A212AB01091006D0290 /* Resource.swift in Sources */,
 				14A7DE852AD3906600D2FD4A /* ShopViewCell.swift in Sources */,
