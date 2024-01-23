@@ -23,6 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let navigationController = UINavigationController()
         navigationController.pushViewController(gameViewController, animated: false)
         navigationController.modalPresentationStyle = .none
+        navigationController.isNavigationBarHidden = true
         
         self.window = window
         window.rootViewController = navigationController

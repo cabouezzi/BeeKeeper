@@ -30,11 +30,11 @@ class EvolutionViewController: UIViewController {
         
         evolutionScene.delegate = self
         
-#if !RELEASE
+        #if !RELEASE
         centerNode.isUserInteractionEnabled = true
-#else
+        #else
         centerNode.isUserInteractionEnabled = false
-#endif
+        #endif
         middleStars.isUserInteractionEnabled = false
         backStars.isUserInteractionEnabled = false
         
@@ -42,14 +42,6 @@ class EvolutionViewController: UIViewController {
             SKConstraint.positionX(SKRange(lowerLimit: -1515, upperLimit: 1515)),
             SKConstraint.positionY(SKRange(lowerLimit: -1515, upperLimit: 1515))
         ]
-//        backStars.constraints = [
-//            SKConstraint.positionX(SKRange(lowerLimit: -1515 / 2, upperLimit: 1515 / 2)),
-//            SKConstraint.positionY(SKRange(lowerLimit: -1515 / 2, upperLimit: 1515 / 2))
-//        ]
-//        middleStars.constraints = [
-//            SKConstraint.positionX(SKRange(lowerLimit: -1515 / 3, upperLimit: 1515 / 3)),
-//            SKConstraint.positionY(SKRange(lowerLimit: -1515 / 3, upperLimit: 1515 / 3))
-//        ]
     }
     
     required init?(coder: NSCoder) {
@@ -88,6 +80,13 @@ class EvolutionViewController: UIViewController {
         super.viewDidAppear(animated)
         addGestureRecognizers()
         animateCenterNode()
+        navigationController?.isNavigationBarHidden = false
+        navigationController?.navigationBar.backItem?.backButtonTitle = ""
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.isNavigationBarHidden = true
     }
     
     private func animateCenterNode() {

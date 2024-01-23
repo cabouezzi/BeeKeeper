@@ -25,10 +25,6 @@ class ApiaryViewController: UIViewController {
     
     init(frame: CGRect) {
         self.apiaryView = ApiaryView(frame: frame)
-#if DEBUG
-        self.apiaryView.allowsCameraControl = true
-        self.apiaryView.showsStatistics = true
-#endif
         super.init(nibName: nil, bundle: nil)
         self.apiaryView.delegate = self
         
@@ -53,10 +49,20 @@ class ApiaryViewController: UIViewController {
         super.viewDidLoad()
     }
     
+    // MARK: - UI Functions
+    
     final func linkOverlay() {
         apiaryView.overlay.shopButton.onTap(popToShop)
         apiaryView.overlay.evolutionButton.onTap(popToEvolution)
         apiaryView.overlay.mapButton.onTap(popToMap)
+        apiaryView.overlay.beesButton.onTap(showBeesList)
+    }
+    
+    final func selectNode(_ node: SCNNode & Model) {
+        selectedNode = node
+        node.accept(self)
+        node.accept(apiaryView.overlay)
+        flashNode(node)
     }
     
     final func clearHud() {
@@ -123,6 +129,18 @@ class ApiaryViewController: UIViewController {
         ])
     }
     
+    func showBeesList() {
+        let frame = CGRect(x: 0, y: 0, width: apiaryView.frame.width * 0.3, height: apiaryView.frame.width * 0.3)
+        let beeListView = BeeListView(bees: apiaryView.apiary.bees, frame: frame)
+        beeListView.frame.origin.x = apiaryView.overlay.beesButton.calculateAccumulatedFrame().minX - beeListView.frame.width - 50
+        beeListView.center.y = apiaryView.center.y
+        beeListView.onSelect { bee in
+            self.selectNode(bee)
+            beeListView.removeFromSuperview()
+        }
+        apiaryView.showMiniscreen(beeListView)
+    }
+    
     // MARK: - UI Navigation
     
     private func popToShop() {
@@ -146,16 +164,17 @@ class ApiaryViewController: UIViewController {
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapHandler))
         let hold = UILongPressGestureRecognizer(target: self, action: #selector(holdHandler))
         
-        #if !DEBUG
         let pan = UIPanGestureRecognizer(target: self, action: #selector(panHandler))
         let pinch = UIPinchGestureRecognizer(target: self, action: #selector(pinchHandler))
         
         apiaryView.addGestureRecognizer(pan)
         apiaryView.addGestureRecognizer(pinch)
-        #endif
-        
         apiaryView.addGestureRecognizer(tap)
         apiaryView.addGestureRecognizer(hold)
+        
+        for gesture in [tap, hold, pan, pinch] {
+            gesture.cancelsTouchesInView = false
+        }
     }
     
     private weak var selectedNode: SCNNode? {
@@ -198,10 +217,7 @@ class ApiaryViewController: UIViewController {
                 clearHud()
                 return
             }
-            selectedNode = bknode
-            bknode.accept(self)
-            bknode.accept(apiaryView.overlay)
-            flashNode(bknode)
+            selectNode(bknode)
         default: break
         }
     }
@@ -227,8 +243,6 @@ class ApiaryViewController: UIViewController {
             }
             
             apiaryView.camera.translate(x: scaledVelocityX, y: 0, z: scaledVelocityY)
-            
-            print(apiaryView.camera.pointOfView.position)
             
             if gestureRecognizer.state == .ended {
                 apiaryView.camera.velocity = SCNVector3(x: scaledVelocityX, y: 0, z: scaledVelocityY)
@@ -332,8 +346,11 @@ extension ApiaryViewController: ModelVisitor {
     
     func visitBee(_ model: Bee) -> () {
         model.wiggle(repeatCount: 1)
-        apiaryView.camera.follow(model)
         state = .following(model)
+        apiaryView.camera.follow(model)
+        apiaryView.overlay.setButtons(title: model.nickname,
+                                      SKButton(texture: Textures.info)
+        )
     }
     
     func visitHive(_ model: Hive) -> () {

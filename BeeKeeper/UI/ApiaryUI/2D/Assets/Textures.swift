@@ -14,6 +14,8 @@ struct Textures {
     static let build: SKTexture = SKTexture(imageNamed: "buildButton")
     static let atom: SKTexture = SKTexture(imageNamed: "atomButton")
     
+    static let bees = SKTexture(imageNamed: "beeButton")
+    
     static let blankOrange: SKTexture = SKTexture(imageNamed: "blank")
     static let blankWhite: SKTexture = SKTexture(imageNamed: "blankButton")
     static let edit: SKTexture = SKTexture(imageNamed: "editButton-1")

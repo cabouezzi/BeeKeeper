@@ -73,6 +73,18 @@ class ApiaryView: SCNView {
             scene?.rootNode.addChildNode(structure)
         }
     }
+    
+    func showMiniscreen(_ view: UIView) {
+        let background = UIButton(frame: frame)
+        background.backgroundColor = .clear
+        background.addAction(for: .allTouchEvents) {
+            background.removeFromSuperview()
+            view.removeFromSuperview()
+        }
+        addSubview(background)
+        addSubview(view)
+        bringSubviewToFront(view)
+    }
 }
 
 extension ApiaryView: GameObserver {
