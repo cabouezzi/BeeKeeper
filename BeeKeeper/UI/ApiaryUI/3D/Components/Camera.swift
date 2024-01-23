@@ -59,6 +59,7 @@ class Camera: SCNNode {
         zoomFactor = newZoom
         let dir = convertVector(SCNNode.localUp, to: pointOfView)
         pointOfView.position = dir * Float(newZoom)
+        pointOfView.position.y += 5
     }
     
     func follow(_ node: SCNNode?) {
