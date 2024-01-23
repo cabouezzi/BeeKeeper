@@ -70,4 +70,8 @@ extension SCNVector3 {
         if self == .zero { return .zero }
         return self / magnitude
     }
+    
+    func distance(to vector: SCNVector3) -> Float {
+        return (self - vector).magnitude
+    }
 }
