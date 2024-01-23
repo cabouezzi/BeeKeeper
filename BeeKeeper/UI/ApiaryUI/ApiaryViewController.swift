@@ -12,6 +12,7 @@ fileprivate enum GameState {
     case idle
     case moving(_ structure: Structure, _ originalPosition: SCNVector3)
     case assigning(_ bee: Bee)
+    case assigningWithDrag(_ bee: Bee)
     case following(_ node: SCNNode)
 }
 
@@ -129,6 +130,34 @@ class ApiaryViewController: UIViewController {
         ])
     }
     
+    func beginAssigningBee(_ bee: Bee) {
+        func clear() {
+            for structure in apiaryView.apiary.structures {
+                structure.removeBubble()
+            }
+            clearHud()
+            state = .idle
+        }
+        
+        state = .assigning(bee)
+        apiaryView.overlay.setButtons(
+            title: "Choose a Target for \(bee.nickname.prefix(10))",
+            SKButton(texture: Textures.check, onTap: clear),
+            SKButton(texture: Textures.unlink, onTap: {
+                try? bee.assign(to: nil)
+                clear()
+            })
+        )
+        
+        for structure in apiaryView.apiary.structures where structure !== bee.producerAssignment {
+            guard structure.assignedBees.count < structure.maximumAssignedBees else { continue }
+            structure.showBubble(texture: .plus) {
+                try? bee.assign(to: structure)
+                clear()
+            }
+        }
+    }
+    
     func showBeesList() {
         let frame = CGRect(x: 0, y: 0, width: apiaryView.frame.width * 0.3, height: apiaryView.frame.width * 0.3)
         let beeListView = BeeListView(bees: apiaryView.apiary.bees, frame: frame)
@@ -237,6 +266,8 @@ class ApiaryViewController: UIViewController {
             clearHud()
             state = .idle
             fallthrough
+        case .assigning(_):
+            fallthrough
         case .idle:
             if gestureRecognizer.state == .began {
                 apiaryView.camera.velocity = .zero
@@ -304,12 +335,12 @@ class ApiaryViewController: UIViewController {
         
         if gestureReconizer.state == .began {
             if let bee = hitTest.first?.node.firstParentModelNode() as? Bee {
-                state = .assigning(bee)
+                state = .assigningWithDrag(bee)
                 apiaryView.overlay.setButtons(title: "Choose a Target for \(bee.nickname.prefix(10))", [])
             }
         }
         
-        guard case GameState.assigning(_) = state else { return }
+        guard case GameState.assigningWithDrag(_) = state else { return }
         
         if let node = hitTest.first?.node.firstParentModelNode() as? Structure {
             if node !== beeTargetCache {
@@ -323,7 +354,7 @@ class ApiaryViewController: UIViewController {
         }
         
         if gestureReconizer.state == .ended {
-            if case GameState.assigning(let bee) = state, let target = beeTargetCache {
+            if case GameState.assigningWithDrag(let bee) = state, let target = beeTargetCache {
                 try? bee.assign(to: target)
             }
             beeTargetCache?.unhighlight()
@@ -348,8 +379,13 @@ extension ApiaryViewController: ModelVisitor {
         model.wiggle(repeatCount: 1)
         state = .following(model)
         apiaryView.camera.follow(model)
-        apiaryView.overlay.setButtons(title: model.nickname,
-                                      SKButton(texture: Textures.info)
+        apiaryView.overlay.setButtons(
+            title: model.nickname,
+            SKButton(texture: Textures.info),
+            SKButton(texture: Textures.edit, onTap: {
+                self.apiaryView.camera.follow(nil)
+                self.beginAssigningBee(model)
+            })
         )
     }
     

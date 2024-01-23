@@ -46,7 +46,7 @@ final class GameManager: NSObject {
         for structure in apiary.structures {
             if let collector = structure as? (Container & Collector), let resource = collector.resourceTargets().first {
                 if collector.containing[keyPath: resource] > collector.maximum[keyPath: resource] * 0.3 {
-                    collector.showBubble {
+                    collector.showResourceBubble {
                         self.collect(from: collector)
                     }
                 }

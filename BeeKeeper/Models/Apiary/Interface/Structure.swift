@@ -92,13 +92,18 @@ class Structure: BKNode, Model, Codable {
         return area.intersects(structure.area)
     }
     
-    func showBubble(texture: SCNGeometry = Meshes.Bubble.blank, onTap: (() -> Void)? = nil) {
+    final func showBubble(texture: Bubble.BubbleTexture, onTap: (() -> Void)? = nil) {
         guard self.bubble == nil else { return } // bubble already in use
         let bubble = Bubble(texture)
         addChildNode(bubble)
         bubble.position.y += (geometry?.height ?? 0) / 2
         bubble.onTap(onTap)
         self.bubble = bubble
+    }
+    
+    final func removeBubble() {
+        bubble?.removeFromParentNode()
+        bubble = nil
     }
     
     func accept<T>(_ visitor: T) -> T.ReturnType where T : ModelVisitor {

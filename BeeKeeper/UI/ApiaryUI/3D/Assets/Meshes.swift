@@ -137,5 +137,12 @@ struct Meshes {
             geometry.materials.first?.diffuse.contents = texture
             return geometry
         }()
+        
+        static let plus: SCNGeometry = {
+            var geometry = Bubble.blank.copy() as! SCNGeometry
+            guard let texture = UIImage(named: "plusBubble") else { return geometry }
+            geometry.materials.first?.diffuse.contents = texture
+            return geometry
+        }()
     }
 }

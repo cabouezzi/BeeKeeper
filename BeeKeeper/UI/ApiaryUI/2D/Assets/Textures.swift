@@ -25,6 +25,7 @@ struct Textures {
     static let check: SKTexture = SKTexture(imageNamed: "goodButton")
     static let info: SKTexture = SKTexture(imageNamed: "infoButton")
     static let move: SKTexture = SKTexture(imageNamed: "moveButton")
+    static let unlink = SKTexture(imageNamed: "unlinkButton")
     
     static let starsBackground: SKTexture = SKTexture(imageNamed: "Stars")
     static let starsMiddleground: SKTexture = SKTexture(imageNamed: "StarsMiddle")

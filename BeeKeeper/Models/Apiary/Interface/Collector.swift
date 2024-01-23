@@ -18,6 +18,16 @@ protocol Collector {
     func transfer(to container: Container) throws
 }
 
+extension Collector where Self: Structure {
+    func showResourceBubble(_ onTap: (() -> Void)? = nil) {
+        if let resource = resourceTargets().first {
+            showBubble(texture: .fromResourcePath(resource), onTap: onTap)
+        } else {
+            showBubble(texture: .blank, onTap: onTap)
+        }
+    }
+}
+
 extension Collector where Self: Container {
     func accept(_ producer: some Producer) throws {
         var resources = Resources()
