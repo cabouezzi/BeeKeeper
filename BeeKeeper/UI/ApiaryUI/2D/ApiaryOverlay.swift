@@ -14,13 +14,13 @@ class ApiaryOverlay: SKScene {
     private var buttonsCache: Set<SKNode> = []
     
     private weak var currentHud: SKNode?
-    let achievementsButton: SKButton = SKButton(texture: Textures.achievements)
-    let tasksButton: SKButton = SKButton(texture: Textures.tasks)
-    let mapButton: SKButton = SKButton(texture: Textures.map)
-    let shopButton: SKButton = SKButton(texture: Textures.build)
+    let achievementsButton: SKButton = SKButton(texture: SKTexture.achievements)
+    let tasksButton: SKButton = SKButton(texture: SKTexture.tasks)
+    let mapButton: SKButton = SKButton(texture: SKTexture.map)
+    let shopButton: SKButton = SKButton(texture: SKTexture.build)
     
-    let beesButton: SKButton = SKButton(texture: Textures.bees)
-    let evolutionButton: SKButton = SKButton(texture: Textures.atom)
+    let beesButton: SKButton = SKButton(texture: SKTexture.bees)
+    let evolutionButton: SKButton = SKButton(texture: SKTexture.atom)
     
     convenience override init() {
         self.init(size: .zero)
@@ -178,17 +178,17 @@ extension ApiaryOverlay: ModelVisitor {
     
     func visitHive(_ model: Hive) -> Void {
         setButtons(title: model.name, [
-            SKButton(texture: Textures.blankWhite, title: "Add Honeycomb", onTap: {
+            SKButton(texture: SKTexture.blankWhite, title: "Add Honeycomb", onTap: {
                 do {
                     try model.addHoneycomb()
                 } catch {
                     print(error.localizedDescription)
                 }
             }),
-            SKButton(texture: Textures.check, title: "Collect", onTap: {
+            SKButton(texture: SKTexture.check, title: "Collect", onTap: {
                 GameManager.shared.collect(from: model)
             }),
-            SKButton(texture: Textures.info, title: "Info", onTap: { [unowned self] in
+            SKButton(texture: SKTexture.info, title: "Info", onTap: { [unowned self] in
                 self.showStructureHud(model)
             })
         ])
@@ -196,7 +196,7 @@ extension ApiaryOverlay: ModelVisitor {
     
     func visitIncubator(_ model: Incubator) -> () {
         setButtons(title: model.name, [
-            SKButton(texture: Textures.blankWhite, title: "Incubate", onTap: { [unowned self] in
+            SKButton(texture: SKTexture.blankWhite, title: "Incubate", onTap: { [unowned self] in
                 self.showIncubatorHud(model)
             }),
         ])
@@ -204,7 +204,7 @@ extension ApiaryOverlay: ModelVisitor {
     
     func visitFlower(_ model: Flower) -> () {
         setButtons(title: model.name, [
-            SKButton(texture: Textures.blankWhite, title: "Add Resources", onTap: {
+            SKButton(texture: SKTexture.blankWhite, title: "Add Resources", onTap: {
                 var resources = Resources(honey: 100, pollen: 100)
                 do {
                     try model.fill(&resources)
@@ -212,7 +212,7 @@ extension ApiaryOverlay: ModelVisitor {
                     print(error.localizedDescription)
                 }
             }),
-            SKButton(texture: Textures.check, title: "Collect", onTap: {
+            SKButton(texture: SKTexture.check, title: "Collect", onTap: {
                 GameManager.shared.collect(from: model)
             })
         ])

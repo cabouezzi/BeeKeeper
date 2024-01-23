@@ -55,7 +55,7 @@
 		14835A212AB01091006D0290 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148359E72AB01091006D0290 /* Resource.swift */; };
 		14835A232AB01091006D0290 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148359E82AB01091006D0290 /* Account.swift */; };
 		14835A2B2AB01327006D0290 /* SKButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A2A2AB01327006D0290 /* SKButton.swift */; };
-		14835A2E2AB013AE006D0290 /* Textures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A2D2AB013AE006D0290 /* Textures.swift */; };
+		14835A2E2AB013AE006D0290 /* SKTexture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A2D2AB013AE006D0290 /* SKTexture.swift */; };
 		14835A312AB02A60006D0290 /* SKNode+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A302AB02A60006D0290 /* SKNode+Animations.swift */; };
 		14835A352AB396CD006D0290 /* EvolutionScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 14835A342AB396CD006D0290 /* EvolutionScene.sks */; };
 		14835A372AB4C471006D0290 /* HoneycombTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A362AB4C471006D0290 /* HoneycombTests.swift */; };
@@ -167,7 +167,7 @@
 		148359E82AB01091006D0290 /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		148359EA2AB01091006D0290 /* BeeKeeper.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = BeeKeeper.entitlements; sourceTree = "<group>"; };
 		14835A2A2AB01327006D0290 /* SKButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKButton.swift; sourceTree = "<group>"; };
-		14835A2D2AB013AE006D0290 /* Textures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Textures.swift; sourceTree = "<group>"; };
+		14835A2D2AB013AE006D0290 /* SKTexture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKTexture.swift; sourceTree = "<group>"; };
 		14835A302AB02A60006D0290 /* SKNode+Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SKNode+Animations.swift"; sourceTree = "<group>"; };
 		14835A342AB396CD006D0290 /* EvolutionScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = EvolutionScene.sks; sourceTree = "<group>"; };
 		14835A362AB4C471006D0290 /* HoneycombTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoneycombTests.swift; sourceTree = "<group>"; };
@@ -491,7 +491,7 @@
 		14835A2C2AB01355006D0290 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				14835A2D2AB013AE006D0290 /* Textures.swift */,
+				14835A2D2AB013AE006D0290 /* SKTexture.swift */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -771,7 +771,7 @@
 				148359FF2AB01091006D0290 /* GameManager.swift in Sources */,
 				142211062B56213E0060C51A /* SCNVector3.swift in Sources */,
 				1405AC2D2B158C3F003B0079 /* GeneNetwork.swift in Sources */,
-				14835A2E2AB013AE006D0290 /* Textures.swift in Sources */,
+				14835A2E2AB013AE006D0290 /* SKTexture.swift in Sources */,
 				14835A072AB01091006D0290 /* Structure.swift in Sources */,
 				14835A0B2AB01091006D0290 /* Flower.swift in Sources */,
 				14835A132AB01091006D0290 /* Hive.swift in Sources */,

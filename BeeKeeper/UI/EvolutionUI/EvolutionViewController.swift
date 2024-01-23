@@ -141,7 +141,7 @@ class EvolutionViewController: UIViewController {
             guard let target = self.evolutionScene.childNode(withName: lockedGene.rawValue) else { continue }
             var lockNode: SKNode! = target.childNode(withName: "lock")
             if lockNode == nil {
-                lockNode = SKSpriteNode(texture: Textures.evolutionLock)
+                lockNode = SKSpriteNode(texture: SKTexture.evolutionLock)
                 lockNode.name = "lock"
                 lockNode.isUserInteractionEnabled = false
                 lockNode.zPosition = target.zPosition + 1

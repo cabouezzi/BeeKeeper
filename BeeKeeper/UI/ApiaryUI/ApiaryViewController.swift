@@ -7,6 +7,7 @@
 
 import UIKit
 import SceneKit
+import SpriteKit
 
 fileprivate enum GameState {
     case idle
@@ -110,7 +111,7 @@ class ApiaryViewController: UIViewController {
         }
         
         apiaryView.overlay.setButtons(title: structure.name, [
-            SKButton(texture: Textures.check, onTap: { [weak self] in
+            SKButton(texture: SKTexture.check, onTap: { [weak self] in
                 guard let self = self else { return }
                 do {
                     try completion?()
@@ -121,7 +122,7 @@ class ApiaryViewController: UIViewController {
                     print(error.localizedDescription)
                 }
             }),
-            SKButton(texture: Textures.blankWhite, onTap: { [weak self] in
+            SKButton(texture: SKTexture.blankWhite, onTap: { [weak self] in
                 guard let self = self else { return }
                 structure.removeFromParentNode()
                 self.state = .idle
@@ -142,8 +143,8 @@ class ApiaryViewController: UIViewController {
         state = .assigning(bee)
         apiaryView.overlay.setButtons(
             title: "Choose a Target for \(bee.nickname.prefix(10))",
-            SKButton(texture: Textures.check, onTap: clear),
-            SKButton(texture: Textures.unlink, onTap: {
+            SKButton(texture: SKTexture.check, onTap: clear),
+            SKButton(texture: SKTexture.unlink, onTap: {
                 try? bee.assign(to: nil)
                 clear()
             })
@@ -381,8 +382,8 @@ extension ApiaryViewController: ModelVisitor {
         apiaryView.camera.follow(model)
         apiaryView.overlay.setButtons(
             title: model.nickname,
-            SKButton(texture: Textures.info),
-            SKButton(texture: Textures.edit, onTap: {
+            SKButton(texture: SKTexture.info),
+            SKButton(texture: SKTexture.edit, onTap: {
                 self.apiaryView.camera.follow(nil)
                 self.beginAssigningBee(model)
             })
