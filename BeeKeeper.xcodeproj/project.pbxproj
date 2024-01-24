@@ -283,6 +283,17 @@
 			path = BeeListUI;
 			sourceTree = "<group>";
 		};
+		1457494F2B61D0F5004FAD7D /* Structures */ = {
+			isa = PBXGroup;
+			children = (
+				14835A9B2AC679CE006D0290 /* Rack.scn */,
+				14835A9E2AC679CE006D0290 /* Frame.scn */,
+				14835A9C2AC679CE006D0290 /* Hive.scn */,
+				148196912B5B363400328709 /* ScienceStand.scn */,
+			);
+			path = Structures;
+			sourceTree = "<group>";
+		};
 		148358B62AABBFC4006D0290 = {
 			isa = PBXGroup;
 			children = (
@@ -574,13 +585,10 @@
 				148ACE8F2B534C2B00A0F948 /* assets.scnassets */,
 				14D7C5702B5CC80E00CC35CB /* Bee */,
 				14D7C56F2B5CC80400CC35CB /* Flowers */,
+				1457494F2B61D0F5004FAD7D /* Structures */,
 				1405AC1A2B145310003B0079 /* ModelBase.scn */,
 				14AB5C982B5EE735002750B2 /* BeeKeeperForest.scn */,
 				140A330E2B578D7A00C1086C /* BeeKeeperBase.scn */,
-				14835A9E2AC679CE006D0290 /* Frame.scn */,
-				14835A9C2AC679CE006D0290 /* Hive.scn */,
-				14835A9B2AC679CE006D0290 /* Rack.scn */,
-				148196912B5B363400328709 /* ScienceStand.scn */,
 				148ACE8D2B534BC700A0F948 /* Bubble.scn */,
 			);
 			path = "3D Assets";

@@ -162,7 +162,7 @@ struct Meshes {
         static var incubator: SCNGeometry {
             let scene = SCNScene(named: "ScienceStand.scn")!
             let node = scene.rootNode.childNode(withName: "incubator", recursively: true)!
-            return node.flattenedClone().geometry!
+            return node.geometry!
         }
     }
     
