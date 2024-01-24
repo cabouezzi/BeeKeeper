@@ -11,6 +11,7 @@ import SpriteKit
 class ApiaryView: SCNView {
     var apiary: Apiary { GameManager.shared.apiary }
     
+    private var sun: SCNLight?
     let camera: Camera
     let overlay: ApiaryOverlay
     
@@ -36,6 +37,8 @@ class ApiaryView: SCNView {
         #if TEST
         self.showsStatistics = true
         #endif
+        
+        sun = scene?.rootNode.childNode(withName: "directional", recursively: true)?.light
         
         let floorNode = SCNNode(geometry: Meshes.floor)
         floorNode.position.y -= 1
@@ -84,6 +87,20 @@ class ApiaryView: SCNView {
         addSubview(background)
         addSubview(view)
         bringSubviewToFront(view)
+    }
+    
+    func turnLight(_ duration: TimeInterval) {
+        SCNTransaction.begin()
+        SCNTransaction.animationDuration = duration
+        sun?.intensity = 500
+        SCNTransaction.commit()
+    }
+    
+    func turnDark(_ duration: TimeInterval) {
+        SCNTransaction.begin()
+        SCNTransaction.animationDuration = duration
+        sun?.intensity = 0
+        SCNTransaction.commit()
     }
 }
 

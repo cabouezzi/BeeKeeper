@@ -403,7 +403,8 @@ extension ApiaryViewController: ModelVisitor {
 
 // MARK: - SCNSceneRendererDelegate
 extension ApiaryViewController: SCNSceneRendererDelegate {
-    func renderer(_ renderer: SCNSceneRenderer, willRenderScene scene: SCNScene, atTime time: TimeInterval) {
+    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        guard let scene = apiaryView.scene else { return }
         for bee in apiaryView.apiary.bees {
             bee.droneStep(in: scene.physicsWorld)
         }
@@ -412,6 +413,12 @@ extension ApiaryViewController: SCNSceneRendererDelegate {
             let accelerationFactor = (1 - scene.physicsWorld.timeStep) * (1 - scene.physicsWorld.timeStep)
             apiaryView.camera.translate(vector: apiaryView.camera.velocity)
             apiaryView.camera.velocity *= Float(accelerationFactor)
+        }
+        
+        if Int(time.truncatingRemainder(dividingBy: 240) / 120).isMultiple(of: 2) {
+            apiaryView.turnDark(5)
+        } else {
+            apiaryView.turnLight(5)
         }
     }
 }
