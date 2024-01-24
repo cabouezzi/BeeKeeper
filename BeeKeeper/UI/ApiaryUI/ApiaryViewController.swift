@@ -56,7 +56,7 @@ class ApiaryViewController: UIViewController {
         apiaryView.overlay.shopButton.onTap(popToShop)
         apiaryView.overlay.evolutionButton.onTap(popToEvolution)
         apiaryView.overlay.mapButton.onTap(popToMap)
-        apiaryView.overlay.beesButton.onTap(showBeesList)
+        apiaryView.overlay.beesButton.onTap(popToBeeList)
     }
     
     final func selectNode(_ node: SCNNode & Model) {
@@ -177,7 +177,7 @@ class ApiaryViewController: UIViewController {
         print("Not implemented yet")
     }
     
-    func showBeesList() {
+    func popToBeeList() {
         let beeListView = BeeListView(bees: apiaryView.apiary.bees, frame: apiaryView.frame)
         beeListView.onSelect { [weak self] bee in
             beeListView.removeFromSuperview()
@@ -202,6 +202,7 @@ class ApiaryViewController: UIViewController {
         
         for gesture in [tap, hold, pan, pinch] {
             gesture.cancelsTouchesInView = false
+            gesture.delegate = self
         }
     }
     
@@ -240,6 +241,10 @@ class ApiaryViewController: UIViewController {
         }
         
         switch state {
+        case .following(_):
+            clearHud()
+            state = .idle
+            fallthrough
         case .idle:
             guard let bknode = node.firstParentModelNode() else {
                 clearHud()
@@ -361,6 +366,17 @@ class ApiaryViewController: UIViewController {
             state = .idle
             clearHud()
         }
+    }
+}
+
+// MARK: -
+extension ApiaryViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        let loc = gestureRecognizer.location(in: apiaryView)
+        if apiaryView.subviews.contains(where: { $0.frame.contains(loc) }) {
+            return false
+        }
+        return true
     }
 }
 

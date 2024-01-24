@@ -181,9 +181,13 @@ class Bee: SCNNode, Model, Producer, Codable {
         case .droning:
             animationPlayer = flapWings(repeatCount: .random(in: 60...120))
             if let producerAssignment = producerAssignment {
-                attraction = SCNNode()
-                attraction?.worldPosition = producerAssignment.worldPosition
-                attraction?.worldPosition.y += 2
+                if let flower = producerAssignment as? Flower {
+                    attraction = flower.pollinationNode()
+                } else {
+                    attraction = SCNNode()
+                    attraction?.worldPosition = producerAssignment.worldPosition
+                    attraction?.worldPosition.y += 2
+                }
                 nextState = .targeting
             } else {
                 nextState = .droning

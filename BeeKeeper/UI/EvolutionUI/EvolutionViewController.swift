@@ -82,7 +82,7 @@ class EvolutionViewController: UIViewController {
         let backButton = UIButton(frame: CGRect(x: 25, y: 25, width: frame.height / 15, height: frame.height / 15))
         backButton.setImage(UIImage(named: "backButton"), for: .normal)
         backButton.addAction { [weak self] in
-            self?.navigationController?.popViewController(animated: true)
+            self?.navigationController?.popViewController(animated: false)
         }
         evolutionView.addSubview(backButton)
     }
