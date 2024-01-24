@@ -39,8 +39,8 @@ class Bubble: SCNNode {
         geometry = texture.texture()
         geometry?.firstMaterial?.writesToDepthBuffer = false
         geometry?.firstMaterial?.readsFromDepthBuffer = false
+        geometry?.firstMaterial?.lightingModel = .constant
         
-        pivot = SCNMatrix4MakeTranslation(0, -1, 0)
         scale = SCNVector3(x: 1.5, y: 1.5, z: 1.5)
         constraints = [SCNBillboardConstraint()]
         castsShadow = false

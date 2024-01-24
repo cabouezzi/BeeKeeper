@@ -7,6 +7,7 @@
 
 import SceneKit
 
+// TODO: Fix bug with geometries copying and materials keeping reference
 struct Meshes {
     static let floor: SCNGeometry = {
         let floor = SCNFloor()
@@ -187,6 +188,7 @@ struct Meshes {
         static let honey: SCNGeometry = {
             var geometry = Bubble.blank.copy() as! SCNGeometry
             guard let texture = UIImage(named: "honeyBubble") else { return geometry }
+            geometry.materials = [SCNMaterial()]
             geometry.materials.first?.diffuse.contents = texture
             return geometry
         }()
@@ -194,6 +196,7 @@ struct Meshes {
         static let pollen: SCNGeometry = {
             var geometry = Bubble.blank.copy() as! SCNGeometry
             guard let texture = UIImage(named: "pollenBubble") else { return geometry }
+            geometry.materials = [SCNMaterial()]
             geometry.materials.first?.diffuse.contents = texture
             return geometry
         }()
@@ -201,6 +204,7 @@ struct Meshes {
         static let plus: SCNGeometry = {
             var geometry = Bubble.blank.copy() as! SCNGeometry
             guard let texture = UIImage(named: "plusBubble") else { return geometry }
+            geometry.materials = [SCNMaterial()]
             geometry.materials.first?.diffuse.contents = texture
             return geometry
         }()

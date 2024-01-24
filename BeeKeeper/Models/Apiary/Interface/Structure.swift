@@ -96,7 +96,7 @@ class Structure: BKNode, Model, Codable {
         guard self.bubble == nil else { return } // bubble already in use
         let bubble = Bubble(texture)
         addChildNode(bubble)
-        bubble.position.y += (geometry?.height ?? 0) / 2
+        bubble.position.y += (geometry?.height ?? 0) / 2 + 1
         bubble.onTap(onTap)
         self.bubble = bubble
     }

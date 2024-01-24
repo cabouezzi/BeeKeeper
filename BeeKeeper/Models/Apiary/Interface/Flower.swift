@@ -25,7 +25,7 @@ class Flower: Container, Collector {
     required init() {
         self.datePlanted = Date()
         super.init()
-        self.maximum = Resources(pollen: 500)
+        self.maximum = Resources(pollen: 10)
         self.name = "Flower"
         self.area = DiscreteRect(x: 0, y: 0, width: 2, height: 2)
         self.maximumAssignedBees = 4
