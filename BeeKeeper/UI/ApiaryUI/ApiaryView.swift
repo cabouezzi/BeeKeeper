@@ -57,8 +57,8 @@ class ApiaryView: SCNView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        // FIXME: Make overlay aware of safe area
-        // let safeAreaSize = self.safeAreaLayoutGuide.layoutFrame.size
+        let scale = max((safeAreaInsets.left + safeAreaInsets.right) / frame.size.width, (safeAreaInsets.top + safeAreaInsets.bottom) / frame.size.height)
+        overlay.camera?.setScale(1 + scale)
     }
     
     func loadNodes() {

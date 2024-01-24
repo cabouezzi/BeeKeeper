@@ -10,11 +10,6 @@ import SpriteKit
 
 class ApiaryOverlay: SKScene {
     let resources = ResourceDisplayHud()
-    
-    private var buttonsCache: Set<SKNode> = []
-    
-    private weak var currentHud: SKNode?
-    private let sharedHud = SKNode()
     let achievementsButton: SKButton = SKButton(texture: SKTexture.achievements)
     let tasksButton: SKButton = SKButton(texture: SKTexture.tasks)
     let mapButton: SKButton = SKButton(texture: SKTexture.map)
@@ -22,6 +17,10 @@ class ApiaryOverlay: SKScene {
     
     let beesButton: SKButton = SKButton(texture: SKTexture.bees)
     let evolutionButton: SKButton = SKButton(texture: SKTexture.atom)
+
+    private var buttonsCache: Set<SKNode> = []
+    private weak var currentHud: SKNode?
+    private let sharedHud = SKNode()
     
     convenience override init() {
         self.init(size: .zero)
@@ -33,11 +32,11 @@ class ApiaryOverlay: SKScene {
         self.scaleMode = .aspectFit
         setup()
         
-        for node in [achievementsButton, tasksButton, mapButton, shopButton, evolutionButton, beesButton] {
-            node.removeFromParent()
-            sharedHud.addChild(node)
-        }
-        addChild(sharedHud)
+        let camera = SKCameraNode()
+        camera.position.x = size.width / 2
+        camera.position.y = size.height / 2
+        self.camera = camera
+        addChild(camera)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -46,7 +45,6 @@ class ApiaryOverlay: SKScene {
     
     func setup() {
         addChild(resources)
-        
         resources.layout()
         resources.update(animated: false)
         
@@ -57,12 +55,11 @@ class ApiaryOverlay: SKScene {
         let leftButtons = [achievementsButton, tasksButton, mapButton]
         
         for (index, button) in leftButtons.enumerated() {
-            button.anchorPoint = CGPoint(x: 0.5, y: 0.5) // top left
+            button.anchorPoint = CGPoint(x: 0.5, y: 0.5)
             button.size = CGSize(width: buttonSize, height: buttonSize)
             button.position.x = section / 2 + spacing
             button.position.y = size.height - CGFloat(index + 2) * section
-            
-            addChild(button)
+            sharedHud.addChild(button)
         }
         
         // Bee list
@@ -70,7 +67,7 @@ class ApiaryOverlay: SKScene {
         beesButton.size = CGSize(width: buttonSize, height: buttonSize)
         beesButton.position.x = size.width - section / 2 - spacing
         beesButton.position.y = resources.calculateAccumulatedFrame().minY - section
-        addChild(beesButton)
+        sharedHud.addChild(beesButton)
         
         // Shop
         let shopButtonSize = buttonSize * 1.5
@@ -78,14 +75,16 @@ class ApiaryOverlay: SKScene {
         shopButton.size = CGSize(width: shopButtonSize, height: shopButtonSize)
         shopButton.position.x = shopButtonSize / 2 + spacing * 2
         shopButton.position.y = shopButtonSize / 2 + spacing * 2
-        addChild(shopButton)
+        sharedHud.addChild(shopButton)
         
         // Evolution
         evolutionButton.anchorPoint = CGPoint(x: 0.5, y: 0.5) // top left
         evolutionButton.size = CGSize(width: shopButtonSize, height: shopButtonSize)
         evolutionButton.position.x = size.width - shopButtonSize / 2 - spacing * 2
         evolutionButton.position.y = shopButtonSize / 2 + spacing * 2
-        addChild(evolutionButton)
+        sharedHud.addChild(evolutionButton)
+        
+        addChild(sharedHud)
     }
     
     func setButtons (title: String? = nil, _ buttons: SKButton...) {
