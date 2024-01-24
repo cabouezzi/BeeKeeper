@@ -6,24 +6,36 @@
 //
 
 import UIKit
+import SceneKit
+import SpriteKit
 
 class ShopViewCell: UICollectionViewCell {
     var item: ShopItem?
     
     var nameLabel: UILabel!
-    var modelView: UIImageView!
+    var modelView: SCNView!
+    private(set) var model: SCNNode?
     var costLabel: UILabel!
     
     private var nameLabelHeight: CGFloat { return frame.height * 2/10 }
-    private var modelViewHeight: CGFloat { return frame.height * 5/10 }
     private var costLabelHeight: CGFloat { return frame.height * 3/10 }
     
     private var horizontalTextInset: CGFloat { return frame.width * 0.1 }
     
+    private var scene: SCNScene = SCNScene(named: "ModelBase.scn")!
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupNameLabel()
+        let background = UIView(frame: CGRect(origin: .zero, size: frame.size))
+        background.frame.size.height *= 0.6
+        background.backgroundColor = .white
+        background.layer.cornerRadius = frame.width / 10
+        background.layer.opacity = 0.1
+        background.isUserInteractionEnabled = false
+        addSubview(background)
+        
         setupModelView()
+        setupNameLabel()
         setupCostLabel()
         
         backgroundColor = .orange
@@ -48,13 +60,17 @@ class ShopViewCell: UICollectionViewCell {
     }
     
     func setupModelView () {
-        modelView = UIImageView(frame: CGRect(x: 0, y: nameLabel.frame.maxY, width: frame.width, height: frame.height - nameLabelHeight - costLabelHeight))
-        
+        let frame = CGRect(x: 0, y: 0, width: frame.width, height: frame.height)
+        modelView = SCNView(frame: frame)
+        modelView.scene = scene
+        modelView.scene?.background.contents = UIColor.clear
+        modelView.backgroundColor = .clear
+        scene.rootNode.childNode(withName: "BeeReference", recursively: true)?.isHidden = true
         addSubview(modelView)
     }
     
     func setupCostLabel () {
-        costLabel = UILabel(frame: CGRect(x: horizontalTextInset, y: nameLabel.frame.maxY + modelViewHeight, width: frame.width - horizontalTextInset * 2, height: costLabelHeight))
+        costLabel = UILabel(frame: CGRect(x: horizontalTextInset, y: frame.height - costLabelHeight, width: frame.width - horizontalTextInset * 2, height: costLabelHeight))
         costLabel.text = "999999"
         costLabel.font = UIFont(name: "ArialRoundedMTBold", size: costLabel.frame.height/2)
         costLabel.textColor = .white
@@ -74,6 +90,15 @@ class ShopViewCell: UICollectionViewCell {
         
         nameLabel.text = item.name
         costLabel.text = ""
+        model?.removeFromParentNode()
+        
+        let model = item.newProduct()
+        model.pivot = SCNMatrix4MakeTranslation(0, 0, 0)
+        let scale = min(4 / Float(model.area.width), 4 / Float(model.area.height))
+        model.scale *= scale
+        model.position = .zero
+        scene.rootNode.addChildNode(model)
+        self.model = model
         
         if item.cost.honey != 0 {
             costLabel.text?.append("\(Int(item.cost.honey))H\n")

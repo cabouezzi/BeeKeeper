@@ -168,15 +168,7 @@ extension ShopView: UICollectionViewDelegate, UICollectionViewDataSource {
         
         let item = items()[indexPath.row]
         cell.setItem(item)
-        
-        if !(shopDelegate?.shopView(self, canSelectItem: item) ?? true) {
-            cell.backgroundColor = .gray
-        } else {
-            cell.backgroundColor = .orange
-        }
-        
-        cell.nameLabel.text = item.name
-        cell.modelView.image = item.display
+        cell.backgroundColor = (shopDelegate?.shopView(self, canSelectItem: item) ?? true) ? .orange : .gray
         
         return cell
     }
