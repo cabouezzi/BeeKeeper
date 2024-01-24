@@ -122,9 +122,48 @@ class Bee: SCNNode, Model, Producer, Codable {
     }
     
     func loadGeneticEffects() {
-        if genetics.contains(.stripesI) {
-            torso?.geometry = Meshes.Bee.Torso.yellowStripes
-            abdomen?.geometry = Meshes.Bee.Abdomen.yellowStripes
+        func setBodyColor(_ color: UIColor) {
+            head?.geometry?.material(named: "body")?.diffuse.contents = color
+            torso?.geometry?.material(named: "body")?.diffuse.contents = color
+            abdomen?.geometry?.material(named: "body")?.diffuse.contents = color
+            stinger?.geometry?.material(named: "body")?.diffuse.contents = color
+        }
+        func setStripeColor(_ color: UIColor) {
+            head?.geometry?.material(named: "stripes")?.diffuse.contents = color
+            torso?.geometry?.material(named: "stripes")?.diffuse.contents = color
+            abdomen?.geometry?.material(named: "stripes")?.diffuse.contents = color
+            stinger?.geometry?.material(named: "stripes")?.diffuse.contents = color
+        }
+        
+        if genetics.contains(.furII) {
+            torso?.geometry = Meshes.Bee.Torso.bumble
+            abdomen?.geometry = Meshes.Bee.Abdomen.bumble
+        } else if genetics.contains(.furI) {
+            setStripeColor(.gray)
+        }
+        
+        let bodyMaterial = torso?.geometry?.material(named: "body")
+        
+        if genetics.contains(.stripesIII) {
+            bodyMaterial?.diffuse.contents = UIColor(red: 0, green: 0.5, blue: 0, alpha: 1)
+            bodyMaterial?.metalness.intensity = 1
+            bodyMaterial?.roughness.intensity = 0
+            bodyMaterial?.reflective.contents = UIColor.black
+            bodyMaterial?.reflective.intensity = 1
+            bodyMaterial?.lightingModel = .physicallyBased
+        }
+        if genetics.contains(.stripesII) {
+            setStripeColor(.yellow)
+        } else if genetics.contains(.stripesI) {
+            setStripeColor(.orange)
+        }
+        
+        if genetics.contains(.stingerIII) {
+            stinger?.geometry = Meshes.Bee.Stinger.long
+        } else if genetics.contains(.stingerII) {
+            stinger?.geometry = Meshes.Bee.Stinger.medium
+        } else if genetics.contains(.stingerI) {
+            stinger?.geometry = Meshes.Bee.Stinger.plain
         }
     }
     

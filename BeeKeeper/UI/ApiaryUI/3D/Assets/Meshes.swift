@@ -32,9 +32,33 @@ struct Meshes {
                 return node.geometry!
             }()
             
-            static let yellowStripes: SCNGeometry = {
-                let scene = SCNScene(named: "BeeStripes.scn")!
+            static let grayStripes: SCNGeometry = {
+                let scene = SCNScene(named: "BeeStripesGray.scn")!
                 let node = scene.rootNode.childNode(withName: "TorsoStripes", recursively: true)!
+                return node.geometry!
+            }()
+            
+            static let yellowStripes: SCNGeometry = {
+                let scene = SCNScene(named: "BeeStripesYellow.scn")!
+                let node = scene.rootNode.childNode(withName: "TorsoStripes", recursively: true)!
+                return node.geometry!
+            }()
+            
+            static let orangeStripes: SCNGeometry = {
+                let scene = SCNScene(named: "BeeStripesOrange.scn")!
+                let node = scene.rootNode.childNode(withName: "TorsoStripes", recursively: true)!
+                return node.geometry!
+            }()
+            
+            static let bumble: SCNGeometry = {
+                let scene = SCNScene(named: "BeeAbdomens.scn")!
+                let node = scene.rootNode.childNode(withName: "torsoHigh", recursively: true)!
+                return node.geometry!
+            }()
+            
+            static let wasp: SCNGeometry = {
+                let scene = SCNScene(named: "BeeAbdomens.scn")!
+                let node = scene.rootNode.childNode(withName: "torsoLow", recursively: true)!
                 return node.geometry!
             }()
         }
@@ -43,6 +67,18 @@ struct Meshes {
             static let plain: SCNGeometry = {
                 let scene = SCNScene(named: "BeePlain.scn")!
                 let node = scene.rootNode.childNode(withName: "Stinger", recursively: true)!
+                return node.geometry!
+            }()
+            
+            static let medium: SCNGeometry = {
+                let scene = SCNScene(named: "BeeStingers.scn")!
+                let node = scene.rootNode.childNode(withName: "StingerMedium", recursively: true)!
+                return node.geometry!
+            }()
+            
+            static let long: SCNGeometry = {
+                let scene = SCNScene(named: "BeeStingers.scn")!
+                let node = scene.rootNode.childNode(withName: "StingerLong", recursively: true)!
                 return node.geometry!
             }()
         }
@@ -62,9 +98,33 @@ struct Meshes {
                 return node.geometry!
             }()
             
-            static let yellowStripes: SCNGeometry = {
-                let scene = SCNScene(named: "BeeStripes.scn")!
+            static let grayStripes: SCNGeometry = {
+                let scene = SCNScene(named: "BeeStripesGray.scn")!
                 let node = scene.rootNode.childNode(withName: "AbdomenStripes", recursively: true)!
+                return node.geometry!
+            }()
+            
+            static let yellowStripes: SCNGeometry = {
+                let scene = SCNScene(named: "BeeStripesYellow.scn")!
+                let node = scene.rootNode.childNode(withName: "AbdomenStripes", recursively: true)!
+                return node.geometry!
+            }()
+            
+            static let orangeStripes: SCNGeometry = {
+                let scene = SCNScene(named: "BeeStripesOrange.scn")!
+                let node = scene.rootNode.childNode(withName: "AbdomenStripes", recursively: true)!
+                return node.geometry!
+            }()
+            
+            static let bumble: SCNGeometry = {
+                let scene = SCNScene(named: "BeeAbdomens.scn")!
+                let node = scene.rootNode.childNode(withName: "abdomenHigh", recursively: true)!
+                return node.geometry!
+            }()
+            
+            static let wasp: SCNGeometry = {
+                let scene = SCNScene(named: "BeeAbdomens.scn")!
+                let node = scene.rootNode.childNode(withName: "abdomenLow", recursively: true)!
                 return node.geometry!
             }()
         }

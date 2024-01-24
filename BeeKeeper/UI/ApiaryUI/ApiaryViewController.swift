@@ -47,6 +47,7 @@ class ApiaryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        apiaryView.overlay.mapButton.isHidden = true
     }
     
     // MARK: - UI Functions
@@ -218,7 +219,7 @@ class ApiaryViewController: UIViewController {
         
         // Check and handle 2D interaction
         if let spriteNode = apiaryView.overlay.nodes(at: apiaryView.overlay.convertPoint(fromView: point)).first(where: { $0.isUserInteractionEnabled }) {
-            if let button = spriteNode as? SKButton {
+            if let button = spriteNode as? SKButton, !button.isHidden {
                 button.pop()
                 button.activate()
             }
@@ -374,7 +375,7 @@ extension ApiaryViewController: ModelVisitor {
     }
     
     func visitBee(_ model: Bee) -> () {
-        model.wiggle(repeatCount: 1)
+        model.wiggle(repeatCount: 1).play()
         state = .following(model)
         apiaryView.camera.follow(model)
         apiaryView.overlay.setButtons(

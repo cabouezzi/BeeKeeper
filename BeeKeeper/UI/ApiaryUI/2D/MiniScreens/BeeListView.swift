@@ -24,21 +24,19 @@ class BeeListView: UIView {
         
         beeView = SCNView(frame: frame)
         beeView.scene = SCNScene(named: "ModelBase.scn")
-        beeView.frame.size.width *= 1 / 3
+        beeView.frame.size.width *= 2 / 3
         
         beeReference = beeView.scene?.rootNode.childNode(withName: "BeeReference", recursively: true)
         beeReference?.isHidden = true
         
         let rowSize = 100
         scrollView = UIScrollView(frame: frame)
-        scrollView.frame.size.width *= 2 / 3
+        scrollView.frame.size.width *= 1 / 3
         scrollView.frame.origin.x = beeView.frame.maxX
         scrollView.contentSize = scrollView.frame.size
         scrollView.contentSize.height = max(scrollView.frame.size.height + 10, CGFloat(bees.count * rowSize))
         
         super.init(frame: frame)
-        
-        setBeeModel(bees.first)
         addSubview(beeView)
         
         scrollView.backgroundColor = .clear
