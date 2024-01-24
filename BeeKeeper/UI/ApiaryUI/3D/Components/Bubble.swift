@@ -72,8 +72,8 @@ class Bubble: SCNNode {
             ])
         ])
         block?()
-        runAction(action) {
-            self.removeFromParentNode()
+        runAction(action) { [weak self] in
+            self?.removeFromParentNode()
         }
     }
 }
