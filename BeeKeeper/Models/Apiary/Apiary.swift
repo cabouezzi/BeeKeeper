@@ -38,7 +38,7 @@ struct Apiary {
         let bee = Bee()
         try? bee.assign(to: flower)
         
-        self.bees = [bee]
+        self.bees = [bee, Bee([.stripesI])]
         self.structures = [
             hive,
             honeyStorage,

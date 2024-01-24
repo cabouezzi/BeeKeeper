@@ -18,7 +18,7 @@ extension SKTexture {
     
     static let blankOrange = SKTexture(imageNamed: "blank")
     static let blankWhite = SKTexture(imageNamed: "blankButton")
-    static let edit = SKTexture(imageNamed: "editButton-1")
+    static let edit = SKTexture(imageNamed: "editButton")
     static let evolution = SKTexture(imageNamed: "EvolutionBubble")
     static let evolution2 = SKTexture(imageNamed: "EvolutionBubble2")
     static let evolutionLock = SKTexture(imageNamed: "EvolutionBubbleLock")
@@ -26,6 +26,7 @@ extension SKTexture {
     static let info = SKTexture(imageNamed: "infoButton")
     static let move = SKTexture(imageNamed: "moveButton")
     static let unlink = SKTexture(imageNamed: "unlinkButton")
+    static let backArrow = SKTexture(imageNamed: "backButton")
     
     static let starsBackground = SKTexture(imageNamed: "Stars")
     static let starsMiddleground = SKTexture(imageNamed: "StarsMiddle")

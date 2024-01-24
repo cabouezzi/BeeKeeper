@@ -41,9 +41,7 @@ class ApiaryViewController: UIViewController {
         super.loadView()
         self.view = apiaryView
         apiaryView.loadNodes()
-        clearHud()
         linkOverlay()
-        
         apiaryView.scene?.rootNode.childNode(withName: "Island", recursively: true)?.categoryBitMask = 1
     }
     
@@ -69,6 +67,7 @@ class ApiaryViewController: UIViewController {
     
     final func clearHud() {
         apiaryView.overlay.closeHud()
+        apiaryView.overlay.showSharedHud()
         apiaryView.overlay.setButtons()
         apiaryView.camera.follow(nil)
         selectedNode = nil
@@ -141,6 +140,7 @@ class ApiaryViewController: UIViewController {
         }
         
         state = .assigning(bee)
+        apiaryView.overlay.hideSharedHud()
         apiaryView.overlay.setButtons(
             title: "Choose a Target for \(bee.nickname.prefix(10))",
             SKButton(texture: SKTexture.check, onTap: clear),
@@ -159,18 +159,6 @@ class ApiaryViewController: UIViewController {
         }
     }
     
-    func showBeesList() {
-        let frame = CGRect(x: 0, y: 0, width: apiaryView.frame.width * 0.3, height: apiaryView.frame.width * 0.3)
-        let beeListView = BeeListView(bees: apiaryView.apiary.bees, frame: frame)
-        beeListView.frame.origin.x = apiaryView.overlay.beesButton.calculateAccumulatedFrame().minX - beeListView.frame.width - 50
-        beeListView.center.y = apiaryView.center.y
-        beeListView.onSelect { bee in
-            self.selectNode(bee)
-            beeListView.removeFromSuperview()
-        }
-        apiaryView.showMiniscreen(beeListView)
-    }
-    
     // MARK: - UI Navigation
     
     private func popToShop() {
@@ -186,6 +174,15 @@ class ApiaryViewController: UIViewController {
     
     private func popToMap() {
         print("Not implemented yet")
+    }
+    
+    func showBeesList() {
+        let beeListView = BeeListView(bees: apiaryView.apiary.bees, frame: apiaryView.frame)
+        beeListView.onSelect { [weak self] bee in
+            beeListView.removeFromSuperview()
+            self?.selectNode(bee)
+        }
+        apiaryView.addSubview(beeListView)
     }
     
     // MARK: - Gesture Recognizers

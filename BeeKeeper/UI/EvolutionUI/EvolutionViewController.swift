@@ -76,17 +76,21 @@ class EvolutionViewController: UIViewController {
         drawDirectedEdges()
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let frame = evolutionView.frame
+        let backButton = UIButton(frame: CGRect(x: 25, y: 25, width: frame.height / 15, height: frame.height / 15))
+        backButton.setImage(UIImage(named: "backButton"), for: .normal)
+        backButton.addAction { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+        }
+        evolutionView.addSubview(backButton)
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         addGestureRecognizers()
         animateCenterNode()
-        navigationController?.isNavigationBarHidden = false
-        navigationController?.navigationBar.backItem?.backButtonTitle = ""
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.isNavigationBarHidden = true
     }
     
     private func animateCenterNode() {

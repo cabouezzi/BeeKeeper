@@ -71,15 +71,12 @@ class ShopView: SKView {
         bar.size.height = height
         scene?.addChild(bar)
         
-        let xbutton = SKButton(texture: SKTexture.check) {
-            self.removeFromSuperview()
+        let backButton = UIButton(frame: CGRect(x: 25, y: 25, width: frame.height / 15, height: frame.height / 15))
+        backButton.setImage(UIImage(named: "backButton"), for: .normal)
+        backButton.addAction { [weak self] in
+            self?.removeFromSuperview()
         }
-        xbutton.anchorPoint = CGPoint(x: 0, y: 0)
-        xbutton.size = CGSize(width: height, height: height)
-        xbutton.position.x = 0
-        xbutton.position.y = frame.height - height * 2
-        xbutton.zPosition = 1
-        scene?.addChild(xbutton)
+        addSubview(backButton)
         
         collectionView.frame = CGRect(x: 0, y: height * 3, width: frame.width, height: frame.height - height * 3)
         collectionView.delegate = self

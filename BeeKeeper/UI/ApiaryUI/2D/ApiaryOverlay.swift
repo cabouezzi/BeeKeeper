@@ -14,6 +14,7 @@ class ApiaryOverlay: SKScene {
     private var buttonsCache: Set<SKNode> = []
     
     private weak var currentHud: SKNode?
+    private let sharedHud = SKNode()
     let achievementsButton: SKButton = SKButton(texture: SKTexture.achievements)
     let tasksButton: SKButton = SKButton(texture: SKTexture.tasks)
     let mapButton: SKButton = SKButton(texture: SKTexture.map)
@@ -31,6 +32,12 @@ class ApiaryOverlay: SKScene {
         self.isHidden = false
         self.scaleMode = .aspectFit
         setup()
+        
+        for node in [achievementsButton, tasksButton, mapButton, shopButton, evolutionButton, beesButton] {
+            node.removeFromParent()
+            sharedHud.addChild(node)
+        }
+        addChild(sharedHud)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -131,6 +138,14 @@ class ApiaryOverlay: SKScene {
             addChild(label)
             label.fadeUp()
         }
+    }
+    
+    func showSharedHud() {
+        sharedHud.fadeUp()
+    }
+    
+    func hideSharedHud() {
+        sharedHud.fadeDown()
     }
     
     func closeHud() {
