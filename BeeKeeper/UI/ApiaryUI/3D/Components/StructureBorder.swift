@@ -22,10 +22,10 @@ class StructureBorder: SCNNode {
                 square.geometry?.firstMaterial?.readsFromDepthBuffer = false
                 square.geometry?.firstMaterial?.writesToDepthBuffer = false
                 square.eulerAngles.x = -.pi / 2
-                square.pivot = SCNMatrix4MakeTranslation(0.5, -0.5, 0)
-                square.position.x = Float(width)
-                square.position.y = 0
-                square.position.z = Float(height)
+                square.pivot = SCNMatrix4MakeTranslation(-0.5, 0.5, 0)
+                square.position.x = -Float(structure.area.width) / 2 + Float(width)
+                square.position.y = 0.1
+                square.position.z = -Float(structure.area.height) / 2 + Float(height)
                 squares.append(square)
             }
         }

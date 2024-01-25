@@ -107,6 +107,16 @@ class ApiaryViewController: UIViewController {
     
     func beginAddingNewStructure(_ structure: Structure, completion: (() throws -> Void)? = nil) {
         guard case .idle = state else { return }
+        func clear(_ success: Bool) {
+            if !success {
+                structure.removeFromParentNode()
+            }
+            state = .idle
+            clearHud()
+            for structure in apiaryView.apiary.structures {
+                structure.hideBorder()
+            }
+        }
         
         if structure.parent == nil {
             apiaryView.scene?.rootNode.addChildNode(structure)
@@ -115,31 +125,26 @@ class ApiaryViewController: UIViewController {
         state = .moving(structure, SCNVector3(0, 0, 0))
         
         for structure in apiaryView.apiary.structures {
-            structure.border?.isHidden = false
+            structure.showBorder()
         }
         
+        structure.showBorder()
         if apiaryView.apiary.structures.contains(where: { $0.overlaps(structure) }) {
-            structure.border?.setColor(.red)
+            structure.setBorderColor(.red)
         }
         
         apiaryView.overlay.setButtons(title: structure.name, [
-            SKButton(texture: SKTexture.check, onTap: { [weak self] in
-                guard let self = self else { return }
+            SKButton(texture: SKTexture.check, onTap: {
                 do {
                     try completion?()
                     try GameManager.shared.addStructure(structure)
-                    structure.border?.isHidden = true
-                    self.state = .idle
-                    self.clearHud()
+                    clear(true)
                 } catch {
                     print(error.localizedDescription)
                 }
             }),
-            SKButton(texture: SKTexture.blankWhite, onTap: { [weak self] in
-                guard let self = self else { return }
-                structure.removeFromParentNode()
-                self.state = .idle
-                self.clearHud()
+            SKButton(texture: SKTexture.blankWhite, onTap: {
+                clear(false)
             })
         ])
     }
@@ -204,15 +209,11 @@ class ApiaryViewController: UIViewController {
     private func addGestureRecognizers() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapHandler))
         let hold = UILongPressGestureRecognizer(target: self, action: #selector(holdHandler))
-        
-        #if !DEBUG
         let pan = UIPanGestureRecognizer(target: self, action: #selector(panHandler))
         let pinch = UIPinchGestureRecognizer(target: self, action: #selector(pinchHandler))
         
         apiaryView.addGestureRecognizer(pan)
         apiaryView.addGestureRecognizer(pinch)
-        #endif
-        
         apiaryView.addGestureRecognizer(tap)
         apiaryView.addGestureRecognizer(hold)
         
@@ -312,25 +313,25 @@ class ApiaryViewController: UIViewController {
                 structure.area.y = Int(round(pos.z)) - structure.area.height / 2
             }
             
-            structure.position.x = Float(structure.area.x)
-            structure.position.z = Float(structure.area.y)
+            structure.position.x = Float(structure.area.x) + Float(structure.area.width) / 2
+            structure.position.z = Float(structure.area.y) + Float(structure.area.height) / 2
             
             let highlight = apiaryView.apiary.structures.contains(where: { $0.overlaps(structure) }) ? UIColor.red : .green
-            structure.border?.setColor(highlight)
+            structure.setBorderColor(highlight)
             
             // Moves the camera further towards direction of movement
             let glideMargin = 0.2
             if location.x < apiaryView.frame.width * glideMargin {
-                apiaryView.camera.velocity.x = -0.1
+                apiaryView.camera.velocity.x = -0.05
             }
             if location.x > apiaryView.frame.width * (1 - glideMargin) {
-                apiaryView.camera.velocity.x = 0.1
+                apiaryView.camera.velocity.x = 0.05
             }
             if location.y < apiaryView.frame.height * glideMargin {
-                apiaryView.camera.velocity.z = -0.1
+                apiaryView.camera.velocity.z = -0.05
             }
             if location.y > apiaryView.frame.height * (1 - glideMargin) {
-                apiaryView.camera.velocity.z = 0.1
+                apiaryView.camera.velocity.z = 0.05
             }
             
         default:

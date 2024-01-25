@@ -71,8 +71,8 @@ class ApiaryView: SCNView {
         }
         
         for structure in apiary.structures {
-            structure.position.x = Float(structure.area.x)
-            structure.position.z = Float(structure.area.y)
+            structure.position.x = Float(structure.area.x) + Float(structure.area.width) / 2
+            structure.position.z = Float(structure.area.y) + Float(structure.area.height) / 2
             scene?.rootNode.addChildNode(structure)
         }
     }

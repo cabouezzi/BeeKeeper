@@ -31,15 +31,10 @@ class Structure: BKNode, Model, Codable {
     /// The bounding rectangle of the structure on the apiary grid layout.
     /// In 3D space, this is the x-z plane:
     /// `width` corresponds to its size in the x plane, and `height` corresponds to its size in the y plane.
-    var area: DiscreteRect {
-        didSet {
-            border?.removeFromParentNode()
-            border = StructureBorder(self)
-        }
-    }
+    var area: DiscreteRect
     
     /// An indicator of the bounding box of the structure, defined by ``area``
-    private(set) var border: StructureBorder?
+    private var border: StructureBorder?
     
     private weak var bubble: Bubble?
     
@@ -51,7 +46,7 @@ class Structure: BKNode, Model, Codable {
         super.init()
         self.name = "Structure"
         loadNode()
-        movePivotToCorner()
+        movePivotToCenter()
     }
     
     required init?(coder: NSCoder) {
@@ -62,7 +57,7 @@ class Structure: BKNode, Model, Codable {
         fatalError()
         /*
         loadNode()
-        movePivotToCorner()
+        movePivotToCenter()
         */
     }
     
@@ -70,8 +65,9 @@ class Structure: BKNode, Model, Codable {
         fatalError()
     }
     
-    private func movePivotToCorner() {
-        pivot = SCNMatrix4MakeTranslation(-Float(area.width) / 2, 0, -Float(area.height) / 2)
+    private func movePivotToCenter() {
+        let mid = (boundingBox.max + boundingBox.min) / 2
+        pivot = SCNMatrix4MakeTranslation(mid.x, boundingBox.min.y, mid.z)
     }
     
     open func loadNode() {}
@@ -108,6 +104,21 @@ class Structure: BKNode, Model, Codable {
     final func removeBubble() {
         bubble?.removeFromParentNode()
         bubble = nil
+    }
+    
+    final func showBorder() {
+        if border == nil {
+            border = StructureBorder(self)
+        }
+        border?.isHidden = false
+    }
+    
+    final func hideBorder() {
+        border?.isHidden = true
+    }
+    
+    final func setBorderColor(_ color: UIColor) {
+        border?.setColor(color)
     }
     
     func accept<T>(_ visitor: T) -> T.ReturnType where T : ModelVisitor {

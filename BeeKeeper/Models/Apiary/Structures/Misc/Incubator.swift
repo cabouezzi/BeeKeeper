@@ -51,7 +51,7 @@ class Incubator: Structure {
     required init() {
         super.init()
         self.name = "Incubator"
-        self.area = DiscreteRect(x: 0, y: 0, width: 2, height: 2)
+        self.area = DiscreteRect(x: 0, y: 0, width: 4, height: 4)
     }
     
     override func loadNode() {
