@@ -24,6 +24,7 @@ class BeeListView: UIView {
         
         beeView = SCNView(frame: frame)
         beeView.scene = SCNScene(named: "ModelBase.scn")
+        beeView.scene?.background.contents = UIColor.brown
         beeView.frame.size.width *= 2 / 3
         
         beeReference = beeView.scene?.rootNode.childNode(withName: "BeeReference", recursively: true)
