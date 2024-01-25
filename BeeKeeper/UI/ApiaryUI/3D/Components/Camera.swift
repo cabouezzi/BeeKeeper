@@ -25,6 +25,7 @@ class Camera: SCNNode {
     override init() {
         let camera = SCNCamera()
         camera.usesOrthographicProjection = false
+        camera.zFar = 300
         
         pointOfView = SCNNode()
         pointOfView.camera = camera
