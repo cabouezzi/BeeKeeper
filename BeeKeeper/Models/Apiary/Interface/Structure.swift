@@ -89,6 +89,7 @@ class Structure: BKNode, Model, Codable {
     
     /// Returns whether it overlaps the given structure.
     final func overlaps(_ structure: Structure) -> Bool {
+        guard structure !== self else { return false }
         return area.intersects(structure.area)
     }
     

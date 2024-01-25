@@ -70,6 +70,7 @@ class ApiaryViewController: UIViewController {
         apiaryView.overlay.closeHud()
         apiaryView.overlay.showSharedHud()
         apiaryView.overlay.setButtons()
+        apiaryView.camera.defaultView()
         apiaryView.camera.follow(nil)
         selectedNode = nil
     }
@@ -123,6 +124,8 @@ class ApiaryViewController: UIViewController {
         }
         
         state = .moving(structure, SCNVector3(0, 0, 0))
+        apiaryView.camera.birdsEyeView()
+        apiaryView.overlay.hideSharedHud()
         
         for structure in apiaryView.apiary.structures {
             structure.showBorder()

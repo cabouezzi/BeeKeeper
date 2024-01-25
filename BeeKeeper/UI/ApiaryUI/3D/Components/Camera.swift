@@ -28,11 +28,11 @@ class Camera: SCNNode {
         
         pointOfView = SCNNode()
         pointOfView.camera = camera
-        pointOfView.eulerAngles.x -= .pi * 0.3
         super.init()
         zoom(0)
         
-        eulerAngles.y -= .pi / 4
+        eulerAngles.x = -.pi * 0.3
+        eulerAngles.y = -.pi * 0.25
         addChildNode(pointOfView)
         constraints = [followConstraint]
     }
@@ -46,7 +46,7 @@ class Camera: SCNNode {
     }
     
     func translate(x: Float, y: Float, z: Float) {
-        var translation = worldRight * x + worldUp * y + worldFront * -z
+        var translation = worldRight * x + worldUp * y + SCNVector3(worldFront.x, 0, worldFront.z).normalized() * -z
         translation *= zoomFactor
         worldPosition += translation / minZoom
         worldPosition.x.clamp(min: -25, max: 25)
@@ -57,9 +57,7 @@ class Camera: SCNNode {
         var newZoom = zoomFactor - factor
         newZoom.clamp(min: minZoom, max: maxZoom)
         zoomFactor = newZoom
-        let dir = convertVector(SCNNode.localUp, to: pointOfView)
-        pointOfView.position = dir * Float(newZoom)
-        pointOfView.position.y += 5
+        pointOfView.position.z = Float(newZoom)
     }
     
     func follow(_ node: SCNNode?) {
@@ -74,5 +72,17 @@ class Camera: SCNNode {
             followConstraint.target = nil
             followConstraint.isEnabled = false
         }
+    }
+    
+    func defaultView(animated: Bool = true) {
+        let rotate = SCNAction.rotateTo(x: -.pi * 0.3, y: -.pi * 0.25, z: 0, duration: animated ? 1 : 0, usesShortestUnitArc: true)
+        rotate.timingMode = .easeInEaseOut
+        runAction(rotate)
+    }
+    
+    func birdsEyeView(animated: Bool = true) {
+        let rotate = SCNAction.rotateTo(x: -.pi * 0.5, y: -.pi * 0.25, z: 0, duration: animated ? 1 : 0, usesShortestUnitArc: true)
+        rotate.timingMode = .easeInEaseOut
+        runAction(rotate)
     }
 }
