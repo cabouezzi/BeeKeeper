@@ -10,15 +10,17 @@ import SpriteKit
 
 class ApiaryOverlay: SKScene {
     let resources = ResourceDisplayHud()
+    let achievementsButton: SKButton = SKButton(texture: SKTexture.achievements)
+    let tasksButton: SKButton = SKButton(texture: SKTexture.tasks)
+    let mapButton: SKButton = SKButton(texture: SKTexture.map)
+    let shopButton: SKButton = SKButton(texture: SKTexture.build)
     
+    let beesButton: SKButton = SKButton(texture: SKTexture.bees)
+    let evolutionButton: SKButton = SKButton(texture: SKTexture.atom)
+
     private var buttonsCache: Set<SKNode> = []
-    
     private weak var currentHud: SKNode?
-    let achievementsButton: SKButton = SKButton(texture: Textures.achievements)
-    let tasksButton: SKButton = SKButton(texture: Textures.tasks)
-    let mapButton: SKButton = SKButton(texture: Textures.map)
-    let shopButton: SKButton = SKButton(texture: Textures.build)
-    let evolutionButton: SKButton = SKButton(texture: Textures.atom)
+    private let sharedHud = SKNode()
     
     convenience override init() {
         self.init(size: .zero)
@@ -29,6 +31,12 @@ class ApiaryOverlay: SKScene {
         self.isHidden = false
         self.scaleMode = .aspectFit
         setup()
+        
+        let camera = SKCameraNode()
+        camera.position.x = size.width / 2
+        camera.position.y = size.height / 2
+        self.camera = camera
+        addChild(camera)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -37,7 +45,6 @@ class ApiaryOverlay: SKScene {
     
     func setup() {
         addChild(resources)
-        
         resources.layout()
         resources.update(animated: false)
         
@@ -48,13 +55,19 @@ class ApiaryOverlay: SKScene {
         let leftButtons = [achievementsButton, tasksButton, mapButton]
         
         for (index, button) in leftButtons.enumerated() {
-            button.anchorPoint = CGPoint(x: 0.5, y: 0.5) // top left
+            button.anchorPoint = CGPoint(x: 0.5, y: 0.5)
             button.size = CGSize(width: buttonSize, height: buttonSize)
             button.position.x = section / 2 + spacing
             button.position.y = size.height - CGFloat(index + 2) * section
-            
-            addChild(button)
+            sharedHud.addChild(button)
         }
+        
+        // Bee list
+        beesButton.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        beesButton.size = CGSize(width: buttonSize, height: buttonSize)
+        beesButton.position.x = size.width - section / 2 - spacing
+        beesButton.position.y = resources.calculateAccumulatedFrame().minY - section
+        sharedHud.addChild(beesButton)
         
         // Shop
         let shopButtonSize = buttonSize * 1.5
@@ -62,14 +75,16 @@ class ApiaryOverlay: SKScene {
         shopButton.size = CGSize(width: shopButtonSize, height: shopButtonSize)
         shopButton.position.x = shopButtonSize / 2 + spacing * 2
         shopButton.position.y = shopButtonSize / 2 + spacing * 2
-        addChild(shopButton)
+        sharedHud.addChild(shopButton)
         
         // Evolution
         evolutionButton.anchorPoint = CGPoint(x: 0.5, y: 0.5) // top left
         evolutionButton.size = CGSize(width: shopButtonSize, height: shopButtonSize)
         evolutionButton.position.x = size.width - shopButtonSize / 2 - spacing * 2
         evolutionButton.position.y = shopButtonSize / 2 + spacing * 2
-        addChild(evolutionButton)
+        sharedHud.addChild(evolutionButton)
+        
+        addChild(sharedHud)
     }
     
     func setButtons (title: String? = nil, _ buttons: SKButton...) {
@@ -124,6 +139,14 @@ class ApiaryOverlay: SKScene {
         }
     }
     
+    func showSharedHud() {
+        sharedHud.fadeUp()
+    }
+    
+    func hideSharedHud() {
+        sharedHud.fadeDown()
+    }
+    
     func closeHud() {
         currentHud?.fadeDownAndRemove()
     }
@@ -169,17 +192,17 @@ extension ApiaryOverlay: ModelVisitor {
     
     func visitHive(_ model: Hive) -> Void {
         setButtons(title: model.name, [
-            SKButton(texture: Textures.blankWhite, title: "Add Honeycomb", onTap: {
+            SKButton(texture: SKTexture.blankWhite, title: "Add Honeycomb", onTap: {
                 do {
                     try model.addHoneycomb()
                 } catch {
                     print(error.localizedDescription)
                 }
             }),
-            SKButton(texture: Textures.check, title: "Collect", onTap: {
+            SKButton(texture: SKTexture.check, title: "Collect", onTap: {
                 GameManager.shared.collect(from: model)
             }),
-            SKButton(texture: Textures.info, title: "Info", onTap: { [unowned self] in
+            SKButton(texture: SKTexture.info, title: "Info", onTap: { [unowned self] in
                 self.showStructureHud(model)
             })
         ])
@@ -187,7 +210,7 @@ extension ApiaryOverlay: ModelVisitor {
     
     func visitIncubator(_ model: Incubator) -> () {
         setButtons(title: model.name, [
-            SKButton(texture: Textures.blankWhite, title: "Incubate", onTap: { [unowned self] in
+            SKButton(texture: SKTexture.blankWhite, title: "Incubate", onTap: { [unowned self] in
                 self.showIncubatorHud(model)
             }),
         ])
@@ -195,7 +218,7 @@ extension ApiaryOverlay: ModelVisitor {
     
     func visitFlower(_ model: Flower) -> () {
         setButtons(title: model.name, [
-            SKButton(texture: Textures.blankWhite, title: "Add Resources", onTap: {
+            SKButton(texture: SKTexture.blankWhite, title: "Add Resources", onTap: {
                 var resources = Resources(honey: 100, pollen: 100)
                 do {
                     try model.fill(&resources)
@@ -203,7 +226,7 @@ extension ApiaryOverlay: ModelVisitor {
                     print(error.localizedDescription)
                 }
             }),
-            SKButton(texture: Textures.check, title: "Collect", onTap: {
+            SKButton(texture: SKTexture.check, title: "Collect", onTap: {
                 GameManager.shared.collect(from: model)
             })
         ])

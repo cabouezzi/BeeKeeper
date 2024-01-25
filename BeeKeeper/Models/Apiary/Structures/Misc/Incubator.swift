@@ -80,8 +80,8 @@ class Incubator: Structure {
     }
     
     func hatch() throws {
-        guard let currentPeriod = currentPeriod else { throw IncubatorError.notStarted } // TODO: throw error
-        guard state == .finished else { throw IncubatorError.notFinished } // TODO: throw error
+        guard let currentPeriod = currentPeriod else { throw IncubatorError.notStarted }
+        guard state == .finished else { throw IncubatorError.notFinished }
         try GameManager.shared.hatchBee(currentPeriod.incubatedBee)
         self.currentPeriod = nil
     }

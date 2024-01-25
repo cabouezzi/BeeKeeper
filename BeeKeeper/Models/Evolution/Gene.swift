@@ -96,7 +96,7 @@ enum Gene: String, Codable, CaseIterable {
             break
             
         case .sustainability:
-            bee.honeyConsumption *= 0.9
+            bee.consumption.honey *= 0.9
             
         case .bioluminescence:
             bee.intimidation += 25

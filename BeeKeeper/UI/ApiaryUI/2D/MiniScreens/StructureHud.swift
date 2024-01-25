@@ -22,7 +22,7 @@ class StructureHud: SKNode {
         background.fillColor = .black
         addChild(background)
         
-        let button = SKButton(texture: Textures.check) { [weak self] in
+        let button = SKButton(texture: SKTexture.check) { [weak self] in
             self?.fadeDownAndRemove()
         }
         let s = max(size.width, size.height)
@@ -62,7 +62,7 @@ class StructureHud: SKNode {
             updateTimer?.fire()
             
             if let collector = container as? Collector {
-                let collect = SKButton(texture: Textures.blankWhite, title: "Collect") {
+                let collect = SKButton(texture: SKTexture.blankWhite, title: "Collect") {
                     GameManager.shared.collect(from: collector)
                     containing.text = container.containing.description
                     capacity.text = container.maximum.description

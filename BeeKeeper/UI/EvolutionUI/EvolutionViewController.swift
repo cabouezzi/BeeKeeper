@@ -30,11 +30,11 @@ class EvolutionViewController: UIViewController {
         
         evolutionScene.delegate = self
         
-#if !RELEASE
+        #if !RELEASE
         centerNode.isUserInteractionEnabled = true
-#else
+        #else
         centerNode.isUserInteractionEnabled = false
-#endif
+        #endif
         middleStars.isUserInteractionEnabled = false
         backStars.isUserInteractionEnabled = false
         
@@ -42,14 +42,6 @@ class EvolutionViewController: UIViewController {
             SKConstraint.positionX(SKRange(lowerLimit: -1515, upperLimit: 1515)),
             SKConstraint.positionY(SKRange(lowerLimit: -1515, upperLimit: 1515))
         ]
-//        backStars.constraints = [
-//            SKConstraint.positionX(SKRange(lowerLimit: -1515 / 2, upperLimit: 1515 / 2)),
-//            SKConstraint.positionY(SKRange(lowerLimit: -1515 / 2, upperLimit: 1515 / 2))
-//        ]
-//        middleStars.constraints = [
-//            SKConstraint.positionX(SKRange(lowerLimit: -1515 / 3, upperLimit: 1515 / 3)),
-//            SKConstraint.positionY(SKRange(lowerLimit: -1515 / 3, upperLimit: 1515 / 3))
-//        ]
     }
     
     required init?(coder: NSCoder) {
@@ -82,6 +74,17 @@ class EvolutionViewController: UIViewController {
         
         updateLockNodes()
         drawDirectedEdges()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let frame = evolutionView.frame
+        let backButton = UIButton(frame: CGRect(x: 25, y: 25, width: frame.height / 15, height: frame.height / 15))
+        backButton.setImage(UIImage(named: "backButton"), for: .normal)
+        backButton.addAction { [weak self] in
+            self?.navigationController?.popViewController(animated: false)
+        }
+        evolutionView.addSubview(backButton)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -142,7 +145,7 @@ class EvolutionViewController: UIViewController {
             guard let target = self.evolutionScene.childNode(withName: lockedGene.rawValue) else { continue }
             var lockNode: SKNode! = target.childNode(withName: "lock")
             if lockNode == nil {
-                lockNode = SKSpriteNode(texture: Textures.evolutionLock)
+                lockNode = SKSpriteNode(texture: SKTexture.evolutionLock)
                 lockNode.name = "lock"
                 lockNode.isUserInteractionEnabled = false
                 lockNode.zPosition = target.zPosition + 1

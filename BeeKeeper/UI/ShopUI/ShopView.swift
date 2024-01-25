@@ -21,7 +21,7 @@ class ShopView: SKView {
         var symbol: SKSpriteNode? {
             switch self {
             case .structures: return nil
-            case .flowers: return SKSpriteNode(texture: Textures.shopSymbolFlower)
+            case .flowers: return SKSpriteNode(texture: SKTexture.shopSymbolFlower)
             case .buy: return nil
             }
         }
@@ -29,10 +29,10 @@ class ShopView: SKView {
     
     private(set) var section: Section = .structures
     
-    private lazy var structuresTab = SKSpriteNode(texture: Textures.shopTabFront)
-    private lazy var flowersTab = SKSpriteNode(texture: Textures.shopTabFront)
-    private lazy var buyTab = SKSpriteNode(texture: Textures.shopTabFront)
-    private lazy var bar = SKSpriteNode(texture: Textures.shopBar)
+    private lazy var structuresTab = SKSpriteNode(texture: SKTexture.shopTabFront)
+    private lazy var flowersTab = SKSpriteNode(texture: SKTexture.shopTabFront)
+    private lazy var buyTab = SKSpriteNode(texture: SKTexture.shopTabFront)
+    private lazy var bar = SKSpriteNode(texture: SKTexture.shopBar)
     
     private var collectionView: UICollectionView
     
@@ -71,15 +71,12 @@ class ShopView: SKView {
         bar.size.height = height
         scene?.addChild(bar)
         
-        let xbutton = SKButton(texture: Textures.check) {
-            self.removeFromSuperview()
+        let backButton = UIButton(frame: CGRect(x: 25, y: 25, width: frame.height / 15, height: frame.height / 15))
+        backButton.setImage(UIImage(named: "backButton"), for: .normal)
+        backButton.addAction { [weak self] in
+            self?.removeFromSuperview()
         }
-        xbutton.anchorPoint = CGPoint(x: 0, y: 0)
-        xbutton.size = CGSize(width: height, height: height)
-        xbutton.position.x = 0
-        xbutton.position.y = frame.height - height * 2
-        xbutton.zPosition = 1
-        scene?.addChild(xbutton)
+        addSubview(backButton)
         
         collectionView.frame = CGRect(x: 0, y: height * 3, width: frame.width, height: frame.height - height * 3)
         collectionView.delegate = self
@@ -89,7 +86,7 @@ class ShopView: SKView {
         collectionView.backgroundColor = .clear
         
         for (index, tab) in [structuresTab, flowersTab, buyTab].enumerated() {
-            let background = SKButton(texture: Textures.shopTabBack, size: CGSize(width: height * 2, height: height))
+            let background = SKButton(texture: SKTexture.shopTabBack, size: CGSize(width: height * 2, height: height))
             background.anchorPoint = CGPoint(x: 0.5, y: 0)
             background.position.x = CGFloat(index + 1) * height * 2
             background.position.y = frame.height - height * 2
@@ -171,15 +168,7 @@ extension ShopView: UICollectionViewDelegate, UICollectionViewDataSource {
         
         let item = items()[indexPath.row]
         cell.setItem(item)
-        
-        if !(shopDelegate?.shopView(self, canSelectItem: item) ?? true) {
-            cell.backgroundColor = .gray
-        } else {
-            cell.backgroundColor = .orange
-        }
-        
-        cell.nameLabel.text = item.name
-        cell.modelView.image = item.display
+        cell.backgroundColor = (shopDelegate?.shopView(self, canSelectItem: item) ?? true) ? .orange : .gray
         
         return cell
     }

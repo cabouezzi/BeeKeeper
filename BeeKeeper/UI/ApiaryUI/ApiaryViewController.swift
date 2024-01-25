@@ -7,11 +7,13 @@
 
 import UIKit
 import SceneKit
+import SpriteKit
 
 fileprivate enum GameState {
     case idle
     case moving(_ structure: Structure, _ originalPosition: SCNVector3)
     case assigning(_ bee: Bee)
+    case assigningWithDrag(_ bee: Bee)
     case following(_ node: SCNNode)
 }
 
@@ -25,10 +27,6 @@ class ApiaryViewController: UIViewController {
     
     init(frame: CGRect) {
         self.apiaryView = ApiaryView(frame: frame)
-#if DEBUG
-        self.apiaryView.allowsCameraControl = true
-        self.apiaryView.showsStatistics = true
-#endif
         super.init(nibName: nil, bundle: nil)
         self.apiaryView.delegate = self
         
@@ -43,24 +41,34 @@ class ApiaryViewController: UIViewController {
         super.loadView()
         self.view = apiaryView
         apiaryView.loadNodes()
-        clearHud()
         linkOverlay()
-        
         apiaryView.scene?.rootNode.childNode(withName: "Island", recursively: true)?.categoryBitMask = 1
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        apiaryView.overlay.mapButton.isHidden = true
     }
+    
+    // MARK: - UI Functions
     
     final func linkOverlay() {
         apiaryView.overlay.shopButton.onTap(popToShop)
         apiaryView.overlay.evolutionButton.onTap(popToEvolution)
         apiaryView.overlay.mapButton.onTap(popToMap)
+        apiaryView.overlay.beesButton.onTap(popToBeeList)
+    }
+    
+    final func selectNode(_ node: SCNNode & Model) {
+        selectedNode = node
+        node.accept(self)
+        node.accept(apiaryView.overlay)
+        flashNode(node)
     }
     
     final func clearHud() {
         apiaryView.overlay.closeHud()
+        apiaryView.overlay.showSharedHud()
         apiaryView.overlay.setButtons()
         apiaryView.camera.follow(nil)
         selectedNode = nil
@@ -99,7 +107,6 @@ class ApiaryViewController: UIViewController {
     
     func beginAddingNewStructure(_ structure: Structure, completion: (() throws -> Void)? = nil) {
         guard case .idle = state else { return }
-        apiaryView.camera.birdsEyeView(animated: true)
         
         if structure.parent == nil {
             apiaryView.scene?.rootNode.addChildNode(structure)
@@ -116,7 +123,7 @@ class ApiaryViewController: UIViewController {
         }
         
         apiaryView.overlay.setButtons(title: structure.name, [
-            SKButton(texture: Textures.check, onTap: { [weak self] in
+            SKButton(texture: SKTexture.check, onTap: { [weak self] in
                 guard let self = self else { return }
                 do {
                     try completion?()
@@ -124,19 +131,46 @@ class ApiaryViewController: UIViewController {
                     structure.border?.isHidden = true
                     self.state = .idle
                     self.clearHud()
-                    self.apiaryView.camera.defaultView(animated: true)
                 } catch {
                     print(error.localizedDescription)
                 }
             }),
-            SKButton(texture: Textures.blankWhite, onTap: { [weak self] in
+            SKButton(texture: SKTexture.blankWhite, onTap: { [weak self] in
                 guard let self = self else { return }
                 structure.removeFromParentNode()
                 self.state = .idle
                 self.clearHud()
-                self.apiaryView.camera.defaultView(animated: true)
             })
         ])
+    }
+    
+    func beginAssigningBee(_ bee: Bee) {
+        func clear() {
+            for structure in apiaryView.apiary.structures {
+                structure.removeBubble()
+            }
+            clearHud()
+            state = .idle
+        }
+        
+        state = .assigning(bee)
+        apiaryView.overlay.hideSharedHud()
+        apiaryView.overlay.setButtons(
+            title: "Choose a Target for \(bee.nickname.prefix(10))",
+            SKButton(texture: SKTexture.check, onTap: clear),
+            SKButton(texture: SKTexture.unlink, onTap: {
+                try? bee.assign(to: nil)
+                clear()
+            })
+        )
+        
+        for structure in apiaryView.apiary.structures where structure !== bee.producerAssignment {
+            guard structure.assignedBees.count < structure.maximumAssignedBees else { continue }
+            structure.showBubble(texture: .plus) {
+                try? bee.assign(to: structure)
+                clear()
+            }
+        }
     }
     
     // MARK: - UI Navigation
@@ -156,6 +190,15 @@ class ApiaryViewController: UIViewController {
         print("Not implemented yet")
     }
     
+    func popToBeeList() {
+        let beeListView = BeeListView(bees: apiaryView.apiary.bees, frame: apiaryView.frame)
+        beeListView.onSelect { [weak self] bee in
+            beeListView.removeFromSuperview()
+            self?.selectNode(bee)
+        }
+        apiaryView.addSubview(beeListView)
+    }
+    
     // MARK: - Gesture Recognizers
     
     private func addGestureRecognizers() {
@@ -172,6 +215,11 @@ class ApiaryViewController: UIViewController {
         
         apiaryView.addGestureRecognizer(tap)
         apiaryView.addGestureRecognizer(hold)
+        
+        for gesture in [tap, hold, pan, pinch] {
+            gesture.cancelsTouchesInView = false
+            gesture.delegate = self
+        }
     }
     
     private weak var selectedNode: SCNNode? {
@@ -188,7 +236,7 @@ class ApiaryViewController: UIViewController {
         
         // Check and handle 2D interaction
         if let spriteNode = apiaryView.overlay.nodes(at: apiaryView.overlay.convertPoint(fromView: point)).first(where: { $0.isUserInteractionEnabled }) {
-            if let button = spriteNode as? SKButton {
+            if let button = spriteNode as? SKButton, !button.isHidden {
                 button.pop()
                 button.activate()
             }
@@ -209,19 +257,19 @@ class ApiaryViewController: UIViewController {
         }
         
         switch state {
+        case .following(_):
+            clearHud()
+            state = .idle
+            fallthrough
         case .idle:
             guard let bknode = node.firstParentModelNode() else {
                 clearHud()
                 return
             }
-            selectedNode = bknode
-            showHud(for: bknode)
-            flashNode(bknode)
+            selectNode(bknode)
         default: break
         }
     }
-    
-    private lazy var lastCameraPosition = apiaryView.camera.pointOfView.position
     
     @objc
     private func panHandler(_ gestureRecognizer: UIPanGestureRecognizer) {
@@ -230,23 +278,22 @@ class ApiaryViewController: UIViewController {
         let velocity = gestureRecognizer.velocity(in: apiaryView)
         // Velocity is larger for the shorter dimension
         let factor = 1 / max(apiaryView.frame.width, apiaryView.frame.height)
-        let scaledVelocityX = Float(velocity.x * fov * factor / 100)
-        let scaledVelocityY = Float(velocity.y * fov * factor / 100)
+        let scaledVelocityX = Float(-velocity.x * fov * factor / 200)
+        let scaledVelocityY = Float(-velocity.y * fov * factor / 200)
         
         switch state {
         case .following(_):
             clearHud()
             state = .idle
-            lastCameraPosition = apiaryView.camera.pointOfView.position
+            fallthrough
+        case .assigning(_):
             fallthrough
         case .idle:
             if gestureRecognizer.state == .began {
                 apiaryView.camera.velocity = .zero
-                lastCameraPosition = apiaryView.camera.pointOfView.position
             }
             
-            apiaryView.camera.pointOfView.position.x -= scaledVelocityX
-            apiaryView.camera.pointOfView.position.z -= scaledVelocityY
+            apiaryView.camera.translate(x: scaledVelocityX, y: 0, z: scaledVelocityY)
             
             if gestureRecognizer.state == .ended {
                 apiaryView.camera.velocity = SCNVector3(x: scaledVelocityX, y: 0, z: scaledVelocityY)
@@ -274,16 +321,16 @@ class ApiaryViewController: UIViewController {
             // Moves the camera further towards direction of movement
             let glideMargin = 0.2
             if location.x < apiaryView.frame.width * glideMargin {
-                apiaryView.camera.velocity.x = 0.1
-            }
-            if location.x > apiaryView.frame.width * (1 - glideMargin) {
                 apiaryView.camera.velocity.x = -0.1
             }
+            if location.x > apiaryView.frame.width * (1 - glideMargin) {
+                apiaryView.camera.velocity.x = 0.1
+            }
             if location.y < apiaryView.frame.height * glideMargin {
-                apiaryView.camera.velocity.z = 0.1
+                apiaryView.camera.velocity.z = -0.1
             }
             if location.y > apiaryView.frame.height * (1 - glideMargin) {
-                apiaryView.camera.velocity.z = -0.1
+                apiaryView.camera.velocity.z = 0.1
             }
             
         default:
@@ -293,22 +340,8 @@ class ApiaryViewController: UIViewController {
     
     @objc
     private func pinchHandler(_ gestureRecognizer: UIPinchGestureRecognizer) {
-        let velocity = gestureRecognizer.velocity / 2
-        guard let camera = apiaryView.camera.camera else { return }
-        
-        camera.fieldOfView -= velocity
-        
-        if camera.fieldOfView > 70 {
-            camera.fieldOfView = 70
-        }
-        if camera.fieldOfView < 25 {
-            camera.fieldOfView = 25
-        }
-        
-        // TODO: Change Z-pos instead of fov
-        if gestureRecognizer.state == .ended {
-            lastCameraPosition = apiaryView.camera.pointOfView.position
-        }
+        let velocity = Float(gestureRecognizer.velocity) / 3
+        apiaryView.camera.zoom(velocity)
     }
     
     private weak var beeTargetCache: Structure?
@@ -319,12 +352,12 @@ class ApiaryViewController: UIViewController {
         
         if gestureReconizer.state == .began {
             if let bee = hitTest.first?.node.firstParentModelNode() as? Bee {
-                state = .assigning(bee)
+                state = .assigningWithDrag(bee)
                 apiaryView.overlay.setButtons(title: "Choose a Target for \(bee.nickname.prefix(10))", [])
             }
         }
         
-        guard case GameState.assigning(_) = state else { return }
+        guard case GameState.assigningWithDrag(_) = state else { return }
         
         if let node = hitTest.first?.node.firstParentModelNode() as? Structure {
             if node !== beeTargetCache {
@@ -338,14 +371,25 @@ class ApiaryViewController: UIViewController {
         }
         
         if gestureReconizer.state == .ended {
-            if case GameState.assigning(let bee) = state, let target = beeTargetCache {
-                try! bee.assign(to: target)
+            if case GameState.assigningWithDrag(let bee) = state, let target = beeTargetCache {
+                try? bee.assign(to: target)
             }
             beeTargetCache?.unhighlight()
             beeTargetCache = nil
             state = .idle
             clearHud()
         }
+    }
+}
+
+// MARK: -
+extension ApiaryViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        let loc = gestureRecognizer.location(in: apiaryView)
+        if apiaryView.subviews.contains(where: { $0.frame.contains(loc) }) {
+            return false
+        }
+        return true
     }
 }
 
@@ -360,9 +404,17 @@ extension ApiaryViewController: ModelVisitor {
     }
     
     func visitBee(_ model: Bee) -> () {
-        model.wiggle(repeatCount: 1)
-        apiaryView.camera.follow(model)
+        model.wiggle(repeatCount: 1).play()
         state = .following(model)
+        apiaryView.camera.follow(model)
+        apiaryView.overlay.setButtons(
+            title: model.nickname,
+            SKButton(texture: SKTexture.info),
+            SKButton(texture: SKTexture.edit, onTap: {
+                self.apiaryView.camera.follow(nil)
+                self.beginAssigningBee(model)
+            })
+        )
     }
     
     func visitHive(_ model: Hive) -> () {
@@ -380,15 +432,22 @@ extension ApiaryViewController: ModelVisitor {
 
 // MARK: - SCNSceneRendererDelegate
 extension ApiaryViewController: SCNSceneRendererDelegate {
-    func renderer(_ renderer: SCNSceneRenderer, willRenderScene scene: SCNScene, atTime time: TimeInterval) {
+    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        guard let scene = apiaryView.scene else { return }
         for bee in apiaryView.apiary.bees {
             bee.droneStep(in: scene.physicsWorld)
         }
         
         if apiaryView.camera.velocity.magnitude > 0.0001 {
             let accelerationFactor = (1 - scene.physicsWorld.timeStep) * (1 - scene.physicsWorld.timeStep)
-            apiaryView.camera.pointOfView.position -= apiaryView.camera.velocity
+            apiaryView.camera.translate(vector: apiaryView.camera.velocity)
             apiaryView.camera.velocity *= Float(accelerationFactor)
+        }
+        
+        if Int(time.truncatingRemainder(dividingBy: 240) / 120).isMultiple(of: 2) {
+            apiaryView.turnDark(5)
+        } else {
+            apiaryView.turnLight(5)
         }
     }
 }
@@ -418,7 +477,8 @@ extension ApiaryViewController: ShopViewDelegate {
             ]
         case .flowers:
             return [
-                ShopItem(name: "Blackfoot", description: "A flower", cost: Resources(), display: UIImage(named: "world"), newProduct: { Flower() }),
+                ShopItem(name: "Daisy", description: "A flower", cost: Resources(), display: UIImage(named: "world"), newProduct: { Flower() }),
+                ShopItem(name: "Lavender", description: "A purple flower", cost: Resources(), display: UIImage(named: "world"), newProduct: { Lavender() })
             ]
         case .buy: return []
         }

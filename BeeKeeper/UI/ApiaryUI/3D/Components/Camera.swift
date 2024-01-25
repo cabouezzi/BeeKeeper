@@ -16,7 +16,11 @@ class Camera: SCNNode {
     }
     
     private let followConstraint = SCNDistanceConstraint(target: nil)
+    
     var velocity: SCNVector3 = .zero
+    private var zoomFactor: Float = 20
+    private var minZoom: Float = 10
+    private var maxZoom: Float = 60
     
     override init() {
         let camera = SCNCamera()
@@ -24,11 +28,9 @@ class Camera: SCNNode {
         
         pointOfView = SCNNode()
         pointOfView.camera = camera
-        pointOfView.position.x += 0
-        pointOfView.position.y += 20
-        pointOfView.position.z += 15
         pointOfView.eulerAngles.x -= .pi * 0.3
         super.init()
+        zoom(0)
         
         eulerAngles.y -= .pi / 4
         addChildNode(pointOfView)
@@ -39,32 +41,38 @@ class Camera: SCNNode {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func translate(vector: SCNVector3) {
+        translate(x: vector.x, y: vector.y, z: vector.z)
+    }
+    
+    func translate(x: Float, y: Float, z: Float) {
+        var translation = worldRight * x + worldUp * y + worldFront * -z
+        translation *= zoomFactor
+        worldPosition += translation / minZoom
+        worldPosition.x.clamp(min: -25, max: 25)
+        worldPosition.z.clamp(min: -25, max: 25)
+    }
+    
+    func zoom(_ factor: Float) {
+        var newZoom = zoomFactor - factor
+        newZoom.clamp(min: minZoom, max: maxZoom)
+        zoomFactor = newZoom
+        let dir = convertVector(SCNNode.localUp, to: pointOfView)
+        pointOfView.position = dir * Float(newZoom)
+        pointOfView.position.y += 5
+    }
+    
     func follow(_ node: SCNNode?) {
         if let node = node {
             followConstraint.target = node
             followConstraint.maximumDistance = 0
-            pointOfView.position.x = 0
-            pointOfView.position.z = 15
             followConstraint.isEnabled = true
         } else {
+            if let last = followConstraint.target {
+                worldPosition = last.worldPosition
+            }
             followConstraint.target = nil
             followConstraint.isEnabled = false
         }
-    }
-    
-    func birdsEyeView(animated: Bool = false) {
-        let move = SCNAction.move(to: SCNVector3(0, 40, 0), duration: animated ? 1 : 0)
-        let rotate = SCNAction.rotateTo(x: -.pi / 2, y: 0, z: 0, duration: animated ? 1 : 0, usesShortestUnitArc: true)
-        let action = SCNAction.group([move, rotate])
-        action.timingMode = .easeInEaseOut
-        pointOfView.runAction(action)
-    }
-    
-    func defaultView(animated: Bool = false) {
-        let move = SCNAction.move(to: SCNVector3(0, 20, 0), duration: animated ? 1 : 0)
-        let rotate = SCNAction.rotateTo(x: -.pi * 0.3, y: 0, z: 0, duration: animated ? 1 : 0, usesShortestUnitArc: true)
-        let action = SCNAction.group([move, rotate])
-        action.timingMode = .easeInEaseOut
-        pointOfView.runAction(action)
     }
 }

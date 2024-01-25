@@ -29,7 +29,7 @@ class IncubationHud: SKNode {
         background.fillColor = .black
         addChild(background)
         
-        let button = SKButton(texture: Textures.check) { [weak self] in
+        let button = SKButton(texture: SKTexture.check) { [weak self] in
             self?.fadeDownAndRemove()
         }
         let s = max(size.width, size.height)
@@ -39,7 +39,7 @@ class IncubationHud: SKNode {
         button.position.y = size.height / 2 - button.size.height
         addChild(button)
         
-        self.incubateButton = SKButton(texture: Textures.blankOrange, title: "Incubate", onTap: { [weak self] in
+        self.incubateButton = SKButton(texture: SKTexture.blankOrange, title: "Incubate", onTap: { [weak self] in
             do {
                 try self?.incubator.startIncubating(100)
                 self?.updateHud()
@@ -47,7 +47,7 @@ class IncubationHud: SKNode {
                 print(error.localizedDescription)
             }
         })
-        self.hatchButton = SKButton(texture: Textures.blankWhite, title: "Hatch", onTap: { [weak self] in
+        self.hatchButton = SKButton(texture: SKTexture.blankWhite, title: "Hatch", onTap: { [weak self] in
             do {
                 try self?.incubator.hatch()
                 self?.updateHud()
@@ -55,7 +55,7 @@ class IncubationHud: SKNode {
                 print(error.localizedDescription)
             }
         })
-        self.speedUpButton = SKButton(texture: Textures.blankOrange, title: "Speed Up", onTap: { [weak self] in
+        self.speedUpButton = SKButton(texture: SKTexture.blankOrange, title: "Speed Up", onTap: { [weak self] in
             do {
                 try self?.incubator.forceFinish()
                 self?.updateHud()

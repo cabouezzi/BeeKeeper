@@ -8,19 +8,31 @@
 import SceneKit
 
 class Bee: SCNNode, Model, Producer, Codable {
-    private(set) var nickname: String
+    private enum AnimationState: CaseIterable {
+        /// The state of idle flying
+        case droning
+        /// The state of flying to its target
+        case targeting
+        /// The animation played when at its target
+        case working
+    }
+    private var animationState: AnimationState = .droning
     
-    var genetics: Set<Gene>
-    
-    var production: Resources
+    // Producer
+    var production: Resources = Resources(honey: 0.5, pollen: 0.5, beeBread: 1)
     var producerAssignment: Structure?
     
-    var honeyConsumption: Float = 0.01
+    // Stats
+    private(set) var nickname: String
+    var genetics: Set<Gene>
+    var hunger: Float = 100
+    var consumption = Resources(honey: 0, pollen: 0.1)
     var bodyTemperature: Float = 70
     var intimidation: Float = 5
     var stingerDamage: Float = 5
     var venomDamage: Float = 20
     
+    // Body parts
     private var bodyArmature: SCNNode?
     private var wingArmature: SCNNode?
     private var head: SCNNode?
@@ -28,11 +40,14 @@ class Bee: SCNNode, Model, Producer, Codable {
     private var stinger: SCNNode?
     private var abdomen: SCNNode?
     
-    private var velocity: SCNVector3
-    private var minSpeed: Float
-    private var maxSpeed: Float
-    private var maxSteerForce: Float
-    private var avoidanceDistance: Float
+    // Droning
+    private var velocity: SCNVector3 = SCNVector3(x: Float.random(in: -1...1), y: Float.random(in: -1...1), z: Float.random(in: -1...1)).normalized()
+    private var minSpeed: Float = 0
+    private var maxSpeed: Float = 4
+    private var maxSteerForce: Float = 3
+    private var avoidanceDistance: Float = 1
+    private var attraction: SCNNode? // TODO: Replace with targets from Structure class
+    private var attractionPerception: Float = 4
     
     private static let directions: Set<SCNVector3> = {
         let count = 100
@@ -61,19 +76,13 @@ class Bee: SCNNode, Model, Producer, Codable {
     
     init(_ genes: Set<Gene> = []) {
         self.genetics = genes
-        self.production = Resources(honey: 0.5, pollen: 0.25, beeBread: 1)
         self.nickname = UUID().uuidString
-        self.velocity = SCNVector3(x: Float.random(in: -1...1), y: Float.random(in: -1...1), z: Float.random(in: -1...1)).normalized()
-        self.minSpeed = 0
-        self.maxSpeed = 4
-        self.maxSteerForce = 3
-        self.avoidanceDistance = 1
         super.init()
         
         loadArmature()
         loadGeneticEffects()
         
-        flapWings()
+        animationLoop()
     }
     
     required init?(coder: NSCoder) {
@@ -97,7 +106,7 @@ class Bee: SCNNode, Model, Producer, Codable {
         else {
             fatalError("Failed to load bee armature")
         }
-        node.addChildren([bodyArmature, wingArmature])
+        node.addChildren(bodyArmature)
         node.eulerAngles.x = .pi / 2
         node.eulerAngles.y = -.pi / 2
         node.scale = SCNVector3(0.3, 0.3, 0.3)
@@ -113,9 +122,48 @@ class Bee: SCNNode, Model, Producer, Codable {
     }
     
     func loadGeneticEffects() {
-        if genetics.contains(.stripesI) {
-            torso?.geometry = Meshes.Bee.Torso.yellowStripes
-            abdomen?.geometry = Meshes.Bee.Abdomen.yellowStripes
+        func setBodyColor(_ color: UIColor) {
+            head?.geometry?.material(named: "body")?.diffuse.contents = color
+            torso?.geometry?.material(named: "body")?.diffuse.contents = color
+            abdomen?.geometry?.material(named: "body")?.diffuse.contents = color
+            stinger?.geometry?.material(named: "body")?.diffuse.contents = color
+        }
+        func setStripeColor(_ color: UIColor) {
+            head?.geometry?.material(named: "stripes")?.diffuse.contents = color
+            torso?.geometry?.material(named: "stripes")?.diffuse.contents = color
+            abdomen?.geometry?.material(named: "stripes")?.diffuse.contents = color
+            stinger?.geometry?.material(named: "stripes")?.diffuse.contents = color
+        }
+        
+        if genetics.contains(.furII) {
+            torso?.geometry = Meshes.Bee.Torso.bumble
+            abdomen?.geometry = Meshes.Bee.Abdomen.bumble
+        } else if genetics.contains(.furI) {
+            setStripeColor(.gray)
+        }
+        
+        let bodyMaterial = torso?.geometry?.material(named: "body")
+        
+        if genetics.contains(.stripesIII) {
+            bodyMaterial?.diffuse.contents = UIColor(red: 0, green: 0.5, blue: 0, alpha: 1)
+            bodyMaterial?.metalness.intensity = 1
+            bodyMaterial?.roughness.intensity = 0
+            bodyMaterial?.reflective.contents = UIColor.black
+            bodyMaterial?.reflective.intensity = 1
+            bodyMaterial?.lightingModel = .physicallyBased
+        }
+        if genetics.contains(.stripesII) {
+            setStripeColor(.yellow)
+        } else if genetics.contains(.stripesI) {
+            setStripeColor(.orange)
+        }
+        
+        if genetics.contains(.stingerIII) {
+            stinger?.geometry = Meshes.Bee.Stinger.long
+        } else if genetics.contains(.stingerII) {
+            stinger?.geometry = Meshes.Bee.Stinger.medium
+        } else if genetics.contains(.stingerI) {
+            stinger?.geometry = Meshes.Bee.Stinger.plain
         }
     }
     
@@ -125,26 +173,106 @@ class Bee: SCNNode, Model, Producer, Codable {
     
     // MARK: Animations
     
-    func wiggle(repeatCount: Int = 1) {
+    private func animationLoop() {
+        let animationPlayer: SCNAnimationPlayer
+        let nextState: AnimationState
+        
+        switch animationState {
+        case .droning:
+            animationPlayer = flapWings(repeatCount: .random(in: 60...120))
+            if let producerAssignment = producerAssignment {
+                if let flower = producerAssignment as? Flower {
+                    attraction = flower.pollinationNode()
+                } else {
+                    attraction = SCNNode()
+                    attraction?.worldPosition = producerAssignment.worldPosition
+                    attraction?.worldPosition.y += 2
+                }
+                nextState = .targeting
+            } else {
+                nextState = .droning
+            }
+        case .targeting:
+            if producerAssignment != nil, let attraction = attraction {
+                if worldPosition.distance(to: attraction.worldPosition) < 1 {
+                    animationPlayer = prepareLanding()
+                    nextState = .working
+                } else {
+                    animationPlayer = flapWings(repeatCount: 1)
+                    nextState = .targeting
+                }
+            } else {
+                animationPlayer = flapWings(repeatCount: 1)
+                nextState = .droning
+            }
+        case .working:
+            if producerAssignment != nil {
+                if Int.random(in: 1...100) > 33 {
+                    animationPlayer = wiggle(repeatCount: 1)
+                    animationPlayer.animation.duration = .random(in: 2...5)
+                    nextState = .working
+                } else {
+                    animationPlayer = prepareFlight()
+                    nextState = .droning
+                }
+            } else {
+                animationPlayer = prepareFlight()
+                nextState = .droning
+            }
+        }
+        animationPlayer.animation.animationDidStop = { [weak self] x, y, z in
+            self?.animationState = nextState
+            self?.animationLoop()
+        }
+        animationPlayer.play()
+    }
+    
+    func wiggle(repeatCount: Int = 1) -> SCNAnimationPlayer {
         guard let animationPlayer = CAAnimation.animationPlayerFromScene("BeeWiggle.scn") else {
             print("Failed to load wiggle animation")
-            return
+            return SCNAnimationPlayer()
         }
         animationPlayer.animation.repeatCount = CGFloat(repeatCount)
         animationPlayer.speed *= 1.75
         bodyArmature?.addAnimationPlayer(animationPlayer, forKey: "wiggle")
-        animationPlayer.play()
+        return animationPlayer
     }
     
-    func flapWings(repeatCount: Int = .max) {
+    func flapWings(repeatCount: Int = .max) -> SCNAnimationPlayer {
         guard let animationPlayer = CAAnimation.animationPlayerFromScene("BeeWingsFlap.scn") else {
             print("Failed to load flap animation")
-            return
+            return SCNAnimationPlayer()
         }
         animationPlayer.animation.repeatCount = CGFloat(repeatCount)
         animationPlayer.speed *= 4
         wingArmature?.addAnimationPlayer(animationPlayer, forKey: "flap")
-        animationPlayer.play()
+        return animationPlayer
+    }
+    
+    /// Plays the animation of transitioning to flapping wings.
+    func prepareFlight() -> SCNAnimationPlayer {
+        guard let animationPlayer = CAAnimation.animationPlayerFromScene("BeeWingsFold.scn") else {
+            print("Failed to load fold animation")
+            return SCNAnimationPlayer()
+        }
+        animationPlayer.animation.repeatCount = 1
+        animationPlayer.speed *= 4
+        wingArmature?.addAnimationPlayer(animationPlayer, forKey: "flap")
+        animationPlayer.animation.isRemovedOnCompletion = false
+        return animationPlayer
+    }
+    
+    /// Plays the animation of transitioning to stationary position.
+    func prepareLanding() -> SCNAnimationPlayer {
+        guard let animationPlayer = CAAnimation.animationPlayerFromScene("BeeWingsFold.scn") else {
+            print("Failed to load fold animation")
+            return SCNAnimationPlayer()
+        }
+        animationPlayer.animation.repeatCount = 1
+        animationPlayer.speed *= -4
+        wingArmature?.addAnimationPlayer(animationPlayer, forKey: "flap")
+        animationPlayer.animation.isRemovedOnCompletion = false
+        return animationPlayer
     }
     
     // MARK: Droning
@@ -164,8 +292,8 @@ class Bee: SCNNode, Model, Producer, Codable {
         for collision in collisions {
             let avoidanceDirection = collision.worldNormal.normalized()
             let avoidanceForce = scaledForce(avoidanceDirection)
-            let collisionDistance = (collision.worldCoordinates - worldPosition).magnitude
-            let steerDistance = (avoidanceDirection - velocity.normalized()).magnitude
+            let collisionDistance = collision.worldCoordinates.distance(to: worldPosition)
+            let steerDistance = velocity.normalized().distance(to: avoidanceDirection)
             
             // collisionDistance in [0, ∞). shorter collisionDistance -> higher priority
             // steerDistance in [0, 2]. shorter steerDistance -> less priority
@@ -180,17 +308,41 @@ class Bee: SCNNode, Model, Producer, Codable {
         return force
     }
     
+    private func attractionForce() -> SCNVector3 {
+        guard let producerAssignment = producerAssignment, animationState == .targeting else { return .zero }
+        var targetPosition = producerAssignment.worldPosition
+        targetPosition.y += 2
+        let dir = (targetPosition - worldPosition).normalized()
+        var targetVelocity = velocity + scaledForce(dir)
+        
+        if let attraction = attraction, animationState == .targeting {
+            let distance = attraction.worldPosition.distance(to: worldPosition)
+            if distance < attractionPerception {
+                targetVelocity = targetVelocity.normalized() * distance.clamped(min: 0.1, max: 1)
+            }
+        }
+        
+        return (targetVelocity - velocity)
+    }
+    
+    private func idleForce() -> SCNVector3 {
+        return velocity.normalized() * (maxSpeed * 0.67 / velocity.magnitude)
+    }
+    
     /// Updates the position, velocity, and acceleration of the bee at a timestep.
     func droneStep(in world: SCNPhysicsWorld) {
+        guard animationState != .working else { return }
+        
         var acceleration = SCNVector3.zero
         let rayTest = world.rayTestWithSegment(from: worldPosition, to: worldPosition + velocity * (maxSpeed + avoidanceDistance))
         
         // If not obstructed, accelerate forward
         if rayTest.isEmpty {
-            acceleration += velocity.normalized() * (maxSpeed * 0.67 / velocity.magnitude)
+            acceleration += idleForce()
         }
         
-        acceleration += avoidanceForce(world)
+        acceleration += avoidanceForce(world) * 5
+        acceleration += attractionForce()
         
         if acceleration.magnitude > maxSteerForce {
             acceleration = acceleration.normalized() * maxSteerForce

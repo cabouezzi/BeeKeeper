@@ -32,18 +32,26 @@ final class GameManager: NSObject {
     }
     
     private func onTick() {
-        // FIXME: Loop through structures first, then bees per structure for efficiency. (Not fixed yet because maybe not important)
-        // Handle production
-        for bee in apiary.bees where bee.producerAssignment != nil {
-            guard let collector = bee.producerAssignment as? Collector else {
-                if let producerTarget = bee.producerAssignment {
-                    print("Bee functionality isn't provided when assigned to \(type(of: producerTarget))")
-                }
-                continue
+        // TODO: Possibly change mechanics?
+        for bee in apiary.bees {
+            // Produce first
+            if let collector = bee.producerAssignment as? (Structure & Collector) {
+                try? collector.accept(bee)
             }
-            try? collector.accept(bee)
+            
+            // TODO: Remove from collectors not storage, need separate function
+            try? remove(bee.consumption)
         }
         
+        for structure in apiary.structures {
+            if let collector = structure as? (Container & Collector), let resource = collector.resourceTargets().first {
+                if collector.containing[keyPath: resource] > collector.maximum[keyPath: resource] * 0.3 {
+                    collector.showResourceBubble {
+                        self.collect(from: collector)
+                    }
+                }
+            }
+        }
     }
     
     // MARK: - Observer Control
@@ -111,10 +119,11 @@ final class GameManager: NSObject {
         guard getAllResources().canAfford(cost) else { throw ContainerError.containerInsufficient }
         var resources = cost
         for structure in apiary.structures {
-            guard let storage = structure as? Container else { continue }
+            guard let storage = structure as? Container, !(storage is Collector) else { continue }
             if storage.containing.canAfford(resources) {
                 // Single storage covers the cost
                 try! storage.remove(resources)
+                notifyObservers({ $0.gameManager(account, apiary, didUpdateResources: getAllResources()) })
                 return
             } else {
                 // Remove as much contents as can

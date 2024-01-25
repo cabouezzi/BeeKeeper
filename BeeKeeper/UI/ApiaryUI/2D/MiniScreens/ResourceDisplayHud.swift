@@ -26,8 +26,8 @@ final class ResourceDisplayHud: SKNode {
         
         let barSize = CGSize(width: size.height / 12 * 5, height: size.height / 12)
         let verticalBarSpacing = barSize.height * 0.8
-        let yOffset = UIApplication.shared.windows[0].safeAreaInsets.top + verticalBarSpacing
-        let xOffset = barSize.width * 0.2 + UIApplication.shared.windows[0].safeAreaInsets.right
+        let yOffset = verticalBarSpacing
+        let xOffset = barSize.height
         
         // Setup honey display
         honeyBar = ResourceBar(containing: 1, capacity: 1, color: .orange, size: barSize, symbolImageName: "honeySymbol")

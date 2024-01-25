@@ -10,7 +10,7 @@ import SceneKit
 final class PollenStorage: Container {
     required init() {
         super.init()
-        self.maximum = Resources(pollen: 5000)
+        self.maximum = Resources(pollen: 200)
         self.name = "Pollen Storage"
         self.area = DiscreteRect(x: 0, y: 0, width: 2, height: 2)
     }

@@ -11,6 +11,7 @@ import SpriteKit
 class ApiaryView: SCNView {
     var apiary: Apiary { GameManager.shared.apiary }
     
+    private var sun: SCNLight?
     let camera: Camera
     let overlay: ApiaryOverlay
     
@@ -26,8 +27,9 @@ class ApiaryView: SCNView {
         self.overlay.isHidden = false
         
         super.init(frame: frameRect, options: nil)
-        self.scene = SCNScene(named: "BeeKeeperBase.scn")
+        self.scene = SCNScene(named: "BeeKeeperForest.scn")
         self.scene?.background.contents = UIColor(red: 0.5, green: 0.9, blue: 1, alpha: 1)
+        self.autoenablesDefaultLighting = false
         self.overlaySKScene = overlay
         self.pointOfView = camera.pointOfView
         self.backgroundColor = .blue
@@ -35,6 +37,8 @@ class ApiaryView: SCNView {
         #if TEST
         self.showsStatistics = true
         #endif
+        
+        sun = scene?.rootNode.childNode(withName: "directional", recursively: true)?.light
         
         let floorNode = SCNNode(geometry: Meshes.floor)
         floorNode.position.y -= 1
@@ -56,8 +60,8 @@ class ApiaryView: SCNView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        // FIXME: Make overlay aware of safe area
-        // let safeAreaSize = self.safeAreaLayoutGuide.layoutFrame.size
+        let scale = max((safeAreaInsets.left + safeAreaInsets.right) / frame.size.width, (safeAreaInsets.top + safeAreaInsets.bottom) / frame.size.height)
+        overlay.camera?.setScale(1 + scale)
     }
     
     func loadNodes() {
@@ -73,16 +77,30 @@ class ApiaryView: SCNView {
         }
     }
     
-    func showBubble(node: SCNNode) {
-        let bubble = Bubble()
-        scene?.rootNode.addChildNode(bubble)
-        bubble.position = node.position
-        bubble.position.x += (node.geometry?.width ?? 0) / 2
-        bubble.position.z += (node.geometry?.depth ?? 0) / 2
-        bubble.position.y += (node.geometry?.height ?? 0) + 1
-        bubble.onTap {
-            print("Bubble burst!")
+    func showMiniscreen(_ view: UIView) {
+        let background = UIButton(frame: frame)
+        background.backgroundColor = .clear
+        background.addAction(for: .allTouchEvents) {
+            background.removeFromSuperview()
+            view.removeFromSuperview()
         }
+        addSubview(background)
+        addSubview(view)
+        bringSubviewToFront(view)
+    }
+    
+    func turnLight(_ duration: TimeInterval) {
+        SCNTransaction.begin()
+        SCNTransaction.animationDuration = duration
+        sun?.intensity = 500
+        SCNTransaction.commit()
+    }
+    
+    func turnDark(_ duration: TimeInterval) {
+        SCNTransaction.begin()
+        SCNTransaction.animationDuration = duration
+        sun?.intensity = 0
+        SCNTransaction.commit()
     }
 }
 

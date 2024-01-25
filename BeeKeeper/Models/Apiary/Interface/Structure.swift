@@ -41,6 +41,8 @@ class Structure: BKNode, Model, Codable {
     /// An indicator of the bounding box of the structure, defined by ``area``
     private(set) var border: StructureBorder?
     
+    private weak var bubble: Bubble?
+    
     required override init() {
         self.assignedBees = []
         self.maximumAssignedBees = 0
@@ -92,6 +94,20 @@ class Structure: BKNode, Model, Codable {
     /// Returns whether it overlaps the given structure.
     final func overlaps(_ structure: Structure) -> Bool {
         return area.intersects(structure.area)
+    }
+    
+    final func showBubble(texture: Bubble.BubbleTexture, onTap: (() -> Void)? = nil) {
+        guard self.bubble == nil else { return } // bubble already in use
+        let bubble = Bubble(texture)
+        addChildNode(bubble)
+        bubble.position.y += (geometry?.height ?? 0) / 2 + 1
+        bubble.onTap(onTap)
+        self.bubble = bubble
+    }
+    
+    final func removeBubble() {
+        bubble?.removeFromParentNode()
+        bubble = nil
     }
     
     func accept<T>(_ visitor: T) -> T.ReturnType where T : ModelVisitor {

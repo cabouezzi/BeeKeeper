@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SceneKit
 
 enum FlowerGrowthState {
     case sprouting
@@ -24,14 +25,14 @@ class Flower: Container, Collector {
     required init() {
         self.datePlanted = Date()
         super.init()
-        self.maximum = Resources(pollen: 500)
+        self.maximum = Resources(pollen: 10)
         self.name = "Flower"
-        self.area = DiscreteRect(x: 0, y: 0, width: 1, height: 1)
-        self.maximumAssignedBees = 1
+        self.area = DiscreteRect(x: 0, y: 0, width: 2, height: 2)
+        self.maximumAssignedBees = 4
     }
     
     override func loadNode() {
-        self.geometry = Meshes.Flowers.blackfoot
+        self.geometry = Meshes.Flowers.daisy
     }
     
     required init?(coder: NSCoder) {
@@ -50,12 +51,17 @@ class Flower: Container, Collector {
         return [\Resources.pollen]
     }
     
-    func accept(_ producer: some Producer) throws {
-        var produce = Resources(pollen: producer.production.pollen)
-        try? fill(&produce)
-    }
-    
     override func accept<T>(_ visitor: T) -> T.ReturnType where T : ModelVisitor {
         return visitor.visitFlower(self)
+    }
+    
+    func pollinationNode() -> SCNNode {
+        let one = SCNNode()
+        one.worldPosition = worldPosition + SCNVector3(x: -0.188, y: 2.207, z: -0.248)
+        let two = SCNNode()
+        two.worldPosition = worldPosition + SCNVector3(x: -0.188, y: 1.896, z: 0.265)
+        let three = SCNNode()
+        three.worldPosition = worldPosition + SCNVector3(x: 0.413, y: 1.642, z: 0.05)
+        return [one, two, three].randomElement()!
     }
 }
