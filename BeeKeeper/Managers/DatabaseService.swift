@@ -95,7 +95,6 @@ final class DatabaseService {
     func fetchAccount() async throws -> Account {
         guard let data = UserDefaults.standard.object(forKey: _KEY) as? Data else { throw DatabaseServiceError.accountNonexistant }
         let decoder = JSONDecoder()
-        print(try JSONSerialization.jsonObject(with: data))
         let account = try decoder.decode(Account.self, from: data)
         return account
     }
@@ -103,7 +102,6 @@ final class DatabaseService {
     func saveAccount(_ account: Account) async throws {
         let encoder = JSONEncoder()
         let data = try encoder.encode(account)
-        print(try JSONSerialization.jsonObject(with: data))
         UserDefaults.standard.set(data, forKey: _KEY)
     }
 }
