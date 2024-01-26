@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
@@ -18,16 +19,39 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let window = UIWindow(windowScene: windowScene)
         
-        let gameViewController = ApiaryViewController(frame: window.frame)
+        let launchView = LaunchView()
+        let launchViewController = UIHostingController(rootView: launchView)
         
         let navigationController = UINavigationController()
-        navigationController.pushViewController(gameViewController, animated: false)
+        navigationController.pushViewController(launchViewController, animated: false)
         navigationController.modalPresentationStyle = .none
         navigationController.isNavigationBarHidden = true
         
         self.window = window
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
+        
+        Task {
+            if await !DatabaseService.shared.hasAccount() {
+                do {
+                    try await DatabaseService.shared.createAccount()
+                } catch {
+                    print(error.localizedDescription)
+                }
+            }
+            do {
+                let account = try await DatabaseService.shared.fetchAccount()
+                try GameManager.shared.changeAccount(to: account)
+                
+                await MainActor.run {
+                    let gameViewController = ApiaryViewController(frame: window.frame)
+                    navigationController.setViewControllers([gameViewController], animated: false)
+                }
+            } catch {
+                print(error)
+            }
+            
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

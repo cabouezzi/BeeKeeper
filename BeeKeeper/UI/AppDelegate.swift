@@ -13,6 +13,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         return true
     }
+    
+    func applicationWillTerminate(_ application: UIApplication) {
+        let sem = DispatchSemaphore(value: 0)
+        Task.detached {
+            let account = GameManager.shared.account
+            do {
+                try await DatabaseService.shared.saveAccount(account)
+            } catch {
+                print("ERROR SAVING: \(error.localizedDescription)")
+            }
+            sem.signal()
+        }
+        sem.wait()
+    }
 
     // MARK: UISceneSession Lifecycle
 

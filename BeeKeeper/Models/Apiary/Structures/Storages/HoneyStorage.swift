@@ -9,12 +9,12 @@ import SceneKit
 
 final class HoneyStorage: Container {
     private var jars: [SCNNode] = []
+    
     required init() {
         super.init()
         self.maximum = Resources(honey: 200)
         self.name = "Honey Storage"
         self.area = DiscreteRect(x: 0, y: 0, width: 2, height: 2)
-        updateJars()
     }
     
     override func loadNode() {
@@ -24,6 +24,7 @@ final class HoneyStorage: Container {
         let jars = scene.rootNode.childNodes.filter({ $0.name == "jar" })
         addChildren(jars)
         self.jars = jars
+        updateJars()
     }
     
     required init?(coder: NSCoder) {

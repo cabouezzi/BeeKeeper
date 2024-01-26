@@ -29,11 +29,21 @@ class Container: Structure {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private enum CodingKeys: CodingKey {
+        case containing, maximum
+    }
+    
     required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        containing = try container.decode(Resources.self, forKey: .containing)
+        maximum = try container.decode(Resources.self, forKey: .maximum)
         try super.init(from: decoder)
     }
     
     override func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(containing, forKey: .containing)
+        try container.encode(maximum, forKey: .maximum)
         try super.encode(to: encoder)
     }
     
