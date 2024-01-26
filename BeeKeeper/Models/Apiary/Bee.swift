@@ -21,6 +21,7 @@ class Bee: SCNNode, Model, Producer, Codable {
     // Producer
     var production: Resources = Resources(honey: 0.5, pollen: 0.5, beeBread: 1)
     var producerAssignment: Structure?
+    var producerAssignmentId: UUID?
     
     // Stats
     private(set) var nickname: String
@@ -89,12 +90,27 @@ class Bee: SCNNode, Model, Producer, Codable {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private enum CodingKeys: CodingKey {
+        case nickname, genetics, producerAssignmentId
+    }
+    
     required init(from decoder: Decoder) throws {
-        fatalError()
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        producerAssignmentId = try container.decodeIfPresent(UUID.self, forKey: .producerAssignmentId)
+        nickname = try container.decode(String.self, forKey: .nickname)
+        genetics = try container.decode(Set<Gene>.self, forKey: .genetics)
+        super.init()
+        loadArmature()
+        loadGeneticEffects()
+        
+        animationLoop()
     }
     
     func encode(to encoder: Encoder) throws {
-        fatalError()
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(producerAssignmentId, forKey: .producerAssignmentId)
+        try container.encode(nickname, forKey: .nickname)
+        try container.encode(genetics, forKey: .genetics)
     }
     
     func loadArmature() {

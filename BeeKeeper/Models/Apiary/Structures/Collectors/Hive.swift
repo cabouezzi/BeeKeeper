@@ -13,7 +13,7 @@ enum HiveError: LocalizedError {
 
 class Hive: Container, Collector {
     private(set) var honeycombs: [Honeycomb]
-    let cover: SCNNode
+    let cover: SCNNode = SCNNode(geometry: Meshes.Structure.hiveCover)
     
     override var containing: Resources {
         get { honeycombs.reduce(Resources(), { $0.adding($1.containing) }) }
@@ -30,15 +30,10 @@ class Hive: Container, Collector {
     
     required init() {
         self.honeycombs = []
-        self.cover = SCNNode(geometry: Meshes.Structure.hiveCover)
         super.init()
         name = "Hive"
         self.area = DiscreteRect(x: 0, y: 0, width: 2, height: 2)
         self.maximumAssignedBees = 4
-        
-        #if !RELEASE
-        cover.isHidden = true
-        #endif
     }
     
     override func loadNode() {
@@ -47,6 +42,16 @@ class Hive: Container, Collector {
         cover.position.y = geometry!.height
         cover.position.z = -cover.geometry!.depth * 0.45
         addChildNode(cover)
+        
+        for (index, honeycomb) in honeycombs.enumerated() {
+            honeycomb.position.y = (honeycomb.geometry?.height ?? 0) * 0.7
+            honeycomb.position.z = Float(index - 1) * (geometry?.depth ?? 0) / 4
+            addChildNode(honeycomb)
+        }
+        
+        #if !RELEASE
+        cover.isHidden = true
+        #endif
     }
     
     override func onSelect() {
@@ -65,13 +70,20 @@ class Hive: Container, Collector {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private enum CodingKeys: CodingKey {
+        case honeycombs
+    }
+    
     required init(from decoder: Decoder) throws {
-        self.honeycombs = []
-        self.cover = SCNNode()
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        honeycombs = try container.decode(Array<Honeycomb>.self, forKey: .honeycombs)
         try super.init(from: decoder)
+        honeycombs.forEach({ $0.hive = self })
     }
     
     override func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(honeycombs, forKey: .honeycombs)
         try super.encode(to: encoder)
     }
     
@@ -86,7 +98,7 @@ class Hive: Container, Collector {
         honeycombs.append(honeycomb)
         addChildNode(honeycomb)
         
-        honeycomb.position.y += (honeycomb.geometry?.height ?? 0) * 0.7
+        honeycomb.position.y = (honeycomb.geometry?.height ?? 0) * 0.7
         honeycomb.position.z = Float(honeycombs.count - 2) * (geometry?.depth ?? 0) / 4
         return honeycomb
     }

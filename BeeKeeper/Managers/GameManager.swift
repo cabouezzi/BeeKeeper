@@ -82,6 +82,15 @@ final class GameManager: NSObject {
     
     // MARK: - Account-Dependent
     
+    func changeAccount(to account: Account) throws {
+        // Tear down here
+        gameTicker.stop()
+        self.account = account
+        guard let apiary = account.apiaries.first else { fatalError("Account doesn't have an apiary") }
+        changeApiary(apiary)
+        gameTicker.start()
+    }
+    
     func unlockGene(_ gene: Gene) throws {
         let prereq = GeneNetwork.shared.prerequisites(for: gene)
         guard prereq.allSatisfy({ account.unlockedGenes.contains($0) }) else {

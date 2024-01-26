@@ -8,7 +8,7 @@
 import SceneKit
 
 class Honeycomb: SCNNode, Collector, Codable {
-    unowned var hive: Hive
+    unowned var hive: Hive!
     
     var containing: Resources = Resources()
     var maximum: Resources = Resources(honey: 100)
@@ -24,12 +24,22 @@ class Honeycomb: SCNNode, Collector, Codable {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private enum CodingKeys: CodingKey {
+        case containing, maximum
+    }
+    
     required init(from decoder: Decoder) throws {
-        fatalError()
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        containing = try container.decode(Resources.self, forKey: .containing)
+        maximum = try container.decode(Resources.self, forKey: .maximum)
+        super.init()
+        self.geometry = Meshes.Structure.honeycombFrame
     }
     
     func encode(to encoder: Encoder) throws {
-        fatalError()
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(containing, forKey: .containing)
+        try container.encode(maximum, forKey: .maximum)
     }
     
     func resourceTargets() -> Set<WritableKeyPath<Resources, Float>> {
