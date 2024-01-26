@@ -59,6 +59,7 @@ class ApiaryViewController: UIViewController {
     }
     
     final func selectNode(_ node: SCNNode & Model) {
+        SFXManager.shared.playSound(.select)
         selectedNode = node
         node.accept(self)
         flashNode(node)
@@ -261,6 +262,7 @@ class ApiaryViewController: UIViewController {
         // Check and handle 2D interaction
         if let spriteNode = apiaryView.overlay.nodes(at: apiaryView.overlay.convertPoint(fromView: point)).first(where: { $0.isUserInteractionEnabled }) {
             if let button = spriteNode as? SKButton, !button.isHidden {
+                SFXManager.shared.playSound(.pop)
                 button.pop()
                 button.activate()
             }
@@ -331,9 +333,11 @@ class ApiaryViewController: UIViewController {
             let clipMargin: Float = 0.3
             if abs(pos.x - roundf(pos.x)) >= clipMargin {
                 structure.area.x = Int(round(pos.x)) - structure.area.width / 2
+                SFXManager.shared.playSound(.select)
             }
             if abs(pos.z - roundf(pos.z)) >= clipMargin {
                 structure.area.y = Int(round(pos.z)) - structure.area.height / 2
+                SFXManager.shared.playSound(.select)
             }
             
             structure.area.x.clamp(min: -25, max: 25 - structure.area.width)

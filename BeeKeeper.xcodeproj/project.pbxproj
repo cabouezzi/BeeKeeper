@@ -11,6 +11,7 @@
 		1405AC2B2B15895A003B0079 /* GeneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1405AC2A2B15895A003B0079 /* GeneTests.swift */; };
 		1405AC2D2B158C3F003B0079 /* GeneNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1405AC2C2B158C3F003B0079 /* GeneNetwork.swift */; };
 		1405AC2F2B1599D3003B0079 /* UIBezierPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1405AC2E2B1599D3003B0079 /* UIBezierPath.swift */; };
+		140A330F2B578D7A00C1086C /* BeeKeeperBase.scn in Resources */ = {isa = PBXBuildFile; fileRef = 140A330E2B578D7A00C1086C /* BeeKeeperBase.scn */; };
 		140AF27E2B616CCD006F1DE6 /* BeeStingers.scn in Resources */ = {isa = PBXBuildFile; fileRef = 140AF27D2B616CCD006F1DE6 /* BeeStingers.scn */; };
 		141AC48F2B5063A9006DD1F8 /* BeePlain.scn in Resources */ = {isa = PBXBuildFile; fileRef = 141AC48E2B5063A9006DD1F8 /* BeePlain.scn */; };
 		141AC4932B50643C006DD1F8 /* BeeStripesYellow.scn in Resources */ = {isa = PBXBuildFile; fileRef = 141AC4922B50643C006DD1F8 /* BeeStripesYellow.scn */; };
@@ -23,21 +24,11 @@
 		142DF2062AD3806F00274986 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142DF1DA2AD3804C00274986 /* SceneDelegate.swift */; };
 		145749432B6179B1004FAD7D /* BeeAbdomens.scn in Resources */ = {isa = PBXBuildFile; fileRef = 145749422B6179B1004FAD7D /* BeeAbdomens.scn */; };
 		145749482B619349004FAD7D /* BeeListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145749472B619349004FAD7D /* BeeListViewCell.swift */; };
-		145749532B62FFC4004FAD7D /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145749522B62FFC4004FAD7D /* DatabaseService.swift */; };
-		145749562B632988004FAD7D /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145749552B632988004FAD7D /* LaunchView.swift */; };
-		1457495A2B63676B004FAD7D /* EvolutionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145749592B63676B004FAD7D /* EvolutionView.swift */; };
-		145749752B65783C004FAD7D /* EvolutionGeneDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145749742B65783C004FAD7D /* EvolutionGeneDataView.swift */; };
-		1471B95A2B659550006DE737 /* EvolutionGeneDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1471B9592B659550006DE737 /* EvolutionGeneDataSource.swift */; };
-		1471B95C2B659633006DE737 /* GeneData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1471B95B2B659633006DE737 /* GeneData.swift */; };
-		1471B95F2B659B32006DE737 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1471B95E2B659B32006DE737 /* UIView.swift */; };
-		1471B9652B675922006DE737 /* Rose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1471B9642B675922006DE737 /* Rose.swift */; };
-		1471B9672B675927006DE737 /* Daisy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1471B9662B675927006DE737 /* Daisy.swift */; };
-		1471B96B2B6760FE006DE737 /* Rose.scn in Resources */ = {isa = PBXBuildFile; fileRef = 1471B96A2B6760FE006DE737 /* Rose.scn */; };
-		1471B96E2B676DCF006DE737 /* InspectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1471B96D2B676DCF006DE737 /* InspectionView.swift */; };
-		1471B9702B684015006DE737 /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1471B96F2B684015006DE737 /* UILabel.swift */; };
-		1471B9782B69C126006DE737 /* Container.scn in Resources */ = {isa = PBXBuildFile; fileRef = 1471B9772B69C126006DE737 /* Container.scn */; };
-		1471B97F2B6ADDAC006DE737 /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1471B97E2B6ADDAC006DE737 /* TutorialViewController.swift */; };
-		1471B9832B718A8B006DE737 /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1471B9822B718A8B006DE737 /* TutorialView.swift */; };
+		145749622B6415A5004FAD7D /* SFXManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145749612B6415A5004FAD7D /* SFXManager.swift */; };
+		145749662B641717004FAD7D /* bottles.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 145749642B641717004FAD7D /* bottles.mp3 */; };
+		145749672B641717004FAD7D /* bubbles.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 145749652B641717004FAD7D /* bubbles.mp3 */; };
+		145749692B641C4E004FAD7D /* pop.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 145749682B641C4E004FAD7D /* pop.mp3 */; };
+		1457496B2B64395E004FAD7D /* select.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1457496A2B64395E004FAD7D /* select.mp3 */; };
 		147FD4622B12FB4A00764E9C /* ColladaAnimationForXcode.py in Resources */ = {isa = PBXBuildFile; fileRef = 147FD4612B12FB4A00764E9C /* ColladaAnimationForXcode.py */; };
 		148196922B5B363400328709 /* ScienceStand.scn in Resources */ = {isa = PBXBuildFile; fileRef = 148196912B5B363400328709 /* ScienceStand.scn */; };
 		148358D52AABBFC5006D0290 /* BeeKeeperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148358D42AABBFC5006D0290 /* BeeKeeperTests.swift */; };
@@ -73,7 +64,7 @@
 		14835A232AB01091006D0290 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148359E82AB01091006D0290 /* Account.swift */; };
 		14835A2B2AB01327006D0290 /* SKButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A2A2AB01327006D0290 /* SKButton.swift */; };
 		14835A2E2AB013AE006D0290 /* SKTexture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A2D2AB013AE006D0290 /* SKTexture.swift */; };
-		14835A312AB02A60006D0290 /* SKNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A302AB02A60006D0290 /* SKNode.swift */; };
+		14835A312AB02A60006D0290 /* SKNode+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A302AB02A60006D0290 /* SKNode+Animations.swift */; };
 		14835A352AB396CD006D0290 /* EvolutionScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 14835A342AB396CD006D0290 /* EvolutionScene.sks */; };
 		14835A372AB4C471006D0290 /* HoneycombTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A362AB4C471006D0290 /* HoneycombTests.swift */; };
 		14835A392AB4C4F2006D0290 /* IncubatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14835A382AB4C4F2006D0290 /* IncubatorTests.swift */; };
@@ -92,7 +83,6 @@
 		148BBEC82B1BCC0D00C86AB5 /* IncubationHud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148BBEC72B1BCC0D00C86AB5 /* IncubationHud.swift */; };
 		148BBECA2B1BD03F00C86AB5 /* TimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148BBEC92B1BD03F00C86AB5 /* TimeInterval.swift */; };
 		148BBECC2B1C115100C86AB5 /* SKTextNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148BBECB2B1C115100C86AB5 /* SKTextNode.swift */; };
-		14A0B6ED2B7476B900D41DD9 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A0B6EC2B7476B900D41DD9 /* SettingsManager.swift */; };
 		14A7DE832AD389DA00D2FD4A /* ShopItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A7DE822AD389DA00D2FD4A /* ShopItem.swift */; };
 		14A7DE852AD3906600D2FD4A /* ShopViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A7DE842AD3906600D2FD4A /* ShopViewCell.swift */; };
 		14A7DE882AD3AA6100D2FD4A /* EvolutionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A7DE872AD3AA6100D2FD4A /* EvolutionViewController.swift */; };
@@ -141,6 +131,7 @@
 		1405AC2A2B15895A003B0079 /* GeneTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneTests.swift; sourceTree = "<group>"; };
 		1405AC2C2B158C3F003B0079 /* GeneNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneNetwork.swift; sourceTree = "<group>"; };
 		1405AC2E2B1599D3003B0079 /* UIBezierPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBezierPath.swift; sourceTree = "<group>"; };
+		140A330E2B578D7A00C1086C /* BeeKeeperBase.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeKeeperBase.scn; sourceTree = "<group>"; };
 		140AF27D2B616CCD006F1DE6 /* BeeStingers.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeStingers.scn; sourceTree = "<group>"; };
 		141AC48E2B5063A9006DD1F8 /* BeePlain.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeePlain.scn; sourceTree = "<group>"; };
 		141AC4922B50643C006DD1F8 /* BeeStripesYellow.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeStripesYellow.scn; sourceTree = "<group>"; };
@@ -153,21 +144,11 @@
 		142DF1DA2AD3804C00274986 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		145749422B6179B1004FAD7D /* BeeAbdomens.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeAbdomens.scn; sourceTree = "<group>"; };
 		145749472B619349004FAD7D /* BeeListViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeeListViewCell.swift; sourceTree = "<group>"; };
-		145749522B62FFC4004FAD7D /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
-		145749552B632988004FAD7D /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
-		145749592B63676B004FAD7D /* EvolutionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvolutionView.swift; sourceTree = "<group>"; };
-		145749742B65783C004FAD7D /* EvolutionGeneDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvolutionGeneDataView.swift; sourceTree = "<group>"; };
-		1471B9592B659550006DE737 /* EvolutionGeneDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvolutionGeneDataSource.swift; sourceTree = "<group>"; };
-		1471B95B2B659633006DE737 /* GeneData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneData.swift; sourceTree = "<group>"; };
-		1471B95E2B659B32006DE737 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
-		1471B9642B675922006DE737 /* Rose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rose.swift; sourceTree = "<group>"; };
-		1471B9662B675927006DE737 /* Daisy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Daisy.swift; sourceTree = "<group>"; };
-		1471B96A2B6760FE006DE737 /* Rose.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Rose.scn; sourceTree = "<group>"; };
-		1471B96D2B676DCF006DE737 /* InspectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectionView.swift; sourceTree = "<group>"; };
-		1471B96F2B684015006DE737 /* UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
-		1471B9772B69C126006DE737 /* Container.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Container.scn; sourceTree = "<group>"; };
-		1471B97E2B6ADDAC006DE737 /* TutorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
-		1471B9822B718A8B006DE737 /* TutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialView.swift; sourceTree = "<group>"; };
+		145749612B6415A5004FAD7D /* SFXManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SFXManager.swift; path = ../../../../Downloads/SFXManager.swift; sourceTree = "<group>"; };
+		145749642B641717004FAD7D /* bottles.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bottles.mp3; sourceTree = "<group>"; };
+		145749652B641717004FAD7D /* bubbles.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bubbles.mp3; sourceTree = "<group>"; };
+		145749682B641C4E004FAD7D /* pop.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = pop.mp3; sourceTree = "<group>"; };
+		1457496A2B64395E004FAD7D /* select.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = select.mp3; sourceTree = "<group>"; };
 		147FD4612B12FB4A00764E9C /* ColladaAnimationForXcode.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = ColladaAnimationForXcode.py; sourceTree = "<group>"; };
 		148196912B5B363400328709 /* ScienceStand.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = ScienceStand.scn; sourceTree = "<group>"; };
 		148358BF2AABBFC4006D0290 /* BeeKeeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeeKeeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -207,7 +188,7 @@
 		148359EA2AB01091006D0290 /* BeeKeeper.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = BeeKeeper.entitlements; sourceTree = "<group>"; };
 		14835A2A2AB01327006D0290 /* SKButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKButton.swift; sourceTree = "<group>"; };
 		14835A2D2AB013AE006D0290 /* SKTexture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKTexture.swift; sourceTree = "<group>"; };
-		14835A302AB02A60006D0290 /* SKNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKNode.swift; sourceTree = "<group>"; };
+		14835A302AB02A60006D0290 /* SKNode+Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SKNode+Animations.swift"; sourceTree = "<group>"; };
 		14835A342AB396CD006D0290 /* EvolutionScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = EvolutionScene.sks; sourceTree = "<group>"; };
 		14835A362AB4C471006D0290 /* HoneycombTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoneycombTests.swift; sourceTree = "<group>"; };
 		14835A382AB4C4F2006D0290 /* IncubatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncubatorTests.swift; sourceTree = "<group>"; };
@@ -226,7 +207,6 @@
 		148BBEC72B1BCC0D00C86AB5 /* IncubationHud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncubationHud.swift; sourceTree = "<group>"; };
 		148BBEC92B1BD03F00C86AB5 /* TimeInterval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeInterval.swift; sourceTree = "<group>"; };
 		148BBECB2B1C115100C86AB5 /* SKTextNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKTextNode.swift; sourceTree = "<group>"; };
-		14A0B6EC2B7476B900D41DD9 /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
 		14A7DE7C2AD3866100D2FD4A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		14A7DE822AD389DA00D2FD4A /* ShopItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopItem.swift; sourceTree = "<group>"; };
 		14A7DE842AD3906600D2FD4A /* ShopViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopViewCell.swift; sourceTree = "<group>"; };
@@ -319,7 +299,6 @@
 		1457494F2B61D0F5004FAD7D /* Structures */ = {
 			isa = PBXGroup;
 			children = (
-				1471B9772B69C126006DE737 /* Container.scn */,
 				14835A9B2AC679CE006D0290 /* Rack.scn */,
 				14835A9E2AC679CE006D0290 /* Frame.scn */,
 				14835A9C2AC679CE006D0290 /* Hive.scn */,
@@ -328,37 +307,15 @@
 			path = Structures;
 			sourceTree = "<group>";
 		};
-		145749542B632971004FAD7D /* LaunchUI */ = {
+		145749632B641702004FAD7D /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
-				145749552B632988004FAD7D /* LaunchView.swift */,
+				1457496A2B64395E004FAD7D /* select.mp3 */,
+				145749682B641C4E004FAD7D /* pop.mp3 */,
+				145749652B641717004FAD7D /* bubbles.mp3 */,
+				145749642B641717004FAD7D /* bottles.mp3 */,
 			);
-			path = LaunchUI;
-			sourceTree = "<group>";
-		};
-		1471B95D2B659663006DE737 /* Shop */ = {
-			isa = PBXGroup;
-			children = (
-				14A7DE822AD389DA00D2FD4A /* ShopItem.swift */,
-			);
-			path = Shop;
-			sourceTree = "<group>";
-		};
-		1471B96C2B676DB7006DE737 /* InspectionUI */ = {
-			isa = PBXGroup;
-			children = (
-				1471B96D2B676DCF006DE737 /* InspectionView.swift */,
-			);
-			path = InspectionUI;
-			sourceTree = "<group>";
-		};
-		1471B97D2B6ADD9B006DE737 /* TutorialUI */ = {
-			isa = PBXGroup;
-			children = (
-				1471B97E2B6ADDAC006DE737 /* TutorialViewController.swift */,
-				1471B9822B718A8B006DE737 /* TutorialView.swift */,
-			);
-			path = TutorialUI;
+			path = Sounds;
 			sourceTree = "<group>";
 		};
 		148358B62AABBFC4006D0290 = {
@@ -423,6 +380,7 @@
 				14835A8F2AC60001006D0290 /* Support */,
 				148359BC2AB01091006D0290 /* UI */,
 				148359CB2AB01091006D0290 /* Managers */,
+				145749632B641702004FAD7D /* Sounds */,
 				148359E62AB01091006D0290 /* Account */,
 				148359CE2AB01091006D0290 /* Models */,
 				148359E42AB01091006D0290 /* Preview Content */,
@@ -436,14 +394,11 @@
 			children = (
 				14BB763A2B12903300E15654 /* AppDelegate.swift */,
 				142DF1DA2AD3804C00274986 /* SceneDelegate.swift */,
-				1471B97D2B6ADD9B006DE737 /* TutorialUI */,
-				145749542B632971004FAD7D /* LaunchUI */,
 				14835A7A2AB5299D006D0290 /* Styles */,
 				14835A702AB51852006D0290 /* ApiaryUI */,
 				14A7DE7F2AD3883300D2FD4A /* ShopUI */,
 				14A7DE862AD3AA5800D2FD4A /* EvolutionUI */,
 				145749442B619301004FAD7D /* BeeListUI */,
-				1471B96C2B676DB7006DE737 /* InspectionUI */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -471,6 +426,7 @@
 				148359C62AB01091006D0290 /* ApiaryOverlay.swift */,
 				141AC49C2B509C4B006DD1F8 /* MiniScreens */,
 				141AC49B2B509C41006DD1F8 /* Components */,
+				14835A2F2AB02A32006D0290 /* Animation */,
 				14835A2C2AB01355006D0290 /* Assets */,
 			);
 			path = 2D;
@@ -488,10 +444,8 @@
 			isa = PBXGroup;
 			children = (
 				148359CC2AB01091006D0290 /* GameManager.swift */,
-				14A0B6EC2B7476B900D41DD9 /* SettingsManager.swift */,
 				14E7C8312B4D13A6002376BF /* GameTicker.swift */,
-				1471B9592B659550006DE737 /* EvolutionGeneDataSource.swift */,
-				145749522B62FFC4004FAD7D /* DatabaseService.swift */,
+				145749612B6415A5004FAD7D /* SFXManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -499,8 +453,8 @@
 		148359CE2AB01091006D0290 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				148359E22AB01091006D0290 /* ModelVisitor.swift */,
 				148359CF2AB01091006D0290 /* Apiary */,
-				1471B95D2B659663006DE737 /* Shop */,
 				148359E02AB01091006D0290 /* Evolution */,
 			);
 			path = Models;
@@ -509,7 +463,6 @@
 		148359CF2AB01091006D0290 /* Apiary */ = {
 			isa = PBXGroup;
 			children = (
-				148359E22AB01091006D0290 /* ModelVisitor.swift */,
 				148359DF2AB01091006D0290 /* Apiary.swift */,
 				148359E32AB01091006D0290 /* Bee.swift */,
 				148359D02AB01091006D0290 /* Interface */,
@@ -571,7 +524,6 @@
 			isa = PBXGroup;
 			children = (
 				148359E12AB01091006D0290 /* Gene.swift */,
-				1471B95B2B659633006DE737 /* GeneData.swift */,
 				1405AC2C2B158C3F003B0079 /* GeneNetwork.swift */,
 			);
 			path = Evolution;
@@ -600,6 +552,14 @@
 				14835A2D2AB013AE006D0290 /* SKTexture.swift */,
 			);
 			path = Assets;
+			sourceTree = "<group>";
+		};
+		14835A2F2AB02A32006D0290 /* Animation */ = {
+			isa = PBXGroup;
+			children = (
+				14835A302AB02A60006D0290 /* SKNode+Animations.swift */,
+			);
+			path = Animation;
 			sourceTree = "<group>";
 		};
 		14835A702AB51852006D0290 /* ApiaryUI */ = {
@@ -636,14 +596,11 @@
 			children = (
 				14835A902AC6000E006D0290 /* UIColor.swift */,
 				14AB5CA02B5F6CFB002750B2 /* UIControl.swift */,
-				1471B95E2B659B32006DE737 /* UIView.swift */,
 				14AB5C9A2B5F1AED002750B2 /* Comparable.swift */,
 				14E448822AC68129008963C8 /* SCNNode.swift */,
 				142211052B56213E0060C51A /* SCNVector3.swift */,
 				1405AC2E2B1599D3003B0079 /* UIBezierPath.swift */,
 				148BBEC92B1BD03F00C86AB5 /* TimeInterval.swift */,
-				14835A302AB02A60006D0290 /* SKNode.swift */,
-				1471B96F2B684015006DE737 /* UILabel.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -652,12 +609,13 @@
 			isa = PBXGroup;
 			children = (
 				148ACE8F2B534C2B00A0F948 /* assets.scnassets */,
-				1405AC1A2B145310003B0079 /* ModelBase.scn */,
-				14AB5C982B5EE735002750B2 /* BeeKeeperForest.scn */,
-				148ACE8D2B534BC700A0F948 /* Bubble.scn */,
 				14D7C5702B5CC80E00CC35CB /* Bee */,
 				14D7C56F2B5CC80400CC35CB /* Flowers */,
 				1457494F2B61D0F5004FAD7D /* Structures */,
+				1405AC1A2B145310003B0079 /* ModelBase.scn */,
+				14AB5C982B5EE735002750B2 /* BeeKeeperForest.scn */,
+				140A330E2B578D7A00C1086C /* BeeKeeperBase.scn */,
+				148ACE8D2B534BC700A0F948 /* Bubble.scn */,
 			);
 			path = "3D Assets";
 			sourceTree = "<group>";
@@ -667,6 +625,7 @@
 			children = (
 				142211192B5740CF0060C51A /* ShopView.swift */,
 				14A7DE842AD3906600D2FD4A /* ShopViewCell.swift */,
+				14A7DE822AD389DA00D2FD4A /* ShopItem.swift */,
 			);
 			path = ShopUI;
 			sourceTree = "<group>";
@@ -675,8 +634,6 @@
 			isa = PBXGroup;
 			children = (
 				14835A342AB396CD006D0290 /* EvolutionScene.sks */,
-				145749592B63676B004FAD7D /* EvolutionView.swift */,
-				145749742B65783C004FAD7D /* EvolutionGeneDataView.swift */,
 				14A7DE872AD3AA6100D2FD4A /* EvolutionViewController.swift */,
 			);
 			path = EvolutionUI;
@@ -688,7 +645,6 @@
 				14835A9D2AC679CE006D0290 /* Blackfoot.scn */,
 				14D7C5692B5CC40800CC35CB /* Daisy.scn */,
 				14D7C5762B5CC96A00CC35CB /* Lavender.scn */,
-				1471B96A2B6760FE006DE737 /* Rose.scn */,
 			);
 			path = Flowers;
 			sourceTree = "<group>";
@@ -714,8 +670,6 @@
 			isa = PBXGroup;
 			children = (
 				14D7C5722B5CC8E200CC35CB /* Lavender.swift */,
-				1471B9662B675927006DE737 /* Daisy.swift */,
-				1471B9642B675922006DE737 /* Rose.swift */,
 			);
 			path = Flowers;
 			sourceTree = "<group>";
@@ -825,11 +779,13 @@
 				14835AA02AC679CE006D0290 /* Hive.scn in Resources */,
 				14835A9F2AC679CE006D0290 /* Rack.scn in Resources */,
 				148196922B5B363400328709 /* ScienceStand.scn in Resources */,
+				145749662B641717004FAD7D /* bottles.mp3 in Resources */,
+				145749692B641C4E004FAD7D /* pop.mp3 in Resources */,
 				14AB5CA52B602B8B002750B2 /* BeeWingsFold.scn in Resources */,
 				14D7C5772B5CC96A00CC35CB /* Lavender.scn in Resources */,
 				14835A352AB396CD006D0290 /* EvolutionScene.sks in Resources */,
+				145749672B641717004FAD7D /* bubbles.mp3 in Resources */,
 				14835AA12AC679CE006D0290 /* Blackfoot.scn in Resources */,
-				1471B9782B69C126006DE737 /* Container.scn in Resources */,
 				14835A1F2AB01091006D0290 /* Preview Assets.xcassets in Resources */,
 				141AC4932B50643C006DD1F8 /* BeeStripesYellow.scn in Resources */,
 				148ACE902B534C2B00A0F948 /* assets.scnassets in Resources */,
@@ -840,12 +796,13 @@
 				14AB5CA92B60C378002750B2 /* BeeStripesGray.scn in Resources */,
 				14EB4BDA2B4F493700BCDAAA /* LaunchScreen.storyboard in Resources */,
 				14E448852AC6828A008963C8 /* BeeWings.scn in Resources */,
-				1471B96B2B6760FE006DE737 /* Rose.scn in Resources */,
 				14D7C56A2B5CC40800CC35CB /* Daisy.scn in Resources */,
 				14835AA22AC679CE006D0290 /* Frame.scn in Resources */,
 				147FD4622B12FB4A00764E9C /* ColladaAnimationForXcode.py in Resources */,
+				140A330F2B578D7A00C1086C /* BeeKeeperBase.scn in Resources */,
 				14AB5CAB2B60C3CB002750B2 /* BeeStripesOrange.scn in Resources */,
 				142211102B564AFB0060C51A /* BeeWingsFlap.scn in Resources */,
+				1457496B2B64395E004FAD7D /* select.mp3 in Resources */,
 				140AF27E2B616CCD006F1DE6 /* BeeStingers.scn in Resources */,
 				141AC4972B50651B006DD1F8 /* BeeWiggle.scn in Resources */,
 				14AB5C992B5EE735002750B2 /* BeeKeeperForest.scn in Resources */,
@@ -869,22 +826,18 @@
 			files = (
 				148359F32AB01091006D0290 /* ApiaryView.swift in Sources */,
 				148BBECA2B1BD03F00C86AB5 /* TimeInterval.swift in Sources */,
-				1471B95C2B659633006DE737 /* GeneData.swift in Sources */,
 				148359F92AB01091006D0290 /* ResourceBar.swift in Sources */,
 				14A7DE832AD389DA00D2FD4A /* ShopItem.swift in Sources */,
 				14AB5C9F2B5F589F002750B2 /* BeeListView.swift in Sources */,
 				14835A052AB01091006D0290 /* Collector.swift in Sources */,
 				14835A7C2AB529A5006D0290 /* BubbleStyle.swift in Sources */,
-				145749562B632988004FAD7D /* LaunchView.swift in Sources */,
 				14835A192AB01091006D0290 /* Gene.swift in Sources */,
 				14835A112AB01091006D0290 /* Honeycomb.swift in Sources */,
 				14E448832AC68129008963C8 /* SCNNode.swift in Sources */,
 				142DF2062AD3806F00274986 /* SceneDelegate.swift in Sources */,
 				14835A0D2AB01091006D0290 /* Incubator.swift in Sources */,
-				1471B97F2B6ADDAC006DE737 /* TutorialViewController.swift in Sources */,
 				148359ED2AB01091006D0290 /* BKNode.swift in Sources */,
 				145749482B619349004FAD7D /* BeeListViewCell.swift in Sources */,
-				1457495A2B63676B004FAD7D /* EvolutionView.swift in Sources */,
 				148359FF2AB01091006D0290 /* GameManager.swift in Sources */,
 				142211062B56213E0060C51A /* SCNVector3.swift in Sources */,
 				1405AC2D2B158C3F003B0079 /* GeneNetwork.swift in Sources */,
@@ -893,19 +846,16 @@
 				14835A0B2AB01091006D0290 /* Flower.swift in Sources */,
 				14835A132AB01091006D0290 /* Hive.swift in Sources */,
 				14AB5C9B2B5F1AED002750B2 /* Comparable.swift in Sources */,
-				145749532B62FFC4004FAD7D /* DatabaseService.swift in Sources */,
 				148359EF2AB01091006D0290 /* ApiaryViewController.swift in Sources */,
 				14835A212AB01091006D0290 /* Resource.swift in Sources */,
 				14A7DE852AD3906600D2FD4A /* ShopViewCell.swift in Sources */,
 				14D7C5732B5CC8E200CC35CB /* Lavender.swift in Sources */,
 				14A7DE882AD3AA6100D2FD4A /* EvolutionViewController.swift in Sources */,
 				14835A092AB01091006D0290 /* Container.swift in Sources */,
-				1471B9672B675927006DE737 /* Daisy.swift in Sources */,
 				14E7C8322B4D13A6002376BF /* GameTicker.swift in Sources */,
 				148ACE932B53540800A0F948 /* Bubble.swift in Sources */,
 				14835A2B2AB01327006D0290 /* SKButton.swift in Sources */,
 				1422111A2B5740D00060C51A /* ShopView.swift in Sources */,
-				1471B95A2B659550006DE737 /* EvolutionGeneDataSource.swift in Sources */,
 				14835A1B2AB01091006D0290 /* ModelVisitor.swift in Sources */,
 				14835A1D2AB01091006D0290 /* Bee.swift in Sources */,
 				148359F72AB01091006D0290 /* ApiaryOverlay.swift in Sources */,
@@ -913,23 +863,17 @@
 				141AC49E2B510C38006DD1F8 /* StructureHud.swift in Sources */,
 				148359FB2AB01091006D0290 /* UserDefaults.swift in Sources */,
 				14BB763B2B12903300E15654 /* AppDelegate.swift in Sources */,
+				145749622B6415A5004FAD7D /* SFXManager.swift in Sources */,
 				14835A172AB01091006D0290 /* Apiary.swift in Sources */,
-				14835A312AB02A60006D0290 /* SKNode.swift in Sources */,
+				14835A312AB02A60006D0290 /* SKNode+Animations.swift in Sources */,
 				14835A912AC6000E006D0290 /* UIColor.swift in Sources */,
 				14835A0F2AB01091006D0290 /* HoneyStorage.swift in Sources */,
-				1471B95F2B659B32006DE737 /* UIView.swift in Sources */,
 				14D7C5632B5C31A500CC35CB /* StructureBorder.swift in Sources */,
-				1471B96E2B676DCF006DE737 /* InspectionView.swift in Sources */,
-				14A0B6ED2B7476B900D41DD9 /* SettingsManager.swift in Sources */,
-				1471B9652B675922006DE737 /* Rose.swift in Sources */,
 				148359F12AB01091006D0290 /* ApiarySwiftUIView.swift in Sources */,
 				14835A8E2AC5FED3006D0290 /* ResourceDisplayHud.swift in Sources */,
 				14835A232AB01091006D0290 /* Account.swift in Sources */,
 				148BBEC82B1BCC0D00C86AB5 /* IncubationHud.swift in Sources */,
 				14AB5CA12B5F6CFB002750B2 /* UIControl.swift in Sources */,
-				1471B9702B684015006DE737 /* UILabel.swift in Sources */,
-				1471B9832B718A8B006DE737 /* TutorialView.swift in Sources */,
-				145749752B65783C004FAD7D /* EvolutionGeneDataView.swift in Sources */,
 				14835A032AB01091006D0290 /* Producer.swift in Sources */,
 				148BBECC2B1C115100C86AB5 /* SKTextNode.swift in Sources */,
 				142211162B56FAFE0060C51A /* Camera.swift in Sources */,
