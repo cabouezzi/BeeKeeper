@@ -10,6 +10,7 @@ import SceneKit
 protocol GameObserver: AnyObject {
     func gameManager(_ account: Account, _ apiary: Apiary, didHatchBee bee: Bee)
     func gameManager(_ account: Account, _ apiary: Apiary, didUpdateResources resources: Resources)
+    func gameManager(_ account: Account, _ apiary: Apiary, didReleaseBees bees: [Bee])
 }
 
 /// Global functionality that represents the user's capabilities and control over the game.
@@ -26,28 +27,34 @@ final class GameManager: NSObject {
         apiary = account.apiaries.first!
         super.init()
         gameTicker.setHandler { [weak self] timer in
-            self?.onTick()
+            self?.onTick(timer.timeInterval)
         }
         gameTicker.start()
     }
     
-    private func onTick() {
-        // TODO: Possibly change mechanics?
-        for bee in apiary.bees {
-            // Produce first
-            if let collector = bee.producerAssignment as? (Structure & Collector) {
-                try? collector.accept(bee)
+    private func onTick(_ seconds: TimeInterval) {
+        apiary.tickWildBees(seconds)
+        
+        // TODO: Make formula instead of loop
+        
+        for _ in 0..<Int(seconds) {
+            // TODO: Possibly change mechanics?
+            for bee in apiary.bees {
+                // Produce first
+                if let collector = bee.producerAssignment as? (Structure & Collector) {
+                    try? collector.accept(bee)
+                }
+                
+                // TODO: Remove from collectors not storage, need separate function
+                try? remove(bee.consumption)
             }
             
-            // TODO: Remove from collectors not storage, need separate function
-            try? remove(bee.consumption)
-        }
-        
-        for structure in apiary.structures {
-            if let collector = structure as? (Container & Collector), let resource = collector.resourceTargets().first {
-                if collector.containing[keyPath: resource] > collector.maximum[keyPath: resource] * 0.3 {
-                    collector.showResourceBubble {
-                        self.collect(from: collector)
+            for structure in apiary.structures {
+                if let collector = structure as? (Container & Collector), let resource = collector.resourceTargets().first {
+                    if collector.containing[keyPath: resource] > collector.maximum[keyPath: resource] * 0.3 {
+                        collector.showResourceBubble {
+                            self.collect(from: collector)
+                        }
                     }
                 }
             }
@@ -159,6 +166,15 @@ final class GameManager: NSObject {
         try apiary.addBee(bee)
         
         notifyObservers({ $0.gameManager(account, apiary, didHatchBee: bee) })
+    }
+    
+    func releaseBees() {
+        do {
+            let bees = try apiary.releaseAllBees()
+            notifyObservers({ $0.gameManager(account, apiary, didReleaseBees: bees) })
+        } catch {
+            print(error)
+        }
     }
     
     /// Adds a new structure to the apiary.

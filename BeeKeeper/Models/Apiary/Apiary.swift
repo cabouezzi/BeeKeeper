@@ -10,13 +10,19 @@ import Foundation
 enum ApiaryError: LocalizedError {
     case overlappingStructures
     case sameBeeName
+    case noBees
 }
 
 class Apiary: Codable {
+    private(set) var wildBees: Float
+    private(set) var wildGenePool: Set<Gene>
     private(set) var bees: [Bee]
     private(set) var structures: [Structure]
     
     init() {
+        wildBees = 1000
+        wildGenePool = []
+        
         let hive = Hive()
         try? hive.addHoneycomb()
         try? hive.addHoneycomb()
@@ -49,15 +55,18 @@ class Apiary: Codable {
     }
     
     private enum CodingKeys: CodingKey {
-        case wrappers
+        case wildBees, wildGenePool, wrappers
     }
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let wrappers = try container.decode(Array<Wrapper>.self, forKey: .wrappers)
+        wildBees = try container.decodeIfPresent(Float.self, forKey: .wildBees) ?? 1000
+        wildGenePool = try container.decodeIfPresent(Set<Gene>.self, forKey: .wildGenePool) ?? []
         
-        self.structures = wrappers.compactMap({ $0.value as? Structure })
-        self.bees = wrappers.compactMap({ $0.value as? Bee })
+        let wrappers = try container.decode(Array<Wrapper>.self, forKey: .wrappers)
+        structures = wrappers.compactMap({ $0.value as? Structure })
+        bees = wrappers.compactMap({ $0.value as? Bee })
+        
         for bee in bees {
             guard let id = bee.producerAssignmentId else { continue }
             guard let structure = structures.first(where: { $0.id == id }) else { fatalError("Bee holds id to structure that doesn't exist") }
@@ -67,11 +76,37 @@ class Apiary: Codable {
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(wildBees, forKey: .wildBees)
+        try container.encode(wildGenePool, forKey: .wildGenePool)
+        
         let wrappers = structures.map({ Wrapper($0) }) + bees.map({ Wrapper($0) })
         try container.encode(wrappers, forKey: .wrappers)
     }
     
     // MARK: - Bees
+    
+    /// Call to release all bees into the wild.
+    @discardableResult
+    func releaseAllBees() throws -> [Bee] {
+        // Calculate score from bees and gees
+        // TODO: Make some actual formula
+        let score = bees.reduce(0, { $0 + $1.genetics.count })
+        wildBees += Float(score)
+        
+        let temp = bees
+        bees.forEach({ try? $0.assign(to: nil) })
+        bees.removeAll()
+        return temp
+    }
+    
+    /// Call to simulate a timestep in the wild
+    func tickWildBees(_ seconds: TimeInterval) {
+        // TODO: Growth rate vs death rate. (Always make negative net rate tho)
+        let factor = seconds / TimeInterval(days: 1)
+        wildBees -= 5 * Float(factor)
+        wildBees.clamp(min: 0, max: .infinity)
+        print("\(Date.now) Wild bees count: \(wildBees). Gene pool: \(wildGenePool.map(\.rawValue))")
+    }
     
     /// Adds the bee if there doesn't already exist a bee with the same name
     func addBee(_ bee: Bee) throws {

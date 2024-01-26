@@ -205,6 +205,10 @@ class ApiaryViewController: UIViewController {
             beeListView.removeFromSuperview()
             self?.selectNode(bee)
         }
+        beeListView.onRelease { [weak self] in
+            guard case .idle = self?.state else { return }
+            GameManager.shared.releaseBees()
+        }
         apiaryView.addSubview(beeListView)
     }
     

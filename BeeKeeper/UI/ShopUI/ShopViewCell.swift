@@ -31,7 +31,6 @@ class ShopViewCell: UICollectionViewCell {
         background.backgroundColor = .white
         background.layer.cornerRadius = frame.width / 10
         background.layer.opacity = 0.1
-        background.isUserInteractionEnabled = false
         addSubview(background)
         
         setupModelView()

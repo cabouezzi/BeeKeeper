@@ -26,7 +26,7 @@ class BeeListViewCell: UIControl {
         setupNameLabel()
         setupCostLabel()
         setupButton()
-        setupRenameButton()
+        // setupRenameButton()
         
         backgroundColor = .orange
         layer.cornerRadius = 10
