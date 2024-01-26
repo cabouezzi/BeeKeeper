@@ -9,39 +9,11 @@
 import SpriteKit
 
 class EvolutionViewController: UIViewController {
-    var evolutionView: SKView!
-    var evolutionScene: SKScene = SKScene(fileNamed: "EvolutionScene.sks")!
+    let evolutionView: EvolutionView
     
-    private var camera = SKCameraNode()
-    private let centerNode: SKNode
-    private let backStars: SKNode
-    private let middleStars: SKNode
-    
-    init() {
-        evolutionScene.backgroundColor = .black
-        evolutionScene.camera = camera
-        evolutionScene.addChild(camera)
-        centerNode = evolutionScene.childNode(withName: "Center")!
-        backStars = evolutionScene.childNode(withName: "BackStars")!
-        backStars.setScale(2)
-        middleStars = evolutionScene.childNode(withName: "MiddleStars")!
-        middleStars.setScale(2)
+    init(frame: CGRect) {
+        evolutionView = EvolutionView(frame: frame)
         super.init(nibName: nil, bundle: nil)
-        
-        evolutionScene.delegate = self
-        
-        #if !RELEASE
-        centerNode.isUserInteractionEnabled = true
-        #else
-        centerNode.isUserInteractionEnabled = false
-        #endif
-        middleStars.isUserInteractionEnabled = false
-        backStars.isUserInteractionEnabled = false
-        
-        camera.constraints = [
-            SKConstraint.positionX(SKRange(lowerLimit: -1515, upperLimit: 1515)),
-            SKConstraint.positionY(SKRange(lowerLimit: -1515, upperLimit: 1515))
-        ]
     }
     
     required init?(coder: NSCoder) {
@@ -50,25 +22,23 @@ class EvolutionViewController: UIViewController {
     
     override func loadView() {
         super.loadView()
-        evolutionView = SKView(frame: self.view.frame)
-        evolutionView.presentScene(evolutionScene)
         self.view = evolutionView
-        
-        for node in evolutionScene.children {
-            guard let gene = Gene(rawValue: node.name ?? "") else { continue }
-            node.isUserInteractionEnabled = true
-#if !RELEASE
-            let label = SKLabelNode(text: node.name)
+        // Hide icons not unlocked, add labels
+        for icon in evolutionView.icons {
+            guard let gene = Gene(rawValue: icon.name ?? "") else { continue }
+            icon.isUserInteractionEnabled = true
+            #if !RELEASE
+            let label = SKLabelNode(text: icon.name)
             label.fontSize = 20
             label.fontColor = .black
-            label.position = node.position
+            label.position = icon.position
             label.zPosition = .infinity
-            evolutionScene.addChild(label)
+            evolutionView.evolutionScene.addChild(label)
             label.isUserInteractionEnabled = false
-#endif
+            #endif
             
             if !GameManager.shared.account.unlockedGenes.contains(gene) {
-                node.isHidden = true
+                icon.isHidden = true
             }
         }
         
@@ -78,6 +48,7 @@ class EvolutionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        // Add back button
         let frame = evolutionView.frame
         let backButton = UIButton(frame: CGRect(x: 25, y: 25, width: frame.height / 15, height: frame.height / 15))
         backButton.setImage(UIImage(named: "backButton"), for: .normal)
@@ -94,9 +65,10 @@ class EvolutionViewController: UIViewController {
     }
     
     private func animateCenterNode() {
+        let centerNode = evolutionView.centerNode
         guard let centerTwo = centerNode.copy() as? SKNode else { return }
         centerTwo.name = centerNode.name
-        evolutionScene.addChild(centerTwo)
+        evolutionView.evolutionScene.addChild(centerTwo)
         let action = SKAction.rotate(byAngle: .pi, duration: 3)
         let actionTwo = SKAction.rotate(byAngle: -.pi, duration: 3)
         centerNode.run(.repeatForever(action))
@@ -105,11 +77,11 @@ class EvolutionViewController: UIViewController {
     
     private func drawDirectedEdges() {
         for edge in GeneNetwork.shared.edges {
-            let to = evolutionScene.children.first(where: { node in
+            let to = evolutionView.evolutionScene.children.first(where: { node in
                 guard let name = node.name, let gene = Gene(rawValue: name) else { return false }
                 return gene == edge.to
             })
-            let from = evolutionScene.children.first(where: { node in
+            let from = evolutionView.evolutionScene.children.first(where: { node in
                 guard let name = node.name, let gene = Gene(rawValue: name) else { return false }
                 return gene == edge.from
             })
@@ -129,7 +101,7 @@ class EvolutionViewController: UIViewController {
             line.fillColor = .white
             line.lineWidth = 4
             line.zPosition = 3
-            evolutionScene.addChild(line)
+            evolutionView.evolutionScene.addChild(line)
         }
     }
     
@@ -142,7 +114,7 @@ class EvolutionViewController: UIViewController {
             }
         
         for lockedGene in leaves {
-            guard let target = self.evolutionScene.childNode(withName: lockedGene.rawValue) else { continue }
+            guard let target = evolutionView.evolutionScene.childNode(withName: lockedGene.rawValue) else { continue }
             var lockNode: SKNode! = target.childNode(withName: "lock")
             if lockNode == nil {
                 lockNode = SKSpriteNode(texture: SKTexture.evolutionLock)
@@ -155,8 +127,6 @@ class EvolutionViewController: UIViewController {
         }
     }
     
-    private var lastCameraPosition: CGPoint = CGPoint.zero
-    
     private func addGestureRecognizers() {
         evolutionView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(panGestureRecognizer)))
         evolutionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapGestureRecognizer)))
@@ -166,12 +136,14 @@ class EvolutionViewController: UIViewController {
     @objc
     private func tapGestureRecognizer(_ gestureRecognizer: UITapGestureRecognizer) {
         let pointInView = gestureRecognizer.location(in: evolutionView)
-        let point = evolutionView.convert(pointInView, to: evolutionScene)
-        guard let node = evolutionScene.nodes(at: point).first(where: { !$0.isHidden && $0.isUserInteractionEnabled }) else { return }
+        let point = evolutionView.convert(pointInView, to: evolutionView.evolutionScene)
+        guard let node = evolutionView.evolutionScene.nodes(at: point).first(where: { !$0.isHidden && $0.isUserInteractionEnabled }) else { return }
         
         guard let name = node.name, let gene = Gene(rawValue: name) else { return }
         node.pop()
         
+        // Buy gene
+        // TODO: Add extra steps: Show popup first, then buy/confirm button
         if !GameManager.shared.account.unlockedGenes.contains(gene) {
             do {
                 try GameManager.shared.unlockGene(gene)
@@ -183,28 +155,28 @@ class EvolutionViewController: UIViewController {
             }
         }
     }
-    
-    private var cameraVelocity: CGPoint = .zero
-    private var lastSceneTime: TimeInterval = 0
+
+    private var cameraStartPosition: CGPoint = CGPoint.zero
     
     @objc
     private func panGestureRecognizer(_ gestureRecognizer: UIPanGestureRecognizer) {
+        let camera = evolutionView.camera
+        
         if gestureRecognizer.state == .began {
-            lastCameraPosition = camera.position
-            cameraVelocity = .zero
+            cameraStartPosition = camera.position
+            evolutionView.cameraVelocity = .zero
         }
         
         let translation = gestureRecognizer.translation(in: evolutionView)
         let velocity = gestureRecognizer.velocity(in: evolutionView)
-        let x = lastCameraPosition.x - translation.x
-        let y = lastCameraPosition.y + translation.y
+        let x = cameraStartPosition.x - translation.x
+        let y = cameraStartPosition.y + translation.y
         
         camera.position.x = x
         camera.position.y = y
         
         if gestureRecognizer.state == .ended {
-            lastCameraPosition = camera.position
-            cameraVelocity = velocity
+            evolutionView.cameraVelocity = velocity
         }
     }
     
@@ -212,37 +184,12 @@ class EvolutionViewController: UIViewController {
     
     @objc
     private func pinchGestureRecognizer(_ gestureRecognizer: UIPinchGestureRecognizer) {
-        guard let camera = evolutionScene.camera else {
-            return
-        }
+        let camera = evolutionView.camera
         if gestureRecognizer.state == .began {
             previousCameraScale = camera.xScale
         }
         var newScale = previousCameraScale / gestureRecognizer.scale
-        if newScale < 1 {
-            newScale = 1
-        } else if newScale > 3 {
-            newScale = 3
-        }
+        newScale.clamp(min: 1, max: 3)
         camera.setScale(newScale)
-    }
-}
-
-extension EvolutionViewController: SKSceneDelegate {
-    func update(_ currentTime: TimeInterval, for scene: SKScene) {
-        camera.position.x -= cameraVelocity.x * (currentTime - lastSceneTime)
-        camera.position.y += cameraVelocity.y * (currentTime - lastSceneTime)
-        
-        cameraVelocity.x *= 0.95
-        cameraVelocity.y *= 0.95
-        lastSceneTime = currentTime
-    }
-    
-    func didApplyConstraints(for scene: SKScene) {
-        backStars.position.x = camera.position.x / 2
-        middleStars.position.x = camera.position.x / 3
-        
-        backStars.position.y = camera.position.y / 2
-        middleStars.position.y = camera.position.y / 3
     }
 }

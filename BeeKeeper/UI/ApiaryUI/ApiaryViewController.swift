@@ -190,7 +190,7 @@ class ApiaryViewController: UIViewController {
     }
     
     private func popToEvolution() {
-        let vc = EvolutionViewController()
+        let vc = EvolutionViewController(frame: apiaryView.frame)
         self.navigationController?.pushViewController(vc, animated: false)
     }
     
