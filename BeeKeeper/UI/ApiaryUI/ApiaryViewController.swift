@@ -174,6 +174,7 @@ class ApiaryViewController: UIViewController {
         
         for structure in apiaryView.apiary.structures where structure !== bee.producerAssignment {
             guard structure.assignedBees.count < structure.maximumAssignedBees else { continue }
+            structure.removeBubble()
             structure.showBubble(texture: .plus) {
                 try? bee.assign(to: structure)
                 clear()
