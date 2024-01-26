@@ -33,6 +33,7 @@ final class HoneyStorage: Container {
     
     required init(from decoder: Decoder) throws {
         try super.init(from: decoder)
+        updateJars()
     }
     
     override func encode(to encoder: Encoder) throws {
