@@ -31,7 +31,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
         
-        Task {
+        Task.detached {
+            // For performing some kind of animation
+            let wait = Task {
+                sleep(5)
+            }
             if await !DatabaseService.shared.hasAccount() {
                 do {
                     try await DatabaseService.shared.createAccount()
@@ -42,6 +46,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             do {
                 let account = try await DatabaseService.shared.fetchAccount()
                 try GameManager.shared.changeAccount(to: account)
+                _ = await wait.result
                 
                 await MainActor.run {
                     let gameViewController = ApiaryViewController(frame: window.frame)
@@ -50,7 +55,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             } catch {
                 print(error)
             }
-            
         }
     }
 

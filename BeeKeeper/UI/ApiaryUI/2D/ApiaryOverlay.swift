@@ -17,7 +17,7 @@ class ApiaryOverlay: SKScene {
     
     let beesButton: SKButton = SKButton(texture: SKTexture.bees)
     let evolutionButton: SKButton = SKButton(texture: SKTexture.atom)
-
+    
     private var buttonsCache: Set<SKNode> = []
     private weak var currentHud: SKNode?
     private let sharedHud = SKNode()
@@ -158,7 +158,7 @@ class ApiaryOverlay: SKScene {
     }
     
     /// Creates a new HUD to that displays information for the given incubator.
-    private func showIncubatorHud(_ incubator: Incubator) {
+    func showIncubatorHud(_ incubator: Incubator) {
         setButtons([])
         let hud = IncubationHud(size: CGSize(width: size.width * 0.95, height: size.height / 2), incubator: incubator)
         hud.position = convertPoint(fromView: self.view?.center ?? .zero)
@@ -167,68 +167,11 @@ class ApiaryOverlay: SKScene {
     }
     
     /// Creates a new HUD to that displays information for the given incubator.
-    private func showStructureHud(_ structure: Structure) {
+    func showStructureHud(_ structure: Structure) {
         setButtons([])
         let hud = StructureHud(size: CGSize(width: size.width * 0.95, height: size.height / 2), structure: structure)
         hud.position = convertPoint(fromView: self.view?.center ?? .zero)
         currentHud = hud
         addChild(hud)
-    }
-}
-
-// MARK: ModelVisitor
-extension ApiaryOverlay: ModelVisitor {
-    func visitHoneyStorage(_ model: HoneyStorage) -> () {
-        setButtons(title: model.name, [])
-    }
-    
-    func visitPollenStorage(_ model: PollenStorage) -> () {
-        setButtons(title: model.name, [])
-    }
-    
-    func visitBee(_ model: Bee) -> Void {
-        print("Bee was tapped! \(model.production)")
-    }
-    
-    func visitHive(_ model: Hive) -> Void {
-        setButtons(title: model.name, [
-            SKButton(texture: SKTexture.blankWhite, title: "Add Honeycomb", onTap: {
-                do {
-                    try model.addHoneycomb()
-                } catch {
-                    print(error.localizedDescription)
-                }
-            }),
-            SKButton(texture: SKTexture.check, title: "Collect", onTap: {
-                GameManager.shared.collect(from: model)
-            }),
-            SKButton(texture: SKTexture.info, title: "Info", onTap: { [unowned self] in
-                self.showStructureHud(model)
-            })
-        ])
-    }
-    
-    func visitIncubator(_ model: Incubator) -> () {
-        setButtons(title: model.name, [
-            SKButton(texture: SKTexture.blankWhite, title: "Incubate", onTap: { [unowned self] in
-                self.showIncubatorHud(model)
-            }),
-        ])
-    }
-    
-    func visitFlower(_ model: Flower) -> () {
-        setButtons(title: model.name, [
-            SKButton(texture: SKTexture.blankWhite, title: "Add Resources", onTap: {
-                var resources = Resources(honey: 100, pollen: 100)
-                do {
-                    try model.fill(&resources)
-                } catch {
-                    print(error.localizedDescription)
-                }
-            }),
-            SKButton(texture: SKTexture.check, title: "Collect", onTap: {
-                GameManager.shared.collect(from: model)
-            })
-        ])
     }
 }

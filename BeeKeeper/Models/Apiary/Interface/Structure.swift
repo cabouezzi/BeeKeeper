@@ -121,19 +121,16 @@ class Structure: BKNode, Model, Codable {
         bubble = nil
     }
     
-    final func showBorder() {
+    final func showBorder(_ color: UIColor = .white) {
         if border == nil {
             border = StructureBorder(self)
         }
+        border?.setColor(color)
         border?.isHidden = false
     }
     
     final func hideBorder() {
         border?.isHidden = true
-    }
-    
-    final func setBorderColor(_ color: UIColor) {
-        border?.setColor(color)
     }
     
     func accept<T>(_ visitor: T) -> T.ReturnType where T : ModelVisitor {
