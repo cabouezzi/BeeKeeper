@@ -34,7 +34,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         Task.detached {
             // For performing some kind of animation
             let wait = Task {
+                #if DEBUG
                 sleep(5)
+                #endif
             }
             if await !DatabaseService.shared.hasAccount() {
                 do {

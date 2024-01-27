@@ -49,7 +49,11 @@ struct Resources: Codable, Equatable {
         && beeBread <= 0
     }
     
-    func attributedString(font: UIFont = .preferredFont(forTextStyle: .body), verbose: Bool = false) -> NSAttributedString {
+    /// - Parameters:
+    ///     - font: The font to use
+    ///     - delimiter: A unicode string. Example "\n" in unicode becomes "\u{0085}"
+    ///     - verbose: Whether to include costs that are not greater than 0. 
+    func attributedString(font: UIFont = .preferredFont(forTextStyle: .body), delimiter: String = "\t", verbose: Bool = false) -> NSAttributedString {
         func attachment(_ name: String) -> NSAttributedString {
             guard let image = UIImage(named: name) else { return NSAttributedString(string: "") }
             let attachment = NSTextAttachment()
@@ -66,22 +70,22 @@ struct Resources: Codable, Equatable {
         if money > 0 || verbose {
             text.append(NSAttributedString(string: money.formatted(.number.precision(.fractionLength(0...2)))))
             text.append(attachment("honeySymbol"))
-            text.append(NSAttributedString("\t"))
+            text.append(NSAttributedString(string: delimiter))
         }
         if honey > 0 || verbose {
             text.append(NSAttributedString(string: honey.formatted(.number.precision(.fractionLength(0...2)))))
             text.append(attachment("honeySymbol"))
-            text.append(NSAttributedString("\t"))
+            text.append(NSAttributedString(string: delimiter))
         }
         if pollen > 0 || verbose {
             text.append(NSAttributedString(string: pollen.formatted(.number.precision(.fractionLength(0...2)))))
             text.append(attachment("pollenSymbol"))
-            text.append(NSAttributedString("\t"))
+            text.append(NSAttributedString(string: delimiter))
         }
         if beeBread > 0 || verbose {
             text.append(NSAttributedString(string: beeBread.formatted(.number.precision(.fractionLength(0...2)))))
             text.append(attachment("honeySymbol"))
-            text.append(NSAttributedString("\t"))
+            text.append(NSAttributedString(string: delimiter))
         }
         return text
     }
