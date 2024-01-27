@@ -208,6 +208,7 @@ class ApiaryViewController: UIViewController {
         beeListView.onRelease { [weak self] in
             guard case .idle = self?.state else { return }
             GameManager.shared.releaseBees()
+            beeListView.removeFromSuperview()
         }
         apiaryView.addSubview(beeListView)
     }
@@ -413,7 +414,6 @@ extension ApiaryViewController: ModelVisitor {
     }
     
     func visitBee(_ model: Bee) -> () {
-        model.wiggle(repeatCount: 1).play()
         state = .following(model)
         apiaryView.camera.follow(model)
         apiaryView.overlay.setButtons(

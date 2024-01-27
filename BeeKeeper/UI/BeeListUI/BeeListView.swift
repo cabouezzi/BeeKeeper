@@ -95,8 +95,7 @@ class BeeListView: UIView {
             let frame = CGRect(x: 0, y: offset, width: itemWidth, height: itemHeight).insetBy(dx: inset, dy: inset)
             
             let row = BeeListViewCell(frame: frame)
-            row.nameLabel.text = bee.nickname
-            row.costLabel.text = bee.production.description
+            row.setBee(bee)
             row.button.addAction { [weak self] in
                 self?.onSelect?(bee)
             }
@@ -111,6 +110,10 @@ class BeeListView: UIView {
                 }
             }
             scrollView.addSubview(row)
+        }
+        
+        if let first = bees.first {
+            selectBee(first)
         }
     }
     

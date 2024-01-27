@@ -17,10 +17,10 @@ class ShopViewCell: UICollectionViewCell {
     private(set) var model: SCNNode?
     var costLabel: UILabel!
     
-    private var nameLabelHeight: CGFloat { return frame.height * 2/10 }
-    private var costLabelHeight: CGFloat { return frame.height * 3/10 }
+    private var nameLabelHeight: CGFloat { return frame.height * 3 / 10 }
+    private var costLabelHeight: CGFloat { return frame.height * 3 / 10 }
     
-    private var horizontalTextInset: CGFloat { return frame.width * 0.1 }
+    private var inset: CGFloat { return 10 }
     
     private var scene: SCNScene = SCNScene(named: "ModelBase.scn")!
     
@@ -46,13 +46,15 @@ class ShopViewCell: UICollectionViewCell {
     }
     
     func setupNameLabel () {
-        nameLabel = UILabel(frame: CGRect(x: horizontalTextInset, y: 0, width: frame.width - horizontalTextInset * 2, height: nameLabelHeight))
+        let frame = CGRect(x: 0, y: 0, width: frame.width, height: nameLabelHeight).insetBy(dx: inset, dy: inset)
+        nameLabel = UILabel(frame: frame)
         nameLabel.text = "Object"
-        nameLabel.font = UIFont(name: "ArialRoundedMTBold", size: nameLabel.frame.height / 2)
+        nameLabel.font = UIFont(name: "ArialRoundedMTBold", size: UIFont.preferredFont(forTextStyle: .headline).pointSize)
         nameLabel.textColor = .white
         nameLabel.shadowOffset = CGSize(width: nameLabel.font.pointSize * 0.05, height: nameLabel.font.pointSize * 0.05)
         nameLabel.shadowColor = .black
         nameLabel.adjustsFontSizeToFitWidth = true
+        nameLabel.numberOfLines = 1
         nameLabel.backgroundColor = .clear
         
         addSubview(nameLabel)
@@ -69,9 +71,10 @@ class ShopViewCell: UICollectionViewCell {
     }
     
     func setupCostLabel () {
-        costLabel = UILabel(frame: CGRect(x: horizontalTextInset, y: frame.height - costLabelHeight, width: frame.width - horizontalTextInset * 2, height: costLabelHeight))
+        let frame = CGRect(x: 0, y: frame.height - costLabelHeight, width: frame.width, height: costLabelHeight).insetBy(dx: inset, dy: inset)
+        costLabel = UILabel(frame: frame)
         costLabel.text = "999999"
-        costLabel.font = UIFont(name: "ArialRoundedMTBold", size: costLabel.frame.height/2)
+        costLabel.font = UIFont(name: "ArialRoundedMTBold", size: UIFont.preferredFont(forTextStyle: .headline).pointSize)
         costLabel.textColor = .white
         costLabel.textAlignment = .left
         costLabel.shadowOffset = CGSize(width: costLabel.font.pointSize * 0.05, height: costLabel.font.pointSize * 0.05)
@@ -88,7 +91,7 @@ class ShopViewCell: UICollectionViewCell {
         self.item = item
         
         nameLabel.text = item.name
-        costLabel.text = ""
+        costLabel.attributedText = item.cost.attributedString(font: costLabel.font)
         model?.removeFromParentNode()
         
         let model = item.newProduct()
@@ -99,18 +102,8 @@ class ShopViewCell: UICollectionViewCell {
         scene.rootNode.addChildNode(model)
         self.model = model
         
-        if item.cost.honey != 0 {
-            costLabel.text?.append("\(Int(item.cost.honey))H\n")
-        }
-        if item.cost.pollen != 0 {
-            costLabel.text?.append("\(Int(item.cost.pollen))P\n")
-        }
-        if item.cost.beeBread != 0 {
-            costLabel.text?.append("\(Int(item.cost.beeBread))B\n")
-        }
-        
-        if item.cost.honey == 0, item.cost.pollen == 0, item.cost.beeBread == 0 {
-            costLabel.text = "FREE!\n"
+        if item.cost.isEmpty() {
+            costLabel.text = "FREE!"
         }
     }
 }

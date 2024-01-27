@@ -11,21 +11,21 @@ class BeeListViewCell: UIControl {
     var bee: Bee?
     
     var nameLabel: UILabel!
-    var costLabel: UILabel!
+    var productionLabel: UILabel!
     
     var button: UIButton!
     var renameButton: UIButton!
     
     private var nameLabelHeight: CGFloat { return frame.height * 3/10 }
-    private var costLabelHeight: CGFloat { return frame.height * 7/10 }
+    private var productionLabelHeight: CGFloat { return frame.height * 7/10 }
     
     private var horizontalTextInset: CGFloat { return 10 }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setupButton()
         setupNameLabel()
         setupCostLabel()
-        setupButton()
         // setupRenameButton()
         
         backgroundColor = .orange
@@ -44,34 +44,37 @@ class BeeListViewCell: UIControl {
     func setBee(_ bee: Bee) {
         self.bee = bee
         nameLabel.text = bee.nickname
-        costLabel.text = bee.production.description
+        productionLabel.attributedText = bee.production.attributedString(font: productionLabel.font, verbose: true)
     }
     
     func setupNameLabel () {
-        nameLabel = UILabel(frame: CGRect(x: horizontalTextInset, y: 0, width: frame.width - horizontalTextInset * 2, height: nameLabelHeight))
+        let frame = CGRect(x: 0, y: 0, width: frame.width - button.frame.size.width, height: nameLabelHeight).insetBy(dx: horizontalTextInset, dy: 0)
+        nameLabel = UILabel(frame: frame)
         nameLabel.text = "Object"
         nameLabel.font = UIFont(name: "ArialRoundedMTBold", size: UIFont.systemFontSize)
         nameLabel.textColor = .white
         nameLabel.shadowOffset = CGSize(width: nameLabel.font.pointSize * 0.05, height: nameLabel.font.pointSize * 0.05)
         nameLabel.shadowColor = .black
         nameLabel.adjustsFontSizeToFitWidth = true
+        nameLabel.numberOfLines = 1
         nameLabel.backgroundColor = .clear
         addSubview(nameLabel)
     }
     
     func setupCostLabel () {
-        costLabel = UILabel(frame: CGRect(x: horizontalTextInset, y: nameLabel.frame.maxY, width: frame.width - horizontalTextInset * 2, height: costLabelHeight))
-        costLabel.text = "999999"
-        costLabel.font = UIFont(name: "ArialRoundedMTBold", size: UIFont.systemFontSize)
-        costLabel.textColor = .white
-        costLabel.textAlignment = .left
-        costLabel.shadowOffset = CGSize(width: costLabel.font.pointSize * 0.05, height: costLabel.font.pointSize * 0.05)
-        costLabel.shadowColor = .black
-        costLabel.adjustsFontSizeToFitWidth = true
-        costLabel.numberOfLines = 4
-        costLabel.lineBreakMode = .byClipping
-        costLabel.backgroundColor = .clear
-        addSubview(costLabel)
+        let frame = CGRect(x: 0, y: nameLabel.frame.maxY, width: frame.width - button.frame.size.width, height: productionLabelHeight).insetBy(dx: horizontalTextInset, dy: 0)
+        productionLabel = UILabel(frame: frame)
+        productionLabel.text = "999999"
+        productionLabel.font = UIFont(name: "ArialRoundedMTBold", size: UIFont.systemFontSize * 1.5)
+        productionLabel.textColor = .white
+        productionLabel.textAlignment = .left
+        productionLabel.shadowOffset = CGSize(width: productionLabel.font.pointSize * 0.05, height: productionLabel.font.pointSize * 0.05)
+        productionLabel.shadowColor = .black
+        productionLabel.adjustsFontSizeToFitWidth = true
+        productionLabel.numberOfLines = 1
+        productionLabel.lineBreakMode = .byClipping
+        productionLabel.backgroundColor = .clear
+        addSubview(productionLabel)
     }
     
     func setupButton() {
