@@ -10,13 +10,16 @@ import SceneKit
 
 class BeeListView: UIView {
     let beeView: SCNView
+    let releaseButton: UIButton
     let scrollView: UIScrollView
     let bees: [Bee]
     
     private var selectedBee: Bee?
     private var beeModel: Bee?
     private var beeReference: SCNNode?
-    private var block: ((Bee) -> Void)?
+    private var onSelect: ((Bee) -> Void)?
+    /// The block called to release bees in to the wild.
+    private var onRelease: (() -> Void)?
     private let buttonHeight: CGFloat = 100
     
     init(bees: [Bee], frame: CGRect) {
@@ -30,6 +33,9 @@ class BeeListView: UIView {
         beeReference = beeView.scene?.rootNode.childNode(withName: "BeeReference", recursively: true)
         beeReference?.isHidden = true
         
+        releaseButton = UIButton(frame: frame)
+        releaseButton.isHidden = true
+        
         scrollView = UIScrollView(frame: frame)
         scrollView.frame.size.width *= 1 / 3
         scrollView.frame.origin.x = beeView.frame.maxX
@@ -39,9 +45,17 @@ class BeeListView: UIView {
         super.init(frame: frame)
         addSubview(beeView)
         
+        releaseButton.backgroundColor = .red
+        releaseButton.setTitle("Release Bees", for: .normal)
+        releaseButton.addAction { [weak self] in
+            self?.onRelease?()
+        }
+        scrollView.addSubview(releaseButton)
+        
         scrollView.backgroundColor = .clear
         scrollView.alwaysBounceVertical = true
         scrollView.isDirectionalLockEnabled = true
+        scrollView.canCancelContentTouches = true
         addSubview(scrollView)
         
         layoutBeeRows(bees)
@@ -71,14 +85,19 @@ class BeeListView: UIView {
         let itemWidth: CGFloat = scrollView.frame.width
         let inset: CGFloat = 10
         
+        let releaseFrame = CGRect(x: 0, y: 0, width: itemWidth, height: itemHeight).insetBy(dx: 10, dy: 10)
+        releaseButton.frame = releaseFrame
+        releaseButton.layer.cornerRadius = releaseFrame.height / 10
+        releaseButton.isHidden = bees.isEmpty
+        
         for (index, bee) in bees.enumerated() {
-            let offset = itemHeight * CGFloat(index)
+            let offset = releaseButton.frame.maxY + releaseButton.frame.height / 2 + itemHeight * CGFloat(index)
             let frame = CGRect(x: 0, y: offset, width: itemWidth, height: itemHeight).insetBy(dx: inset, dy: inset)
+            
             let row = BeeListViewCell(frame: frame)
-            row.nameLabel.text = bee.nickname
-            row.costLabel.text = bee.production.description
+            row.setBee(bee)
             row.button.addAction { [weak self] in
-                self?.block?(bee)
+                self?.onSelect?(bee)
             }
             row.addAction { [weak self] in
                 self?.selectBee(bee)
@@ -91,6 +110,10 @@ class BeeListView: UIView {
                 }
             }
             scrollView.addSubview(row)
+        }
+        
+        if let first = bees.first {
+            selectBee(first)
         }
     }
     
@@ -114,6 +137,10 @@ class BeeListView: UIView {
     }
     
     func onSelect(_ block: @escaping (Bee) -> Void) {
-        self.block = block
+        self.onSelect = block
+    }
+    
+    func onRelease(_ block: @escaping () -> Void) {
+        self.onRelease = block
     }
 }

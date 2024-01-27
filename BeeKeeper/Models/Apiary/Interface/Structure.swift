@@ -21,6 +21,7 @@ struct DiscreteRect: Codable {
 }
 
 class Structure: BKNode, Model, Codable {
+    let id: UUID
     /// A set of bees assigned to the structure.For collectors, the bees with produce resources.
     fileprivate(set) var assignedBees: Set<Bee>
     var maximumAssignedBees: Int
@@ -39,6 +40,7 @@ class Structure: BKNode, Model, Codable {
     private weak var bubble: Bubble?
     
     required override init() {
+        self.id = UUID()
         self.assignedBees = []
         self.maximumAssignedBees = 0
         self.level = 1
@@ -53,16 +55,28 @@ class Structure: BKNode, Model, Codable {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private enum CodingKeys: CodingKey {
+        case id, level, area, maximumAssignedBees
+    }
+    
     required init(from decoder: Decoder) throws {
-        fatalError()
-        /*
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(UUID.self, forKey: .id)
+        maximumAssignedBees = try container.decode(Int.self, forKey: .maximumAssignedBees)
+        level = try container.decode(UInt.self, forKey: .level)
+        area = try container.decode(DiscreteRect.self, forKey: .area)
+        assignedBees = []
+        super.init()
         loadNode()
         movePivotToCenter()
-        */
     }
     
     func encode(to encoder: Encoder) throws {
-        fatalError()
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(maximumAssignedBees, forKey: .maximumAssignedBees)
+        try container.encode(level, forKey: .level)
+        try container.encode(area, forKey: .area)
     }
     
     private func movePivotToCenter() {
@@ -107,19 +121,16 @@ class Structure: BKNode, Model, Codable {
         bubble = nil
     }
     
-    final func showBorder() {
+    final func showBorder(_ color: UIColor = .white) {
         if border == nil {
             border = StructureBorder(self)
         }
+        border?.setColor(color)
         border?.isHidden = false
     }
     
     final func hideBorder() {
         border?.isHidden = true
-    }
-    
-    final func setBorderColor(_ color: UIColor) {
-        border?.setColor(color)
     }
     
     func accept<T>(_ visitor: T) -> T.ReturnType where T : ModelVisitor {
@@ -136,6 +147,7 @@ extension Bee {
         guard let structure = structure else {
             producerAssignment?.assignedBees.remove(self)
             producerAssignment = nil
+            producerAssignmentId = nil
             return
         }
         guard structure.assignedBees.count < structure.maximumAssignedBees else {
@@ -144,5 +156,6 @@ extension Bee {
         producerAssignment?.assignedBees.remove(self)
         structure.assignedBees.insert(self)
         producerAssignment = structure
+        producerAssignmentId = structure.id
     }
 }

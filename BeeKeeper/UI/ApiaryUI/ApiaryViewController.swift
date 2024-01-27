@@ -11,7 +11,7 @@ import SpriteKit
 
 fileprivate enum GameState {
     case idle
-    case moving(_ structure: Structure, _ originalPosition: SCNVector3)
+    case moving(_ structure: Structure, _ originalArea: DiscreteRect)
     case assigning(_ bee: Bee)
     case assigningWithDrag(_ bee: Bee)
     case following(_ node: SCNNode)
@@ -62,7 +62,6 @@ class ApiaryViewController: UIViewController {
     final func selectNode(_ node: SCNNode & Model) {
         selectedNode = node
         node.accept(self)
-        node.accept(apiaryView.overlay)
         flashNode(node)
     }
     
@@ -73,11 +72,6 @@ class ApiaryViewController: UIViewController {
         apiaryView.camera.defaultView()
         apiaryView.camera.follow(nil)
         selectedNode = nil
-    }
-    
-    final func showHud(for model: SCNNode & Model) {
-        model.accept(self)
-        model.accept(apiaryView.overlay)
     }
     
     final func flashNode(_ node: SCNNode, duration: Float = 0.25) {
@@ -106,24 +100,31 @@ class ApiaryViewController: UIViewController {
         node.runAction(action)
     }
     
-    func beginAddingNewStructure(_ structure: Structure, completion: (() throws -> Void)? = nil) {
+    func beginMovingStructure(_ structure: Structure, completion: (() throws -> Void)? = nil) {
         guard case .idle = state else { return }
+        let originalArea = structure.area
+        let isNew = structure.parent == nil
+        
         func clear(_ success: Bool) {
             if !success {
-                structure.removeFromParentNode()
+                if isNew {
+                    structure.removeFromParentNode()
+                } else {
+                    structure.area = originalArea
+                    structure.position.x = Float(structure.area.x) + Float(structure.area.width) / 2
+                    structure.position.z = Float(structure.area.y) + Float(structure.area.height) / 2
+                }
             }
             state = .idle
             clearHud()
-            for structure in apiaryView.apiary.structures {
-                structure.hideBorder()
-            }
+            apiaryView.apiary.structures.forEach({ $0.hideBorder() })
         }
         
-        if structure.parent == nil {
+        if isNew {
             apiaryView.scene?.rootNode.addChildNode(structure)
         }
         
-        state = .moving(structure, SCNVector3(0, 0, 0))
+        state = .moving(structure, structure.area)
         apiaryView.camera.birdsEyeView()
         apiaryView.overlay.hideSharedHud()
         
@@ -131,16 +132,19 @@ class ApiaryViewController: UIViewController {
             structure.showBorder()
         }
         
-        structure.showBorder()
         if apiaryView.apiary.structures.contains(where: { $0.overlaps(structure) }) {
-            structure.setBorderColor(.red)
+            structure.showBorder(.red)
+        } else {
+            structure.showBorder(.green)
         }
         
         apiaryView.overlay.setButtons(title: structure.name, [
             SKButton(texture: SKTexture.check, onTap: {
                 do {
                     try completion?()
-                    try GameManager.shared.addStructure(structure)
+                    if isNew {
+                        try GameManager.shared.addStructure(structure)
+                    }
                     clear(true)
                 } catch {
                     print(error.localizedDescription)
@@ -174,6 +178,7 @@ class ApiaryViewController: UIViewController {
         
         for structure in apiaryView.apiary.structures where structure !== bee.producerAssignment {
             guard structure.assignedBees.count < structure.maximumAssignedBees else { continue }
+            structure.removeBubble()
             structure.showBubble(texture: .plus) {
                 try? bee.assign(to: structure)
                 clear()
@@ -203,6 +208,11 @@ class ApiaryViewController: UIViewController {
         beeListView.onSelect { [weak self] bee in
             beeListView.removeFromSuperview()
             self?.selectNode(bee)
+        }
+        beeListView.onRelease { [weak self] in
+            guard case .idle = self?.state else { return }
+            GameManager.shared.releaseBees()
+            beeListView.removeFromSuperview()
         }
         apiaryView.addSubview(beeListView)
     }
@@ -320,7 +330,7 @@ class ApiaryViewController: UIViewController {
             structure.position.z = Float(structure.area.y) + Float(structure.area.height) / 2
             
             let highlight = apiaryView.apiary.structures.contains(where: { $0.overlaps(structure) }) ? UIColor.red : .green
-            structure.setBorderColor(highlight)
+            structure.showBorder(highlight)
             
             // Moves the camera further towards direction of movement
             let glideMargin = 0.2
@@ -408,7 +418,6 @@ extension ApiaryViewController: ModelVisitor {
     }
     
     func visitBee(_ model: Bee) -> () {
-        model.wiggle(repeatCount: 1).play()
         state = .following(model)
         apiaryView.camera.follow(model)
         apiaryView.overlay.setButtons(
@@ -422,15 +431,48 @@ extension ApiaryViewController: ModelVisitor {
     }
     
     func visitHive(_ model: Hive) -> () {
-        
+        apiaryView.overlay.setButtons(title: model.name, [
+            SKButton(texture: SKTexture.blankWhite, title: "Add Honeycomb", onTap: {
+                do {
+                    try model.addHoneycomb()
+                } catch {
+                    print(error.localizedDescription)
+                }
+            }),
+            SKButton(texture: SKTexture.check, title: "Collect", onTap: {
+                GameManager.shared.collect(from: model)
+            }),
+            SKButton(texture: .move, onTap: { [unowned self] in
+                beginMovingStructure(model)
+            }),
+            SKButton(texture: SKTexture.info, title: "Info", onTap: { [unowned self] in
+                self.apiaryView.overlay.showStructureHud(model)
+            })
+        ])
     }
     
     func visitIncubator(_ model: Incubator) -> () {
-        
+        apiaryView.overlay.setButtons(title: model.name, [
+            SKButton(texture: SKTexture.blankWhite, title: "Incubate", onTap: { [unowned self] in
+                self.apiaryView.overlay.showIncubatorHud(model)
+            }),
+        ])
     }
     
     func visitFlower(_ model: Flower) -> () {
-        
+        apiaryView.overlay.setButtons(title: model.name, [
+            SKButton(texture: SKTexture.blankWhite, title: "Add Resources", onTap: {
+                var resources = Resources(honey: 100, pollen: 100)
+                do {
+                    try model.fill(&resources)
+                } catch {
+                    print(error.localizedDescription)
+                }
+            }),
+            SKButton(texture: SKTexture.check, title: "Collect", onTap: {
+                GameManager.shared.collect(from: model)
+            })
+        ])
     }
 }
 
@@ -464,7 +506,7 @@ extension ApiaryViewController: ShopViewDelegate {
     
     func shopView(_ shopView: ShopView, didSelectItem item: ShopItem) {
         let structure = item.newProduct()
-        beginAddingNewStructure(structure) {
+        beginMovingStructure(structure) {
             try GameManager.shared.remove(item.cost)
         }
         shopView.removeFromSuperview()

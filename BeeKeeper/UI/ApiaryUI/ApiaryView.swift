@@ -114,4 +114,8 @@ extension ApiaryView: GameObserver {
     func gameManager(_ account: Account, _ apiary: Apiary, didUpdateResources resources: Resources) {
         overlay.resources.update(resources)
     }
+    
+    func gameManager(_ account: Account, _ apiary: Apiary, didReleaseBees bees: [Bee]) {
+        bees.forEach({ $0.removeFromParentNode() })
+    }
 }

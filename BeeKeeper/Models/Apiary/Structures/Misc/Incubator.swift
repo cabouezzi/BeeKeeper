@@ -63,11 +63,19 @@ class Incubator: Structure {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private enum CodingKeys: CodingKey {
+        case currentPeriod
+    }
+    
     required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        currentPeriod = try container.decodeIfPresent(IncubationPeriod.self, forKey: .currentPeriod)
         try super.init(from: decoder)
     }
     
     override func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(currentPeriod, forKey: .currentPeriod)
         try super.encode(to: encoder)
     }
     

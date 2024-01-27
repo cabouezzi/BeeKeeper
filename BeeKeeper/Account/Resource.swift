@@ -5,6 +5,9 @@
 //  Created by Chaniel Ezzi on 9/9/23.
 //
 
+import Foundation
+import UIKit
+
 struct Resources: Codable, Equatable {
     var money: Float = 0
     var honey: Float = 0
@@ -44,6 +47,43 @@ struct Resources: Codable, Equatable {
         && honey <= 0
         && pollen <= 0
         && beeBread <= 0
+    }
+    
+    func attributedString(font: UIFont = .preferredFont(forTextStyle: .body), verbose: Bool = false) -> NSAttributedString {
+        func attachment(_ name: String) -> NSAttributedString {
+            guard let image = UIImage(named: name) else { return NSAttributedString(string: "") }
+            let attachment = NSTextAttachment()
+            let scale = image.size.width / image.size.height
+            attachment.bounds.size = .init(width: font.lineHeight * scale, height: font.lineHeight)
+            attachment.bounds.origin.y = (font.capHeight.rounded() - font.lineHeight) / 2
+            attachment.image = image
+            let holder = NSMutableAttributedString(string: "\u{00a0}")
+            holder.append(NSAttributedString(attachment: attachment))
+            return NSAttributedString(attributedString: holder)
+        }
+        
+        let text = NSMutableAttributedString(string: "", attributes: [.font: font])
+        if money > 0 || verbose {
+            text.append(NSAttributedString(string: money.formatted(.number.precision(.fractionLength(0...2)))))
+            text.append(attachment("honeySymbol"))
+            text.append(NSAttributedString("\t"))
+        }
+        if honey > 0 || verbose {
+            text.append(NSAttributedString(string: honey.formatted(.number.precision(.fractionLength(0...2)))))
+            text.append(attachment("honeySymbol"))
+            text.append(NSAttributedString("\t"))
+        }
+        if pollen > 0 || verbose {
+            text.append(NSAttributedString(string: pollen.formatted(.number.precision(.fractionLength(0...2)))))
+            text.append(attachment("pollenSymbol"))
+            text.append(NSAttributedString("\t"))
+        }
+        if beeBread > 0 || verbose {
+            text.append(NSAttributedString(string: beeBread.formatted(.number.precision(.fractionLength(0...2)))))
+            text.append(attachment("honeySymbol"))
+            text.append(NSAttributedString("\t"))
+        }
+        return text
     }
 }
 

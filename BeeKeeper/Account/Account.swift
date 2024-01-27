@@ -5,7 +5,7 @@
 //  Created by Chaniel Ezzi on 9/8/23.
 //
 
-final class Account {
+final class Account: Codable {
     var apiaries: [Apiary]
     var unlockedGenes: Set<Gene>
     
