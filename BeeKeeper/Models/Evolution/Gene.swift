@@ -105,7 +105,14 @@ enum Gene: String, Codable, CaseIterable {
         case .royalJelly:
             break
             
-        @unknown default: print("Gene \(self) hasn't been implemented yet")
+        default: print("Gene \(self) hasn't been implemented yet")
+        }
+    }
+    
+    var texture: SKTexture {
+        switch self {
+        default:
+            return SKTexture(imageNamed: rawValue)
         }
     }
 }

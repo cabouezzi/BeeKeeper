@@ -10,9 +10,15 @@ import SpriteKit
 
 class EvolutionViewController: UIViewController {
     let evolutionView: EvolutionView
+    let dataView: EvolutionGeneDataView
     
     init(frame: CGRect) {
         evolutionView = EvolutionView(frame: frame)
+        
+        let width = frame.width / 3
+        let dataRect = CGRect(x: frame.width - width, y: 0, width: width, height: frame.height).insetBy(dx: 10, dy: 10)
+        dataView = EvolutionGeneDataView(frame: dataRect)
+        evolutionView.addSubview(dataView)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -63,6 +69,13 @@ class EvolutionViewController: UIViewController {
         addGestureRecognizers()
         animateCenterNode()
     }
+    
+    func showDetails(for gene: Gene) {
+        dataView.isHidden = false
+        dataView.setGeneData(.init(gene: gene, details: "Aha! I think I've figured it out! Turns out it's the fur that gives bees their stripes pattern, but it's another mutation that sets their warning colors – aposematism. Let's see if this works now...", cost: Resources(money: 10000, honey: 10000, pollen: 10000, beeBread: 10000)))
+    }
+    
+    // MARK: - Appearance
     
     private func animateCenterNode() {
         let centerNode = evolutionView.centerNode
@@ -127,6 +140,8 @@ class EvolutionViewController: UIViewController {
         }
     }
     
+    // MARK: - Gesture Recognizers
+    
     private func addGestureRecognizers() {
         evolutionView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(panGestureRecognizer)))
         evolutionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapGestureRecognizer)))
@@ -141,6 +156,8 @@ class EvolutionViewController: UIViewController {
         
         guard let name = node.name, let gene = Gene(rawValue: name) else { return }
         node.pop()
+        
+        showDetails(for: gene)
         
         // Buy gene
         // TODO: Add extra steps: Show popup first, then buy/confirm button
