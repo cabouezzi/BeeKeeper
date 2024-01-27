@@ -52,6 +52,10 @@ class EvolutionView: SKView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func iconForGene(_ gene: Gene) -> SKNode? {
+        return icons.first(where: { $0.name == gene.rawValue })
+    }
 }
 
 extension EvolutionView: SKSceneDelegate {

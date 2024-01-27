@@ -7,18 +7,14 @@
 
 import UIKit
 
-struct GeneData {
-    let gene: Gene
-    let details: String
-    let cost: Resources
-}
-
 class EvolutionGeneDataView: UIScrollView {
-    private var data: GeneData?
-    private var iconView: UIImageView
-    private var titleLabel: UILabel
-    private var detailsLabel: UILabel
-    private var costLabel: UILabel
+    private(set) var data: GeneData?
+    
+    let iconView: UIImageView
+    let titleLabel: UILabel
+    let detailsLabel: UILabel
+    let costLabel: UILabel
+    let purchaseButton: UIButton
     
     override init(frame: CGRect) {
         let size = min(frame.size.width, frame.size.height)
@@ -42,12 +38,22 @@ class EvolutionGeneDataView: UIScrollView {
         costLabel.translatesAutoresizingMaskIntoConstraints = false
         costLabel.backgroundColor = .clear
         
+        purchaseButton = UIButton()
+        purchaseButton.titleLabel?.font = .preferredFont(forTextStyle: .title1)
+        purchaseButton.setTitle("Research", for: .normal)
+        purchaseButton.backgroundColor = .darkGray
+        purchaseButton.layer.cornerRadius = 10
+        purchaseButton.translatesAutoresizingMaskIntoConstraints = false
+        purchaseButton.addAction { [weak purchaseButton] in
+            purchaseButton?.popAnimation()
+        }
         super.init(frame: frame)
         
         addSubview(iconView)
         addSubview(titleLabel)
         addSubview(detailsLabel)
         addSubview(costLabel)
+        addSubview(purchaseButton)
         
         let content = subviews.reduce(CGRect.zero, { $0.union($1.frame) })
         contentSize = content.size
@@ -64,6 +70,9 @@ class EvolutionGeneDataView: UIScrollView {
             costLabel.topAnchor.constraint(equalTo: detailsLabel.bottomAnchor, constant: inset),
             costLabel.widthAnchor.constraint(equalTo: detailsLabel.widthAnchor),
             costLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            purchaseButton.topAnchor.constraint(equalTo: costLabel.bottomAnchor, constant: inset),
+            purchaseButton.centerXAnchor.constraint(equalTo: centerXAnchor),
+            purchaseButton.widthAnchor.constraint(equalTo: iconView.widthAnchor, constant: -inset)
         ])
     }
     
@@ -72,6 +81,7 @@ class EvolutionGeneDataView: UIScrollView {
     }
     
     func setGeneData(_ data: GeneData) {
+        self.data = data
         let image = UIImage(cgImage: data.gene.texture.cgImage())
         iconView.contentMode = .scaleAspectFit
         iconView.image = image
@@ -91,5 +101,9 @@ class EvolutionGeneDataView: UIScrollView {
         costLabel.lineBreakMode = .byWordWrapping
         costLabel.numberOfLines = 0
         costLabel.textAlignment = .left
+    }
+    
+    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return !(gestureRecognizer is UITapGestureRecognizer)
     }
 }

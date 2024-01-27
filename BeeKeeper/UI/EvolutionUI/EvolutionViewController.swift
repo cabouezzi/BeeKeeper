@@ -8,9 +8,15 @@
 
 import SpriteKit
 
+protocol EvolutionViewDataSource: AnyObject {
+    func geneData(for gene: Gene) -> GeneData
+}
+
 class EvolutionViewController: UIViewController {
-    let evolutionView: EvolutionView
-    let dataView: EvolutionGeneDataView
+    private let evolutionView: EvolutionView
+    private let dataView: EvolutionGeneDataView
+    
+    weak var dataSource: EvolutionViewDataSource? = EvolutionGeneDataSource.shared
     
     init(frame: CGRect) {
         evolutionView = EvolutionView(frame: frame)
@@ -18,6 +24,7 @@ class EvolutionViewController: UIViewController {
         let width = frame.width / 3
         let dataRect = CGRect(x: frame.width - width, y: 0, width: width, height: frame.height).insetBy(dx: 10, dy: 10)
         dataView = EvolutionGeneDataView(frame: dataRect)
+        dataView.backgroundColor = .white.withAlphaComponent(0.3)
         evolutionView.addSubview(dataView)
         super.init(nibName: nil, bundle: nil)
     }
@@ -33,16 +40,6 @@ class EvolutionViewController: UIViewController {
         for icon in evolutionView.icons {
             guard let gene = Gene(rawValue: icon.name ?? "") else { continue }
             icon.isUserInteractionEnabled = true
-            #if !RELEASE
-            let label = SKLabelNode(text: icon.name)
-            label.fontSize = 20
-            label.fontColor = .black
-            label.position = icon.position
-            label.zPosition = .infinity
-            evolutionView.evolutionScene.addChild(label)
-            label.isUserInteractionEnabled = false
-            #endif
-            
             if !GameManager.shared.account.unlockedGenes.contains(gene) {
                 icon.isHidden = true
             }
@@ -64,15 +61,49 @@ class EvolutionViewController: UIViewController {
         evolutionView.addSubview(backButton)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        hideData()
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         addGestureRecognizers()
         animateCenterNode()
+        
+        dataView.purchaseButton.addAction { [unowned self] in
+            guard let data = dataView.data else { return }
+            // Buy gene
+            if !GameManager.shared.account.unlockedGenes.contains(data.gene) {
+                do {
+                    try GameManager.shared.unlockGene(data.gene)
+                    if let icon = evolutionView.iconForGene(data.gene) {
+                        icon.childNode(withName: "lock")?.removeFromParent()
+                    }
+                    updateLockNodes()
+                    print("Successfully unlocked \(data.gene)")
+                } catch {
+                    print(error.localizedDescription)
+                }
+            }
+        }
     }
     
-    func showDetails(for gene: Gene) {
-        dataView.isHidden = false
-        dataView.setGeneData(.init(gene: gene, details: "Aha! I think I've figured it out! Turns out it's the fur that gives bees their stripes pattern, but it's another mutation that sets their warning colors – aposematism. Let's see if this works now...", cost: Resources(money: 10000, honey: 10000, pollen: 10000, beeBread: 10000)))
+    func showData(for gene: Gene, animated: Bool = false) {
+        dataView.isUserInteractionEnabled = true
+        if let data = dataSource?.geneData(for: gene) {
+            dataView.setGeneData(data)
+        }
+        UIView.animate(withDuration: animated ? 0.15 : 0) { [unowned dataView] in
+            dataView.alpha = 1
+        }
+    }
+    
+    func hideData(animated: Bool = false) {
+        dataView.isUserInteractionEnabled = false
+        UIView.animate(withDuration: animated ? 0.15 : 0) { [unowned dataView] in
+            dataView.alpha = 0
+        }
     }
     
     // MARK: - Appearance
@@ -113,7 +144,12 @@ class EvolutionViewController: UIViewController {
             line.strokeColor = UIColor.white
             line.fillColor = .white
             line.lineWidth = 4
-            line.zPosition = 3
+            line.zPosition = 0
+            
+            #if RELEASE
+            line.isHidden = !GameManager.shared.account.unlockedGenes.contains(edge.from)
+            #endif
+            
             evolutionView.evolutionScene.addChild(line)
         }
     }
@@ -152,25 +188,17 @@ class EvolutionViewController: UIViewController {
     private func tapGestureRecognizer(_ gestureRecognizer: UITapGestureRecognizer) {
         let pointInView = gestureRecognizer.location(in: evolutionView)
         let point = evolutionView.convert(pointInView, to: evolutionView.evolutionScene)
-        guard let node = evolutionView.evolutionScene.nodes(at: point).first(where: { !$0.isHidden && $0.isUserInteractionEnabled }) else { return }
-        
-        guard let name = node.name, let gene = Gene(rawValue: name) else { return }
-        node.pop()
-        
-        showDetails(for: gene)
-        
-        // Buy gene
-        // TODO: Add extra steps: Show popup first, then buy/confirm button
-        if !GameManager.shared.account.unlockedGenes.contains(gene) {
-            do {
-                try GameManager.shared.unlockGene(gene)
-                node.childNode(withName: "lock")?.removeFromParent()
-                updateLockNodes()
-                print("Successfully unlocked \(gene)")
-            } catch {
-                print(error.localizedDescription)
-            }
+        guard let node = evolutionView.evolutionScene.nodes(at: point).first(where: { !$0.isHidden && $0.isUserInteractionEnabled }) else {
+            hideData(animated: true)
+            return
         }
+        
+        guard let name = node.name, let gene = Gene(rawValue: name) else {
+            hideData(animated: true)
+            return
+        }
+        node.pop()
+        showData(for: gene, animated: true)
     }
 
     private var cameraStartPosition: CGPoint = CGPoint.zero
