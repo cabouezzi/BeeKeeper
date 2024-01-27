@@ -15,13 +15,13 @@ enum ApiaryError: LocalizedError {
 
 class Apiary: Codable {
     private(set) var wildBees: Float
-    private(set) var wildGenePool: Set<Gene>
+    private(set) var wildGenePool: [Gene: Float]
     private(set) var bees: [Bee]
     private(set) var structures: [Structure]
     
     init() {
         wildBees = 1000
-        wildGenePool = []
+        wildGenePool = [:]
         
         let hive = Hive()
         try? hive.addHoneycomb()
@@ -61,7 +61,7 @@ class Apiary: Codable {
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         wildBees = try container.decodeIfPresent(Float.self, forKey: .wildBees) ?? 1000
-        wildGenePool = try container.decodeIfPresent(Set<Gene>.self, forKey: .wildGenePool) ?? []
+        wildGenePool = try container.decodeIfPresent(Dictionary<Gene, Float>.self, forKey: .wildGenePool) ?? [:]
         
         let wrappers = try container.decode(Array<Wrapper>.self, forKey: .wrappers)
         structures = wrappers.compactMap({ $0.value as? Structure })
@@ -93,6 +93,16 @@ class Apiary: Codable {
         let score = bees.reduce(0, { $0 + $1.genetics.count })
         wildBees += Float(score)
         
+        for bee in bees {
+            for gene in bee.genetics {
+                if wildGenePool.keys.contains(gene) {
+                    wildGenePool[gene]! += 1
+                } else {
+                    wildGenePool[gene] = 1
+                }
+            }
+        }
+        
         let temp = bees
         bees.forEach({ try? $0.assign(to: nil) })
         bees.removeAll()
@@ -102,10 +112,14 @@ class Apiary: Codable {
     /// Call to simulate a timestep in the wild
     func tickWildBees(_ seconds: TimeInterval) {
         // TODO: Growth rate vs death rate. (Always make negative net rate tho)
+        for key in wildGenePool.keys {
+            wildGenePool[key]! -= Float(seconds / TimeInterval(days: 7)) // 1 per week
+        }
+        
         let factor = seconds / TimeInterval(days: 1)
         wildBees -= 5 * Float(factor)
         wildBees.clamp(min: 0, max: .infinity)
-        print("\(Date.now) Wild bees count: \(wildBees). Gene pool: \(wildGenePool.map(\.rawValue))")
+        print("\(Date.now) Wild bees count: \(wildBees). Gene pool: \(wildGenePool.map({ "\($0.key): \($0.value)" }).joined(separator: ", "))")
     }
     
     /// Adds the bee if there doesn't already exist a bee with the same name
