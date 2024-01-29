@@ -334,7 +334,7 @@ class Bee: SCNNode, Model, Producer, Codable {
         if let attraction = attraction, animationState == .targeting {
             let distance = attraction.worldPosition.distance(to: worldPosition)
             if distance < attractionPerception {
-                targetVelocity = targetVelocity.normalized() * distance.clamped(min: 0.1, max: 1)
+                targetVelocity = targetVelocity.normalized() * distance.clamped(min: 0, max: 1)
             }
         }
         

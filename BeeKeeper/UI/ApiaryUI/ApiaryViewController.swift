@@ -217,6 +217,11 @@ class ApiaryViewController: UIViewController {
         apiaryView.addSubview(beeListView)
     }
     
+    func popToInspectionView(for structure: Structure) {
+        let view = InspectionView(structure: structure, frame: apiaryView.frame)
+        apiaryView.addSubview(view)
+    }
+    
     // MARK: - Gesture Recognizers
     
     private func addGestureRecognizers() {
@@ -396,7 +401,7 @@ class ApiaryViewController: UIViewController {
     }
 }
 
-// MARK: -
+// MARK: - UIGestureRecognizerDelegate
 extension ApiaryViewController: UIGestureRecognizerDelegate {
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         let loc = gestureRecognizer.location(in: apiaryView)
@@ -446,7 +451,7 @@ extension ApiaryViewController: ModelVisitor {
                 beginMovingStructure(model)
             }),
             SKButton(texture: SKTexture.info, title: "Info", onTap: { [unowned self] in
-                self.apiaryView.overlay.showStructureHud(model)
+                self.popToInspectionView(for: model)
             })
         ])
     }
