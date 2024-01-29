@@ -105,7 +105,6 @@ enum Gene: String, Codable, CaseIterable {
         case .royalJelly:
             break
             
-        default: print("Gene \(self) hasn't been implemented yet")
         }
     }
     

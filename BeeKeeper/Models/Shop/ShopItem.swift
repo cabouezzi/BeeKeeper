@@ -11,6 +11,5 @@ struct ShopItem {
     let name: String
     let description: String?
     let cost: Resources
-    let display: UIImage?
     let newProduct: () -> Structure
 }

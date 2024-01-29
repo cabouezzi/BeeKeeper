@@ -516,15 +516,16 @@ extension ApiaryViewController: ShopViewDelegate {
         switch section {
         case .structures:
             return [
-                ShopItem(name: "Hive", description: nil, cost: Resources(), display: UIImage(named: "world.png")!, newProduct: { Hive() }),
-                ShopItem(name: "Incubator", description: nil, cost: Resources(), display: UIImage(named: "world"), newProduct: { Incubator() }),
-                ShopItem(name: "Honey Jar Rack", description: nil, cost: Resources(), display: UIImage(named: "world"), newProduct: { HoneyStorage() }),
-                ShopItem(name: "Pollen Jar Rack", description: nil, cost: Resources(), display: UIImage(named: "world"), newProduct: { PollenStorage() }),
+                ShopItem(name: "Hive", description: nil, cost: Resources(), newProduct: { Hive() }),
+                ShopItem(name: "Incubator", description: nil, cost: Resources(), newProduct: { Incubator() }),
+                ShopItem(name: "Honey Jar Rack", description: nil, cost: Resources(), newProduct: { HoneyStorage() }),
+                ShopItem(name: "Pollen Jar Rack", description: nil, cost: Resources(), newProduct: { PollenStorage() }),
             ]
         case .flowers:
             return [
-                ShopItem(name: "Daisy", description: "A flower", cost: Resources(), display: UIImage(named: "world"), newProduct: { Flower() }),
-                ShopItem(name: "Lavender", description: "A purple flower", cost: Resources(), display: UIImage(named: "world"), newProduct: { Lavender() })
+                ShopItem(name: "Daisy", description: "A flower", cost: Resources(), newProduct: { Daisy() }),
+                ShopItem(name: "Lavender", description: "A purple flower", cost: Resources(), newProduct: { Lavender() }),
+                ShopItem(name: "Rose", description: "A red flower", cost: Resources(), newProduct: { Rose() })
             ]
         case .buy: return []
         }

@@ -10,7 +10,9 @@ import Foundation
 class Lavender: Flower {
     required init() {
         super.init()
+        maximum = Resources(pollen: 300)
         area = DiscreteRect(x: 0, y: 0, width: 2, height: 2)
+        maximumAssignedBees = 3
     }
     
     required init?(coder: NSCoder) {

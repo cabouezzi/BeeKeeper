@@ -12,8 +12,9 @@ enum DatabaseServiceError: LocalizedError {
 }
 
 class Wrapper: Codable, ModelVisitor {
-    enum ModelKind: Codable {
-        case unknown, bee, hive, flower, incubator, honeyStorage, pollenStorage
+    enum ModelKind: String, Codable {
+        case unknown, bee, hive, incubator, honeyStorage, pollenStorage
+        case daisy = "flower", lavender, rose
     }
     
     private(set) var kind: ModelKind
@@ -36,10 +37,13 @@ class Wrapper: Codable, ModelVisitor {
         case .unknown: fatalError()
         case .bee: value = try container.decode(Bee.self, forKey: .value)
         case .hive: value = try container.decode(Hive.self, forKey: .value)
-        case .flower: value = try container.decode(Flower.self, forKey: .value)
         case .incubator: value = try container.decode(Incubator.self, forKey: .value)
         case .honeyStorage: value = try container.decode(HoneyStorage.self, forKey: .value)
         case .pollenStorage: value = try container.decode(PollenStorage.self, forKey: .value)
+            
+        case .daisy: value = try container.decode(Daisy.self, forKey: .value)
+        case .lavender: value = try container.decode(Lavender.self, forKey: .value)
+        case .rose: value = try container.decode(Rose.self, forKey: .value)
         }
     }
     
@@ -58,7 +62,12 @@ class Wrapper: Codable, ModelVisitor {
     }
     
     func visitFlower(_ model: Flower) -> ModelKind {
-        return .flower
+        switch model {
+        case is Daisy: return .daisy
+        case is Lavender: return .lavender
+        case is Rose: return .rose
+        default: fatalError()
+        }
     }
     
     func visitIncubator(_ model: Incubator) -> ModelKind {

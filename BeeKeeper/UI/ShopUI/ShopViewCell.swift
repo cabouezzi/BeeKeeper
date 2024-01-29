@@ -96,7 +96,8 @@ class ShopViewCell: UICollectionViewCell {
         
         let model = item.newProduct()
         model.pivot = SCNMatrix4MakeTranslation(0, 0, 0)
-        let scale = min(4 / Float(model.area.width), 4 / Float(model.area.height))
+        let height = Float((model.boundingBox.max - model.boundingBox.min).y)
+        let scale = min(6 / height, min(4 / Float(model.area.width), 4 / Float(model.area.height)))
         model.scale *= scale
         model.position = .zero
         scene.rootNode.addChildNode(model)

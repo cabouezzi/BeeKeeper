@@ -24,7 +24,10 @@ class GameTicker {
     }
     
     func start() {
-        ticker = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: onTick)
+        let timer = Timer(timeInterval: 1, repeats: true, block: onTick)
+        RunLoop.main.add(timer, forMode: .common)
+        timer.fire()
+        ticker = timer
     }
     
     func stop() {

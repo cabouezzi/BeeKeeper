@@ -174,6 +174,10 @@ struct Meshes {
         static var lavender: SCNGeometry {
             return SCNScene(named: "Lavender.scn")!.rootNode.childNodes.first!.geometry!
         }
+        
+        static var rose: SCNGeometry {
+            return SCNScene(named: "Rose.scn")!.rootNode.childNodes.first!.geometry!
+        }
     }
     
     struct Bubble {

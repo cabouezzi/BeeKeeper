@@ -187,7 +187,7 @@ class Bee: SCNNode, Model, Producer, Codable {
         return visitor.visitBee(self)
     }
     
-    // MARK: Animations
+    // MARK: - Animations
     
     private func animationLoop() {
         let animationPlayer: SCNAnimationPlayer
@@ -291,7 +291,7 @@ class Bee: SCNNode, Model, Producer, Codable {
         return animationPlayer
     }
     
-    // MARK: Droning
+    // MARK: - Droning
     
     /// Scales the direction of a vector into a force vector.
     private func scaledForce(_ vector: SCNVector3) -> SCNVector3 {

@@ -38,7 +38,7 @@ class Apiary: Codable {
         let incubator = Incubator()
         incubator.area.y = hive.area.height + 1
         
-        let flower = Flower()
+        let flower = Daisy()
         flower.area.x -= 4
         
         let bee = Bee([.stripesI])

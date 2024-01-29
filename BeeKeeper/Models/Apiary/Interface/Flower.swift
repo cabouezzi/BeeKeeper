@@ -25,18 +25,15 @@ class Flower: Container, Collector {
     required init() {
         self.datePlanted = Date()
         super.init()
-        self.maximum = Resources(pollen: 10)
         self.name = "Flower"
-        self.area = DiscreteRect(x: 0, y: 0, width: 2, height: 2)
-        self.maximumAssignedBees = 4
-    }
-    
-    override func loadNode() {
-        self.geometry = Meshes.Flowers.daisy
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func loadNode() {
+        fatalError("This class is a prototype and should not be initialized on its own.")
     }
     
     private enum CodingKeys: CodingKey {
