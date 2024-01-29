@@ -31,12 +31,12 @@ class Hive: Container, Collector {
     required init() {
         self.honeycombs = []
         super.init()
-        name = "Hive"
         self.area = DiscreteRect(x: 0, y: 0, width: 2, height: 2)
         self.maximumAssignedBees = 4
     }
     
     override func loadNode() {
+        name = "Hive"
         geometry = Meshes.Structure.hive
         cover.pivot = SCNMatrix4MakeTranslation(0, -cover.geometry!.height / 2, -cover.geometry!.depth * 0.45)
         cover.position.y = geometry!.height

@@ -25,7 +25,6 @@ class Flower: Container, Collector {
     required init() {
         self.datePlanted = Date()
         super.init()
-        self.name = "Flower"
     }
     
     required init?(coder: NSCoder) {

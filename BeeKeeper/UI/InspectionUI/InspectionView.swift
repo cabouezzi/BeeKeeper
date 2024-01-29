@@ -21,10 +21,11 @@ class InspectionView: UIView {
     init(structure: Structure, frame: CGRect) {
         self.structure = structure
         
+        let scrollFraction = 0.5
         structureView = SCNView(frame: frame)
         structureView.scene = SCNScene(named: "ModelBase.scn")
         structureView.scene?.background.contents = UIColor.brown
-        structureView.frame.size.width *= 1 / 3
+        structureView.frame.size.width *= 1 - scrollFraction
         
         reference = structureView.scene?.rootNode.childNode(withName: "BeeReference", recursively: true)
         reference?.isHidden = true
@@ -33,7 +34,7 @@ class InspectionView: UIView {
         releaseButton.isHidden = true
         
         scrollView = UIScrollView(frame: frame)
-        scrollView.frame.size.width *= 2 / 3
+        scrollView.frame.size.width *= scrollFraction
         scrollView.frame.origin.x = structureView.frame.maxX
         scrollView.contentSize = scrollView.frame.size
         scrollView.contentSize.height = scrollView.frame.size.height
@@ -82,7 +83,11 @@ class InspectionView: UIView {
     
     @discardableResult
     private func setContainerInfo() -> UIView {
-        guard let container = structure as? Container else { return UIView(frame: .zero)}
+        guard let container = structure as? Container else {
+            let view = UIView(frame: .zero)
+            scrollView.addSubview(view)
+            return view
+        }
         let section = UIView()
         section.translatesAutoresizingMaskIntoConstraints = false
         
@@ -94,9 +99,9 @@ class InspectionView: UIView {
         
         let containingLabel = UILabel()
         containingLabel.font = .preferredFont(forTextStyle: .title1)
-        containingLabel.attributedText = container.containing.attributedString(font: containingLabel.font)
+        containingLabel.attributedText = container.containing.attributedString(font: containingLabel.font, roundDecimals: true)
         if containingLabel.attributedText?.length == 0 {
-            containingLabel.text = "None"
+            containingLabel.text = "Empty"
         }
         containingLabel.sizeToFit()
         containingLabel.setShadow()
@@ -109,16 +114,16 @@ class InspectionView: UIView {
         
         let maximumLabel = UILabel()
         maximumLabel.font = .preferredFont(forTextStyle: .title1)
-        maximumLabel.attributedText = container.maximum.attributedString(font: maximumLabel.font)
+        maximumLabel.attributedText = container.maximum.attributedString(font: maximumLabel.font, roundDecimals: true)
         maximumLabel.sizeToFit()
         maximumLabel.setShadow()
         
         func updateLabels() {
-            containingLabel.attributedText = container.containing.attributedString(font: containingLabel.font)
+            containingLabel.attributedText = container.containing.attributedString(font: containingLabel.font, roundDecimals: true)
             if containingLabel.attributedText?.length == 0 {
-                containingLabel.text = "None"
+                containingLabel.text = "Empty"
             }
-            maximumLabel.attributedText = container.maximum.attributedString(font: maximumLabel.font)
+            maximumLabel.attributedText = container.maximum.attributedString(font: maximumLabel.font, roundDecimals: true)
         }
         
         Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] timer in
@@ -181,12 +186,14 @@ class InspectionView: UIView {
             let columnTitle = UILabel()
             columnTitle.translatesAutoresizingMaskIntoConstraints = false
             columnTitle.font = .preferredFont(forTextStyle: .largeTitle)
+            columnTitle.adjustsFontSizeToFitWidth = true
             columnTitle.text = title
             columnTitle.sizeToFit()
             columnTitle.setShadow()
             let columnLabel = UILabel()
             columnLabel.translatesAutoresizingMaskIntoConstraints = false
             columnLabel.font = .preferredFont(forTextStyle: .title1)
+            columnTitle.adjustsFontSizeToFitWidth = true
             columnLabel.text = label
             columnLabel.sizeToFit()
             columnLabel.setShadow()

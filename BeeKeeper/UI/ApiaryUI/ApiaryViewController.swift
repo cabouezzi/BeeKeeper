@@ -269,7 +269,7 @@ class ApiaryViewController: UIViewController {
             return
         }
         
-        if let bubble = node as? Bubble {
+        if let bubble = hitResults.compactMap({ $0.node as? Bubble }).first {
             bubble.burst()
             clearHud()
             return
@@ -415,11 +415,19 @@ extension ApiaryViewController: UIGestureRecognizerDelegate {
 // MARK: - ModelVisitor
 extension ApiaryViewController: ModelVisitor {
     func visitHoneyStorage(_ model: HoneyStorage) -> () {
-        
+        apiaryView.overlay.setButtons(title: model.name, [
+            SKButton(texture: SKTexture.info, title: "Info", onTap: { [unowned self] in
+                self.popToInspectionView(for: model)
+            }),
+        ])
     }
     
     func visitPollenStorage(_ model: PollenStorage) -> () {
-        
+        apiaryView.overlay.setButtons(title: model.name, [
+            SKButton(texture: SKTexture.info, title: "Info", onTap: { [unowned self] in
+                self.popToInspectionView(for: model)
+            }),
+        ])
     }
     
     func visitBee(_ model: Bee) -> () {
@@ -452,7 +460,7 @@ extension ApiaryViewController: ModelVisitor {
             }),
             SKButton(texture: SKTexture.info, title: "Info", onTap: { [unowned self] in
                 self.popToInspectionView(for: model)
-            })
+            }),
         ])
     }
     
@@ -460,6 +468,9 @@ extension ApiaryViewController: ModelVisitor {
         apiaryView.overlay.setButtons(title: model.name, [
             SKButton(texture: SKTexture.blankWhite, title: "Incubate", onTap: { [unowned self] in
                 self.apiaryView.overlay.showIncubatorHud(model)
+            }),
+            SKButton(texture: SKTexture.info, title: "Info", onTap: { [unowned self] in
+                self.popToInspectionView(for: model)
             }),
         ])
     }
@@ -476,7 +487,10 @@ extension ApiaryViewController: ModelVisitor {
             }),
             SKButton(texture: SKTexture.check, title: "Collect", onTap: {
                 GameManager.shared.collect(from: model)
-            })
+            }),
+            SKButton(texture: SKTexture.info, title: "Info", onTap: { [unowned self] in
+                self.popToInspectionView(for: model)
+            }),
         ])
     }
 }

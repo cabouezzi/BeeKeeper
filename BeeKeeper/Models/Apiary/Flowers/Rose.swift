@@ -24,6 +24,7 @@ class Rose: Flower {
     }
     
     override func loadNode() {
+        name = "Rose"
         geometry = Meshes.Flowers.rose
     }
     

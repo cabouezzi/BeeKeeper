@@ -50,13 +50,13 @@ class Incubator: Structure {
     
     required init() {
         super.init()
-        self.name = "Incubator"
         self.area = DiscreteRect(x: 0, y: 0, width: 4, height: 4)
     }
     
     override func loadNode() {
-        self.geometry = Meshes.Structure.incubator
-        self.eulerAngles.y = -.pi / 2
+        name = "Incubator"
+        geometry = Meshes.Structure.incubator
+        eulerAngles.y = -.pi / 2
     }
     
     required init?(coder: NSCoder) {

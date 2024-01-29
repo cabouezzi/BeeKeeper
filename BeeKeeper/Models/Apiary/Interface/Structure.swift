@@ -67,6 +67,7 @@ class Structure: BKNode, Model, Codable {
         area = try container.decode(DiscreteRect.self, forKey: .area)
         assignedBees = []
         super.init()
+        self.name = "Structure"
         loadNode()
         movePivotToCenter()
     }

@@ -325,17 +325,14 @@ class Bee: SCNNode, Model, Producer, Codable {
     }
     
     private func attractionForce() -> SCNVector3 {
-        guard let producerAssignment = producerAssignment, animationState == .targeting else { return .zero }
-        var targetPosition = producerAssignment.worldPosition
-        targetPosition.y += 2
+        guard let attraction = attraction, animationState == .targeting else { return .zero }
+        var targetPosition = attraction.worldPosition
         let dir = (targetPosition - worldPosition).normalized()
-        var targetVelocity = velocity + scaledForce(dir)
+        var targetVelocity = scaledForce(dir)
         
-        if let attraction = attraction, animationState == .targeting {
-            let distance = attraction.worldPosition.distance(to: worldPosition)
-            if distance < attractionPerception {
-                targetVelocity = targetVelocity.normalized() * distance.clamped(min: 0, max: 1)
-            }
+        let distance = attraction.worldPosition.distance(to: worldPosition)
+        if distance < attractionPerception {
+            targetVelocity = targetVelocity.normalized() * distance.clamped(min: 0, max: 1)
         }
         
         return (targetVelocity - velocity)
