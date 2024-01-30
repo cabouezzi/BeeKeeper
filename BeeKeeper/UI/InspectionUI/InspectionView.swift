@@ -16,7 +16,7 @@ class InspectionView: UIView {
     
     private var reference: SCNNode?
     private lazy var fontSize: CGFloat = frame.size.height / 30
-    private let inset: CGFloat = 25
+    private lazy var inset: CGFloat = fontSize
     
     init(structure: Structure, frame: CGRect) {
         self.structure = structure
@@ -54,10 +54,12 @@ class InspectionView: UIView {
         
         let info = setBasicInfo()
         let container = setContainerInfo()
+        let incubator = setIncubatorInfo()
         
         addConstraints([
             container.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: inset),
             info.topAnchor.constraint(equalTo: container.bottomAnchor, constant: inset),
+            incubator.topAnchor.constraint(equalTo: info.bottomAnchor, constant: inset),
         ])
         
         setModel(structure)
@@ -85,6 +87,7 @@ class InspectionView: UIView {
     private func setContainerInfo() -> UIView {
         guard let container = structure as? Container else {
             let view = UIView(frame: .zero)
+            view.translatesAutoresizingMaskIntoConstraints = false
             scrollView.addSubview(view)
             return view
         }
@@ -228,6 +231,107 @@ class InspectionView: UIView {
             section.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -inset),
             section.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
             section.bottomAnchor.constraint(equalTo: stack.bottomAnchor, constant: inset),
+        ])
+        
+        section.backgroundColor = .black.withAlphaComponent(0.3)
+        section.layer.cornerRadius = 10
+        
+        return section
+    }
+    
+    @discardableResult
+    private func setIncubatorInfo() -> UIView {
+        guard let incubator = structure as? Incubator else {
+            let view = UIView(frame: .zero)
+            view.translatesAutoresizingMaskIntoConstraints = false
+            scrollView.addSubview(view)
+            return view
+        }
+        
+        let section = UIView()
+        section.translatesAutoresizingMaskIntoConstraints = false
+        
+        let statusTitle = UILabel()
+        statusTitle.translatesAutoresizingMaskIntoConstraints = false
+        statusTitle.font = .preferredFont(forTextStyle: .largeTitle).withSize(fontSize)
+        statusTitle.adjustsFontSizeToFitWidth = true
+        statusTitle.text = "Status"
+        statusTitle.sizeToFit()
+        statusTitle.setShadow()
+        
+        let statusLabel = UILabel()
+        statusLabel.translatesAutoresizingMaskIntoConstraints = false
+        statusLabel.font = .preferredFont(forTextStyle: .largeTitle).withSize(fontSize)
+        statusLabel.adjustsFontSizeToFitWidth = true
+        statusLabel.sizeToFit()
+        statusLabel.setShadow()
+        
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.titleLabel?.font = .preferredFont(forTextStyle: .headline).withSize(fontSize)
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+        button.titleLabel?.setShadow()
+        button.sizeToFit()
+        button.backgroundColor = .orange
+        button.layer.cornerRadius = 10
+        
+        func update() {
+            switch incubator.state {
+            case .idle:
+                statusLabel.text = "No incubation in progress"
+                button.setTitle("Incubate", for: .normal)
+            case .incubating:
+                guard let period = incubator.currentPeriod else { break }
+                statusLabel.text = "Time Left: " + Date.now.distance(to: period.finishTime).formattedString()
+                button.setTitle("Speed Up?", for: .normal)
+            case .finished:
+                statusLabel.text = "Done"
+                button.setTitle("Hatch", for: .normal)
+            }
+        }
+        update()
+        button.addAction { [unowned self, unowned incubator] in
+            switch incubator.state {
+            case .idle:
+                try? incubator.startIncubating(100)
+            case .incubating:
+                try? incubator.forceFinish()
+            case .finished:
+                do {
+                    try incubator.hatch()
+                    removeFromSuperview()
+                } catch{}
+            }
+            update()
+        }
+        
+        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] timer in
+            guard self != nil else {
+                timer.invalidate()
+                return
+            }
+            update()
+        }
+        
+        for subview in [statusTitle, statusLabel, button] {
+            section.addSubview(subview)
+        }
+        scrollView.addSubview(section)
+        
+        addConstraints([
+            statusTitle.widthAnchor.constraint(equalTo: section.widthAnchor, constant: -inset),
+            statusTitle.centerXAnchor.constraint(equalTo: section.centerXAnchor),
+            statusTitle.topAnchor.constraint(equalTo: section.topAnchor, constant: inset),
+            statusLabel.widthAnchor.constraint(equalTo: statusTitle.widthAnchor, constant: -inset),
+            statusLabel.centerXAnchor.constraint(equalTo: statusTitle.centerXAnchor),
+            statusLabel.topAnchor.constraint(equalTo: statusTitle.bottomAnchor, constant: inset),
+            button.widthAnchor.constraint(equalTo: statusLabel.widthAnchor),
+            button.centerXAnchor.constraint(equalTo: statusLabel.centerXAnchor),
+            button.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: inset),
+            button.heightAnchor.constraint(equalTo: statusTitle.heightAnchor, multiplier: 2),
+            section.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -inset),
+            section.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+            section.bottomAnchor.constraint(equalTo: button.bottomAnchor, constant: inset)
         ])
         
         section.backgroundColor = .black.withAlphaComponent(0.3)
