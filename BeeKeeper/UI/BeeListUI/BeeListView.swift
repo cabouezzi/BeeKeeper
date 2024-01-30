@@ -14,7 +14,7 @@ class BeeListView: UIView {
     let scrollView: UIScrollView
     let bees: [Bee]
     
-    private var selectedBee: Bee?
+    private var selectedCell: BeeListViewCell?
     private var beeModel: Bee?
     private var beeReference: SCNNode?
     private var onSelect: ((Bee) -> Void)?
@@ -119,8 +119,14 @@ class BeeListView: UIView {
     }
     
     func selectBee(_ bee: Bee) {
-        selectedBee = bee
-        setBeeModel(bee)
+        guard let cell = scrollView.subviews.compactMap({ $0 as? BeeListViewCell }).first(where: { $0.bee == bee }) else {
+            return
+        }
+        selectedCell?.layer.borderColor = UIColor.clear.cgColor
+        selectedCell = cell
+        selectedCell?.layer.borderColor = UIColor.white.cgColor
+        selectedCell?.layer.borderWidth = 2
+        setBeeModel(cell.bee)
     }
     
     private func setBeeModel(_ bee: Bee?) {

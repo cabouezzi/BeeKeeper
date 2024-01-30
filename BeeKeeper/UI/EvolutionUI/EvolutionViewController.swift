@@ -76,7 +76,10 @@ class EvolutionViewController: UIViewController {
             // Buy gene
             if !GameManager.shared.account.unlockedGenes.contains(data.gene) {
                 do {
+                    guard GameManager.shared.getAllResources().canAfford(data.cost) else { throw ContainerError.containerInsufficient }
                     try GameManager.shared.unlockGene(data.gene)
+                    // FIXME: The force success is to intentionally crash if we can't afford it. This should never happen, but in the event it does, the crash prevents saving the gene as unlocked.
+                    try! GameManager.shared.remove(data.cost)
                     if let icon = evolutionView.iconForGene(data.gene) {
                         icon.childNode(withName: "lock")?.removeFromParent()
                     }
