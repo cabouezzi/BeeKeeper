@@ -477,9 +477,6 @@ extension ApiaryViewController: ModelVisitor {
     
     func visitIncubator(_ model: Incubator) -> () {
         apiaryView.overlay.setButtons(title: model.name, [
-            SKButton(texture: SKTexture.blankWhite, title: "Incubate", onTap: { [unowned self] in
-                self.apiaryView.overlay.showIncubatorHud(model)
-            }),
             SKButton(texture: .move, onTap: { [unowned self] in
                 beginMovingStructure(model)
             }),

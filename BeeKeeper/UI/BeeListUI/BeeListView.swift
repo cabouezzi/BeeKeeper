@@ -25,10 +25,11 @@ class BeeListView: UIView {
     init(bees: [Bee], frame: CGRect) {
         self.bees = bees
         
+        let scrollViewFraction = 0.5
         beeView = SCNView(frame: frame)
         beeView.scene = SCNScene(named: "ModelBase.scn")
         beeView.scene?.background.contents = UIColor.brown
-        beeView.frame.size.width *= 2 / 3
+        beeView.frame.size.width *= 1 - scrollViewFraction
         
         beeReference = beeView.scene?.rootNode.childNode(withName: "BeeReference", recursively: true)
         beeReference?.isHidden = true
@@ -37,7 +38,7 @@ class BeeListView: UIView {
         releaseButton.isHidden = true
         
         scrollView = UIScrollView(frame: frame)
-        scrollView.frame.size.width *= 1 / 3
+        scrollView.frame.size.width *= scrollViewFraction
         scrollView.frame.origin.x = beeView.frame.maxX
         scrollView.contentSize = scrollView.frame.size
         scrollView.contentSize.height = scrollView.frame.size.height + 10
@@ -78,14 +79,14 @@ class BeeListView: UIView {
             view.removeFromSuperview()
         }
         
-        let rowSize = 100
-        scrollView.contentSize.height = max(scrollView.frame.size.height + 10, CGFloat(bees.count * rowSize))
-        
-        let itemHeight: CGFloat = 100
-        let itemWidth: CGFloat = scrollView.frame.width
         let inset: CGFloat = 10
+        let rowSize: CGFloat = 100
+        scrollView.contentSize.height = max(scrollView.frame.size.height + 10, CGFloat(bees.count) * rowSize + releaseButton.frame.height)
         
-        let releaseFrame = CGRect(x: 0, y: 0, width: itemWidth, height: itemHeight).insetBy(dx: 10, dy: 10)
+        let itemHeight: CGFloat = rowSize
+        let itemWidth: CGFloat = scrollView.frame.width
+        
+        let releaseFrame = CGRect(x: 0, y: 0, width: itemWidth, height: itemHeight).insetBy(dx: inset, dy: inset)
         releaseButton.frame = releaseFrame
         releaseButton.layer.cornerRadius = releaseFrame.height / 10
         releaseButton.isHidden = bees.isEmpty
