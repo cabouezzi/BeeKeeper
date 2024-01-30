@@ -49,7 +49,7 @@ class ApiaryOverlay: SKScene {
         resources.update(animated: false)
         
         // Achievements, tasks, map
-        let section = size.height / 8
+        let section = min(size.height / 6, size.width / 10)
         let buttonSize = section * 0.85
         let spacing = section - buttonSize
         let leftButtons = [achievementsButton, tasksButton, mapButton]
@@ -99,7 +99,7 @@ class ApiaryOverlay: SKScene {
         
         /// The y-level where the buttons should be displayed
         let yPosition = size.height / 10
-        let safeWidth = size.width - yPosition*2
+        let safeWidth = size.width - yPosition * 2
         let center = size.width / 2
         /// The calculated max width of the button
         let maxWidth = safeWidth / 7
