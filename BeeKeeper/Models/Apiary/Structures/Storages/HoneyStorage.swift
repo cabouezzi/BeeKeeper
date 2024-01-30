@@ -13,16 +13,19 @@ final class HoneyStorage: Container {
     required init() {
         super.init()
         self.maximum = Resources(honey: 200)
-        self.area = DiscreteRect(x: 0, y: 0, width: 2, height: 2)
+        self.area = DiscreteRect(x: 0, y: 0, width: 3, height: 3)
+        updateJars()
     }
     
     override func loadNode() {
         name = "Honey Storage"
-        geometry = Meshes.Structure.honeyStorage
+        let rack = SCNNode(geometry: Meshes.Structure.honeyStorage)
+        rack.scale = SCNVector3(1.5, 1.5, 1.5)
+        addChildNode(rack)
         
         guard let scene = SCNScene(named: "Rack.scn") else { return }
         let jars = scene.rootNode.childNodes.filter({ $0.name == "jar" })
-        addChildren(jars)
+        rack.addChildren(jars)
         self.jars = jars
         updateJars()
     }

@@ -139,9 +139,12 @@ class ApiaryViewController: UIViewController {
         }
         
         apiaryView.overlay.setButtons(title: structure.name, [
-            SKButton(texture: SKTexture.check, onTap: {
+            SKButton(texture: SKTexture.check, onTap: { [unowned self] in
                 do {
                     try completion?()
+                    guard !apiaryView.apiary.structures.contains(where: { $0.overlaps(structure) }) else {
+                        throw ApiaryError.overlappingStructures
+                    }
                     if isNew {
                         try GameManager.shared.addStructure(structure)
                     }

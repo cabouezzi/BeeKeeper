@@ -11,7 +11,7 @@ final class PollenStorage: Container {
     required init() {
         super.init()
         self.maximum = Resources(pollen: 200)
-        self.area = DiscreteRect(x: 0, y: 0, width: 2, height: 2)
+        self.area = DiscreteRect(x: 0, y: 0, width: 3, height: 3)
     }
     
     override func loadNode() {
