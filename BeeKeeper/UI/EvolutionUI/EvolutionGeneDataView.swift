@@ -17,11 +17,12 @@ class EvolutionGeneDataView: UIScrollView {
     let purchaseButton: UIButton
     
     override init(frame: CGRect) {
-        let size = min(frame.size.width, frame.size.height)
+        let size = min(frame.size.width, frame.size.height / 3)
         let inset = size * 0.1
         
         let iconRect = CGRect(x: 0, y: 0, width: size, height: size).insetBy(dx: inset, dy: inset)
         iconView = UIImageView(frame: iconRect)
+        iconView.translatesAutoresizingMaskIntoConstraints = false
         iconView.backgroundColor = .clear
         
         titleLabel = UILabel()
@@ -62,17 +63,19 @@ class EvolutionGeneDataView: UIScrollView {
         backgroundColor = .darkGray
         
         addConstraints([
+            iconView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            iconView.topAnchor.constraint(equalTo: topAnchor, constant: inset),
             titleLabel.topAnchor.constraint(equalTo: iconView.bottomAnchor, constant: inset),
             titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             detailsLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: inset),
-            detailsLabel.widthAnchor.constraint(equalTo: iconView.widthAnchor),
+            detailsLabel.widthAnchor.constraint(equalTo: widthAnchor, constant: -inset),
             detailsLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             costLabel.topAnchor.constraint(equalTo: detailsLabel.bottomAnchor, constant: inset),
             costLabel.widthAnchor.constraint(equalTo: detailsLabel.widthAnchor),
             costLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             purchaseButton.topAnchor.constraint(equalTo: costLabel.bottomAnchor, constant: inset),
             purchaseButton.centerXAnchor.constraint(equalTo: centerXAnchor),
-            purchaseButton.widthAnchor.constraint(equalTo: iconView.widthAnchor, constant: -inset)
+            purchaseButton.widthAnchor.constraint(equalTo: detailsLabel.widthAnchor, constant: -inset),
         ])
     }
     
@@ -94,6 +97,7 @@ class EvolutionGeneDataView: UIScrollView {
         detailsLabel.textAlignment = .left
         detailsLabel.contentMode = .topLeft
         detailsLabel.numberOfLines = 0
+        detailsLabel.sizeToFit()
         
         costLabel.font = .preferredFont(forTextStyle: .headline)
         costLabel.attributedText = data.cost.attributedString(font: costLabel.font, delimiter: "   ", verbose: false)
@@ -101,6 +105,9 @@ class EvolutionGeneDataView: UIScrollView {
         costLabel.lineBreakMode = .byWordWrapping
         costLabel.numberOfLines = 0
         costLabel.textAlignment = .left
+        
+        let height = subviews.reduce(0, { $0 + $1.frame.height })
+        contentSize.height = height
     }
     
     override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
