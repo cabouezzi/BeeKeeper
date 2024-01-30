@@ -38,20 +38,9 @@ final class GameManager: NSObject {
         // TODO: Make formula instead of loop
         
         for _ in 0..<Int(seconds) {
-            // TODO: Possibly change mechanics?
-            for bee in apiary.bees {
-                // Produce first
-                if let collector = bee.producerAssignment as? (Structure & Collector) {
-                    try? collector.accept(bee)
-                }
-                
-                // TODO: Remove from collectors not storage, need separate function
-                try? remove(bee.consumption)
-            }
-            
             for structure in apiary.structures {
                 if let collector = structure as? (Container & Collector), let resource = collector.resourceTargets().first {
-                    if collector.containing[keyPath: resource] > collector.maximum[keyPath: resource] * 0.3 {
+                    if collector.containing[keyPath: resource] > collector.maximum[keyPath: resource] * 0.8 {
                         collector.showResourceBubble {
                             self.collect(from: collector)
                         }

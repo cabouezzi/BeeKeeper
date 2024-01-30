@@ -225,7 +225,7 @@ class Bee: SCNNode, Model, Producer, Codable {
             nextState = .dormant(hive)
             
         case .droning:
-            animationPlayer = flapWings(repeatCount: 1)
+            animationPlayer = flapWings(repeatCount: Int.random(in: 10...30))
             if let producerAssignment = producerAssignment {
                 if let container = producerAssignment as? Container, container.isFull {
                     nextState = .droning
@@ -237,12 +237,12 @@ class Bee: SCNNode, Model, Producer, Codable {
             }
             
         case .targeting(let node):
-            guard let structure = node as? Structure else {
-                nextState = animationState
+            guard let structure = producerAssignment else {
+                nextState = .droning
                 animationPlayer = flapWings(repeatCount: 1)
                 break
             }
-            if worldPosition.distance(to: structure.worldPosition) < 1 {
+            if worldPosition.distance(to: node.worldPosition) < 1 {
                 animationPlayer = prepareLanding()
                 nextState = .working(structure)
             } else if let flower = structure as? Flower {
@@ -257,7 +257,7 @@ class Bee: SCNNode, Model, Producer, Codable {
             if let container = structure as? Container, container.isFull {
                 animationPlayer = prepareFlight()
                 nextState = .droning
-            } else if Int.random(in: 1...100) > 33 {
+            } else if Int.random(in: 0..<100) > 10 {
                 animationPlayer = wiggle(repeatCount: 1)
                 animationPlayer.animation.duration = .random(in: 2...5)
                 nextState = animationState
@@ -268,8 +268,14 @@ class Bee: SCNNode, Model, Producer, Codable {
             
         }
         animationPlayer.animation.animationDidStop = { [weak self] x, y, z in
-            self?.animationState = nextState
-            self?.animationLoop()
+            guard let self = self else { return }
+            if case .working(let structure) = self.animationState {
+                if let collector = structure as? Collector {
+                    try? collector.accept(self)
+                }
+            }
+            self.animationState = nextState
+            self.animationLoop()
         }
         animationPlayer.play()
     }
