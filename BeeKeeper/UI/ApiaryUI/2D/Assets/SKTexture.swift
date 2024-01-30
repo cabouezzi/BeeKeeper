@@ -8,6 +8,8 @@
 import SpriteKit
 
 extension SKTexture {
+    static let plank = SKTexture(imageNamed: "plank")
+    
     // UI Buttons
     static let achievements = SKTexture(imageNamed: "achievementsButton")
     static let map = SKTexture(imageNamed: "mapButton")

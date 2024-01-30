@@ -10,10 +10,12 @@ import SpriteKit
 
 class ApiaryOverlay: SKScene {
     let resources = ResourceDisplayHud()
-    let achievementsButton: SKButton = SKButton(texture: SKTexture.achievements)
-    let tasksButton: SKButton = SKButton(texture: SKTexture.tasks)
-    let mapButton: SKButton = SKButton(texture: SKTexture.map)
-    let shopButton: SKButton = SKButton(texture: SKTexture.build)
+    let nameNode = SKTextNode(text: "Chaniel's Bees", texture: .plank)
+    
+    let achievementsButton = SKButton(texture: SKTexture.achievements)
+    let tasksButton = SKButton(texture: SKTexture.tasks)
+    let mapButton = SKButton(texture: SKTexture.map)
+    let shopButton = SKButton(texture: SKTexture.build)
     
     let beesButton: SKButton = SKButton(texture: SKTexture.bees)
     let evolutionButton: SKButton = SKButton(texture: SKTexture.atom)
@@ -66,7 +68,7 @@ class ApiaryOverlay: SKScene {
         beesButton.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         beesButton.size = CGSize(width: buttonSize, height: buttonSize)
         beesButton.position.x = size.width - section / 2 - spacing
-        beesButton.position.y = resources.calculateAccumulatedFrame().minY - section
+        beesButton.position.y = resources.calculateAccumulatedFrame().minY - buttonSize / 2 - spacing
         sharedHud.addChild(beesButton)
         
         // Shop
@@ -83,6 +85,15 @@ class ApiaryOverlay: SKScene {
         evolutionButton.position.x = size.width - shopButtonSize / 2 - spacing * 2
         evolutionButton.position.y = shopButtonSize / 2 + spacing * 2
         sharedHud.addChild(evolutionButton)
+        
+        // Name
+        let scale = min((size.width * 0.5) / nameNode.size.width, buttonSize / nameNode.size.height)
+        nameNode.anchorPoint = CGPoint(x: 0, y: 1)
+        nameNode.xScale = scale
+        nameNode.yScale = scale
+        nameNode.position.x = spacing
+        nameNode.position.y = resources.calculateAccumulatedFrame().maxY
+        addChild(nameNode)
         
         addChild(sharedHud)
     }

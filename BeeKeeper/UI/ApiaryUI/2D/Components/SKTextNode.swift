@@ -8,7 +8,7 @@
 import SpriteKit
 
 open class SKTextNode: SKSpriteNode {
-    private var label: SKLabelNode
+    private var label = SKLabelNode()
     
     open override var anchorPoint: CGPoint {
         didSet { update() }
@@ -38,14 +38,25 @@ open class SKTextNode: SKSpriteNode {
         set { label.text = newValue }
     }
     
-    init(text: String?, texture: SKTexture? = nil, color: UIColor = .clear, size: CGSize = .zero) {
-        self.label = SKLabelNode(text: text)
+    override init(texture: SKTexture?, color: UIColor, size: CGSize) {
+        self.label = SKLabelNode(text: "")
         self.label.position = .zero
         self.label.horizontalAlignmentMode = .center
         self.label.verticalAlignmentMode = .baseline
         self.label.color = .red
         super.init(texture: texture, color: color, size: size)
         addChild(label)
+        update()
+    }
+    
+    convenience init(text: String?, texture: SKTexture) {
+        self.init(texture: texture)
+        label.text = text ?? label.text
+    }
+    
+    convenience init(text: String?, color: UIColor) {
+        self.init(texture: nil, color: color, size: .zero)
+        label.text = text ?? label.text
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -53,7 +64,15 @@ open class SKTextNode: SKSpriteNode {
     }
     
     private func update() {
-        label.position.x = -(anchorPoint.x - 0.5) * size.width
-        label.position.y = -(anchorPoint.y - 0.5) * size.height
+        guard let text = text, text.count != 0 else { return }
+        label.fontSize = label.frame.height
+        let inset = UIFont.preferredFont(forTextStyle: .largeTitle).pointSize
+        let frame = frame.insetBy(dx: inset, dy: inset)
+        let scale = min(frame.width / label.frame.width, frame.height / label.frame.height)
+        label.fontSize *= scale
+        label.fontSize.clamp(min: UIFont.preferredFont(forTextStyle: .caption1).pointSize, max: UIFont.preferredFont(forTextStyle: .largeTitle).pointSize * 1.5)
+        label.horizontalAlignmentMode = .left
+        label.position.x = -(anchorPoint.x - 0.5) * size.width - frame.width / 2
+        label.position.y = -(anchorPoint.y - 0.5) * size.height - inset / 2
     }
 }

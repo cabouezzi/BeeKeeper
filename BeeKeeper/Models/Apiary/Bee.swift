@@ -189,6 +189,10 @@ class Bee: SCNNode, Model, Producer, Codable {
         return visitor.visitBee(self)
     }
     
+    func setNickname(_ string: String) {
+        nickname = string
+    }
+    
     /// Sends the bee to the hive, and will not leave until awakened with ``wake()``
     func sleep(_ hive: Hive) {
         removeAllAnimations()
