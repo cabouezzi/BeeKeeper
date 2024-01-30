@@ -8,13 +8,15 @@
 import SceneKit
 
 class Bee: SCNNode, Model, Producer, Codable {
-    private enum AnimationState: CaseIterable {
+    private enum AnimationState: Equatable {
+        /// The case of being in the hive at night
+        case dormant(_ hive: Hive)
         /// The state of idle flying
         case droning
         /// The state of flying to its target
-        case targeting
+        case targeting(_ node: SCNNode)
         /// The animation played when at its target
-        case working
+        case working(_ node: Structure)
     }
     private var animationState: AnimationState = .droning
     
@@ -51,7 +53,7 @@ class Bee: SCNNode, Model, Producer, Codable {
     private var attractionPerception: Float = 4
     
     private static let directions: Set<SCNVector3> = {
-        let count = 100
+        let count = 25
         var dirs = Set<SCNVector3>(minimumCapacity: count)
         let goldenRatio: Float = (1 + sqrt(5)) / 2
         let angleIncrement: Float = (2 * .pi) * goldenRatio
@@ -187,6 +189,25 @@ class Bee: SCNNode, Model, Producer, Codable {
         return visitor.visitBee(self)
     }
     
+    /// Sends the bee to the hive, and will not leave until awakened with ``wake()``
+    func sleep(_ hive: Hive) {
+        removeAllAnimations()
+        animationState = .dormant(hive)
+        animationLoop()
+    }
+    
+    /// Forces the bee out of its hive and begins droning.
+    func wake() {
+        removeAllAnimations()
+        animationState = .droning
+        animationLoop()
+        isHidden = false
+    }
+    
+    private func freeze() {
+        velocity = SCNVector3(0.001, 0.001, 0.001)
+    }
+    
     // MARK: - Animations
     
     private func animationLoop() {
@@ -194,47 +215,57 @@ class Bee: SCNNode, Model, Producer, Codable {
         let nextState: AnimationState
         
         switch animationState {
+        case .dormant(let hive):
+            if worldPosition.distance(to: hive.worldPosition) <= Float(hive.area.width) {
+                isHidden = true
+                freeze()
+                return
+            }
+            animationPlayer = flapWings(repeatCount: 1)
+            nextState = .dormant(hive)
+            
         case .droning:
-            animationPlayer = flapWings(repeatCount: .random(in: 60...120))
+            animationPlayer = flapWings(repeatCount: 1)
             if let producerAssignment = producerAssignment {
-                if let flower = producerAssignment as? Flower {
-                    attraction = flower.pollinationNode()
+                if let container = producerAssignment as? Container, container.isFull {
+                    nextState = .droning
                 } else {
-                    attraction = SCNNode()
-                    attraction?.worldPosition = producerAssignment.worldPosition
-                    attraction?.worldPosition.y += 2
+                    nextState = .targeting(producerAssignment)
                 }
-                nextState = .targeting
             } else {
                 nextState = .droning
             }
-        case .targeting:
-            if producerAssignment != nil, let attraction = attraction {
-                if worldPosition.distance(to: attraction.worldPosition) < 1 {
-                    animationPlayer = prepareLanding()
-                    nextState = .working
-                } else {
-                    animationPlayer = flapWings(repeatCount: 1)
-                    nextState = .targeting
-                }
+            
+        case .targeting(let node):
+            guard let structure = node as? Structure else {
+                nextState = animationState
+                animationPlayer = flapWings(repeatCount: 1)
+                break
+            }
+            if worldPosition.distance(to: structure.worldPosition) < 1 {
+                animationPlayer = prepareLanding()
+                nextState = .working(structure)
+            } else if let flower = structure as? Flower {
+                animationPlayer = flapWings(repeatCount: 1)
+                nextState = .targeting(flower.pollinationNode())
             } else {
                 animationPlayer = flapWings(repeatCount: 1)
-                nextState = .droning
+                nextState = .targeting(structure)
             }
-        case .working:
-            if producerAssignment != nil {
-                if Int.random(in: 1...100) > 33 {
-                    animationPlayer = wiggle(repeatCount: 1)
-                    animationPlayer.animation.duration = .random(in: 2...5)
-                    nextState = .working
-                } else {
-                    animationPlayer = prepareFlight()
-                    nextState = .droning
-                }
+            
+        case .working(let structure):
+            if let container = structure as? Container, container.isFull {
+                animationPlayer = prepareFlight()
+                nextState = .droning
+            } else if Int.random(in: 1...100) > 33 {
+                animationPlayer = wiggle(repeatCount: 1)
+                animationPlayer.animation.duration = .random(in: 2...5)
+                nextState = animationState
             } else {
                 animationPlayer = prepareFlight()
                 nextState = .droning
             }
+            
         }
         animationPlayer.animation.animationDidStop = { [weak self] x, y, z in
             self?.animationState = nextState
@@ -325,26 +356,41 @@ class Bee: SCNNode, Model, Producer, Codable {
     }
     
     private func attractionForce() -> SCNVector3 {
-        guard let attraction = attraction, animationState == .targeting else { return .zero }
-        var targetPosition = attraction.worldPosition
-        let dir = (targetPosition - worldPosition).normalized()
+        guard case .targeting(let node) = animationState else { return .zero }
+        let dir = (node.worldPosition - worldPosition).normalized()
         var targetVelocity = scaledForce(dir)
         
-        let distance = attraction.worldPosition.distance(to: worldPosition)
+        let distance = node.worldPosition.distance(to: worldPosition)
         if distance < attractionPerception {
-            targetVelocity = targetVelocity.normalized() * distance.clamped(min: 0, max: 1)
+            targetVelocity = targetVelocity.normalized() * distance.clamped(min: 0.1, max: 1)
         }
-        
         return (targetVelocity - velocity)
     }
     
+    func sleepForce() -> SCNVector3 {
+        guard case .dormant(let hive) = animationState else { return .zero }
+        var targetPos = hive.worldPosition
+        targetPos.y += 1
+        let dir = (targetPos - worldPosition).normalized()
+        var targetVelocity = scaledForce(dir)
+        
+        let distance = hive.worldPosition.distance(to: worldPosition)
+        if distance < Float(hive.area.width) {
+            targetVelocity = targetVelocity.normalized() * distance.clamped(min: 0.1, max: 1)
+        }
+        return targetVelocity
+    }
+    
     private func idleForce() -> SCNVector3 {
-        return velocity.normalized() * (maxSpeed * 0.67 / velocity.magnitude)
+        let dir = velocity == .zero ? worldFront : velocity.normalized()
+        return dir * (maxSpeed * 0.67 / velocity.magnitude)
     }
     
     /// Updates the position, velocity, and acceleration of the bee at a timestep.
     func droneStep(in world: SCNPhysicsWorld) {
-        guard animationState != .working else { return }
+        if case .working(_) = animationState {
+            return
+        }
         
         var acceleration = SCNVector3.zero
         let rayTest = world.rayTestWithSegment(from: worldPosition, to: worldPosition + velocity * (maxSpeed + avoidanceDistance))
@@ -356,6 +402,7 @@ class Bee: SCNNode, Model, Producer, Codable {
         
         acceleration += avoidanceForce(world) * 5
         acceleration += attractionForce()
+        acceleration += sleepForce() * 5
         
         if acceleration.magnitude > maxSteerForce {
             acceleration = acceleration.normalized() * maxSteerForce

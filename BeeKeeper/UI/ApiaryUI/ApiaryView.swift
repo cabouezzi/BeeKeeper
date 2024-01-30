@@ -14,6 +14,7 @@ class ApiaryView: SCNView {
     private var sun: SCNLight?
     let camera: Camera
     let overlay: ApiaryOverlay
+    private(set) var isDark = false
     
     convenience init() {
         self.init(frame: .zero)
@@ -48,6 +49,14 @@ class ApiaryView: SCNView {
         scene?.rootNode.addChildNode(floorNode)
         
         GameManager.shared.addObserver(self)
+        
+        Timer.scheduledTimer(withTimeInterval: 120, repeats: true) { [weak self] timer in
+            guard let self = self else {
+                timer.invalidate()
+                return
+            }
+            isDark ? turnLight(5) : turnDark(5)
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -90,17 +99,29 @@ class ApiaryView: SCNView {
     }
     
     func turnLight(_ duration: TimeInterval) {
+        guard isDark else { return }
+        
+        apiary.bees.forEach({ $0.wake() })
         SCNTransaction.begin()
         SCNTransaction.animationDuration = duration
         sun?.intensity = 500
         SCNTransaction.commit()
+        isDark = false
     }
     
     func turnDark(_ duration: TimeInterval) {
+        guard !isDark else { return }
+        
+        for bee in apiary.bees {
+            if let hive = apiary.structures.compactMap({ $0 as? Hive }).randomElement() {
+                bee.sleep(hive)
+            }
+        }
         SCNTransaction.begin()
         SCNTransaction.animationDuration = duration
         sun?.intensity = 0
         SCNTransaction.commit()
+        isDark = true
     }
 }
 

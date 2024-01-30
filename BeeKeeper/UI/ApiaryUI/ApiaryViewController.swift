@@ -517,12 +517,6 @@ extension ApiaryViewController: SCNSceneRendererDelegate {
             apiaryView.camera.translate(vector: apiaryView.camera.velocity)
             apiaryView.camera.velocity *= Float(accelerationFactor)
         }
-        
-        if Int(time.truncatingRemainder(dividingBy: 240) / 120).isMultiple(of: 2) {
-            apiaryView.turnDark(5)
-        } else {
-            apiaryView.turnLight(5)
-        }
     }
 }
 
