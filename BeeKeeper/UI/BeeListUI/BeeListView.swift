@@ -117,7 +117,7 @@ class BeeListView: UIView {
         }
     }
     
-    private func selectBee(_ bee: Bee) {
+    func selectBee(_ bee: Bee) {
         selectedBee = bee
         setBeeModel(bee)
     }

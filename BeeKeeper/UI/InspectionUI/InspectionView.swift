@@ -15,7 +15,7 @@ class InspectionView: UIView {
     let structure: Structure
     
     private var reference: SCNNode?
-    private let buttonHeight: CGFloat = 100
+    private lazy var fontSize: CGFloat = frame.size.height / 30
     private let inset: CGFloat = 25
     
     init(structure: Structure, frame: CGRect) {
@@ -92,13 +92,13 @@ class InspectionView: UIView {
         section.translatesAutoresizingMaskIntoConstraints = false
         
         let containingTitle = UILabel()
-        containingTitle.font = .preferredFont(forTextStyle: .largeTitle)
+        containingTitle.font = .preferredFont(forTextStyle: .largeTitle).withSize(fontSize)
         containingTitle.text = "Containing"
         containingTitle.sizeToFit()
         containingTitle.setShadow()
         
         let containingLabel = UILabel()
-        containingLabel.font = .preferredFont(forTextStyle: .title1)
+        containingLabel.font = .preferredFont(forTextStyle: .title1).withSize(fontSize)
         containingLabel.attributedText = container.containing.attributedString(font: containingLabel.font, roundDecimals: true)
         if containingLabel.attributedText?.length == 0 {
             containingLabel.text = "Empty"
@@ -107,13 +107,13 @@ class InspectionView: UIView {
         containingLabel.setShadow()
         
         let maximumTitle = UILabel()
-        maximumTitle.font = .preferredFont(forTextStyle: .largeTitle)
+        maximumTitle.font = .preferredFont(forTextStyle: .largeTitle).withSize(fontSize)
         maximumTitle.text = "Capacity"
         maximumTitle.sizeToFit()
         maximumTitle.setShadow()
         
         let maximumLabel = UILabel()
-        maximumLabel.font = .preferredFont(forTextStyle: .title1)
+        maximumLabel.font = .preferredFont(forTextStyle: .title1).withSize(fontSize)
         maximumLabel.attributedText = container.maximum.attributedString(font: maximumLabel.font, roundDecimals: true)
         maximumLabel.sizeToFit()
         maximumLabel.setShadow()
@@ -185,14 +185,14 @@ class InspectionView: UIView {
             
             let columnTitle = UILabel()
             columnTitle.translatesAutoresizingMaskIntoConstraints = false
-            columnTitle.font = .preferredFont(forTextStyle: .largeTitle)
+            columnTitle.font = .preferredFont(forTextStyle: .largeTitle).withSize(fontSize)
             columnTitle.adjustsFontSizeToFitWidth = true
             columnTitle.text = title
             columnTitle.sizeToFit()
             columnTitle.setShadow()
             let columnLabel = UILabel()
             columnLabel.translatesAutoresizingMaskIntoConstraints = false
-            columnLabel.font = .preferredFont(forTextStyle: .title1)
+            columnLabel.font = .preferredFont(forTextStyle: .title1).withSize(fontSize)
             columnTitle.adjustsFontSizeToFitWidth = true
             columnLabel.text = label
             columnLabel.sizeToFit()

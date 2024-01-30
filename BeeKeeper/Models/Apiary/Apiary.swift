@@ -119,7 +119,6 @@ class Apiary: Codable {
         let factor = seconds / TimeInterval(days: 1)
         wildBees -= 5 * Float(factor)
         wildBees.clamp(min: 0, max: .infinity)
-        print("\(Date.now) Wild bees count: \(wildBees). Gene pool: \(wildGenePool.map({ "\($0.key): \($0.value)" }).joined(separator: ", "))")
     }
     
     /// Adds the bee if there doesn't already exist a bee with the same name

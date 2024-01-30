@@ -56,7 +56,7 @@ class ApiaryViewController: UIViewController {
         apiaryView.overlay.shopButton.onTap(popToShop)
         apiaryView.overlay.evolutionButton.onTap(popToEvolution)
         apiaryView.overlay.mapButton.onTap(popToMap)
-        apiaryView.overlay.beesButton.onTap(popToBeeList)
+        apiaryView.overlay.beesButton.onTap({ [unowned self] in popToBeeList() })
     }
     
     final func selectNode(_ node: SCNNode & Model) {
@@ -203,7 +203,7 @@ class ApiaryViewController: UIViewController {
         print("Not implemented yet")
     }
     
-    func popToBeeList() {
+    func popToBeeList(_ bee: Bee? = nil) {
         let beeListView = BeeListView(bees: apiaryView.apiary.bees, frame: apiaryView.frame)
         beeListView.onSelect { [weak self] bee in
             beeListView.removeFromSuperview()
@@ -213,6 +213,9 @@ class ApiaryViewController: UIViewController {
             guard case .idle = self?.state else { return }
             GameManager.shared.releaseBees()
             beeListView.removeFromSuperview()
+        }
+        if let bee = bee {
+            beeListView.selectBee(bee)
         }
         apiaryView.addSubview(beeListView)
     }
@@ -416,6 +419,9 @@ extension ApiaryViewController: UIGestureRecognizerDelegate {
 extension ApiaryViewController: ModelVisitor {
     func visitHoneyStorage(_ model: HoneyStorage) -> () {
         apiaryView.overlay.setButtons(title: model.name, [
+            SKButton(texture: .move, onTap: { [unowned self] in
+                beginMovingStructure(model)
+            }),
             SKButton(texture: SKTexture.info, title: "Info", onTap: { [unowned self] in
                 self.popToInspectionView(for: model)
             }),
@@ -424,6 +430,9 @@ extension ApiaryViewController: ModelVisitor {
     
     func visitPollenStorage(_ model: PollenStorage) -> () {
         apiaryView.overlay.setButtons(title: model.name, [
+            SKButton(texture: .move, onTap: { [unowned self] in
+                beginMovingStructure(model)
+            }),
             SKButton(texture: SKTexture.info, title: "Info", onTap: { [unowned self] in
                 self.popToInspectionView(for: model)
             }),
@@ -435,10 +444,12 @@ extension ApiaryViewController: ModelVisitor {
         apiaryView.camera.follow(model)
         apiaryView.overlay.setButtons(
             title: model.nickname,
-            SKButton(texture: SKTexture.info),
             SKButton(texture: SKTexture.edit, onTap: {
                 self.apiaryView.camera.follow(nil)
                 self.beginAssigningBee(model)
+            }),
+            SKButton(texture: SKTexture.info, title: "Info", onTap: { [unowned self] in
+                self.popToBeeList(model)
             })
         )
     }
@@ -469,6 +480,9 @@ extension ApiaryViewController: ModelVisitor {
             SKButton(texture: SKTexture.blankWhite, title: "Incubate", onTap: { [unowned self] in
                 self.apiaryView.overlay.showIncubatorHud(model)
             }),
+            SKButton(texture: .move, onTap: { [unowned self] in
+                beginMovingStructure(model)
+            }),
             SKButton(texture: SKTexture.info, title: "Info", onTap: { [unowned self] in
                 self.popToInspectionView(for: model)
             }),
@@ -477,16 +491,11 @@ extension ApiaryViewController: ModelVisitor {
     
     func visitFlower(_ model: Flower) -> () {
         apiaryView.overlay.setButtons(title: model.name, [
-            SKButton(texture: SKTexture.blankWhite, title: "Add Resources", onTap: {
-                var resources = Resources(honey: 100, pollen: 100)
-                do {
-                    try model.fill(&resources)
-                } catch {
-                    print(error.localizedDescription)
-                }
-            }),
             SKButton(texture: SKTexture.check, title: "Collect", onTap: {
                 GameManager.shared.collect(from: model)
+            }),
+            SKButton(texture: .move, onTap: { [unowned self] in
+                beginMovingStructure(model)
             }),
             SKButton(texture: SKTexture.info, title: "Info", onTap: { [unowned self] in
                 self.popToInspectionView(for: model)

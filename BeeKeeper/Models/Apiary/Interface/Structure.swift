@@ -152,8 +152,8 @@ extension Bee {
             return
         }
         guard structure.assignedBees.count < structure.maximumAssignedBees else {
-            print(structure.assignedBees)
-            throw ContainerError.maximumAssignedBees }
+            throw ContainerError.maximumAssignedBees
+        }
         producerAssignment?.assignedBees.remove(self)
         structure.assignedBees.insert(self)
         producerAssignment = structure
