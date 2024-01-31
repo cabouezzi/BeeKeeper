@@ -8,26 +8,27 @@
 import SceneKit
 
 final class HoneyStorage: Container {
-    private var jars: [SCNNode] = []
+    private var fillers: [SCNNode] = []
     
     required init() {
         super.init()
         self.maximum = Resources(honey: 200)
         self.area = DiscreteRect(x: 0, y: 0, width: 3, height: 3)
-        updateJars()
+        updateFiller()
     }
     
     override func loadNode() {
         name = "Honey Storage"
-        let rack = SCNNode(geometry: Meshes.Structure.honeyStorage)
-        rack.scale = SCNVector3(1.5, 1.5, 1.5)
-        addChildNode(rack)
+        let node = SCNNode(geometry: Meshes.Structure.honeyStorage)
+        node.eulerAngles.y = .pi
+        addChildNode(node)
         
-        guard let scene = SCNScene(named: "Rack.scn") else { return }
-        let jars = scene.rootNode.childNodes.filter({ $0.name == "jar" })
-        rack.addChildren(jars)
-        self.jars = jars
-        updateJars()
+        guard let scene = SCNScene(named: "Container.scn") else { return }
+        fillers = scene.rootNode.childNodes(passingTest: { node, _ in
+            return node.name?.contains("fill") ?? false
+        }).sorted(by: { $0.name! < $1.name! })
+        node.addChildren(fillers)
+        updateFiller()
     }
     
     required init?(coder: NSCoder) {
@@ -36,7 +37,7 @@ final class HoneyStorage: Container {
     
     required init(from decoder: Decoder) throws {
         try super.init(from: decoder)
-        updateJars()
+        updateFiller()
     }
     
     override func encode(to encoder: Encoder) throws {
@@ -49,16 +50,16 @@ final class HoneyStorage: Container {
     
     override func fill(_ resources: inout Resources) throws {
         try super.fill(&resources)
-        updateJars()
+        updateFiller()
     }
     
-    private func updateJars() {
-        var index = Float(jars.count)
+    private func updateFiller() {
+        var index = Float(fillers.count)
         if maximum.honey > 0 {
             index *= containing.honey / maximum.honey
         }
-        for (i, jar) in jars.enumerated() {
-            jar.isHidden = i > Int(index)
+        for (i, filler) in fillers.enumerated() {
+            filler.isHidden = i != Int(ceil(index - 1))
         }
     }
 }

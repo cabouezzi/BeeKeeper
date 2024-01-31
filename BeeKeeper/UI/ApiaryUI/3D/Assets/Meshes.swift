@@ -149,14 +149,16 @@ struct Meshes {
             return node.geometry!
         }
         
-        static var honeyStorage: SCNGeometry {
+        static var pollenStorage: SCNGeometry {
             let scene = SCNScene(named: "Rack.scn")!
             let node = scene.rootNode.childNode(withName: "rack", recursively: true)!
             return node.geometry!
         }
         
-        static var pollenStorage: SCNGeometry {
-            return honeyStorage
+        static var honeyStorage: SCNGeometry {
+            let scene = SCNScene(named: "Container.scn")!
+            let node = scene.rootNode.childNode(withName: "storage", recursively: true)!
+            return node.geometry!
         }
         
         static var incubator: SCNGeometry {
