@@ -246,7 +246,7 @@ class Bee: SCNNode, Model, Producer, Codable {
                 animationPlayer = flapWings(repeatCount: 1)
                 break
             }
-            if worldPosition.distance(to: node.worldPosition) < 1 {
+            if worldPosition.distance(to: node.worldPosition) < max(avoidanceDistance + 1, node.width / 2) {
                 animationPlayer = prepareLanding()
                 nextState = .working(structure)
             } else if let flower = structure as? Flower {
@@ -347,6 +347,10 @@ class Bee: SCNNode, Model, Producer, Codable {
         })
         
         for collision in collisions {
+            // Don't avoid assignment
+            if let producerAssignment = producerAssignment, producerAssignment === collision.node.firstParentModelNode() {
+                continue
+            }
             let avoidanceDirection = collision.worldNormal.normalized()
             let avoidanceForce = scaledForce(avoidanceDirection)
             let collisionDistance = collision.worldCoordinates.distance(to: worldPosition)
@@ -374,7 +378,7 @@ class Bee: SCNNode, Model, Producer, Codable {
         if distance < attractionPerception {
             targetVelocity = targetVelocity.normalized() * distance.clamped(min: 0.1, max: 1)
         }
-        return (targetVelocity - velocity)
+        return targetVelocity
     }
     
     func sleepForce() -> SCNVector3 {
@@ -393,7 +397,7 @@ class Bee: SCNNode, Model, Producer, Codable {
     
     private func idleForce() -> SCNVector3 {
         let dir = velocity == .zero ? worldFront : velocity.normalized()
-        return dir * (maxSpeed * 0.67 / velocity.magnitude)
+        return dir * (maxSpeed * 0.33 / velocity.magnitude)
     }
     
     /// Updates the position, velocity, and acceleration of the bee at a timestep.
@@ -410,9 +414,9 @@ class Bee: SCNNode, Model, Producer, Codable {
             acceleration += idleForce()
         }
         
-        acceleration += avoidanceForce(world) * 5
+        acceleration += avoidanceForce(world)
         acceleration += attractionForce()
-        acceleration += sleepForce() * 5
+        acceleration += sleepForce()
         
         if acceleration.magnitude > maxSteerForce {
             acceleration = acceleration.normalized() * maxSteerForce

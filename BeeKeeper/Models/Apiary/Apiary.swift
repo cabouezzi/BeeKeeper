@@ -36,7 +36,7 @@ class Apiary: Codable {
         pollenStorage.area.y = honeyStorage.area.height
         
         let incubator = Incubator()
-        incubator.area.y = hive.area.height + 1
+        incubator.area.y = pollenStorage.area.y + pollenStorage.area.height
         
         let flower = Daisy()
         flower.area.x -= 4

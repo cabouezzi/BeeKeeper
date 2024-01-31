@@ -55,7 +55,13 @@ class ApiaryView: SCNView {
                 timer.invalidate()
                 return
             }
-            isDark ? turnLight(5) : turnDark(5)
+            turnDark(5)
+            isDark = true
+            DispatchQueue.main.asyncAfter(deadline: .now().advanced(by: .seconds(30))) { [weak self] in
+                guard let self = self else { return }
+                turnLight(5)
+                isDark = false
+            }
         }
     }
     
@@ -82,6 +88,10 @@ class ApiaryView: SCNView {
         for structure in apiary.structures {
             structure.position.x = Float(structure.area.x) + Float(structure.area.width) / 2
             structure.position.z = Float(structure.area.y) + Float(structure.area.height) / 2
+            if let geometry = structure.flattenedClone().geometry {
+                let shape = SCNPhysicsShape(geometry: geometry)
+                structure.physicsBody = SCNPhysicsBody(type: .kinematic, shape: shape)
+            }
             scene?.rootNode.addChildNode(structure)
         }
     }

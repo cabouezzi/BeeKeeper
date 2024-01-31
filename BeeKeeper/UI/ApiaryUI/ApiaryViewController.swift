@@ -160,8 +160,8 @@ class ApiaryViewController: UIViewController {
     }
     
     func beginAssigningBee(_ bee: Bee) {
-        func clear() {
-            for structure in apiaryView.apiary.structures {
+        func clear(_ exception: Structure? = nil) {
+            for structure in apiaryView.apiary.structures where structure !== exception {
                 structure.removeBubble()
             }
             clearHud()
@@ -172,7 +172,7 @@ class ApiaryViewController: UIViewController {
         apiaryView.overlay.hideSharedHud()
         apiaryView.overlay.setButtons(
             title: "Choose a Target for \(bee.nickname.prefix(10))",
-            SKButton(texture: SKTexture.check, onTap: clear),
+            SKButton(texture: SKTexture.check, onTap: { clear() }),
             SKButton(texture: SKTexture.unlink, onTap: {
                 try? bee.assign(to: nil)
                 clear()
@@ -184,7 +184,7 @@ class ApiaryViewController: UIViewController {
             structure.removeBubble()
             structure.showBubble(texture: .plus) {
                 try? bee.assign(to: structure)
-                clear()
+                clear(structure)
             }
         }
     }
