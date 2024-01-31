@@ -337,6 +337,8 @@ class ApiaryViewController: UIViewController {
                 structure.area.y = Int(round(pos.z)) - structure.area.height / 2
             }
             
+            structure.area.x.clamp(min: -25, max: 25 - structure.area.width)
+            structure.area.y.clamp(min: -25, max: 25 - structure.area.height)
             structure.position.x = Float(structure.area.x) + Float(structure.area.width) / 2
             structure.position.z = Float(structure.area.y) + Float(structure.area.height) / 2
             

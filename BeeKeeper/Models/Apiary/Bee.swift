@@ -258,7 +258,10 @@ class Bee: SCNNode, Model, Producer, Codable {
             }
             
         case .working(let structure):
-            if let container = structure as? Container, container.isFull {
+            if worldPosition.distance(to: structure.worldPosition) < max(avoidanceDistance + 1, structure.width / 2) {
+                animationPlayer = prepareFlight()
+                nextState = .droning
+            } else if let container = structure as? Container, container.isFull {
                 animationPlayer = prepareFlight()
                 nextState = .droning
             } else if Int.random(in: 0..<100) > 10 {
