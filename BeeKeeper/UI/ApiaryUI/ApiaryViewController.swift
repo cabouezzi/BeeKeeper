@@ -510,7 +510,8 @@ extension ApiaryViewController: ModelVisitor {
 extension ApiaryViewController: SCNSceneRendererDelegate {
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         guard let scene = apiaryView.scene else { return }
-        for bee in apiaryView.apiary.bees {
+        for node in apiaryView.scene?.rootNode.childNodes ?? [] {
+            guard let bee = node as? Bee else { continue }
             bee.droneStep(in: scene.physicsWorld)
         }
         
