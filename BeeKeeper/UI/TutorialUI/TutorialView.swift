@@ -1,0 +1,107 @@
+//
+//  TutorialView.swift
+//  BeeKeeper
+//
+//  Created by Chaniel Ezzi on 2/5/24.
+//
+
+import UIKit
+import SpriteKit
+
+class TutorialView: UIView {
+    private(set) var isDialogueShown = false
+    private var dialogueQueue: [String] = []
+    
+    let bar: UIView
+    let textLabel: UILabel
+    let avatarView: UIImageView
+    
+    override init(frame: CGRect) {
+        bar = UIView()
+        bar.translatesAutoresizingMaskIntoConstraints = false
+        bar.backgroundColor = .black.withAlphaComponent(0.75)
+        
+        textLabel = UILabel()
+        textLabel.translatesAutoresizingMaskIntoConstraints = false
+        textLabel.backgroundColor = .clear
+        textLabel.text = "Whats up homie"
+        
+        avatarView = UIImageView()
+        avatarView.translatesAutoresizingMaskIntoConstraints = false
+        avatarView.image = UIImage(named: "mannequin")
+        avatarView.contentMode = .scaleAspectFit
+        super.init(frame: frame)
+        
+        for subview in [bar, textLabel, avatarView] {
+            addSubview(subview)
+        }
+        
+        addConstraints([
+            avatarView.leftAnchor.constraint(equalTo: leftAnchor),
+            avatarView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            avatarView.heightAnchor.constraint(equalTo: bar.heightAnchor, constant: 50),
+            avatarView.widthAnchor.constraint(equalTo: avatarView.heightAnchor),
+            
+            textLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
+            textLabel.leftAnchor.constraint(equalTo: avatarView.rightAnchor),
+            textLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -10),
+            textLabel.heightAnchor.constraint(lessThanOrEqualToConstant: 200),
+            
+            bar.bottomAnchor.constraint(equalTo: bottomAnchor),
+            bar.topAnchor.constraint(equalTo: textLabel.topAnchor),
+            bar.leftAnchor.constraint(equalTo: leftAnchor),
+            bar.rightAnchor.constraint(equalTo: rightAnchor),
+        ])
+        
+        hideDialogue()
+        let tap = UITapGestureRecognizer(target: self, action: #selector(nextDialogue))
+        addGestureRecognizer(tap)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func queueDialogue(_ text: String) {
+        dialogueQueue.append(text)
+    }
+    
+    @objc
+    func nextDialogue() {
+        guard dialogueQueue.first != nil else {
+            hideDialogue()
+            return
+        }
+        let next = dialogueQueue.removeFirst()
+        setDialogue(next)
+    }
+    
+    private func hideDialogue() {
+        let dur = 0.5
+        bar.fadeOut(duration: dur)
+        avatarView.fadeOut(duration: dur)
+        textLabel.fadeOut(duration: dur)
+        isDialogueShown = false
+        isUserInteractionEnabled = false
+    }
+    
+    private func setDialogue(_ text: String) {
+        if !isDialogueShown {
+            let dur = 0.5
+            bar.fadeIn(duration: dur)
+            avatarView.fadeIn(duration: dur)
+            textLabel.fadeIn(duration: dur)
+        }
+        defer {
+            isDialogueShown = true
+            isUserInteractionEnabled = true
+        }
+        textLabel.text = text
+        textLabel.font = .preferredFont(forTextStyle: .body)
+        textLabel.textAlignment = .left
+        textLabel.contentMode = .topLeft
+        textLabel.numberOfLines = 0
+        textLabel.setShadow(.black)
+        textLabel.sizeToFit()
+    }
+}

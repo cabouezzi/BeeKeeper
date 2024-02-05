@@ -35,7 +35,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             // For performing some kind of animation
             let wait = Task {
                 #if DEBUG
-                sleep(5)
+                sleep(0)
                 #endif
             }
             if await !DatabaseService.shared.hasAccount() {
@@ -51,7 +51,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 _ = await wait.result
                 
                 await MainActor.run {
-                    let gameViewController = ApiaryViewController(frame: window.frame)
+                    let gameViewController = TutorialViewController(frame: window.frame)
                     navigationController.setViewControllers([gameViewController], animated: false)
                 }
             } catch {

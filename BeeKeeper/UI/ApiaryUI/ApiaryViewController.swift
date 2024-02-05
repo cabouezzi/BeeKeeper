@@ -191,18 +191,18 @@ class ApiaryViewController: UIViewController {
     
     // MARK: - UI Navigation
     
-    private func popToShop() {
+    func popToShop() {
         let shopView = ShopView(frame: apiaryView.frame)
         shopView.shopDelegate = self
         apiaryView.addSubview(shopView)
     }
     
-    private func popToEvolution() {
+    func popToEvolution() {
         let vc = EvolutionViewController(frame: apiaryView.frame)
         self.navigationController?.pushViewController(vc, animated: false)
     }
     
-    private func popToMap() {
+    func popToMap() {
         print("Not implemented yet")
     }
     
@@ -413,7 +413,8 @@ class ApiaryViewController: UIViewController {
 extension ApiaryViewController: UIGestureRecognizerDelegate {
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         let loc = gestureRecognizer.location(in: apiaryView)
-        if apiaryView.subviews.contains(where: { $0.frame.contains(loc) }) {
+        let eligible = apiaryView.subviews.filter({ $0.isUserInteractionEnabled && !$0.isHidden })
+        if eligible.contains(where: { $0.frame.contains(loc) }) {
             return false
         }
         return true
