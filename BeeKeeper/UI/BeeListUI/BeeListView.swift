@@ -8,6 +8,12 @@
 import UIKit
 import SceneKit
 
+fileprivate class CancelingScrollView: UIScrollView {
+    override func touchesShouldCancel(in view: UIView) -> Bool {
+        return true
+    }
+}
+
 class BeeListView: UIView {
     let beeView: SCNView
     let releaseButton: UIButton
@@ -37,7 +43,7 @@ class BeeListView: UIView {
         releaseButton = UIButton(frame: frame)
         releaseButton.isHidden = true
         
-        scrollView = UIScrollView(frame: frame)
+        scrollView = CancelingScrollView(frame: frame)
         scrollView.frame.size.width *= scrollViewFraction
         scrollView.frame.origin.x = beeView.frame.maxX
         scrollView.contentSize = scrollView.frame.size
