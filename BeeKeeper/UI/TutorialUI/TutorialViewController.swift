@@ -90,14 +90,14 @@ class TutorialViewController: ApiaryViewController {
     }
     
     func beginForceRelease() {
-        guard state == .releasing else { return }
+        guard state == .stalling else { return }
         let dialogue = [
             "I know it's hard, but we have to do what we have to do...",
             "...And if you don't, I will."
         ]
         tutorialView.queueSequence(dialogue: dialogue) {
             DispatchQueue.main.asyncAfter(deadline: .now().advanced(by: .seconds(10))) { [weak self] in
-                guard self?.state == .releasing, let self = self else { return }
+                guard self?.state == .stalling, let self = self else { return }
                 let dialogue = [
                     "Alright, friend, it's almost dark. Time to say your goodbyes, and for them to taste freedom."
                 ]
@@ -163,6 +163,7 @@ class TutorialViewController: ApiaryViewController {
                     button.pop()
                     button.activate()
                     if state != .stalling {
+                        state = .stalling
                         DispatchQueue.main.asyncAfter(deadline: .now().advanced(by: .seconds(5))) { [weak self] in
                             self?.beginForceRelease()
                         }
