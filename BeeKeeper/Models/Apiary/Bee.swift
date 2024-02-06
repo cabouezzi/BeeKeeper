@@ -137,6 +137,7 @@ class Bee: SCNNode, Model, Producer, Codable {
         abdomen = node.childNode(withName: "Abdomen", recursively: true)
         
         addChildNode(node)
+        physicsBody = SCNPhysicsBody(type: .kinematic, shape: nil)
     }
     
     func loadGeneticEffects() {
@@ -208,6 +209,18 @@ class Bee: SCNNode, Model, Producer, Codable {
         isHidden = false
     }
     
+    func follow(_ target: SCNNode) {
+        removeAllAnimations()
+        animationState = .targeting(target)
+        animationLoop()
+    }
+    
+    func drone() {
+        removeAllAnimations()
+        animationState = .droning
+        animationLoop()
+    }
+    
     private func freeze() {
         velocity = SCNVector3(0.001, 0.001, 0.001)
     }
@@ -242,7 +255,7 @@ class Bee: SCNNode, Model, Producer, Codable {
             
         case .targeting(let node):
             guard let structure = producerAssignment else {
-                nextState = .droning
+                nextState = .targeting(node)
                 animationPlayer = flapWings(repeatCount: 1)
                 break
             }
