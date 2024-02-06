@@ -9,8 +9,19 @@ import UIKit
 import SpriteKit
 
 class TutorialView: UIView {
+    fileprivate class Sequence {
+        var dialogue: [String]
+        let completion: (() -> Void)?
+        
+        init(dialogue: [String], completion: (() -> Void)? = nil) {
+            self.dialogue = dialogue
+            self.completion = completion
+        }
+    }
+    
     private(set) var isDialogueShown = false
-    private var dialogueQueue: [String] = []
+    private var queue: [Sequence] = []
+    private var currentSequence: Sequence?
     
     let bar: UIView
     let textLabel: UILabel
@@ -62,18 +73,30 @@ class TutorialView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func queueDialogue(_ text: String) {
-        dialogueQueue.append(text)
+    func queueSequence(dialogue: [String], completion: (() -> Void)? = nil) {
+        let shouldFire = queue.isEmpty
+        queue.append(Sequence(dialogue: dialogue, completion: completion))
+        if shouldFire {
+            nextDialogue()
+        }
     }
     
     @objc
     func nextDialogue() {
-        guard dialogueQueue.first != nil else {
-            hideDialogue()
-            return
+        if let seq = currentSequence {
+            guard let dialogue = seq.dialogue.first else {
+                hideDialogue()
+                seq.completion?()
+                currentSequence = nil
+                return
+            }
+            setDialogue(dialogue)
+            seq.dialogue.removeFirst()
+        } else if let next = queue.first {
+            queue.removeFirst()
+            currentSequence = next
+            nextDialogue()
         }
-        let next = dialogueQueue.removeFirst()
-        setDialogue(next)
     }
     
     private func hideDialogue() {

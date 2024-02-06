@@ -255,7 +255,7 @@ class ApiaryViewController: UIViewController {
     }
     
     @objc
-    private func tapHandler (_ gestureRecognizer: UITapGestureRecognizer) {
+    func tapHandler (_ gestureRecognizer: UITapGestureRecognizer) {
         let point = gestureRecognizer.location(in: apiaryView)
         gestureRecognizer.numberOfTapsRequired = 1
         
@@ -297,7 +297,7 @@ class ApiaryViewController: UIViewController {
     }
     
     @objc
-    private func panHandler(_ gestureRecognizer: UIPanGestureRecognizer) {
+    func panHandler(_ gestureRecognizer: UIPanGestureRecognizer) {
         let fov = apiaryView.camera.camera!.fieldOfView
         let location = gestureRecognizer.location(in: apiaryView)
         let velocity = gestureRecognizer.velocity(in: apiaryView)
@@ -366,7 +366,7 @@ class ApiaryViewController: UIViewController {
     }
     
     @objc
-    private func pinchHandler(_ gestureRecognizer: UIPinchGestureRecognizer) {
+    func pinchHandler(_ gestureRecognizer: UIPinchGestureRecognizer) {
         let velocity = Float(gestureRecognizer.velocity) / 3
         apiaryView.camera.zoom(velocity)
     }
@@ -374,7 +374,7 @@ class ApiaryViewController: UIViewController {
     private weak var beeTargetCache: Structure?
     
     @objc
-    private func holdHandler(_ gestureReconizer: UILongPressGestureRecognizer) {
+    func holdHandler(_ gestureReconizer: UILongPressGestureRecognizer) {
         let hitTest = apiaryView.hitTest(gestureReconizer.location(in: apiaryView))
         
         if gestureReconizer.state == .began {
