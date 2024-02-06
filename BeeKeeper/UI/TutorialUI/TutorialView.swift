@@ -8,7 +8,7 @@
 import UIKit
 import SpriteKit
 
-class TutorialView: UIView {
+class TutorialView: UIControl {
     fileprivate class Sequence {
         var dialogue: [String]
         let completion: (() -> Void)?
@@ -64,7 +64,7 @@ class TutorialView: UIView {
             bar.rightAnchor.constraint(equalTo: rightAnchor),
         ])
         
-        hideDialogue()
+        hideDialogue(duration: 0)
         let tap = UITapGestureRecognizer(target: self, action: #selector(nextDialogue))
         addGestureRecognizer(tap)
     }
@@ -99,13 +99,13 @@ class TutorialView: UIView {
         }
     }
     
-    private func hideDialogue() {
-        let dur = 0.5
-        bar.fadeOut(duration: dur)
-        avatarView.fadeOut(duration: dur)
-        textLabel.fadeOut(duration: dur)
+    private func hideDialogue(duration: TimeInterval = 0.5) {
+        bar.fadeOut(duration: duration)
+        avatarView.fadeOut(duration: duration)
+        textLabel.fadeOut(duration: duration)
         isDialogueShown = false
         isUserInteractionEnabled = false
+        backgroundColor = .clear
     }
     
     private func setDialogue(_ text: String) {
@@ -126,5 +126,7 @@ class TutorialView: UIView {
         textLabel.numberOfLines = 0
         textLabel.setShadow(.black)
         textLabel.sizeToFit()
+        backgroundColor = .black.withAlphaComponent(0.15)
+        superview?.bringSubviewToFront(self)
     }
 }

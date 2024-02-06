@@ -18,7 +18,7 @@ fileprivate enum GameState {
 }
 
 class ApiaryViewController: UIViewController {
-    var apiaryView: ApiaryView!
+    var apiaryView: ApiaryView
     private var state: GameState = .idle
     
     convenience init() {
