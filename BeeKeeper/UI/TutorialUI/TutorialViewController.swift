@@ -96,10 +96,10 @@ class TutorialViewController: ApiaryViewController {
             "...And if you don't, I will."
         ]
         tutorialView.queueSequence(dialogue: dialogue) {
-            DispatchQueue.main.asyncAfter(deadline: .now().advanced(by: .seconds(5))) { [weak self] in
+            DispatchQueue.main.asyncAfter(deadline: .now().advanced(by: .seconds(10))) { [weak self] in
                 guard self?.state == .releasing, let self = self else { return }
                 let dialogue = [
-                    "Alright, friend. Time to say your goodbyes, and for them to taste freedom."
+                    "Alright, friend, it's almost dark. Time to say your goodbyes, and for them to taste freedom."
                 ]
                 self.tutorialView.queueSequence(dialogue: dialogue) { [weak self] in
                     guard let self = self else { return }
@@ -120,7 +120,7 @@ class TutorialViewController: ApiaryViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if state == .initial {
-            DispatchQueue.main.asyncAfter(deadline: .now().advanced(by: .seconds(10))) { [unowned self] in
+            DispatchQueue.main.asyncAfter(deadline: .now().advanced(by: .seconds(3))) { [unowned self] in
                 beginIncubatingTutorial()
             }
         } else if state == .evolving {
