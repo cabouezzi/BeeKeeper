@@ -7,6 +7,7 @@
 
 import UIKit
 import SceneKit
+import SpriteKit
 
 class TutorialViewController: ApiaryViewController {
     enum State {
@@ -20,6 +21,8 @@ class TutorialViewController: ApiaryViewController {
     }
     let tutorialView: TutorialView
     private var state = State.initial
+    
+    private weak var pointer: SKNode?
     
     override init(frame: CGRect) {
         tutorialView = TutorialView(frame: frame)
@@ -35,6 +38,37 @@ class TutorialViewController: ApiaryViewController {
         GameManager.shared.removeObserver(self)
     }
     
+    func highlightSKNode(_ node: SKNode) {
+        removePointer()
+        
+        let pointer = SKSpriteNode(imageNamed: "chevron-down")
+        pointer.size = node.frame.size
+        pointer.size.width /= 2
+        pointer.size.height /= 2
+        pointer.anchorPoint = CGPoint(x: 0.5, y: -0.1)
+        pointer.position.x = node.position.x
+        pointer.position.y = node.frame.maxY
+        
+        let dist = pointer.size.height * 0.5
+        let dur: TimeInterval = 1
+        
+        let up = SKAction.moveBy(x: 0, y: dist, duration: dur / 2)
+        up.timingMode = .easeInEaseOut
+        let down = SKAction.moveBy(x: 0, y: -dist, duration: dur / 2)
+        down.timingMode = .easeInEaseOut
+        
+        let bob = SKAction.sequence([up, down])
+        pointer.run(.repeatForever(bob))
+        
+        apiaryView.overlay.addChild(pointer)
+        pointer.zPosition = .infinity
+        self.pointer = pointer
+    }
+    
+    func removePointer() {
+        pointer?.removeFromParent()
+    }
+    
     func beginIncubatingTutorial() {
         let dialogue = [
             "Well, well, what do we have here? A surprise visitor in the apiary! I wasn't expecting company today, but I must say, it's a pleasant change from the routine. Have you too sensed the urgency, the responsibility we bear in a world teetering on the brink?",
@@ -48,6 +82,16 @@ class TutorialViewController: ApiaryViewController {
             apiaryView.camera.runAction(action)
             visitIncubator(incubator)
             state = .incubating
+            if let button = apiaryView.overlay.children.compactMap({ $0 as? SKButton }).first(where: { $0.texture == .info }) {
+                highlightSKNode(button)
+            }
+        }
+    }
+    
+    override func beginAssigningBee(_ bee: Bee) {
+        super.beginAssigningBee(bee)
+        for structure in apiaryView.apiary.structures where !(structure is Flower) {
+            structure.removeBubble()
         }
     }
     
@@ -73,6 +117,7 @@ class TutorialViewController: ApiaryViewController {
         tutorialView.queueSequence(dialogue: dialogue) { [unowned self] in
             state = .evolving
             apiaryView.camera.follow(nil)
+            highlightSKNode(apiaryView.overlay.evolutionButton)
         }
     }
     
@@ -86,6 +131,7 @@ class TutorialViewController: ApiaryViewController {
         tutorialView.queueSequence(dialogue: dialogue) { [unowned self] in
             state = .releasing
             clearHud()
+            highlightSKNode(apiaryView.overlay.beesButton)
         }
     }
     
@@ -104,6 +150,7 @@ class TutorialViewController: ApiaryViewController {
                 self.tutorialView.queueSequence(dialogue: dialogue) { [weak self] in
                     guard let self = self else { return }
                     GameManager.shared.releaseBees()
+                    removePointer()
                     self.state = .finished
                 }
             }
@@ -124,6 +171,7 @@ class TutorialViewController: ApiaryViewController {
                 beginIncubatingTutorial()
             }
         } else if state == .evolving {
+            removePointer()
             beginReleasingTutorial()
         }
     }
@@ -199,6 +247,7 @@ class TutorialViewController: ApiaryViewController {
         let beeListView = BeeListView(bees: apiaryView.apiary.bees, frame: apiaryView.frame)
         beeListView.onRelease { [unowned self] in
             GameManager.shared.releaseBees()
+            removePointer()
             beeListView.removeFromSuperview()
             state = .finished
         }
@@ -225,6 +274,7 @@ extension TutorialViewController: GameObserver {
     
     func gameManager(_ account: Account, _ apiary: Apiary, didHatchBee bee: Bee) {
         visitBee(bee)
+        removePointer()
         beginAssigningTutorial(bee)
     }
 }
