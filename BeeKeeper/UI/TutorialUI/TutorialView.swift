@@ -43,7 +43,7 @@ class TutorialView: UIControl {
         avatarView.contentMode = .scaleAspectFit
         super.init(frame: frame)
         
-        for subview in [bar, textLabel, avatarView] {
+        for subview in [bar, avatarView, textLabel] {
             addSubview(subview)
         }
         
@@ -56,7 +56,7 @@ class TutorialView: UIControl {
             textLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
             textLabel.leftAnchor.constraint(equalTo: avatarView.rightAnchor),
             textLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -10),
-            textLabel.heightAnchor.constraint(lessThanOrEqualToConstant: 200),
+            textLabel.heightAnchor.constraint(equalToConstant: 200),
             
             bar.bottomAnchor.constraint(equalTo: bottomAnchor),
             bar.topAnchor.constraint(equalTo: textLabel.topAnchor),
@@ -121,6 +121,7 @@ class TutorialView: UIControl {
         }
         textLabel.text = text
         textLabel.font = .preferredFont(forTextStyle: .body)
+        textLabel.textColor = .white
         textLabel.textAlignment = .left
         textLabel.contentMode = .topLeft
         textLabel.numberOfLines = 0

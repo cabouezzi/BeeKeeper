@@ -40,7 +40,6 @@ class ApiaryViewController: UIViewController {
     override func loadView() {
         super.loadView()
         self.view = apiaryView
-        apiaryView.loadNodes()
         linkOverlay()
         apiaryView.scene?.rootNode.childNode(withName: "Island", recursively: true)?.categoryBitMask = 1
     }

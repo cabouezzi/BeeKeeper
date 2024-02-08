@@ -50,6 +50,7 @@ class ApiaryView: SCNView {
         
         scene?.rootNode.addChildNode(camera)
         scene?.rootNode.addChildNode(floorNode)
+        loadNodes()
         
         GameManager.shared.addObserver(self)
         

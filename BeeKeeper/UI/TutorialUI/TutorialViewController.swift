@@ -149,9 +149,7 @@ class TutorialViewController: ApiaryViewController {
                 ]
                 self.tutorialView.queueSequence(dialogue: dialogue) { [weak self] in
                     guard let self = self else { return }
-                    GameManager.shared.releaseBees()
-                    removePointer()
-                    self.state = .finished
+                    endTutorial()
                 }
             }
         }
@@ -246,10 +244,7 @@ class TutorialViewController: ApiaryViewController {
     override func popToBeeList(_ bee: Bee? = nil) {
         let beeListView = BeeListView(bees: apiaryView.apiary.bees, frame: apiaryView.frame)
         beeListView.onRelease { [unowned self] in
-            GameManager.shared.releaseBees()
-            removePointer()
-            beeListView.removeFromSuperview()
-            state = .finished
+            endTutorial()
         }
         if let bee = bee {
             beeListView.selectBee(bee)
@@ -260,6 +255,8 @@ class TutorialViewController: ApiaryViewController {
     func endTutorial() {
         let avc = ApiaryViewController(frame: apiaryView.frame)
         navigationController?.setViewControllers([avc], animated: false)
+        GameManager.shared.releaseBees()
+        state = .finished
     }
 }
 
