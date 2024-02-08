@@ -41,13 +41,14 @@ class TutorialViewController: ApiaryViewController {
     func highlightSKNode(_ node: SKNode) {
         removePointer()
         
-        let pointer = SKSpriteNode(imageNamed: "chevron-down")
+        let pointer = SKSpriteNode(imageNamed: "backButton")
         pointer.size = node.frame.size
         pointer.size.width /= 2
         pointer.size.height /= 2
-        pointer.anchorPoint = CGPoint(x: 0.5, y: -0.1)
+        pointer.anchorPoint = CGPoint(x: 0, y: 0.5)
         pointer.position.x = node.position.x
         pointer.position.y = node.frame.maxY
+        pointer.zRotation = .pi / 2
         
         let dist = pointer.size.height * 0.5
         let dur: TimeInterval = 1
