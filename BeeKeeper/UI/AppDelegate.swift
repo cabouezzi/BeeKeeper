@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationWillTerminate(_ application: UIApplication) {
         let sem = DispatchSemaphore(value: 0)
-        Task.detached {
+        Task.detached(priority: .userInitiated) {
             let account = GameManager.shared.account
             do {
                 try await DatabaseService.shared.saveAccount(account)

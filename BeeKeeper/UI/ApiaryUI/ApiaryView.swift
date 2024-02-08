@@ -12,6 +12,8 @@ class ApiaryView: SCNView {
     var apiary: Apiary { GameManager.shared.apiary }
     
     private var sun: SCNLight?
+    private var walls: SCNNode?
+    
     let camera: Camera
     let overlay: ApiaryOverlay
     private(set) var isDark = false
@@ -40,6 +42,7 @@ class ApiaryView: SCNView {
         #endif
         
         sun = scene?.rootNode.childNode(withName: "directional", recursively: true)?.light
+        walls = scene?.rootNode.childNode(withName: "walls", recursively: true)
         
         let floorNode = SCNNode(geometry: Meshes.floor)
         floorNode.position.y -= 1
@@ -47,6 +50,7 @@ class ApiaryView: SCNView {
         
         scene?.rootNode.addChildNode(camera)
         scene?.rootNode.addChildNode(floorNode)
+        loadNodes()
         
         GameManager.shared.addObserver(self)
         
@@ -133,6 +137,64 @@ class ApiaryView: SCNView {
         SCNTransaction.commit()
         isDark = true
     }
+    
+    private func cinematicBeesRelease(_ bees: [Bee]) {
+        subviews.forEach({ $0.removeFromSuperview() })
+        
+        let background = UIView(frame: frame)
+        background.backgroundColor = .black
+        background.isUserInteractionEnabled = true
+        addSubview(background)
+        
+        func fade(alpha: CGFloat, duration: TimeInterval, completion: @escaping () -> Void) {
+            DispatchQueue.main.async {
+                UIView.animate(withDuration: duration) {
+                    background.alpha = alpha
+                } completion: { _ in
+                    completion()
+                }
+            }
+        }
+        
+        overlay.isHidden = true
+        walls?.isHidden = true
+        
+        let magnet = SCNNode()
+        magnet.position.y = 5
+        scene?.rootNode.addChildNode(magnet)
+        camera.position = .zero
+        camera.defaultView()
+        camera.zoom(.infinity)
+        camera.zoom(-15)
+        camera.follow(magnet)
+        
+        for bee in bees {
+            bee.position.x = 10
+            bee.position.z = 0
+            bee.follow(magnet)
+        }
+        
+        fade(alpha: 0, duration: 5) {
+            let magnetMove = SCNAction.move(to: SCNVector3(25, 5, -25), duration: 10)
+            magnet.runAction(magnetMove) {
+                for bee in bees {
+                    bee.drone()
+                }
+                fade(alpha: 1, duration: 5) { [weak self] in
+                    magnet.removeFromParentNode()
+                    bees.forEach({ $0.removeFromParentNode() })
+                    
+                    self?.camera.follow(nil)
+                    self?.camera.position = .zero
+                    background.removeFromSuperview()
+                    
+                    self?.overlay.isHidden = false
+                    self?.walls?.isHidden = false
+                }
+            }
+        }
+        
+    }
 }
 
 extension ApiaryView: GameObserver {
@@ -147,6 +209,6 @@ extension ApiaryView: GameObserver {
     }
     
     func gameManager(_ account: Account, _ apiary: Apiary, didReleaseBees bees: [Bee]) {
-        bees.forEach({ $0.removeFromParentNode() })
+        cinematicBeesRelease(bees)
     }
 }

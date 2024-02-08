@@ -96,12 +96,14 @@ class InspectionView: UIView {
         
         let containingTitle = UILabel()
         containingTitle.font = .preferredFont(forTextStyle: .largeTitle).withSize(fontSize)
+        containingTitle.textColor = .white
         containingTitle.text = "Containing"
         containingTitle.sizeToFit()
         containingTitle.setShadow()
         
         let containingLabel = UILabel()
         containingLabel.font = .preferredFont(forTextStyle: .title1).withSize(fontSize)
+        containingLabel.textColor = .white
         containingLabel.attributedText = container.containing.attributedString(font: containingLabel.font, roundDecimals: true)
         if containingLabel.attributedText?.length == 0 {
             containingLabel.text = "Empty"
@@ -111,12 +113,14 @@ class InspectionView: UIView {
         
         let maximumTitle = UILabel()
         maximumTitle.font = .preferredFont(forTextStyle: .largeTitle).withSize(fontSize)
+        maximumTitle.textColor = .white
         maximumTitle.text = "Capacity"
         maximumTitle.sizeToFit()
         maximumTitle.setShadow()
         
         let maximumLabel = UILabel()
         maximumLabel.font = .preferredFont(forTextStyle: .title1).withSize(fontSize)
+        maximumLabel.textColor = .white
         maximumLabel.attributedText = container.maximum.attributedString(font: maximumLabel.font, roundDecimals: true)
         maximumLabel.sizeToFit()
         maximumLabel.setShadow()
@@ -192,6 +196,7 @@ class InspectionView: UIView {
             columnTitle.adjustsFontSizeToFitWidth = true
             columnTitle.text = title
             columnTitle.sizeToFit()
+            columnTitle.textColor = .white
             columnTitle.setShadow()
             let columnLabel = UILabel()
             columnLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -199,6 +204,7 @@ class InspectionView: UIView {
             columnTitle.adjustsFontSizeToFitWidth = true
             columnLabel.text = label
             columnLabel.sizeToFit()
+            columnLabel.textColor = .white
             columnLabel.setShadow()
             
             container.addSubview(columnTitle)
@@ -227,7 +233,6 @@ class InspectionView: UIView {
             stack.rightAnchor.constraint(equalTo: section.rightAnchor, constant: -inset),
             
             section.topAnchor.constraint(greaterThanOrEqualTo: stack.topAnchor, constant: inset),
-            section.bottomAnchor.constraint(greaterThanOrEqualTo: stack.bottomAnchor, constant: inset),
             section.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -inset),
             section.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
             section.bottomAnchor.constraint(equalTo: stack.bottomAnchor, constant: inset),
@@ -257,6 +262,7 @@ class InspectionView: UIView {
         statusTitle.adjustsFontSizeToFitWidth = true
         statusTitle.text = "Status"
         statusTitle.sizeToFit()
+        statusTitle.textColor = .white
         statusTitle.setShadow()
         
         let statusLabel = UILabel()
@@ -264,12 +270,14 @@ class InspectionView: UIView {
         statusLabel.font = .preferredFont(forTextStyle: .largeTitle).withSize(fontSize)
         statusLabel.adjustsFontSizeToFitWidth = true
         statusLabel.sizeToFit()
+        statusLabel.textColor = .white
         statusLabel.setShadow()
         
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.font = .preferredFont(forTextStyle: .headline).withSize(fontSize)
         button.titleLabel?.adjustsFontSizeToFitWidth = true
+        button.titleLabel?.textColor = .white
         button.titleLabel?.setShadow()
         button.sizeToFit()
         button.backgroundColor = .orange

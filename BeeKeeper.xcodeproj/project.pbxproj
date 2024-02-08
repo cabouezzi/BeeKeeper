@@ -36,6 +36,8 @@
 		1471B96E2B676DCF006DE737 /* InspectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1471B96D2B676DCF006DE737 /* InspectionView.swift */; };
 		1471B9702B684015006DE737 /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1471B96F2B684015006DE737 /* UILabel.swift */; };
 		1471B9782B69C126006DE737 /* Container.scn in Resources */ = {isa = PBXBuildFile; fileRef = 1471B9772B69C126006DE737 /* Container.scn */; };
+		1471B97F2B6ADDAC006DE737 /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1471B97E2B6ADDAC006DE737 /* TutorialViewController.swift */; };
+		1471B9832B718A8B006DE737 /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1471B9822B718A8B006DE737 /* TutorialView.swift */; };
 		147FD4622B12FB4A00764E9C /* ColladaAnimationForXcode.py in Resources */ = {isa = PBXBuildFile; fileRef = 147FD4612B12FB4A00764E9C /* ColladaAnimationForXcode.py */; };
 		148196922B5B363400328709 /* ScienceStand.scn in Resources */ = {isa = PBXBuildFile; fileRef = 148196912B5B363400328709 /* ScienceStand.scn */; };
 		148358D52AABBFC5006D0290 /* BeeKeeperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148358D42AABBFC5006D0290 /* BeeKeeperTests.swift */; };
@@ -90,6 +92,7 @@
 		148BBEC82B1BCC0D00C86AB5 /* IncubationHud.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148BBEC72B1BCC0D00C86AB5 /* IncubationHud.swift */; };
 		148BBECA2B1BD03F00C86AB5 /* TimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148BBEC92B1BD03F00C86AB5 /* TimeInterval.swift */; };
 		148BBECC2B1C115100C86AB5 /* SKTextNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148BBECB2B1C115100C86AB5 /* SKTextNode.swift */; };
+		14A0B6ED2B7476B900D41DD9 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A0B6EC2B7476B900D41DD9 /* SettingsManager.swift */; };
 		14A7DE832AD389DA00D2FD4A /* ShopItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A7DE822AD389DA00D2FD4A /* ShopItem.swift */; };
 		14A7DE852AD3906600D2FD4A /* ShopViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A7DE842AD3906600D2FD4A /* ShopViewCell.swift */; };
 		14A7DE882AD3AA6100D2FD4A /* EvolutionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14A7DE872AD3AA6100D2FD4A /* EvolutionViewController.swift */; };
@@ -163,6 +166,8 @@
 		1471B96D2B676DCF006DE737 /* InspectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectionView.swift; sourceTree = "<group>"; };
 		1471B96F2B684015006DE737 /* UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
 		1471B9772B69C126006DE737 /* Container.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Container.scn; sourceTree = "<group>"; };
+		1471B97E2B6ADDAC006DE737 /* TutorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
+		1471B9822B718A8B006DE737 /* TutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialView.swift; sourceTree = "<group>"; };
 		147FD4612B12FB4A00764E9C /* ColladaAnimationForXcode.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = ColladaAnimationForXcode.py; sourceTree = "<group>"; };
 		148196912B5B363400328709 /* ScienceStand.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = ScienceStand.scn; sourceTree = "<group>"; };
 		148358BF2AABBFC4006D0290 /* BeeKeeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeeKeeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -221,6 +226,7 @@
 		148BBEC72B1BCC0D00C86AB5 /* IncubationHud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncubationHud.swift; sourceTree = "<group>"; };
 		148BBEC92B1BD03F00C86AB5 /* TimeInterval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeInterval.swift; sourceTree = "<group>"; };
 		148BBECB2B1C115100C86AB5 /* SKTextNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKTextNode.swift; sourceTree = "<group>"; };
+		14A0B6EC2B7476B900D41DD9 /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
 		14A7DE7C2AD3866100D2FD4A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		14A7DE822AD389DA00D2FD4A /* ShopItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopItem.swift; sourceTree = "<group>"; };
 		14A7DE842AD3906600D2FD4A /* ShopViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopViewCell.swift; sourceTree = "<group>"; };
@@ -346,6 +352,15 @@
 			path = InspectionUI;
 			sourceTree = "<group>";
 		};
+		1471B97D2B6ADD9B006DE737 /* TutorialUI */ = {
+			isa = PBXGroup;
+			children = (
+				1471B97E2B6ADDAC006DE737 /* TutorialViewController.swift */,
+				1471B9822B718A8B006DE737 /* TutorialView.swift */,
+			);
+			path = TutorialUI;
+			sourceTree = "<group>";
+		};
 		148358B62AABBFC4006D0290 = {
 			isa = PBXGroup;
 			children = (
@@ -421,6 +436,7 @@
 			children = (
 				14BB763A2B12903300E15654 /* AppDelegate.swift */,
 				142DF1DA2AD3804C00274986 /* SceneDelegate.swift */,
+				1471B97D2B6ADD9B006DE737 /* TutorialUI */,
 				145749542B632971004FAD7D /* LaunchUI */,
 				14835A7A2AB5299D006D0290 /* Styles */,
 				14835A702AB51852006D0290 /* ApiaryUI */,
@@ -472,6 +488,7 @@
 			isa = PBXGroup;
 			children = (
 				148359CC2AB01091006D0290 /* GameManager.swift */,
+				14A0B6EC2B7476B900D41DD9 /* SettingsManager.swift */,
 				14E7C8312B4D13A6002376BF /* GameTicker.swift */,
 				1471B9592B659550006DE737 /* EvolutionGeneDataSource.swift */,
 				145749522B62FFC4004FAD7D /* DatabaseService.swift */,
@@ -864,6 +881,7 @@
 				14E448832AC68129008963C8 /* SCNNode.swift in Sources */,
 				142DF2062AD3806F00274986 /* SceneDelegate.swift in Sources */,
 				14835A0D2AB01091006D0290 /* Incubator.swift in Sources */,
+				1471B97F2B6ADDAC006DE737 /* TutorialViewController.swift in Sources */,
 				148359ED2AB01091006D0290 /* BKNode.swift in Sources */,
 				145749482B619349004FAD7D /* BeeListViewCell.swift in Sources */,
 				1457495A2B63676B004FAD7D /* EvolutionView.swift in Sources */,
@@ -902,6 +920,7 @@
 				1471B95F2B659B32006DE737 /* UIView.swift in Sources */,
 				14D7C5632B5C31A500CC35CB /* StructureBorder.swift in Sources */,
 				1471B96E2B676DCF006DE737 /* InspectionView.swift in Sources */,
+				14A0B6ED2B7476B900D41DD9 /* SettingsManager.swift in Sources */,
 				1471B9652B675922006DE737 /* Rose.swift in Sources */,
 				148359F12AB01091006D0290 /* ApiarySwiftUIView.swift in Sources */,
 				14835A8E2AC5FED3006D0290 /* ResourceDisplayHud.swift in Sources */,
@@ -909,6 +928,7 @@
 				148BBEC82B1BCC0D00C86AB5 /* IncubationHud.swift in Sources */,
 				14AB5CA12B5F6CFB002750B2 /* UIControl.swift in Sources */,
 				1471B9702B684015006DE737 /* UILabel.swift in Sources */,
+				1471B9832B718A8B006DE737 /* TutorialView.swift in Sources */,
 				145749752B65783C004FAD7D /* EvolutionGeneDataView.swift in Sources */,
 				14835A032AB01091006D0290 /* Producer.swift in Sources */,
 				148BBECC2B1C115100C86AB5 /* SKTextNode.swift in Sources */,

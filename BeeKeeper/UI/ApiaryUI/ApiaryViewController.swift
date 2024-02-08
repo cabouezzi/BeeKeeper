@@ -18,7 +18,7 @@ fileprivate enum GameState {
 }
 
 class ApiaryViewController: UIViewController {
-    var apiaryView: ApiaryView!
+    var apiaryView: ApiaryView
     private var state: GameState = .idle
     
     convenience init() {
@@ -40,7 +40,6 @@ class ApiaryViewController: UIViewController {
     override func loadView() {
         super.loadView()
         self.view = apiaryView
-        apiaryView.loadNodes()
         linkOverlay()
         apiaryView.scene?.rootNode.childNode(withName: "Island", recursively: true)?.categoryBitMask = 1
     }
@@ -191,18 +190,18 @@ class ApiaryViewController: UIViewController {
     
     // MARK: - UI Navigation
     
-    private func popToShop() {
+    func popToShop() {
         let shopView = ShopView(frame: apiaryView.frame)
         shopView.shopDelegate = self
         apiaryView.addSubview(shopView)
     }
     
-    private func popToEvolution() {
+    func popToEvolution() {
         let vc = EvolutionViewController(frame: apiaryView.frame)
         self.navigationController?.pushViewController(vc, animated: false)
     }
     
-    private func popToMap() {
+    func popToMap() {
         print("Not implemented yet")
     }
     
@@ -255,7 +254,7 @@ class ApiaryViewController: UIViewController {
     }
     
     @objc
-    private func tapHandler (_ gestureRecognizer: UITapGestureRecognizer) {
+    func tapHandler (_ gestureRecognizer: UITapGestureRecognizer) {
         let point = gestureRecognizer.location(in: apiaryView)
         gestureRecognizer.numberOfTapsRequired = 1
         
@@ -297,7 +296,7 @@ class ApiaryViewController: UIViewController {
     }
     
     @objc
-    private func panHandler(_ gestureRecognizer: UIPanGestureRecognizer) {
+    func panHandler(_ gestureRecognizer: UIPanGestureRecognizer) {
         let fov = apiaryView.camera.camera!.fieldOfView
         let location = gestureRecognizer.location(in: apiaryView)
         let velocity = gestureRecognizer.velocity(in: apiaryView)
@@ -366,7 +365,7 @@ class ApiaryViewController: UIViewController {
     }
     
     @objc
-    private func pinchHandler(_ gestureRecognizer: UIPinchGestureRecognizer) {
+    func pinchHandler(_ gestureRecognizer: UIPinchGestureRecognizer) {
         let velocity = Float(gestureRecognizer.velocity) / 3
         apiaryView.camera.zoom(velocity)
     }
@@ -374,7 +373,7 @@ class ApiaryViewController: UIViewController {
     private weak var beeTargetCache: Structure?
     
     @objc
-    private func holdHandler(_ gestureReconizer: UILongPressGestureRecognizer) {
+    func holdHandler(_ gestureReconizer: UILongPressGestureRecognizer) {
         let hitTest = apiaryView.hitTest(gestureReconizer.location(in: apiaryView))
         
         if gestureReconizer.state == .began {
@@ -413,7 +412,8 @@ class ApiaryViewController: UIViewController {
 extension ApiaryViewController: UIGestureRecognizerDelegate {
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         let loc = gestureRecognizer.location(in: apiaryView)
-        if apiaryView.subviews.contains(where: { $0.frame.contains(loc) }) {
+        let eligible = apiaryView.subviews.filter({ $0.isUserInteractionEnabled && !$0.isHidden })
+        if eligible.contains(where: { $0.frame.contains(loc) }) {
             return false
         }
         return true
@@ -510,7 +510,8 @@ extension ApiaryViewController: ModelVisitor {
 extension ApiaryViewController: SCNSceneRendererDelegate {
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         guard let scene = apiaryView.scene else { return }
-        for bee in apiaryView.apiary.bees {
+        for node in apiaryView.scene?.rootNode.childNodes ?? [] {
+            guard let bee = node as? Bee else { continue }
             bee.droneStep(in: scene.physicsWorld)
         }
         

@@ -35,27 +35,32 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             // For performing some kind of animation
             let wait = Task {
                 #if DEBUG
-                sleep(5)
+                sleep(0)
                 #endif
             }
-            if await !DatabaseService.shared.hasAccount() {
+            if await !DatabaseService.shared.hasAccount() || SettingsManager.shared.isFirstLogin {
                 do {
                     try await DatabaseService.shared.createAccount()
                 } catch {
                     print(error.localizedDescription)
                 }
-            }
-            do {
-                let account = try await DatabaseService.shared.fetchAccount()
-                try GameManager.shared.changeAccount(to: account)
-                _ = await wait.result
-                
                 await MainActor.run {
-                    let gameViewController = ApiaryViewController(frame: window.frame)
+                    let gameViewController = TutorialViewController(frame: window.frame)
                     navigationController.setViewControllers([gameViewController], animated: false)
                 }
-            } catch {
-                print(error)
+            } else {
+                do {
+                    let account = try await DatabaseService.shared.fetchAccount()
+                    try GameManager.shared.changeAccount(to: account)
+                    _ = await wait.result
+                    
+                    await MainActor.run {
+                        let gameViewController = ApiaryViewController(frame: window.frame)
+                        navigationController.setViewControllers([gameViewController], animated: false)
+                    }
+                } catch {
+                    print(error)
+                }
             }
         }
     }

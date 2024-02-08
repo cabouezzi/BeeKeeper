@@ -17,4 +17,16 @@ extension UIView {
             }
         })
     }
+    
+    func fadeOut(duration: TimeInterval = 1) {
+        UIView.animate(withDuration: duration, animations: { [unowned self] in
+            alpha = 0
+        })
+    }
+    
+    func fadeIn(duration: TimeInterval = 1) {
+        UIView.animate(withDuration: duration, animations: { [unowned self] in
+            alpha = 1
+        })
+    }
 }

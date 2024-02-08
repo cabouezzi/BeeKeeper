@@ -140,6 +140,7 @@ class ApiaryOverlay: SKScene {
             let label = SKLabelNode(text: title)
             label.fontName = "ArialRoundedMTBold"
             label.fontColor = .white
+            label.fontSize = buttonSize / 4
             
             label.position.x = center
             label.position.y = yPosition + paddedWidth / 2 + label.frame.height / 2
