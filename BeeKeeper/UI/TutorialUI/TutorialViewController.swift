@@ -258,6 +258,7 @@ class TutorialViewController: ApiaryViewController {
         navigationController?.setViewControllers([avc], animated: false)
         GameManager.shared.releaseBees()
         state = .finished
+        SettingsManager.shared.isFirstLogin = false
     }
 }
 
