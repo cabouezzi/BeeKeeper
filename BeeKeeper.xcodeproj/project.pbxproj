@@ -11,7 +11,6 @@
 		1405AC2B2B15895A003B0079 /* GeneTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1405AC2A2B15895A003B0079 /* GeneTests.swift */; };
 		1405AC2D2B158C3F003B0079 /* GeneNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1405AC2C2B158C3F003B0079 /* GeneNetwork.swift */; };
 		1405AC2F2B1599D3003B0079 /* UIBezierPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1405AC2E2B1599D3003B0079 /* UIBezierPath.swift */; };
-		140A330F2B578D7A00C1086C /* BeeKeeperBase.scn in Resources */ = {isa = PBXBuildFile; fileRef = 140A330E2B578D7A00C1086C /* BeeKeeperBase.scn */; };
 		140AF27E2B616CCD006F1DE6 /* BeeStingers.scn in Resources */ = {isa = PBXBuildFile; fileRef = 140AF27D2B616CCD006F1DE6 /* BeeStingers.scn */; };
 		141AC48F2B5063A9006DD1F8 /* BeePlain.scn in Resources */ = {isa = PBXBuildFile; fileRef = 141AC48E2B5063A9006DD1F8 /* BeePlain.scn */; };
 		141AC4932B50643C006DD1F8 /* BeeStripesYellow.scn in Resources */ = {isa = PBXBuildFile; fileRef = 141AC4922B50643C006DD1F8 /* BeeStripesYellow.scn */; };
@@ -131,7 +130,6 @@
 		1405AC2A2B15895A003B0079 /* GeneTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneTests.swift; sourceTree = "<group>"; };
 		1405AC2C2B158C3F003B0079 /* GeneNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneNetwork.swift; sourceTree = "<group>"; };
 		1405AC2E2B1599D3003B0079 /* UIBezierPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBezierPath.swift; sourceTree = "<group>"; };
-		140A330E2B578D7A00C1086C /* BeeKeeperBase.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeKeeperBase.scn; sourceTree = "<group>"; };
 		140AF27D2B616CCD006F1DE6 /* BeeStingers.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeStingers.scn; sourceTree = "<group>"; };
 		141AC48E2B5063A9006DD1F8 /* BeePlain.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeePlain.scn; sourceTree = "<group>"; };
 		141AC4922B50643C006DD1F8 /* BeeStripesYellow.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeStripesYellow.scn; sourceTree = "<group>"; };
@@ -614,7 +612,6 @@
 				1457494F2B61D0F5004FAD7D /* Structures */,
 				1405AC1A2B145310003B0079 /* ModelBase.scn */,
 				14AB5C982B5EE735002750B2 /* BeeKeeperForest.scn */,
-				140A330E2B578D7A00C1086C /* BeeKeeperBase.scn */,
 				148ACE8D2B534BC700A0F948 /* Bubble.scn */,
 			);
 			path = "3D Assets";
@@ -799,7 +796,6 @@
 				14D7C56A2B5CC40800CC35CB /* Daisy.scn in Resources */,
 				14835AA22AC679CE006D0290 /* Frame.scn in Resources */,
 				147FD4622B12FB4A00764E9C /* ColladaAnimationForXcode.py in Resources */,
-				140A330F2B578D7A00C1086C /* BeeKeeperBase.scn in Resources */,
 				14AB5CAB2B60C3CB002750B2 /* BeeStripesOrange.scn in Resources */,
 				142211102B564AFB0060C51A /* BeeWingsFlap.scn in Resources */,
 				1457496B2B64395E004FAD7D /* select.mp3 in Resources */,
