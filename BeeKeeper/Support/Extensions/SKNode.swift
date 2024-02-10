@@ -36,7 +36,6 @@ extension SKNode {
     }
     
     func pop() {
-        SFXManager.shared.playSound(.pop)
         let shrink = SKAction.scale(by: 0.8, duration: 0.075)
         let expand = SKAction.scale(by: 1.25, duration: 0.075)
         run(shrink, completion: {self.run(expand)})

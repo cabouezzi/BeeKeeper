@@ -108,6 +108,7 @@ class BeeListView: UIView {
                 self?.onSelect?(bee)
             }
             row.addAction { [weak self] in
+                SFXManager.shared.playSound(.pop)
                 self?.selectBee(bee)
                 row.popAnimation()
             }

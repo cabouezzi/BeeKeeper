@@ -9,7 +9,6 @@ import UIKit
 
 extension UIView {
     func popAnimation(duration: TimeInterval = 0.15) {
-        SFXManager.shared.playSound(.pop)
         UIView.animate(withDuration: duration / 2, animations: { [unowned self] in
             transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
         }, completion: { [unowned self] _ in

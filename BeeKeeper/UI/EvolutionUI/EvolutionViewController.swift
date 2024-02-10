@@ -199,15 +199,13 @@ class EvolutionViewController: UIViewController {
     private func tapGestureRecognizer(_ gestureRecognizer: UITapGestureRecognizer) {
         let pointInView = gestureRecognizer.location(in: evolutionView)
         let point = evolutionView.convert(pointInView, to: evolutionView.evolutionScene)
-        guard let node = evolutionView.evolutionScene.nodes(at: point).first(where: { !$0.isHidden && $0.isUserInteractionEnabled }) else {
+        guard let node = evolutionView.evolutionScene.nodes(at: point).first(where: { !$0.isHidden && $0.isUserInteractionEnabled }),
+              let name = node.name,
+              let gene = Gene(rawValue: name) else {
             hideData(animated: true)
             return
         }
-        
-        guard let name = node.name, let gene = Gene(rawValue: name) else {
-            hideData(animated: true)
-            return
-        }
+        SFXManager.shared.playSound(.pop)
         node.pop()
         showData(for: gene, animated: true)
     }

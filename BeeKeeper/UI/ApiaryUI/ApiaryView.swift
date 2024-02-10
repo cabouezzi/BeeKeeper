@@ -202,6 +202,7 @@ extension ApiaryView: GameObserver {
         bee.position.y = 3
         bee.position.x = Float.random(in: -5...5)
         scene?.rootNode.addChildNode(bee)
+        SFXManager.shared.playSound(.flute)
     }
     
     func gameManager(_ account: Account, _ apiary: Apiary, didUpdateResources resources: Resources) {

@@ -46,6 +46,7 @@ class EvolutionGeneDataView: UIScrollView {
         purchaseButton.layer.cornerRadius = 10
         purchaseButton.translatesAutoresizingMaskIntoConstraints = false
         purchaseButton.addAction { [weak purchaseButton] in
+            SFXManager.shared.playSound(.pop)
             purchaseButton?.popAnimation()
         }
         super.init(frame: frame)

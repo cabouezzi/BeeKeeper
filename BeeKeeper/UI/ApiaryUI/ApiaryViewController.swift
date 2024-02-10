@@ -274,6 +274,7 @@ class ApiaryViewController: UIViewController {
         // Check and handle 2D interaction
         if let spriteNode = apiaryView.overlay.nodes(at: apiaryView.overlay.convertPoint(fromView: point)).first(where: { $0.isUserInteractionEnabled }) {
             if let button = spriteNode as? SKButton, !button.isHidden {
+                SFXManager.shared.playSound(.pop)
                 button.pop()
                 button.activate()
             }
@@ -288,6 +289,7 @@ class ApiaryViewController: UIViewController {
         }
         
         if let bubble = hitResults.compactMap({ $0.node as? Bubble }).first {
+            SFXManager.shared.playSound(.pop)
             bubble.burst()
             clearHud()
             return
