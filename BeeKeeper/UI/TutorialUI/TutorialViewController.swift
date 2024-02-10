@@ -175,6 +175,8 @@ class TutorialViewController: ApiaryViewController {
         }
     }
     
+    // MARK: Gestures
+    
     override func tapHandler(_ gestureRecognizer: UITapGestureRecognizer) {
         let point = gestureRecognizer.location(in: tutorialView)
         
@@ -186,6 +188,7 @@ class TutorialViewController: ApiaryViewController {
                 if let button = spriteNode as? SKButton, !button.isHidden, button.texture == .info {
                     button.pop()
                     button.activate()
+                    SFXManager.shared.playSound(.pop)
                 }
                 return
             }
@@ -201,6 +204,7 @@ class TutorialViewController: ApiaryViewController {
                 if let button = spriteNode as? SKButton, button == apiaryView.overlay.evolutionButton {
                     button.pop()
                     button.activate()
+                    SFXManager.shared.playSound(.pop)
                 }
                 return
             }
@@ -209,6 +213,7 @@ class TutorialViewController: ApiaryViewController {
                 if let button = spriteNode as? SKButton, button == apiaryView.overlay.beesButton {
                     button.pop()
                     button.activate()
+                    SFXManager.shared.playSound(.pop)
                     if state != .stalling {
                         state = .stalling
                         DispatchQueue.main.asyncAfter(deadline: .now().advanced(by: .seconds(5))) { [weak self] in
