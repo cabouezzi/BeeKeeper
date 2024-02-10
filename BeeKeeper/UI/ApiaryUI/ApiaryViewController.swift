@@ -460,6 +460,7 @@ extension ApiaryViewController: ModelVisitor {
     }
     
     func visitBee(_ model: Bee) -> () {
+        state = .following(model)
         apiaryView.camera.follow(model)
         apiaryView.overlay.setButtons(
             title: model.nickname,
