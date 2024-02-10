@@ -88,7 +88,7 @@ class SFXManager: NSObject {
         }
         switch music {
         case .birds:
-            plater.volume = 1 / 4
+            plater.volume = 0.2
         default:
             break
         }

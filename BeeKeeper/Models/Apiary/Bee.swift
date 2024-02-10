@@ -252,6 +252,9 @@ class Bee: SCNNode, Model, Producer, Codable {
             } else {
                 nextState = .droning
             }
+            if Int.random(in: 0..<10) > 2 {
+                playFlyingSound()
+            }
             
         case .targeting(let node):
             guard let structure = producerAssignment else {
@@ -346,6 +349,22 @@ class Bee: SCNNode, Model, Producer, Codable {
         wingArmature?.addAnimationPlayer(animationPlayer, forKey: "flap")
         animationPlayer.animation.isRemovedOnCompletion = false
         return animationPlayer
+    }
+    
+    // MARK: - Audio
+    func playFlyingSound() {
+        guard let source = SCNAudioSource(named: "bee-buzz.wav") else { return }
+        source.volume = 1
+        source.rate = 0.5
+        source.isPositional = true
+        source.shouldStream = false
+        source.load()
+        let player = SCNAudioPlayer(source: source)
+        addAudioPlayer(player)
+        
+        player.didFinishPlayback = { [unowned player, unowned self] in
+            removeAudioPlayer(player)
+        }
     }
     
     // MARK: - Droning
