@@ -49,6 +49,16 @@ class ApiaryViewController: UIViewController {
         apiaryView.overlay.mapButton.isHidden = true
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        SFXManager.shared.playMusic(. birds)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        SFXManager.shared.stopMusic()
+    }
+    
     // MARK: - UI Functions
     
     final func linkOverlay() {
@@ -59,9 +69,10 @@ class ApiaryViewController: UIViewController {
     }
     
     final func selectNode(_ node: SCNNode & Model) {
-        SFXManager.shared.playSound(.select)
         selectedNode = node
         node.accept(self)
+        let sound = node.accept(SFXManager.shared)
+        SFXManager.shared.playSound(sound ?? .select)
         flashNode(node)
     }
     
@@ -262,7 +273,6 @@ class ApiaryViewController: UIViewController {
         // Check and handle 2D interaction
         if let spriteNode = apiaryView.overlay.nodes(at: apiaryView.overlay.convertPoint(fromView: point)).first(where: { $0.isUserInteractionEnabled }) {
             if let button = spriteNode as? SKButton, !button.isHidden {
-                SFXManager.shared.playSound(.pop)
                 button.pop()
                 button.activate()
             }
@@ -449,7 +459,6 @@ extension ApiaryViewController: ModelVisitor {
     }
     
     func visitBee(_ model: Bee) -> () {
-        state = .following(model)
         apiaryView.camera.follow(model)
         apiaryView.overlay.setButtons(
             title: model.nickname,

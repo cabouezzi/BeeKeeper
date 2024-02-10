@@ -38,6 +38,10 @@
 		1471B9782B69C126006DE737 /* Container.scn in Resources */ = {isa = PBXBuildFile; fileRef = 1471B9772B69C126006DE737 /* Container.scn */; };
 		1471B97F2B6ADDAC006DE737 /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1471B97E2B6ADDAC006DE737 /* TutorialViewController.swift */; };
 		1471B9832B718A8B006DE737 /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1471B9822B718A8B006DE737 /* TutorialView.swift */; };
+		14766A882B747BE200D10076 /* SFXManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14766A872B747BE200D10076 /* SFXManager.swift */; };
+		14766A8A2B7703FF00D10076 /* evolution-music.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 14766A892B7703FF00D10076 /* evolution-music.mp3 */; };
+		14766A8C2B77095A00D10076 /* birds-loop.wav in Resources */ = {isa = PBXBuildFile; fileRef = 14766A8B2B77095A00D10076 /* birds-loop.wav */; };
+		14766A8E2B770E4300D10076 /* bee-buzz.wav in Resources */ = {isa = PBXBuildFile; fileRef = 14766A8D2B770E4300D10076 /* bee-buzz.wav */; };
 		147FD4622B12FB4A00764E9C /* ColladaAnimationForXcode.py in Resources */ = {isa = PBXBuildFile; fileRef = 147FD4612B12FB4A00764E9C /* ColladaAnimationForXcode.py */; };
 		148196922B5B363400328709 /* ScienceStand.scn in Resources */ = {isa = PBXBuildFile; fileRef = 148196912B5B363400328709 /* ScienceStand.scn */; };
 		148358D52AABBFC5006D0290 /* BeeKeeperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148358D42AABBFC5006D0290 /* BeeKeeperTests.swift */; };
@@ -172,6 +176,10 @@
 		1471B9772B69C126006DE737 /* Container.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Container.scn; sourceTree = "<group>"; };
 		1471B97E2B6ADDAC006DE737 /* TutorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
 		1471B9822B718A8B006DE737 /* TutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialView.swift; sourceTree = "<group>"; };
+		14766A872B747BE200D10076 /* SFXManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SFXManager.swift; sourceTree = "<group>"; };
+		14766A892B7703FF00D10076 /* evolution-music.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "evolution-music.mp3"; sourceTree = "<group>"; };
+		14766A8B2B77095A00D10076 /* birds-loop.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "birds-loop.wav"; sourceTree = "<group>"; };
+		14766A8D2B770E4300D10076 /* bee-buzz.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "bee-buzz.wav"; sourceTree = "<group>"; };
 		147FD4612B12FB4A00764E9C /* ColladaAnimationForXcode.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = ColladaAnimationForXcode.py; sourceTree = "<group>"; };
 		148196912B5B363400328709 /* ScienceStand.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = ScienceStand.scn; sourceTree = "<group>"; };
 		148358BF2AABBFC4006D0290 /* BeeKeeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeeKeeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -501,6 +509,7 @@
 				14E7C8312B4D13A6002376BF /* GameTicker.swift */,
 				1471B9592B659550006DE737 /* EvolutionGeneDataSource.swift */,
 				145749522B62FFC4004FAD7D /* DatabaseService.swift */,
+				14766A872B747BE200D10076 /* SFXManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -674,6 +683,9 @@
 		14A0B6EE2B747B0C00D41DD9 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				14766A8D2B770E4300D10076 /* bee-buzz.wav */,
+				14766A8B2B77095A00D10076 /* birds-loop.wav */,
+				14766A892B7703FF00D10076 /* evolution-music.mp3 */,
 				14A0B6EF2B747B0C00D41DD9 /* bubbles.mp3 */,
 				14A0B6F02B747B0C00D41DD9 /* select.mp3 */,
 				14A0B6F12B747B0C00D41DD9 /* pop.mp3 */,
@@ -844,6 +856,7 @@
 			files = (
 				14835AA02AC679CE006D0290 /* Hive.scn in Resources */,
 				14835A9F2AC679CE006D0290 /* Rack.scn in Resources */,
+				14766A8C2B77095A00D10076 /* birds-loop.wav in Resources */,
 				148196922B5B363400328709 /* ScienceStand.scn in Resources */,
 				14AB5CA52B602B8B002750B2 /* BeeWingsFold.scn in Resources */,
 				14D7C5772B5CC96A00CC35CB /* Lavender.scn in Resources */,
@@ -866,7 +879,9 @@
 				14835AA22AC679CE006D0290 /* Frame.scn in Resources */,
 				147FD4622B12FB4A00764E9C /* ColladaAnimationForXcode.py in Resources */,
 				14AB5CAB2B60C3CB002750B2 /* BeeStripesOrange.scn in Resources */,
+				14766A8E2B770E4300D10076 /* bee-buzz.wav in Resources */,
 				14A0B6F32B747B0C00D41DD9 /* bubbles.mp3 in Resources */,
+				14766A8A2B7703FF00D10076 /* evolution-music.mp3 in Resources */,
 				14A0B6F42B747B0C00D41DD9 /* select.mp3 in Resources */,
 				142211102B564AFB0060C51A /* BeeWingsFlap.scn in Resources */,
 				140AF27E2B616CCD006F1DE6 /* BeeStingers.scn in Resources */,
@@ -930,6 +945,7 @@
 				14835A2B2AB01327006D0290 /* SKButton.swift in Sources */,
 				1422111A2B5740D00060C51A /* ShopView.swift in Sources */,
 				1471B95A2B659550006DE737 /* EvolutionGeneDataSource.swift in Sources */,
+				14766A882B747BE200D10076 /* SFXManager.swift in Sources */,
 				14835A1B2AB01091006D0290 /* ModelVisitor.swift in Sources */,
 				14835A1D2AB01091006D0290 /* Bee.swift in Sources */,
 				148359F72AB01091006D0290 /* ApiaryOverlay.swift in Sources */,

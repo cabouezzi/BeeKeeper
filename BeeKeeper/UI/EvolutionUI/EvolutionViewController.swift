@@ -69,6 +69,8 @@ class EvolutionViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        SFXManager.shared.playMusic(.evolution)
+        
         addGestureRecognizers()
         animateCenterNode()
         
@@ -91,6 +93,11 @@ class EvolutionViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        SFXManager.shared.stopMusic()
     }
     
     func showData(for gene: Gene, animated: Bool = false) {

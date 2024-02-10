@@ -34,6 +34,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         Task.detached {
             // For performing some kind of animation
             let wait = Task {
+                _ = SFXManager.shared
                 #if DEBUG
                 sleep(0)
                 #endif

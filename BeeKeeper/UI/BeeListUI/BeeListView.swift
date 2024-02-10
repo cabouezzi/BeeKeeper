@@ -109,13 +109,7 @@ class BeeListView: UIView {
             }
             row.addAction { [weak self] in
                 self?.selectBee(bee)
-                UIView.animate(withDuration: 0.1, animations: {
-                    row.transform = CGAffineTransform(scaleX: 0.95, y: 1)
-                }) { _ in
-                    UIView.animate(withDuration: 0.1) {
-                        row.transform = .identity
-                    }
-                }
+                row.popAnimation()
             }
             scrollView.addSubview(row)
         }
