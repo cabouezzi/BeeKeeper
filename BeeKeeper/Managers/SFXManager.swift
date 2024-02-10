@@ -28,18 +28,22 @@ class SFXManager: NSObject {
     }
     
     enum Sounds {
-        case select, pop, bubbles, bottles
+        case select, pop, bubbles, bottles, failure, flute
         
         fileprivate var filepath: String? {
             switch self {
             case .select:
                 return Bundle.main.path(forResource: "select", ofType: "mp3")
             case .pop:
-                return Bundle.main.path(forResource: "pop", ofType: "mp3")
+                return Bundle.main.path(forResource: "pop-1", ofType: "mp3")
             case .bubbles:
                 return Bundle.main.path(forResource: "bubbles", ofType: "mp3")
             case .bottles:
                 return Bundle.main.path(forResource: "bottles", ofType: "mp3")
+            case .failure:
+                return Bundle.main.path(forResource: "drum", ofType: "wav")
+            case .flute:
+                return Bundle.main.path(forResource: "flute", ofType: "wav")
             }
         }
     }
@@ -70,28 +74,28 @@ class SFXManager: NSObject {
     }
     
     func playSound(_ sound: Sounds) {
-        guard let sound = try? loadSound(sound.filepath) else {
+        guard let player = try? loadSound(sound.filepath) else {
             return
         }
-        sound.play()
-        sound.delegate = self
-        bag.insert(sound)
+        player.play()
+        player.delegate = self
+        bag.insert(player)
     }
     
     func playMusic(_ music: Music) {
-        guard let sound = try? loadSound(music.filepath) else {
+        guard let plater = try? loadSound(music.filepath) else {
             return
         }
         switch music {
         case .birds:
-            sound.volume = 1 / 4
+            plater.volume = 1 / 4
         default:
             break
         }
-        sound.play()
-        sound.delegate = self
-        sound.numberOfLoops = .max
-        musicPlayer = sound
+        plater.play()
+        plater.delegate = self
+        plater.numberOfLoops = .max
+        musicPlayer = plater
     }
     
     func stopMusic() {

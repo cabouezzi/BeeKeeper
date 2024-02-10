@@ -161,6 +161,7 @@ class ApiaryViewController: UIViewController {
                     }
                     clear(true)
                 } catch {
+                    SFXManager.shared.playSound(.failure)
                     print(error.localizedDescription)
                 }
             }),
@@ -343,11 +344,9 @@ class ApiaryViewController: UIViewController {
             let clipMargin: Float = 0.3
             if abs(pos.x - roundf(pos.x)) >= clipMargin {
                 structure.area.x = Int(round(pos.x)) - structure.area.width / 2
-                SFXManager.shared.playSound(.select)
             }
             if abs(pos.z - roundf(pos.z)) >= clipMargin {
                 structure.area.y = Int(round(pos.z)) - structure.area.height / 2
-                SFXManager.shared.playSound(.select)
             }
             
             structure.area.x.clamp(min: -25, max: 25 - structure.area.width)
