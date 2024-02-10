@@ -281,6 +281,7 @@ class Bee: SCNNode, Model, Producer, Codable {
                 animationPlayer = prepareFlight()
                 nextState = .droning
             } else if Int.random(in: 0..<100) > 10 {
+                playWiggleSound()
                 animationPlayer = wiggle(repeatCount: 1)
                 animationPlayer.animation.duration = .random(in: 2...5)
                 nextState = animationState
@@ -353,9 +354,24 @@ class Bee: SCNNode, Model, Producer, Codable {
     
     // MARK: - Audio
     func playFlyingSound() {
-        guard let source = SCNAudioSource(named: "bee-buzz.wav") else { return }
+        guard let source = SCNAudioSource(named: "bee-buzz-1.wav") else { return }
         source.volume = 1
         source.rate = 0.5
+        source.isPositional = true
+        source.shouldStream = false
+        source.load()
+        let player = SCNAudioPlayer(source: source)
+        addAudioPlayer(player)
+        
+        player.didFinishPlayback = { [unowned player, unowned self] in
+            removeAudioPlayer(player)
+        }
+    }
+    
+    func playWiggleSound() {
+        guard let source = SCNAudioSource(named: "bee-buzz-2.wav") else { return }
+        source.volume = 1
+        source.rate = 1.25
         source.isPositional = true
         source.shouldStream = false
         source.load()
