@@ -40,6 +40,7 @@ class ApiaryView: SCNView {
         #if TEST
         self.showsStatistics = true
         #endif
+        audioEnvironmentNode.distanceAttenuationParameters.referenceDistance = 10
         
         sun = scene?.rootNode.childNode(withName: "directional", recursively: true)?.light
         walls = scene?.rootNode.childNode(withName: "walls", recursively: true)

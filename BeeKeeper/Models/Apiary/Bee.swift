@@ -355,7 +355,7 @@ class Bee: SCNNode, Model, Producer, Codable {
     // MARK: - Audio
     func playFlyingSound() {
         guard let source = SCNAudioSource(named: "bee-buzz-1.wav") else { return }
-        source.volume = 1
+        source.volume = 0.2
         source.rate = 0.5
         source.isPositional = true
         source.shouldStream = false

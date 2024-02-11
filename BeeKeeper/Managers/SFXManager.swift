@@ -15,7 +15,7 @@ class SFXManager: NSObject {
     static let shared = SFXManager()
     
     enum Music {
-        case evolution, birds
+        case evolution, birds, childish
         
         fileprivate var filepath: String? {
             switch self {
@@ -23,6 +23,8 @@ class SFXManager: NSObject {
                 return Bundle.main.path(forResource: "evolution-music", ofType: "mp3")
             case .birds:
                 return Bundle.main.path(forResource: "birds-loop", ofType: "wav")
+            case .childish:
+                return Bundle.main.path(forResource: "childish-music", ofType: "mp3")
             }
         }
     }
@@ -48,14 +50,68 @@ class SFXManager: NSObject {
         }
     }
     
+    class MusicLooper: NSObject, AVAudioPlayerDelegate {
+        var separationInterval: TimeInterval = 0
+        var samples: [AVAudioPlayer] = []
+        
+        private(set) var currentPlayer: AVAudioPlayer?
+        private var lastPlayer: AVAudioPlayer?
+        
+        override init() {
+            super.init()
+        }
+        
+        init(separationInterval: TimeInterval, samples: [AVAudioPlayer]) {
+            self.separationInterval = separationInterval
+            self.samples = samples
+        }
+        
+        func next() {
+            if let currentPlayer = currentPlayer {
+                lastPlayer = currentPlayer
+                currentPlayer.stop()
+            }
+            guard let player = getRandomPlayer() else { return }
+            let volume = player.volume
+            player.volume = 0
+            player.delegate = self
+            player.play()
+            player.setVolume(volume, fadeDuration: 20)
+            currentPlayer = player
+        }
+        
+        private func getRandomPlayer() -> AVAudioPlayer? {
+            guard samples.count > 1 else { return samples.first }
+            return samples.filter({ $0 !== lastPlayer }).randomElement()
+        }
+        
+        func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+            currentPlayer = nil
+            lastPlayer = player
+            DispatchQueue.main.asyncAfter(deadline: .now().advanced(by: .seconds(Int(separationInterval)))) { [weak self] in
+                guard let self = self else { return }
+                next()
+            }
+        }
+    }
+    
     private var bag: Set<AVAudioPlayer> = []
     private var musicPlayer: AVAudioPlayer?
+    
+    private let looper = MusicLooper()
     
     private override init() {
         super.init()
     }
     
-    private func loadSound(_ filepath: String?) throws -> AVAudioPlayer {
+    func apiary() {
+        playMusic(.birds)
+        looper.samples = [playerForMusic(.childish)].compactMap({ $0 })
+        looper.separationInterval = 60
+        looper.next()
+    }
+    
+    private func loadPlayer(_ filepath: String?) throws -> AVAudioPlayer {
         guard let path = filepath else {
             throw SFXError.unknownURL
         }
@@ -73,8 +129,12 @@ class SFXManager: NSObject {
         return player
     }
     
+    func playerForSound(_ sound: Sounds) -> AVAudioPlayer? {
+        return try? loadPlayer(sound.filepath)
+    }
+    
     func playSound(_ sound: Sounds) {
-        guard let player = try? loadSound(sound.filepath) else {
+        guard let player = try? loadPlayer(sound.filepath) else {
             return
         }
         player.play()
@@ -82,8 +142,12 @@ class SFXManager: NSObject {
         bag.insert(player)
     }
     
+    func playerForMusic(_ music: Music) -> AVAudioPlayer? {
+        return try? loadPlayer(music.filepath)
+    }
+    
     func playMusic(_ music: Music) {
-        guard let plater = try? loadSound(music.filepath) else {
+        guard let plater = try? loadPlayer(music.filepath) else {
             return
         }
         switch music {

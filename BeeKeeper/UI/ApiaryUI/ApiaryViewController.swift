@@ -8,6 +8,7 @@
 import UIKit
 import SceneKit
 import SpriteKit
+import AVFoundation
 
 fileprivate enum GameState {
     case idle
@@ -51,7 +52,7 @@ class ApiaryViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        SFXManager.shared.playMusic(. birds)
+        SFXManager.shared.apiary()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
