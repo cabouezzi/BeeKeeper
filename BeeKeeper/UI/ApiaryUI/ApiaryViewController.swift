@@ -52,7 +52,7 @@ class ApiaryViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        SFXManager.shared.apiary()
+        SFXManager.shared.apiaryAmbience()
     }
     
     override func viewDidDisappear(_ animated: Bool) {

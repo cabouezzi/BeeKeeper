@@ -54,7 +54,7 @@ class SFXManager: NSObject {
         var separationInterval: TimeInterval = 0
         var samples: [AVAudioPlayer] = []
         
-        private(set) var currentPlayer: AVAudioPlayer?
+        private var currentPlayer: AVAudioPlayer?
         private var lastPlayer: AVAudioPlayer?
         
         override init() {
@@ -64,6 +64,10 @@ class SFXManager: NSObject {
         init(separationInterval: TimeInterval, samples: [AVAudioPlayer]) {
             self.separationInterval = separationInterval
             self.samples = samples
+        }
+        
+        func stop() {
+            currentPlayer?.stop()
         }
         
         func next() {
@@ -104,7 +108,7 @@ class SFXManager: NSObject {
         super.init()
     }
     
-    func apiary() {
+    func apiaryAmbience() {
         playMusic(.birds)
         looper.samples = [playerForMusic(.childish)].compactMap({ $0 })
         looper.separationInterval = 60
@@ -163,6 +167,7 @@ class SFXManager: NSObject {
     }
     
     func stopMusic() {
+        looper.stop()
         let fadeDur: TimeInterval = 0 // TODO: Fade?
         musicPlayer?.setVolume(0, fadeDuration: fadeDur)
         // Retains a reference to the player while fading out
