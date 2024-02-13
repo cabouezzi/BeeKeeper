@@ -298,7 +298,7 @@ class InspectionView: UIView {
             }
         }
         update()
-        button.addAction { [unowned self, unowned incubator] in
+        button.addAction { [weak self] in
             switch incubator.state {
             case .idle:
                 try? incubator.startIncubating(100)
@@ -307,8 +307,8 @@ class InspectionView: UIView {
             case .finished:
                 do {
                     try incubator.hatch()
-                    removeFromSuperview()
-                } catch{}
+                    self?.removeFromSuperview()
+                } catch {}
             }
             update()
         }
