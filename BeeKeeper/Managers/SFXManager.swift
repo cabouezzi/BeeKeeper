@@ -111,6 +111,7 @@ class SFXManager: NSObject {
     func apiaryAmbience() {
         playMusic(.birds)
         looper.samples = [playerForMusic(.childish)].compactMap({ $0 })
+        looper.samples.forEach({ $0.volume = 0.5 })
         looper.separationInterval = 60
         looper.next()
     }
