@@ -248,14 +248,14 @@ class TutorialViewController: ApiaryViewController {
     }
     
     override func popToBeeList(_ bee: Bee? = nil) {
-        let beeListView = BeeListView(bees: apiaryView.apiary.bees, frame: apiaryView.frame)
-        beeListView.onRelease { [unowned self] in
-            endTutorial()
+        let vc = BeeListViewController(frame: apiaryView.frame, bees: apiaryView.apiary.bees)
+        vc.onRelease { [weak self] in
+            self?.endTutorial()
         }
         if let bee = bee {
-            beeListView.selectBee(bee)
+            vc.selectBee(bee)
         }
-        apiaryView.addSubview(beeListView)
+        addChild(vc)
     }
     
     func endTutorial() {
