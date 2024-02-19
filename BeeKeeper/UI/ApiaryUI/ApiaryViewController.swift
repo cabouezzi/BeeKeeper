@@ -63,6 +63,7 @@ class ApiaryViewController: UIViewController {
     // MARK: - UI Functions
     
     final func linkOverlay() {
+        apiaryView.overlay.tasksButton.onTap(showTasks)
         apiaryView.overlay.shopButton.onTap(popToShop)
         apiaryView.overlay.evolutionButton.onTap(popToEvolution)
         apiaryView.overlay.mapButton.onTap(popToMap)
@@ -239,6 +240,12 @@ class ApiaryViewController: UIViewController {
     func popToInspectionView(for structure: Structure) {
         let view = InspectionView(structure: structure, frame: apiaryView.frame)
         apiaryView.addSubview(view)
+    }
+    
+    func showTasks() {
+        let vc = TasksViewController(frame: apiaryView.frame)
+        vc.tasksView.center = apiaryView.center
+        addChild(vc)
     }
     
     // MARK: - Gesture Recognizers
