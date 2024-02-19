@@ -220,20 +220,20 @@ class ApiaryViewController: UIViewController {
     }
     
     func popToBeeList(_ bee: Bee? = nil) {
-        let beeListView = BeeListView(bees: apiaryView.apiary.bees, frame: apiaryView.frame)
-        beeListView.onSelect { [weak self] bee in
-            beeListView.removeFromSuperview()
+        let vc = BeeListViewController(frame: apiaryView.frame, bees: apiaryView.apiary.bees)
+        vc.onSelect { [weak self, weak vc] bee in
+            vc?.removeFromParent()
             self?.selectNode(bee)
         }
-        beeListView.onRelease { [weak self] in
+        vc.onRelease { [weak self, weak vc] in
             guard case .idle = self?.state else { return }
             GameManager.shared.releaseBees()
-            beeListView.removeFromSuperview()
+            vc?.removeFromParent()
         }
         if let bee = bee {
-            beeListView.selectBee(bee)
+            vc.selectBee(bee)
         }
-        apiaryView.addSubview(beeListView)
+        addChild(vc)
     }
     
     func popToInspectionView(for structure: Structure) {

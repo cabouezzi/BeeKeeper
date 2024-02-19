@@ -7,29 +7,48 @@
 
 import UIKit
 
-class BeeListViewCell: UIControl {
+class BeeListViewCell: UITableViewCell {
     var bee: Bee?
     
     var nameLabel: UILabel!
     var productionLabel: UILabel!
-    
     var button: UIButton!
-    var renameButton: UIButton!
-    
-    private var nameLabelHeight: CGFloat { return frame.height * 3/10 }
-    private var productionLabelHeight: CGFloat { return frame.height * 7/10 }
     
     private var horizontalTextInset: CGFloat { return 10 }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupButton()
         setupNameLabel()
         setupCostLabel()
         // setupRenameButton()
         
-        backgroundColor = .orange
-        layer.cornerRadius = 10
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        productionLabel.translatesAutoresizingMaskIntoConstraints = false
+        button.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(nameLabel)
+        contentView.addSubview(productionLabel)
+        contentView.addSubview(button)
+        
+        addConstraints([
+            nameLabel.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.3),
+            nameLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: horizontalTextInset),
+            nameLabel.rightAnchor.constraint(equalTo: button.leftAnchor),
+            
+            productionLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor),
+            productionLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: horizontalTextInset),
+            productionLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
+            productionLabel.rightAnchor.constraint(equalTo: button.leftAnchor),
+            
+            button.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            button.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
+            button.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -10),
+            button.widthAnchor.constraint(equalTo: button.heightAnchor),
+        ])
+        
+        backgroundColor = .clear
+        contentView.backgroundColor = .orange
+        contentView.layer.cornerRadius = 10
         isExclusiveTouch = true
     }
     
@@ -37,8 +56,15 @@ class BeeListViewCell: UIControl {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return !(gestureRecognizer is UITapGestureRecognizer)
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        contentView.frame = contentView.frame.insetBy(dx: 10, dy: 5)
+    }
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        contentView.layer.borderColor = selected ? UIColor.yellow.cgColor : UIColor.clear.cgColor
+        contentView.layer.borderWidth = 2
     }
     
     func setBee(_ bee: Bee) {
@@ -48,51 +74,31 @@ class BeeListViewCell: UIControl {
     }
     
     func setupNameLabel () {
-        let frame = CGRect(x: 0, y: 0, width: frame.width - button.frame.size.width, height: nameLabelHeight).insetBy(dx: horizontalTextInset, dy: 0)
-        nameLabel = UILabel(frame: frame)
+        nameLabel = UILabel()
         nameLabel.text = "Object"
         nameLabel.font = UIFont(name: "ArialRoundedMTBold", size: UIFont.systemFontSize)
         nameLabel.textColor = .white
-        nameLabel.shadowOffset = CGSize(width: nameLabel.font.pointSize * 0.05, height: nameLabel.font.pointSize * 0.05)
-        nameLabel.shadowColor = .black
+        nameLabel.setShadow()
         nameLabel.adjustsFontSizeToFitWidth = true
         nameLabel.numberOfLines = 1
         nameLabel.backgroundColor = .clear
-        addSubview(nameLabel)
     }
     
     func setupCostLabel () {
-        let frame = CGRect(x: 0, y: nameLabel.frame.maxY, width: frame.width - button.frame.size.width, height: productionLabelHeight).insetBy(dx: horizontalTextInset, dy: 0)
-        productionLabel = UILabel(frame: frame)
+        productionLabel = UILabel()
         productionLabel.text = "999999"
         productionLabel.font = UIFont(name: "ArialRoundedMTBold", size: UIFont.systemFontSize * 1.5)
         productionLabel.textColor = .white
-        productionLabel.textAlignment = .left
-        productionLabel.shadowOffset = CGSize(width: productionLabel.font.pointSize * 0.05, height: productionLabel.font.pointSize * 0.05)
-        productionLabel.shadowColor = .black
+        productionLabel.setShadow()
         productionLabel.adjustsFontSizeToFitWidth = true
         productionLabel.numberOfLines = 1
         productionLabel.lineBreakMode = .byClipping
         productionLabel.backgroundColor = .clear
-        addSubview(productionLabel)
     }
     
     func setupButton() {
-        var frame = CGRect(x: frame.width, y: 0, width: frame.height, height: frame.height)
-        frame.origin.x -= frame.size.width
-        frame = frame.insetBy(dx: 10, dy: 10)
-        button = UIButton(frame: frame)
+        button = UIButton()
         button.backgroundColor = .clear
         button.setImage(UIImage(named: "editButton"), for: .normal)
-        addSubview(button)
-    }
-    
-    func setupRenameButton() {
-        var frame = CGRect(x: button.frame.origin.x, y: 0, width: frame.height, height: frame.height)
-        frame.origin.x -= frame.size.width
-        frame = frame.insetBy(dx: 10, dy: 10)
-        renameButton = UIButton(frame: frame)
-        renameButton.backgroundColor = .blue
-        addSubview(renameButton)
     }
 }
