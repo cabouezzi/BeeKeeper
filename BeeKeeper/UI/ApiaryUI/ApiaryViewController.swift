@@ -26,7 +26,7 @@ class ApiaryViewController: UIViewController {
         self.init(frame: .zero)
     }
     
-    init(frame: CGRect) {
+    required init(frame: CGRect) {
         self.apiaryView = ApiaryView(frame: frame)
         super.init(nibName: nil, bundle: nil)
         self.apiaryView.delegate = self

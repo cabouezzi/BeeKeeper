@@ -24,7 +24,7 @@ class TutorialViewController: ApiaryViewController {
     
     private weak var pointer: SKNode?
     
-    override init(frame: CGRect) {
+    required init(frame: CGRect) {
         tutorialView = TutorialView(frame: frame)
         super.init(frame: frame)
         GameManager.shared.addObserver(self)

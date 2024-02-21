@@ -34,43 +34,48 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.makeKeyAndVisible()
         
         Task.detached {
-            // For performing some kind of animation
-            let wait = Task {
+            let loadSingletons = Task {
                 _ = SFXManager.shared
-                #if !RELEASE
-                var i: Float = 0
-                var intervals: Float = 2
-                while i <= 1 {
-                    sleep(1)
-                    i += min(1, 1 / intervals)
-                    await launchView.progress.setProgress(i, animated: true)
-                }
-                #endif
+                _ = GameManager.shared
+                _ = SettingsManager.shared
+                _ = DatabaseService.shared
+                _ = EvolutionGeneDataSource.shared
             }
             
-            if await !DatabaseService.shared.hasAccount() || SettingsManager.shared.isFirstLogin {
-                do {
-                    try await DatabaseService.shared.createAccount()
-                } catch {
-                    print(error.localizedDescription)
-                }
-                await MainActor.run {
-                    let gameViewController = TutorialViewController(frame: window.frame)
-                    navigationController.setViewControllers([gameViewController], animated: false)
-                }
-            } else {
-                do {
-                    let account = try await DatabaseService.shared.fetchAccount()
-                    try GameManager.shared.changeAccount(to: account)
-                    _ = await wait.result
-                    
-                    await MainActor.run {
-                        let gameViewController = ApiaryViewController(frame: window.frame)
-                        navigationController.setViewControllers([gameViewController], animated: false)
+            let loadAccount = Task {
+                let account: Account
+                let vctype: ApiaryViewController.Type
+                if await !DatabaseService.shared.hasAccount() || SettingsManager.shared.isFirstLogin {
+                    do {
+                        try await DatabaseService.shared.createAccount()
+                    } catch {
+                        print(error.localizedDescription)
                     }
-                } catch {
-                    print(error)
+                    vctype = TutorialViewController.self
+                } else {
+                    do {
+                        let account = try await DatabaseService.shared.fetchAccount()
+                        try GameManager.shared.changeAccount(to: account)
+                    } catch {
+                        print(error.localizedDescription)
+                    }
+                    vctype = ApiaryViewController.self
                 }
+                return vctype
+            }
+            
+            _ = await loadSingletons.result
+            await launchView.progress.setProgress(0.2, animated: true)
+            
+            let ViewController = try await loadAccount.result.get()
+            await launchView.progress.setProgress(1, animated: true)
+            
+            // Pause on load completion
+            sleep(1)
+            
+            await MainActor.run {
+                let gameViewController = ViewController.init(frame: window.frame)
+                navigationController.setViewControllers([gameViewController], animated: false)
             }
         }
     }
