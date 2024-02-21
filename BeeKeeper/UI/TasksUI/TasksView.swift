@@ -10,11 +10,8 @@ import UIKit
 class TasksView: UITableView {
     init(frame: CGRect) {
         super.init(frame: frame, style: .insetGrouped)
-        backgroundColor = .orange
+        backgroundColor = .lightGray.withAlphaComponent(0.9)
         layer.cornerRadius = 10
-        layer.borderColor = UIColor.yellow.cgColor
-        layer.borderWidth = 5
-        register(TasksViewCell.self, forCellReuseIdentifier: "cell")
     }
     
     required init?(coder: NSCoder) {

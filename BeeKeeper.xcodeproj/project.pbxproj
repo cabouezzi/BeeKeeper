@@ -124,10 +124,11 @@
 		14E448852AC6828A008963C8 /* BeeWings.scn in Resources */ = {isa = PBXBuildFile; fileRef = 14E448842AC6828A008963C8 /* BeeWings.scn */; };
 		14E7C8322B4D13A6002376BF /* GameTicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E7C8312B4D13A6002376BF /* GameTicker.swift */; };
 		14EB4BDA2B4F493700BCDAAA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14EB4BD92B4F493700BCDAAA /* LaunchScreen.storyboard */; };
-		14EC1FDD2B8329FC00F1D3E2 /* BeeListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EC1FDC2B8329FC00F1D3E2 /* BeeListViewController.swift */; };
 		14EC1FD72B831D8C00F1D3E2 /* TasksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EC1FD62B831D8C00F1D3E2 /* TasksView.swift */; };
 		14EC1FD92B831E5400F1D3E2 /* TasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EC1FD82B831E5400F1D3E2 /* TasksViewController.swift */; };
 		14EC1FDB2B83248600F1D3E2 /* TasksViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EC1FDA2B83248600F1D3E2 /* TasksViewCell.swift */; };
+		14EC1FDD2B8329FC00F1D3E2 /* BeeListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EC1FDC2B8329FC00F1D3E2 /* BeeListViewController.swift */; };
+		14EC1FE12B85614B00F1D3E2 /* TasksManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EC1FE02B85614B00F1D3E2 /* TasksManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -275,10 +276,11 @@
 		14E448842AC6828A008963C8 /* BeeWings.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeWings.scn; sourceTree = "<group>"; };
 		14E7C8312B4D13A6002376BF /* GameTicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTicker.swift; sourceTree = "<group>"; };
 		14EB4BD92B4F493700BCDAAA /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
-		14EC1FDC2B8329FC00F1D3E2 /* BeeListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeeListViewController.swift; sourceTree = "<group>"; };
 		14EC1FD62B831D8C00F1D3E2 /* TasksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksView.swift; sourceTree = "<group>"; };
 		14EC1FD82B831E5400F1D3E2 /* TasksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksViewController.swift; sourceTree = "<group>"; };
 		14EC1FDA2B83248600F1D3E2 /* TasksViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksViewCell.swift; sourceTree = "<group>"; };
+		14EC1FDC2B8329FC00F1D3E2 /* BeeListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeeListViewController.swift; sourceTree = "<group>"; };
+		14EC1FE02B85614B00F1D3E2 /* TasksManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksManager.swift; sourceTree = "<group>"; };
 		14ECDA742B4FC12A00760320 /* ColladaExportNotes.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ColladaExportNotes.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -526,6 +528,7 @@
 				1471B9592B659550006DE737 /* EvolutionGeneDataSource.swift */,
 				145749522B62FFC4004FAD7D /* DatabaseService.swift */,
 				14766A872B747BE200D10076 /* SFXManager.swift */,
+				14EC1FE02B85614B00F1D3E2 /* TasksManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -955,6 +958,7 @@
 				14835A192AB01091006D0290 /* Gene.swift in Sources */,
 				14835A112AB01091006D0290 /* Honeycomb.swift in Sources */,
 				14E448832AC68129008963C8 /* SCNNode.swift in Sources */,
+				14EC1FE12B85614B00F1D3E2 /* TasksManager.swift in Sources */,
 				142DF2062AD3806F00274986 /* SceneDelegate.swift in Sources */,
 				14835A0D2AB01091006D0290 /* Incubator.swift in Sources */,
 				1471B97F2B6ADDAC006DE737 /* TutorialViewController.swift in Sources */,

@@ -12,12 +12,13 @@ class TasksViewController: UIViewController, UITableViewDelegate, UITableViewDat
     var background: UIView
     init(frame: CGRect) {
         var f = frame
-        f.size.height = min(frame.size.height, 500)
+        f.size.height = min(frame.size.height * 0.8, 500)
         f.size.width = f.size.height * 1.25
         tasksView = TasksView(frame: f)
         background = UIView(frame: frame)
         background.backgroundColor = .black.withAlphaComponent(0.1)
         super.init(nibName: nil, bundle: nil)
+        tasksView.register(TasksViewCell.self, forCellReuseIdentifier: "cell")
         tasksView.delegate = self
         tasksView.dataSource = self
     }
@@ -52,20 +53,25 @@ class TasksViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
-    }
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return tableView.frame.height / 2.5
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return TasksManager.shared.tasks.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? TasksViewCell else {
             return tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         }
-        cell.button.backgroundColor = .red
-        cell.backgroundColor = .systemBackground
+        let task = TasksManager.shared.tasks[indexPath.row]
+        cell.titleLabel.text = task
+        cell.bodyLabel.text = task
+        cell.button.backgroundColor = .orange
+        cell.backgroundColor = .clear
+        cell.contentView.backgroundColor = .darkGray
+        cell.contentView.layer.cornerRadius = 10
         return cell
     }
 }
