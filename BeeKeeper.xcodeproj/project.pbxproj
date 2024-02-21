@@ -24,7 +24,6 @@
 		145749432B6179B1004FAD7D /* BeeAbdomens.scn in Resources */ = {isa = PBXBuildFile; fileRef = 145749422B6179B1004FAD7D /* BeeAbdomens.scn */; };
 		145749482B619349004FAD7D /* BeeListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145749472B619349004FAD7D /* BeeListViewCell.swift */; };
 		145749532B62FFC4004FAD7D /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145749522B62FFC4004FAD7D /* DatabaseService.swift */; };
-		145749562B632988004FAD7D /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145749552B632988004FAD7D /* LaunchView.swift */; };
 		1457495A2B63676B004FAD7D /* EvolutionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145749592B63676B004FAD7D /* EvolutionView.swift */; };
 		145749752B65783C004FAD7D /* EvolutionGeneDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145749742B65783C004FAD7D /* EvolutionGeneDataView.swift */; };
 		1471B95A2B659550006DE737 /* EvolutionGeneDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1471B9592B659550006DE737 /* EvolutionGeneDataSource.swift */; };
@@ -125,6 +124,7 @@
 		14E7C8322B4D13A6002376BF /* GameTicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E7C8312B4D13A6002376BF /* GameTicker.swift */; };
 		14EB4BDA2B4F493700BCDAAA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14EB4BD92B4F493700BCDAAA /* LaunchScreen.storyboard */; };
 		14EC1FDD2B8329FC00F1D3E2 /* BeeListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EC1FDC2B8329FC00F1D3E2 /* BeeListViewController.swift */; };
+		14EC1FE32B86AE2900F1D3E2 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EC1FE22B86AE2900F1D3E2 /* LaunchView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -167,7 +167,6 @@
 		145749422B6179B1004FAD7D /* BeeAbdomens.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeAbdomens.scn; sourceTree = "<group>"; };
 		145749472B619349004FAD7D /* BeeListViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeeListViewCell.swift; sourceTree = "<group>"; };
 		145749522B62FFC4004FAD7D /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
-		145749552B632988004FAD7D /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
 		145749592B63676B004FAD7D /* EvolutionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvolutionView.swift; sourceTree = "<group>"; };
 		145749742B65783C004FAD7D /* EvolutionGeneDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvolutionGeneDataView.swift; sourceTree = "<group>"; };
 		1471B9592B659550006DE737 /* EvolutionGeneDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvolutionGeneDataSource.swift; sourceTree = "<group>"; };
@@ -273,6 +272,7 @@
 		14E7C8312B4D13A6002376BF /* GameTicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTicker.swift; sourceTree = "<group>"; };
 		14EB4BD92B4F493700BCDAAA /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		14EC1FDC2B8329FC00F1D3E2 /* BeeListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeeListViewController.swift; sourceTree = "<group>"; };
+		14EC1FE22B86AE2900F1D3E2 /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
 		14ECDA742B4FC12A00760320 /* ColladaExportNotes.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ColladaExportNotes.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -357,7 +357,7 @@
 		145749542B632971004FAD7D /* LaunchUI */ = {
 			isa = PBXGroup;
 			children = (
-				145749552B632988004FAD7D /* LaunchView.swift */,
+				14EC1FE22B86AE2900F1D3E2 /* LaunchView.swift */,
 			);
 			path = LaunchUI;
 			sourceTree = "<group>";
@@ -933,7 +933,6 @@
 				14A7DE832AD389DA00D2FD4A /* ShopItem.swift in Sources */,
 				14835A052AB01091006D0290 /* Collector.swift in Sources */,
 				14835A7C2AB529A5006D0290 /* BubbleStyle.swift in Sources */,
-				145749562B632988004FAD7D /* LaunchView.swift in Sources */,
 				14835A192AB01091006D0290 /* Gene.swift in Sources */,
 				14835A112AB01091006D0290 /* Honeycomb.swift in Sources */,
 				14E448832AC68129008963C8 /* SCNNode.swift in Sources */,
@@ -958,6 +957,7 @@
 				14A7DE852AD3906600D2FD4A /* ShopViewCell.swift in Sources */,
 				14D7C5732B5CC8E200CC35CB /* Lavender.swift in Sources */,
 				14A7DE882AD3AA6100D2FD4A /* EvolutionViewController.swift in Sources */,
+				14EC1FE32B86AE2900F1D3E2 /* LaunchView.swift in Sources */,
 				14835A092AB01091006D0290 /* Container.swift in Sources */,
 				1471B9672B675927006DE737 /* Daisy.swift in Sources */,
 				14E7C8322B4D13A6002376BF /* GameTicker.swift in Sources */,

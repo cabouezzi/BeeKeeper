@@ -7,6 +7,7 @@
 
 import UIKit
 import SwiftUI
+import SceneKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
@@ -19,8 +20,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let window = UIWindow(windowScene: windowScene)
         
-        let launchView = LaunchView()
-        let launchViewController = UIHostingController(rootView: launchView)
+        let launchView = LaunchView(frame: window.frame)
+        let launchViewController = UIViewController(nibName: nil, bundle: nil)
+        launchViewController.view = launchView
         
         let navigationController = UINavigationController()
         navigationController.pushViewController(launchViewController, animated: false)
@@ -35,10 +37,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             // For performing some kind of animation
             let wait = Task {
                 _ = SFXManager.shared
-                #if DEBUG
-                sleep(0)
+                #if !RELEASE
+                var i: Float = 0
+                var intervals: Float = 2
+                while i <= 1 {
+                    sleep(1)
+                    i += min(1, 1 / intervals)
+                    await launchView.progress.setProgress(i, animated: true)
+                }
                 #endif
             }
+            
             if await !DatabaseService.shared.hasAccount() || SettingsManager.shared.isFirstLogin {
                 do {
                     try await DatabaseService.shared.createAccount()
