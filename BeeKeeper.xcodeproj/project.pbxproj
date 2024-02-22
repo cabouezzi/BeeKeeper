@@ -19,7 +19,6 @@
 		142211062B56213E0060C51A /* SCNVector3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142211052B56213E0060C51A /* SCNVector3.swift */; };
 		142211102B564AFB0060C51A /* BeeWingsFlap.scn in Resources */ = {isa = PBXBuildFile; fileRef = 1422110F2B564AFB0060C51A /* BeeWingsFlap.scn */; };
 		142211162B56FAFE0060C51A /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142211152B56FAFE0060C51A /* Camera.swift */; };
-		1422111A2B5740D00060C51A /* ShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142211192B5740CF0060C51A /* ShopView.swift */; };
 		142DF2062AD3806F00274986 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142DF1DA2AD3804C00274986 /* SceneDelegate.swift */; };
 		145749432B6179B1004FAD7D /* BeeAbdomens.scn in Resources */ = {isa = PBXBuildFile; fileRef = 145749422B6179B1004FAD7D /* BeeAbdomens.scn */; };
 		145749482B619349004FAD7D /* BeeListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145749472B619349004FAD7D /* BeeListViewCell.swift */; };
@@ -164,7 +163,6 @@
 		142211052B56213E0060C51A /* SCNVector3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCNVector3.swift; sourceTree = "<group>"; };
 		1422110F2B564AFB0060C51A /* BeeWingsFlap.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeWingsFlap.scn; sourceTree = "<group>"; };
 		142211152B56FAFE0060C51A /* Camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
-		142211192B5740CF0060C51A /* ShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopView.swift; sourceTree = "<group>"; };
 		142DF1DA2AD3804C00274986 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		145749422B6179B1004FAD7D /* BeeAbdomens.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeAbdomens.scn; sourceTree = "<group>"; };
 		145749472B619349004FAD7D /* BeeListViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeeListViewCell.swift; sourceTree = "<group>"; };
@@ -716,7 +714,6 @@
 		14A7DE7F2AD3883300D2FD4A /* ShopUI */ = {
 			isa = PBXGroup;
 			children = (
-				142211192B5740CF0060C51A /* ShopView.swift */,
 				14EC1FE82B86E5A800F1D3E2 /* ShopTab.swift */,
 				14EC1FE42B86D45300F1D3E2 /* ShopViewController.swift */,
 				14A7DE842AD3906600D2FD4A /* ShopViewCell.swift */,
@@ -970,7 +967,6 @@
 				14E7C8322B4D13A6002376BF /* GameTicker.swift in Sources */,
 				148ACE932B53540800A0F948 /* Bubble.swift in Sources */,
 				14835A2B2AB01327006D0290 /* SKButton.swift in Sources */,
-				1422111A2B5740D00060C51A /* ShopView.swift in Sources */,
 				1471B95A2B659550006DE737 /* EvolutionGeneDataSource.swift in Sources */,
 				14766A882B747BE200D10076 /* SFXManager.swift in Sources */,
 				14835A1B2AB01091006D0290 /* ModelVisitor.swift in Sources */,

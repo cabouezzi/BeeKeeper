@@ -7,10 +7,19 @@
 
 import UIKit
 
+protocol ShopViewDelegate: AnyObject {
+    func shop(_ shopView: ShopViewController, didSelectItem item: ShopItem)
+    func shop(_ shopView: ShopViewController, canSelectItem item: ShopItem) -> Bool
+    func shop(_ shopView: ShopViewController, itemsForSection section: ShopViewController.Section) -> [ShopItem]
+}
+
 class ShopViewController: UIViewController {
+    enum Section {
+        case structures, flowers, buy
+    }
     weak var shopDelegate: ShopViewDelegate?
     
-    private(set) var section: ShopView.Section = .structures
+    private(set) var section: Section = .structures
     
     let frontTabImage = UIImage(named: "shop-tab-front")
     let backTabImage = UIImage(named: "shop-tab-back")
@@ -53,13 +62,13 @@ class ShopViewController: UIViewController {
         backButton.isEnabled = true
         
         bar = UIView()
-        bar.backgroundColor = .darkGray
+        bar.backgroundColor = .shopLightBrown
         
         structuresTab = ShopTab()
-        structuresTab.foregroundColor = .black
+        structuresTab.foregroundColor = .shopMediumBrown
         
         flowersTab = ShopTab()
-        flowersTab.foregroundColor = .black
+        flowersTab.foregroundColor = .shopMediumBrown
         flowersTab.setImage(UIImage(named: "shop-flowers"), for: .normal)
         flowersTab.setImage(UIImage(named: "shop-flowers"), for: .highlighted)
         
@@ -97,17 +106,18 @@ class ShopViewController: UIViewController {
         view.removeFromSuperview()
     }
     
-    func changeSection(_ newSection: ShopView.Section) {
-        func tabForSection(_ s: ShopView.Section) -> ShopTab? {
+    func changeSection(_ newSection: Section) {
+        func tabForSection(_ s: Section) -> ShopTab? {
             switch s {
             case .structures: return structuresTab
             case .flowers: return flowersTab
             case .buy: return structuresTab
             }
         }
-        tabForSection(section)?.foregroundColor = .black
         tabForSection(newSection)?.popAnimation()
-        tabForSection(newSection)?.foregroundColor = .darkGray
+        guard section != newSection else { return }
+        tabForSection(section)?.foregroundColor = .shopMediumBrown
+        tabForSection(newSection)?.foregroundColor = .shopLightBrown
         section = newSection
         collectionView.reloadData()
     }
@@ -132,8 +142,8 @@ class ShopViewController: UIViewController {
             collectionView.bottomAnchor.constraint(equalTo: background.bottomAnchor),
             collectionView.topAnchor.constraint(equalTo: bar.bottomAnchor, constant: -10),
             
-            bar.leftAnchor.constraint(equalTo: background.leftAnchor),
-            bar.rightAnchor.constraint(equalTo: background.rightAnchor),
+            bar.leftAnchor.constraint(equalTo: background.leftAnchor, constant: -10),
+            bar.rightAnchor.constraint(equalTo: background.rightAnchor, constant: 10),
             bar.topAnchor.constraint(equalTo: backButton.bottomAnchor, constant: backButton.frame.height),
             bar.heightAnchor.constraint(equalTo: background.heightAnchor, multiplier: 0.1),
             
@@ -148,11 +158,15 @@ class ShopViewController: UIViewController {
             flowersTab.widthAnchor.constraint(equalTo: flowersTab.heightAnchor, multiplier: 2),
         ])
     }
+    
+    func items() -> [ShopItem] {
+        return shopDelegate?.shop(self, itemsForSection: section) ?? []
+    }
 }
 
 extension ShopViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 0
+        return items().count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -160,10 +174,17 @@ extension ShopViewController: UICollectionViewDelegate, UICollectionViewDataSour
             return UICollectionViewCell()
         }
         
+        let item = items()[indexPath.row]
+        cell.setItem(item)
+        cell.backgroundColor = (shopDelegate?.shop(self, canSelectItem: item) ?? true) ? .orange : .gray
+        
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        collectionView.cellForItem(at: indexPath)?.popAnimation()
+        let item = items()[indexPath.row]
+        guard shopDelegate?.shop(self, canSelectItem: item) ?? true else { return }
+        shopDelegate?.shop(self, didSelectItem: item)
     }
 }

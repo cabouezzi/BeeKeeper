@@ -541,19 +541,19 @@ extension ApiaryViewController: SCNSceneRendererDelegate {
 
 // MARK: - ShopViewDelegate
 extension ApiaryViewController: ShopViewDelegate {
-    func shopView(_ shopView: ShopView, canSelectItem item: ShopItem) -> Bool {
+    func shop(_ shopView: ShopViewController, canSelectItem item: ShopItem) -> Bool {
         return GameManager.shared.getAllResources().canAfford(item.cost)
     }
     
-    func shopView(_ shopView: ShopView, didSelectItem item: ShopItem) {
+    func shop(_ shopView: ShopViewController, didSelectItem item: ShopItem) {
         let structure = item.newProduct()
         beginMovingStructure(structure) {
             try GameManager.shared.remove(item.cost)
         }
-        shopView.removeFromSuperview()
+        shopView.removeFromParent()
     }
     
-    func shopView(_ shopView: ShopView, itemsForSection section: ShopView.Section) -> [ShopItem] {
+    func shop(_ shopView: ShopViewController, itemsForSection section: ShopViewController.Section) -> [ShopItem] {
         switch section {
         case .structures:
             return [
