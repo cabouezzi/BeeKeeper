@@ -21,6 +21,13 @@ class ShopTab: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if let imageView = imageView {
+            imageView.frame = imageView.frame.insetBy(dx: 5, dy: 5)
+        }
+    }
+    
     override func draw(_ rect: CGRect) {
         super.draw(rect)
         guard let context = UIGraphicsGetCurrentContext() else { return }

@@ -19,7 +19,7 @@ class ShopViewController: UIViewController {
     }
     weak var shopDelegate: ShopViewDelegate?
     
-    private(set) var section: Section = .structures
+    private(set) var section: Section = .buy
     
     let frontTabImage = UIImage(named: "shop-tab-front")
     let backTabImage = UIImage(named: "shop-tab-back")
@@ -71,6 +71,7 @@ class ShopViewController: UIViewController {
         flowersTab.foregroundColor = .shopMediumBrown
         flowersTab.setImage(UIImage(named: "shop-flowers"), for: .normal)
         flowersTab.setImage(UIImage(named: "shop-flowers"), for: .highlighted)
+        flowersTab.imageView?.contentMode = .scaleAspectFit
         
         super.init(nibName: nil, bundle: nil)
         collectionView.delegate = self
@@ -114,7 +115,6 @@ class ShopViewController: UIViewController {
             case .buy: return structuresTab
             }
         }
-        tabForSection(newSection)?.popAnimation()
         guard section != newSection else { return }
         tabForSection(section)?.foregroundColor = .shopMediumBrown
         tabForSection(newSection)?.foregroundColor = .shopLightBrown
@@ -149,12 +149,12 @@ class ShopViewController: UIViewController {
             
             structuresTab.leftAnchor.constraint(equalTo: backButton.rightAnchor, constant: backButton.frame.width),
             structuresTab.topAnchor.constraint(equalTo: backButton.centerYAnchor),
-            structuresTab.bottomAnchor.constraint(equalTo: bar.topAnchor, constant: 10),
+            structuresTab.bottomAnchor.constraint(equalTo: bar.topAnchor, constant: 1),
             structuresTab.widthAnchor.constraint(equalTo: structuresTab.heightAnchor, multiplier: 2),
             
             flowersTab.leftAnchor.constraint(equalTo: structuresTab.rightAnchor),
             flowersTab.topAnchor.constraint(equalTo: backButton.centerYAnchor),
-            flowersTab.bottomAnchor.constraint(equalTo: bar.topAnchor, constant: 10),
+            flowersTab.bottomAnchor.constraint(equalTo: bar.topAnchor, constant: 1),
             flowersTab.widthAnchor.constraint(equalTo: flowersTab.heightAnchor, multiplier: 2),
         ])
     }
