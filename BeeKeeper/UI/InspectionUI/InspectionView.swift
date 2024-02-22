@@ -78,8 +78,9 @@ class InspectionView: UIView {
     }
     
     private func setModel(_ structure: Structure?) {
-        guard let structure = structure, let _ = reference, let geometry = structure.geometry else { return }
-        let model = SCNNode(geometry: geometry)
+        guard let structure = structure, let _ = reference else { return }
+        let model = structure.clone()
+        model.position = .zero
         structureView.scene?.rootNode.addChildNode(model)
     }
     
@@ -102,7 +103,7 @@ class InspectionView: UIView {
         containingTitle.setShadow()
         
         let containingLabel = UILabel()
-        containingLabel.font = .preferredFont(forTextStyle: .title1).withSize(fontSize)
+        containingLabel.font = .preferredFont(forTextStyle: .title1)
         containingLabel.textColor = .white
         containingLabel.attributedText = container.containing.attributedString(font: containingLabel.font, roundDecimals: true)
         if containingLabel.attributedText?.length == 0 {
@@ -119,7 +120,7 @@ class InspectionView: UIView {
         maximumTitle.setShadow()
         
         let maximumLabel = UILabel()
-        maximumLabel.font = .preferredFont(forTextStyle: .title1).withSize(fontSize)
+        maximumLabel.font = .preferredFont(forTextStyle: .title1)
         maximumLabel.textColor = .white
         maximumLabel.attributedText = container.maximum.attributedString(font: maximumLabel.font, roundDecimals: true)
         maximumLabel.sizeToFit()
@@ -186,6 +187,7 @@ class InspectionView: UIView {
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .horizontal
         stack.distribution = .fillEqually
+        stack.spacing = 10
         
         func column(title: String, label: String) -> UIView {
             let container = UIView()
@@ -200,7 +202,7 @@ class InspectionView: UIView {
             columnTitle.setShadow()
             let columnLabel = UILabel()
             columnLabel.translatesAutoresizingMaskIntoConstraints = false
-            columnLabel.font = .preferredFont(forTextStyle: .title1).withSize(fontSize)
+            columnLabel.font = .preferredFont(forTextStyle: .title1)
             columnTitle.adjustsFontSizeToFitWidth = true
             columnLabel.text = label
             columnLabel.sizeToFit()

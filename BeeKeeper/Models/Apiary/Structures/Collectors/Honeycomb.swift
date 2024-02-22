@@ -8,12 +8,16 @@
 import SceneKit
 
 class Honeycomb: SCNNode, Collector, Codable {
-    unowned var hive: Hive!
+    unowned var hive: Hive?
     
     var containing: Resources = Resources()
     var maximum: Resources = Resources(honey: 100)
     
-    init(hive: Hive) {
+    convenience override init() {
+        self.init(hive: nil)
+    }
+    
+    init(hive: Hive?) {
         self.hive = hive
         super.init()
         
@@ -71,7 +75,7 @@ class Pollencomb: Honeycomb {
     // TODO: Refactor code to read how many bees with gene are assigned to hive
     let beeBreadCounter = 1
     
-    override init(hive: Hive) {
+    override init(hive: Hive?) {
         super.init(hive: hive)
         maximum = Resources(pollen: 100)
     }

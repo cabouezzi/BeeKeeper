@@ -87,7 +87,7 @@ class BeeListViewController: UIViewController, UITableViewDelegate, UITableViewD
             
             releaseButton.bottomAnchor.constraint(equalTo: background.bottomAnchor, constant: -10),
             releaseButton.leftAnchor.constraint(equalTo: beeListView.leftAnchor, constant: 10),
-            releaseButton.rightAnchor.constraint(equalTo: beeListView.rightAnchor, constant: -10),
+            releaseButton.rightAnchor.constraint(equalTo: beeListView.safeAreaLayoutGuide.rightAnchor, constant: -10),
             releaseButton.heightAnchor.constraint(equalToConstant: 100),
         ])
     }

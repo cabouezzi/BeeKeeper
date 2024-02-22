@@ -20,7 +20,7 @@ class BeeListViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupButton()
         setupNameLabel()
-        setupCostLabel()
+        setProductionLabel()
         // setupRenameButton()
         
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -84,14 +84,14 @@ class BeeListViewCell: UITableViewCell {
         nameLabel.backgroundColor = .clear
     }
     
-    func setupCostLabel () {
+    func setProductionLabel () {
         productionLabel = UILabel()
         productionLabel.text = "999999"
         productionLabel.font = UIFont(name: "ArialRoundedMTBold", size: UIFont.systemFontSize * 1.5)
         productionLabel.textColor = .white
         productionLabel.setShadow()
         productionLabel.adjustsFontSizeToFitWidth = true
-        productionLabel.numberOfLines = 1
+        productionLabel.numberOfLines = 0
         productionLabel.lineBreakMode = .byClipping
         productionLabel.backgroundColor = .clear
     }
