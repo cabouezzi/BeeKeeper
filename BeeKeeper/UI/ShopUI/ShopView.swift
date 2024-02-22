@@ -14,7 +14,7 @@ protocol ShopViewDelegate: AnyObject {
     func shopView(_ shopView: ShopView, itemsForSection section: ShopView.Section) -> [ShopItem]
 }
 
-class ShopView: SKView {
+class ShopView: UIView {
     enum Section: Int {
         case structures, flowers, buy
         
@@ -28,12 +28,6 @@ class ShopView: SKView {
     }
     
     private(set) var section: Section = .structures
-    
-    private lazy var structuresTab = SKSpriteNode(texture: SKTexture.shopTabFront)
-    private lazy var flowersTab = SKSpriteNode(texture: SKTexture.shopTabFront)
-    private lazy var buyTab = SKSpriteNode(texture: SKTexture.shopTabFront)
-    private lazy var bar = SKSpriteNode(texture: SKTexture.shopBar)
-    
     private var collectionView: UICollectionView
     
     weak var shopDelegate: ShopViewDelegate?
@@ -53,24 +47,6 @@ class ShopView: SKView {
         
         super.init(frame: frame)
         
-        presentScene(SKScene(size: frame.size))
-        backgroundColor = .clear
-        scene?.backgroundColor = .clear
-        
-        let resources = ResourceDisplayHud()
-        scene?.addChild(resources)
-        resources.layout()
-        resources.update(animated: false)
-        resources.zPosition = 3
-        
-        let height = frame.height / 10
-        bar.anchorPoint = CGPoint(x: 0, y: 0)
-        bar.position.x = 0
-        bar.position.y = frame.height - height * 3
-        bar.size.width = frame.width
-        bar.size.height = height
-        scene?.addChild(bar)
-        
         let backButton = UIButton(frame: CGRect(x: 25, y: 25, width: frame.height / 15, height: frame.height / 15))
         backButton.setImage(UIImage(named: "backButton"), for: .normal)
         backButton.addAction { [weak self] in
@@ -79,46 +55,15 @@ class ShopView: SKView {
         }
         addSubview(backButton)
         
-        collectionView.frame = CGRect(x: 0, y: height * 3, width: frame.width, height: frame.height - height * 3)
+        collectionView.frame = frame
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(ShopViewCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.allowsSelection = true
         collectionView.backgroundColor = .clear
         
-        for (index, tab) in [structuresTab, flowersTab, buyTab].enumerated() {
-            let background = SKButton(texture: SKTexture.shopTabBack, size: CGSize(width: height * 2, height: height))
-            background.anchorPoint = CGPoint(x: 0.5, y: 0)
-            background.position.x = CGFloat(index + 1) * height * 2
-            background.position.y = frame.height - height * 2
-            background.zPosition = 0
-            background.onTap {
-                guard let section = Section(rawValue: index) else { return }
-                self.changeSection(section)
-            }
-            scene?.addChild(background)
-            
-            tab.anchorPoint = background.anchorPoint
-            tab.size = background.size
-            tab.position = background.position
-            tab.isHidden = true
-            tab.zPosition = 1
-            scene?.addChild(tab)
-            
-            guard let symbol = Section(rawValue: index)?.symbol else { continue }
-            symbol.scale(to: CGSize(width: height * 0.75, height: height * 0.75))
-            symbol.position = background.position
-            symbol.position.y += background.size.height / 2
-            symbol.zPosition = 2
-            scene?.addChild(symbol)
-        }
-        
         addSubview(collectionView)
         bringSubviewToFront(collectionView)
-        
-        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapGestureHandler)))
-        
-        scene?.backgroundColor = .brown
         backgroundColor = .clear
         
         changeSection(.structures)
@@ -128,30 +73,11 @@ class ShopView: SKView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc private func tapGestureHandler(_ gestureRecognizer: UITapGestureRecognizer) {
-        gestureRecognizer.cancelsTouchesInView = false
-        
-        let point = gestureRecognizer.location(in: self)
-        guard let converted = scene?.convertPoint(fromView: point) else { return }
-        guard let button = scene?.nodes(at: converted).compactMap({ $0 as? SKButton }).first else { return }
-        button.activate()
-    }
-    
     func items() -> [ShopItem] {
         return shopDelegate?.shopView(self, itemsForSection: section) ?? []
     }
     
-    private func tabForSection(_ section: Section) -> SKSpriteNode {
-        switch section {
-        case .structures: return structuresTab
-        case .flowers: return flowersTab
-        case .buy: return buyTab
-        }
-    }
-    
     func changeSection(_ section: Section) {
-        tabForSection(self.section).isHidden = true
-        tabForSection(section).isHidden = false
         self.section = section
         collectionView.reloadData()
     }

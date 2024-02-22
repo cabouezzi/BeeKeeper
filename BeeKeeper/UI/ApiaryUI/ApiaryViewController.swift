@@ -205,9 +205,9 @@ class ApiaryViewController: UIViewController {
     // MARK: - UI Navigation
     
     func popToShop() {
-        let shopView = ShopView(frame: apiaryView.frame)
-        shopView.shopDelegate = self
-        apiaryView.addSubview(shopView)
+        let vc = ShopViewController(frame: apiaryView.frame)
+        vc.shopDelegate = self
+        addChild(vc)
     }
     
     func popToEvolution() {

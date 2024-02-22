@@ -125,6 +125,8 @@
 		14EB4BDA2B4F493700BCDAAA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14EB4BD92B4F493700BCDAAA /* LaunchScreen.storyboard */; };
 		14EC1FDD2B8329FC00F1D3E2 /* BeeListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EC1FDC2B8329FC00F1D3E2 /* BeeListViewController.swift */; };
 		14EC1FE32B86AE2900F1D3E2 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EC1FE22B86AE2900F1D3E2 /* LaunchView.swift */; };
+		14EC1FE52B86D45300F1D3E2 /* ShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EC1FE42B86D45300F1D3E2 /* ShopViewController.swift */; };
+		14EC1FE92B86E5A800F1D3E2 /* ShopTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EC1FE82B86E5A800F1D3E2 /* ShopTab.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -273,6 +275,8 @@
 		14EB4BD92B4F493700BCDAAA /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		14EC1FDC2B8329FC00F1D3E2 /* BeeListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeeListViewController.swift; sourceTree = "<group>"; };
 		14EC1FE22B86AE2900F1D3E2 /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
+		14EC1FE42B86D45300F1D3E2 /* ShopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopViewController.swift; sourceTree = "<group>"; };
+		14EC1FE82B86E5A800F1D3E2 /* ShopTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopTab.swift; sourceTree = "<group>"; };
 		14ECDA742B4FC12A00760320 /* ColladaExportNotes.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ColladaExportNotes.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -713,6 +717,8 @@
 			isa = PBXGroup;
 			children = (
 				142211192B5740CF0060C51A /* ShopView.swift */,
+				14EC1FE82B86E5A800F1D3E2 /* ShopTab.swift */,
+				14EC1FE42B86D45300F1D3E2 /* ShopViewController.swift */,
 				14A7DE842AD3906600D2FD4A /* ShopViewCell.swift */,
 			);
 			path = ShopUI;
@@ -935,6 +941,7 @@
 				14835A7C2AB529A5006D0290 /* BubbleStyle.swift in Sources */,
 				14835A192AB01091006D0290 /* Gene.swift in Sources */,
 				14835A112AB01091006D0290 /* Honeycomb.swift in Sources */,
+				14EC1FE92B86E5A800F1D3E2 /* ShopTab.swift in Sources */,
 				14E448832AC68129008963C8 /* SCNNode.swift in Sources */,
 				142DF2062AD3806F00274986 /* SceneDelegate.swift in Sources */,
 				14835A0D2AB01091006D0290 /* Incubator.swift in Sources */,
@@ -979,6 +986,7 @@
 				14835A0F2AB01091006D0290 /* HoneyStorage.swift in Sources */,
 				1471B95F2B659B32006DE737 /* UIView.swift in Sources */,
 				14D7C5632B5C31A500CC35CB /* StructureBorder.swift in Sources */,
+				14EC1FE52B86D45300F1D3E2 /* ShopViewController.swift in Sources */,
 				1471B96E2B676DCF006DE737 /* InspectionView.swift in Sources */,
 				14A0B6ED2B7476B900D41DD9 /* SettingsManager.swift in Sources */,
 				1471B9652B675922006DE737 /* Rose.swift in Sources */,
