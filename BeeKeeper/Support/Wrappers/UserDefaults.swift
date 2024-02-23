@@ -11,6 +11,8 @@ import Foundation
 struct UserDefaultsKey<T: Codable> {
     enum Key: String {
         case firstLogin = "first-login"
+        case maxVolumeMusic = "max-volume-music"
+        case maxVolumeSFX = "max-volume-sfx"
     }
     
     let key: Key

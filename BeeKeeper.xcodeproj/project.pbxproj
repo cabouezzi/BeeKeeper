@@ -125,6 +125,9 @@
 		14EB4BDA2B4F493700BCDAAA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14EB4BD92B4F493700BCDAAA /* LaunchScreen.storyboard */; };
 		14EC1FDD2B8329FC00F1D3E2 /* BeeListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EC1FDC2B8329FC00F1D3E2 /* BeeListViewController.swift */; };
 		14EC1FE32B86AE2900F1D3E2 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EC1FE22B86AE2900F1D3E2 /* LaunchView.swift */; };
+		14EC1FEE2B88485300F1D3E2 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EC1FED2B88485300F1D3E2 /* SettingsView.swift */; };
+		14EC1FF02B885A1600F1D3E2 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EC1FEF2B885A1600F1D3E2 /* SettingsViewModel.swift */; };
+		14EC1FF22B885D8600F1D3E2 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EC1FF12B885D8600F1D3E2 /* SettingsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -273,6 +276,9 @@
 		14EB4BD92B4F493700BCDAAA /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		14EC1FDC2B8329FC00F1D3E2 /* BeeListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeeListViewController.swift; sourceTree = "<group>"; };
 		14EC1FE22B86AE2900F1D3E2 /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
+		14EC1FED2B88485300F1D3E2 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		14EC1FEF2B885A1600F1D3E2 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		14EC1FF12B885D8600F1D3E2 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		14ECDA742B4FC12A00760320 /* ColladaExportNotes.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ColladaExportNotes.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -470,6 +476,7 @@
 				14A7DE862AD3AA5800D2FD4A /* EvolutionUI */,
 				145749442B619301004FAD7D /* BeeListUI */,
 				1471B96C2B676DB7006DE737 /* InspectionUI */,
+				14EC1FEC2B88482F00F1D3E2 /* SettingsUI */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -767,6 +774,16 @@
 			path = Flowers;
 			sourceTree = "<group>";
 		};
+		14EC1FEC2B88482F00F1D3E2 /* SettingsUI */ = {
+			isa = PBXGroup;
+			children = (
+				14EC1FED2B88485300F1D3E2 /* SettingsView.swift */,
+				14EC1FEF2B885A1600F1D3E2 /* SettingsViewModel.swift */,
+				14EC1FF12B885D8600F1D3E2 /* SettingsViewController.swift */,
+			);
+			path = SettingsUI;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -936,6 +953,7 @@
 				14835A192AB01091006D0290 /* Gene.swift in Sources */,
 				14835A112AB01091006D0290 /* Honeycomb.swift in Sources */,
 				14E448832AC68129008963C8 /* SCNNode.swift in Sources */,
+				14EC1FF22B885D8600F1D3E2 /* SettingsViewController.swift in Sources */,
 				142DF2062AD3806F00274986 /* SceneDelegate.swift in Sources */,
 				14835A0D2AB01091006D0290 /* Incubator.swift in Sources */,
 				1471B97F2B6ADDAC006DE737 /* TutorialViewController.swift in Sources */,
@@ -991,11 +1009,13 @@
 				1471B9832B718A8B006DE737 /* TutorialView.swift in Sources */,
 				145749752B65783C004FAD7D /* EvolutionGeneDataView.swift in Sources */,
 				14835A032AB01091006D0290 /* Producer.swift in Sources */,
+				14EC1FEE2B88485300F1D3E2 /* SettingsView.swift in Sources */,
 				148BBECC2B1C115100C86AB5 /* SKTextNode.swift in Sources */,
 				142211162B56FAFE0060C51A /* Camera.swift in Sources */,
 				1405AC2F2B1599D3003B0079 /* UIBezierPath.swift in Sources */,
 				148359EB2AB01091006D0290 /* Meshes.swift in Sources */,
 				148359F52AB01091006D0290 /* AnimatedNumberNode.swift in Sources */,
+				14EC1FF02B885A1600F1D3E2 /* SettingsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

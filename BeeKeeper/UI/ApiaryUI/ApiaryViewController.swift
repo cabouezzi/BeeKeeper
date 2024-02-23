@@ -9,6 +9,7 @@ import UIKit
 import SceneKit
 import SpriteKit
 import AVFoundation
+import SwiftUI
 
 fileprivate enum GameState {
     case idle
@@ -63,6 +64,7 @@ class ApiaryViewController: UIViewController {
     // MARK: - UI Functions
     
     final func linkOverlay() {
+        apiaryView.overlay.achievementsButton.onTap(showSettingsView)
         apiaryView.overlay.shopButton.onTap(popToShop)
         apiaryView.overlay.evolutionButton.onTap(popToEvolution)
         apiaryView.overlay.mapButton.onTap(popToMap)
@@ -239,6 +241,11 @@ class ApiaryViewController: UIViewController {
     func popToInspectionView(for structure: Structure) {
         let view = InspectionView(structure: structure, frame: apiaryView.frame)
         apiaryView.addSubview(view)
+    }
+    
+    func showSettingsView() {
+        let vc = SettingsViewController(frame: apiaryView.frame)
+        addChild(vc)
     }
     
     // MARK: - Gesture Recognizers
