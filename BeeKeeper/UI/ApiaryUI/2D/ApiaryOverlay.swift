@@ -18,6 +18,7 @@ class ApiaryOverlay: SKScene {
     let shopButton = SKButton(texture: SKTexture.build)
     
     let beesButton: SKButton = SKButton(texture: SKTexture.bees)
+    let settingsButton = SKButton(texture: SKTexture.settings)
     let evolutionButton: SKButton = SKButton(texture: SKTexture.atom)
     
     private var buttonsCache: Set<SKNode> = []
@@ -70,6 +71,13 @@ class ApiaryOverlay: SKScene {
         beesButton.position.x = size.width - section / 2 - spacing
         beesButton.position.y = resources.calculateAccumulatedFrame().minY - buttonSize / 2 - spacing
         sharedHud.addChild(beesButton)
+        
+        // Settings
+        settingsButton.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        settingsButton.size = CGSize(width: buttonSize, height: buttonSize)
+        settingsButton.position.x = size.width - section / 2 - spacing
+        settingsButton.position.y = beesButton.position.y - buttonSize - spacing
+        sharedHud.addChild(settingsButton)
         
         // Shop
         let shopButtonSize = buttonSize * 1.5

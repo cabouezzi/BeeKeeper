@@ -18,6 +18,7 @@ extension SKTexture {
     static let atom = SKTexture(imageNamed: "atomButton")
     
     static let bees = SKTexture(imageNamed: "beeButton")
+    static let settings = SKTexture(imageNamed: "settings-button")
     
     static let blankOrange = SKTexture(imageNamed: "blank")
     static let blankWhite = SKTexture(imageNamed: "blankButton")

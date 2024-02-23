@@ -64,11 +64,11 @@ class ApiaryViewController: UIViewController {
     // MARK: - UI Functions
     
     final func linkOverlay() {
-        apiaryView.overlay.achievementsButton.onTap(showSettingsView)
         apiaryView.overlay.shopButton.onTap(popToShop)
         apiaryView.overlay.evolutionButton.onTap(popToEvolution)
         apiaryView.overlay.mapButton.onTap(popToMap)
         apiaryView.overlay.beesButton.onTap({ [unowned self] in popToBeeList() })
+        apiaryView.overlay.settingsButton.onTap(showSettingsView)
     }
     
     final func selectNode(_ node: SCNNode & Model) {
