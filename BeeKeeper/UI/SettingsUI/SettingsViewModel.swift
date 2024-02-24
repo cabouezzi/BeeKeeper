@@ -6,9 +6,11 @@
 //
 
 import Combine
+import Foundation
 
 extension SettingsView {
     class ViewModel: ObservableObject {
+        let websiteURL = URL(string: "https://www.youtube.com/")!
         // @Published wrappers for SettingsManager properties
         @Published var maxVolumeSFX: Float = SettingsManager.shared.maxVolumeSFX
         @Published var maxVolumeMusic: Float = SettingsManager.shared.maxVolumeMusic

@@ -11,10 +11,12 @@ import Combine
 struct SettingsView: View {
     @ObservedObject var model = ViewModel()
     
+    @State private var showHelp = false
+    @State private var showContact = false
+    
     var body: some View {
         ZStack {
-            // Background
-            Color(uiColor: .darkGray)
+            Color(uiColor: .gray)
                 .ignoresSafeArea()
             // Contents
             VStack(spacing: 10) {
@@ -38,6 +40,20 @@ struct SettingsView: View {
                 .padding(.horizontal, 10)
                 
                 Spacer()
+                
+//                HStack {
+//                    ButtonWithPopover(title: "Help and Support") {
+//                        Link("HS", destination: model.websiteURL)
+//                    }
+//                    
+//                    ButtonWithPopover(title: "Contact Us") {
+//                        Link("CU Else", destination: model.websiteURL)
+//                    }
+//                    
+//                    ButtonWithPopover(title: "Contact Us") {
+//                        Link("CU Else", destination: model.websiteURL)
+//                    }
+//                }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }

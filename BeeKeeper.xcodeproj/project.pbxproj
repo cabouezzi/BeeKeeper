@@ -115,6 +115,7 @@
 		14AB5CA92B60C378002750B2 /* BeeStripesGray.scn in Resources */ = {isa = PBXBuildFile; fileRef = 14AB5CA82B60C378002750B2 /* BeeStripesGray.scn */; };
 		14AB5CAB2B60C3CB002750B2 /* BeeStripesOrange.scn in Resources */ = {isa = PBXBuildFile; fileRef = 14AB5CAA2B60C3CB002750B2 /* BeeStripesOrange.scn */; };
 		14BB763B2B12903300E15654 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BB763A2B12903300E15654 /* AppDelegate.swift */; };
+		14D6E8AC2B89BDA4006892AC /* ButtonWithPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D6E8AB2B89BDA4006892AC /* ButtonWithPopover.swift */; };
 		14D7C5632B5C31A500CC35CB /* StructureBorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D7C5622B5C31A500CC35CB /* StructureBorder.swift */; };
 		14D7C56A2B5CC40800CC35CB /* Daisy.scn in Resources */ = {isa = PBXBuildFile; fileRef = 14D7C5692B5CC40800CC35CB /* Daisy.scn */; };
 		14D7C5732B5CC8E200CC35CB /* Lavender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D7C5722B5CC8E200CC35CB /* Lavender.swift */; };
@@ -266,6 +267,7 @@
 		14AB5CA82B60C378002750B2 /* BeeStripesGray.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeStripesGray.scn; sourceTree = "<group>"; };
 		14AB5CAA2B60C3CB002750B2 /* BeeStripesOrange.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeStripesOrange.scn; sourceTree = "<group>"; };
 		14BB763A2B12903300E15654 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		14D6E8AB2B89BDA4006892AC /* ButtonWithPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonWithPopover.swift; sourceTree = "<group>"; };
 		14D7C5622B5C31A500CC35CB /* StructureBorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructureBorder.swift; sourceTree = "<group>"; };
 		14D7C5692B5CC40800CC35CB /* Daisy.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Daisy.scn; sourceTree = "<group>"; };
 		14D7C5722B5CC8E200CC35CB /* Lavender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lavender.swift; sourceTree = "<group>"; };
@@ -780,6 +782,7 @@
 				14EC1FED2B88485300F1D3E2 /* SettingsView.swift */,
 				14EC1FEF2B885A1600F1D3E2 /* SettingsViewModel.swift */,
 				14EC1FF12B885D8600F1D3E2 /* SettingsViewController.swift */,
+				14D6E8AB2B89BDA4006892AC /* ButtonWithPopover.swift */,
 			);
 			path = SettingsUI;
 			sourceTree = "<group>";
@@ -996,6 +999,7 @@
 				14835A912AC6000E006D0290 /* UIColor.swift in Sources */,
 				14835A0F2AB01091006D0290 /* HoneyStorage.swift in Sources */,
 				1471B95F2B659B32006DE737 /* UIView.swift in Sources */,
+				14D6E8AC2B89BDA4006892AC /* ButtonWithPopover.swift in Sources */,
 				14D7C5632B5C31A500CC35CB /* StructureBorder.swift in Sources */,
 				1471B96E2B676DCF006DE737 /* InspectionView.swift in Sources */,
 				14A0B6ED2B7476B900D41DD9 /* SettingsManager.swift in Sources */,
