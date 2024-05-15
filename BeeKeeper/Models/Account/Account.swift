@@ -8,6 +8,7 @@
 final class Account: Codable {
     var apiaries: [Apiary]
     var unlockedGenes: Set<Gene>
+    var researchPeriod: Period<Gene>?
     
     init() {
         apiaries = [

@@ -166,6 +166,12 @@ struct Meshes {
             let node = scene.rootNode.childNode(withName: "incubator", recursively: true)!
             return node.geometry!
         }
+        
+        static var laboratory: SCNGeometry {
+            let scene = SCNScene(named: "ScienceStand.scn")!
+            let node = scene.rootNode.childNode(withName: "incubator", recursively: true)!
+            return node.geometry!
+        }
     }
     
     struct Flowers {

@@ -37,6 +37,7 @@ final class GameManager: NSObject {
         
         // TODO: Make formula instead of loop
         
+        // Resource production
         for _ in 0..<Int(seconds) {
             for structure in apiary.structures {
                 if let collector = structure as? (Container & Collector), let resource = collector.resourceTargets().first {
@@ -87,12 +88,35 @@ final class GameManager: NSObject {
         gameTicker.start()
     }
     
-    func unlockGene(_ gene: Gene) throws {
-        let prereq = GeneNetwork.shared.prerequisites(for: gene)
+    /// Begins a new research period.
+    /// - throws: ``PeriodError/busy``
+    func startResearch(_ geneData: GeneData) throws {
+        let prereq = GeneNetwork.shared.prerequisites(for: geneData.gene)
         guard prereq.allSatisfy({ account.unlockedGenes.contains($0) }) else {
             throw GeneError.missingPrerequisites(prereq.filter({ !account.unlockedGenes.contains($0) }))
         }
-        account.unlockedGenes.insert(gene)
+        guard getAllResources().canAfford(geneData.cost) else {
+            throw ContainerError.containerInsufficient
+        }
+        guard account.researchPeriod == nil else {
+            throw PeriodError.busy
+        }
+        account.researchPeriod = Period<Gene>(result: geneData.gene, duration: geneData.duration)
+        try! remove(geneData.cost)
+    }
+    
+    /// Claims the current research period, if complete.
+    ///
+    /// - throws: ``PeriodError``
+    func claimResearch() throws {
+        guard let researchPeriod = account.researchPeriod else {
+            throw PeriodError.notStarted
+        }
+        guard researchPeriod.isFinished else {
+            throw PeriodError.notFinished
+        }
+        account.unlockedGenes.insert(researchPeriod.result)
+        account.researchPeriod = nil
     }
     
     // MARK: - Apiary-Dependent

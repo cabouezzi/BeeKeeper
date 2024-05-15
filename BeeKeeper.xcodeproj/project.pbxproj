@@ -125,7 +125,7 @@
 		14EB4BDA2B4F493700BCDAAA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14EB4BD92B4F493700BCDAAA /* LaunchScreen.storyboard */; };
 		14EC1FDD2B8329FC00F1D3E2 /* BeeListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EC1FDC2B8329FC00F1D3E2 /* BeeListViewController.swift */; };
 		14EC1FE32B86AE2900F1D3E2 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EC1FE22B86AE2900F1D3E2 /* LaunchView.swift */; };
-		14EC1FEB2B870D4D00F1D3E2 /* ResearchPeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EC1FEA2B870D4D00F1D3E2 /* ResearchPeriod.swift */; };
+		14EC1FEB2B870D4D00F1D3E2 /* Period.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EC1FEA2B870D4D00F1D3E2 /* Period.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -274,7 +274,7 @@
 		14EB4BD92B4F493700BCDAAA /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		14EC1FDC2B8329FC00F1D3E2 /* BeeListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeeListViewController.swift; sourceTree = "<group>"; };
 		14EC1FE22B86AE2900F1D3E2 /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
-		14EC1FEA2B870D4D00F1D3E2 /* ResearchPeriod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResearchPeriod.swift; sourceTree = "<group>"; };
+		14EC1FEA2B870D4D00F1D3E2 /* Period.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Period.swift; sourceTree = "<group>"; };
 		14ECDA742B4FC12A00760320 /* ColladaExportNotes.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ColladaExportNotes.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -603,7 +603,7 @@
 				148359E12AB01091006D0290 /* Gene.swift */,
 				1471B95B2B659633006DE737 /* GeneData.swift */,
 				1405AC2C2B158C3F003B0079 /* GeneNetwork.swift */,
-				14EC1FEA2B870D4D00F1D3E2 /* ResearchPeriod.swift */,
+				14EC1FEA2B870D4D00F1D3E2 /* Period.swift */,
 			);
 			path = Evolution;
 			sourceTree = "<group>";
@@ -964,7 +964,7 @@
 				14835A092AB01091006D0290 /* Container.swift in Sources */,
 				1471B9672B675927006DE737 /* Daisy.swift in Sources */,
 				14E7C8322B4D13A6002376BF /* GameTicker.swift in Sources */,
-				14EC1FEB2B870D4D00F1D3E2 /* ResearchPeriod.swift in Sources */,
+				14EC1FEB2B870D4D00F1D3E2 /* Period.swift in Sources */,
 				148ACE932B53540800A0F948 /* Bubble.swift in Sources */,
 				14835A2B2AB01327006D0290 /* SKButton.swift in Sources */,
 				1422111A2B5740D00060C51A /* ShopView.swift in Sources */,

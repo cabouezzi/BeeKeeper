@@ -64,7 +64,11 @@ class EvolutionViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        hideData()
+        if let gene = GameManager.shared.account.researchPeriod?.result {
+            showData(for: gene)
+        } else {
+            hideData()
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -75,19 +79,31 @@ class EvolutionViewController: UIViewController {
         animateCenterNode()
         
         dataView.purchaseButton.addAction { [unowned self] in
-            guard let data = dataView.data else { return }
-            // Buy gene
-            if !GameManager.shared.account.unlockedGenes.contains(data.gene) {
+            // Claim existing research
+            if let researchPeriod = GameManager.shared.account.researchPeriod {
                 do {
-                    guard GameManager.shared.getAllResources().canAfford(data.cost) else { throw ContainerError.containerInsufficient }
-                    try GameManager.shared.unlockGene(data.gene)
-                    // FIXME: The force success is to intentionally crash if we can't afford it. This should never happen, but in the event it does, the crash prevents saving the gene as unlocked.
-                    try! GameManager.shared.remove(data.cost)
-                    if let icon = evolutionView.iconForGene(data.gene) {
+                    try GameManager.shared.claimResearch()
+                    if let icon = evolutionView.iconForGene(researchPeriod.result) {
                         icon.childNode(withName: "lock")?.removeFromParent()
                     }
                     updateLockNodes()
-                    print("Successfully unlocked \(data.gene)")
+                    print("Successfully unlocked \(researchPeriod.result)")
+                } catch {
+                    print(error)
+                }
+                return
+            }
+            
+            guard let data = dataView.data else { return }
+            
+            // Buy new gene
+            if !GameManager.shared.account.unlockedGenes.contains(data.gene) {
+                do {
+                    guard GameManager.shared.getAllResources().canAfford(data.cost) else { throw ContainerError.containerInsufficient }
+                    try GameManager.shared.startResearch(data)
+                    // FIXME: The force success is to intentionally crash if we can't afford it. This should never happen, but in the event it does, the crash prevents saving the gene as unlocked.
+                    try! GameManager.shared.remove(data.cost)
+                    print("Successfully began researching \(data.gene)")
                 } catch {
                     print(error.localizedDescription)
                 }
@@ -101,6 +117,12 @@ class EvolutionViewController: UIViewController {
     }
     
     func showData(for gene: Gene, animated: Bool = false) {
+        // Always show data if research is underway
+        var gene = gene
+        if let period = GameManager.shared.account.researchPeriod {
+            gene = period.result
+        }
+                                
         dataView.isUserInteractionEnabled = true
         if let data = dataSource?.geneData(for: gene) {
             dataView.setGeneData(data)
@@ -111,6 +133,11 @@ class EvolutionViewController: UIViewController {
     }
     
     func hideData(animated: Bool = false) {
+        // Always show data if research is underway
+        guard GameManager.shared.account.researchPeriod == nil else {
+            return
+        }
+        
         dataView.isUserInteractionEnabled = false
         UIView.animate(withDuration: animated ? 0.15 : 0) { [unowned dataView] in
             dataView.alpha = 0
