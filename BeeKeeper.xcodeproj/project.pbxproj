@@ -21,6 +21,7 @@
 		142211162B56FAFE0060C51A /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142211152B56FAFE0060C51A /* Camera.swift */; };
 		1422111A2B5740D00060C51A /* ShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142211192B5740CF0060C51A /* ShopView.swift */; };
 		142DF2062AD3806F00274986 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142DF1DA2AD3804C00274986 /* SceneDelegate.swift */; };
+		144C020A2BF47AA600913A03 /* TimePeriodLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 144C02092BF47AA600913A03 /* TimePeriodLabel.swift */; };
 		145749432B6179B1004FAD7D /* BeeAbdomens.scn in Resources */ = {isa = PBXBuildFile; fileRef = 145749422B6179B1004FAD7D /* BeeAbdomens.scn */; };
 		145749482B619349004FAD7D /* BeeListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145749472B619349004FAD7D /* BeeListViewCell.swift */; };
 		145749532B62FFC4004FAD7D /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145749522B62FFC4004FAD7D /* DatabaseService.swift */; };
@@ -165,6 +166,7 @@
 		142211152B56FAFE0060C51A /* Camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
 		142211192B5740CF0060C51A /* ShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopView.swift; sourceTree = "<group>"; };
 		142DF1DA2AD3804C00274986 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		144C02092BF47AA600913A03 /* TimePeriodLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePeriodLabel.swift; sourceTree = "<group>"; };
 		145749422B6179B1004FAD7D /* BeeAbdomens.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeAbdomens.scn; sourceTree = "<group>"; };
 		145749472B619349004FAD7D /* BeeListViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeeListViewCell.swift; sourceTree = "<group>"; };
 		145749522B62FFC4004FAD7D /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
@@ -310,6 +312,7 @@
 				148BBECB2B1C115100C86AB5 /* SKTextNode.swift */,
 				148359C72AB01091006D0290 /* ResourceBar.swift */,
 				148359C52AB01091006D0290 /* AnimatedNumberNode.swift */,
+				144C02092BF47AA600913A03 /* TimePeriodLabel.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -979,6 +982,7 @@
 				14BB763B2B12903300E15654 /* AppDelegate.swift in Sources */,
 				14835A172AB01091006D0290 /* Apiary.swift in Sources */,
 				14835A312AB02A60006D0290 /* SKNode.swift in Sources */,
+				144C020A2BF47AA600913A03 /* TimePeriodLabel.swift in Sources */,
 				14835A912AC6000E006D0290 /* UIColor.swift in Sources */,
 				14835A0F2AB01091006D0290 /* HoneyStorage.swift in Sources */,
 				1471B95F2B659B32006DE737 /* UIView.swift in Sources */,

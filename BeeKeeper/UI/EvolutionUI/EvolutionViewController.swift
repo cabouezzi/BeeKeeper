@@ -103,6 +103,7 @@ class EvolutionViewController: UIViewController {
                     try GameManager.shared.startResearch(data)
                     // FIXME: The force success is to intentionally crash if we can't afford it. This should never happen, but in the event it does, the crash prevents saving the gene as unlocked.
                     try! GameManager.shared.remove(data.cost)
+                    self.showData(for: data.gene)
                     print("Successfully began researching \(data.gene)")
                 } catch {
                     print(error.localizedDescription)

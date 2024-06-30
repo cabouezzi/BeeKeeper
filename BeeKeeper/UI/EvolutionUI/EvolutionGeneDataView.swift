@@ -15,6 +15,7 @@ class EvolutionGeneDataView: UIScrollView {
     let detailsLabel: UILabel
     let costLabel: UILabel
     let purchaseButton: UIButton
+    let statusLabel: TimePeriodLabel<Gene>
     
     override init(frame: CGRect) {
         let size = min(frame.size.width, frame.size.height / 3)
@@ -49,6 +50,14 @@ class EvolutionGeneDataView: UIScrollView {
             SFXManager.shared.playSound(.pop)
             purchaseButton?.popAnimation()
         }
+        
+        statusLabel = TimePeriodLabel<Gene>()
+        statusLabel.font = .preferredFont(forTextStyle: .title1)
+        statusLabel.textColor = .white
+        statusLabel.backgroundColor = .clear
+        statusLabel.translatesAutoresizingMaskIntoConstraints = false
+        // Show if research is active for current gene
+        statusLabel.isHidden = true
         super.init(frame: frame)
         
         addSubview(iconView)
@@ -56,6 +65,7 @@ class EvolutionGeneDataView: UIScrollView {
         addSubview(detailsLabel)
         addSubview(costLabel)
         addSubview(purchaseButton)
+        addSubview(statusLabel)
         
         let content = subviews.reduce(CGRect.zero, { $0.union($1.frame) })
         contentSize = content.size
@@ -77,6 +87,9 @@ class EvolutionGeneDataView: UIScrollView {
             purchaseButton.topAnchor.constraint(equalTo: costLabel.bottomAnchor, constant: inset),
             purchaseButton.centerXAnchor.constraint(equalTo: centerXAnchor),
             purchaseButton.widthAnchor.constraint(equalTo: detailsLabel.widthAnchor, constant: -inset),
+            statusLabel.topAnchor.constraint(equalTo: purchaseButton.bottomAnchor, constant: inset),
+            statusLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            statusLabel.widthAnchor.constraint(equalTo: detailsLabel.widthAnchor, constant: -inset),
         ])
     }
     
@@ -106,6 +119,14 @@ class EvolutionGeneDataView: UIScrollView {
         costLabel.lineBreakMode = .byWordWrapping
         costLabel.numberOfLines = 0
         costLabel.textAlignment = .left
+        
+        if let period = GameManager.shared.account.researchPeriod, period.result == data.gene {
+            statusLabel.period = period
+            statusLabel.isHidden = false
+        } else {
+            statusLabel.period = nil
+            statusLabel.isHidden = true
+        }
         
         let height = subviews.reduce(0, { $0 + $1.frame.height })
         contentSize.height = height
