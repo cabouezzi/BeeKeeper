@@ -115,6 +115,8 @@
 		14AB5CA92B60C378002750B2 /* BeeStripesGray.scn in Resources */ = {isa = PBXBuildFile; fileRef = 14AB5CA82B60C378002750B2 /* BeeStripesGray.scn */; };
 		14AB5CAB2B60C3CB002750B2 /* BeeStripesOrange.scn in Resources */ = {isa = PBXBuildFile; fileRef = 14AB5CAA2B60C3CB002750B2 /* BeeStripesOrange.scn */; };
 		14BB763B2B12903300E15654 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BB763A2B12903300E15654 /* AppDelegate.swift */; };
+		14C6ECE02C33CDF200F0CF25 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 14C6ECDF2C33CDF200F0CF25 /* GoogleService-Info.plist */; };
+		14C6ECE32C33CF4800F0CF25 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 14C6ECE22C33CF4800F0CF25 /* FirebaseCrashlytics */; };
 		14D7C5632B5C31A500CC35CB /* StructureBorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D7C5622B5C31A500CC35CB /* StructureBorder.swift */; };
 		14D7C56A2B5CC40800CC35CB /* Daisy.scn in Resources */ = {isa = PBXBuildFile; fileRef = 14D7C5692B5CC40800CC35CB /* Daisy.scn */; };
 		14D7C5732B5CC8E200CC35CB /* Lavender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D7C5722B5CC8E200CC35CB /* Lavender.swift */; };
@@ -263,6 +265,7 @@
 		14AB5CA82B60C378002750B2 /* BeeStripesGray.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeStripesGray.scn; sourceTree = "<group>"; };
 		14AB5CAA2B60C3CB002750B2 /* BeeStripesOrange.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = BeeStripesOrange.scn; sourceTree = "<group>"; };
 		14BB763A2B12903300E15654 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		14C6ECDF2C33CDF200F0CF25 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		14D7C5622B5C31A500CC35CB /* StructureBorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructureBorder.swift; sourceTree = "<group>"; };
 		14D7C5692B5CC40800CC35CB /* Daisy.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Daisy.scn; sourceTree = "<group>"; };
 		14D7C5722B5CC8E200CC35CB /* Lavender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lavender.swift; sourceTree = "<group>"; };
@@ -281,6 +284,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				14C6ECE32C33CF4800F0CF25 /* FirebaseCrashlytics in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -442,6 +446,7 @@
 		148359BB2AB01091006D0290 /* BeeKeeper */ = {
 			isa = PBXGroup;
 			children = (
+				14C6ECDF2C33CDF200F0CF25 /* GoogleService-Info.plist */,
 				148359CD2AB01091006D0290 /* Assets.xcassets */,
 				148359EA2AB01091006D0290 /* BeeKeeper.entitlements */,
 				14EB4BD92B4F493700BCDAAA /* LaunchScreen.storyboard */,
@@ -777,12 +782,16 @@
 				148358BB2AABBFC4006D0290 /* Sources */,
 				148358BC2AABBFC4006D0290 /* Frameworks */,
 				148358BD2AABBFC4006D0290 /* Resources */,
+				14F3C3702C33DB2B00512F0F /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = BeeKeeper;
+			packageProductDependencies = (
+				14C6ECE22C33CF4800F0CF25 /* FirebaseCrashlytics */,
+			);
 			productName = BeeKeeper;
 			productReference = 148358BF2AABBFC4006D0290 /* BeeKeeper.app */;
 			productType = "com.apple.product-type.application";
@@ -853,6 +862,9 @@
 				Base,
 			);
 			mainGroup = 148358B62AABBFC4006D0290;
+			packageReferences = (
+				14C6ECE12C33CF4800F0CF25 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = 148358C02AABBFC4006D0290 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -906,6 +918,7 @@
 				140AF27E2B616CCD006F1DE6 /* BeeStingers.scn in Resources */,
 				141AC4972B50651B006DD1F8 /* BeeWiggle.scn in Resources */,
 				14AB5C992B5EE735002750B2 /* BeeKeeperForest.scn in Resources */,
+				14C6ECE02C33CDF200F0CF25 /* GoogleService-Info.plist in Resources */,
 				14835A012AB01091006D0290 /* Assets.xcassets in Resources */,
 				14A0B6F52B747B0C00D41DD9 /* pop-1.mp3 in Resources */,
 				14766AE82B7843DA00D10076 /* bee-buzz-2.wav in Resources */,
@@ -920,6 +933,31 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		14F3C3702C33DB2B00512F0F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist",
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/GoogleService-Info.plist",
+				"$(TARGET_BUILD_DIR)/$(EXECUTABLE_PATH)",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		148358BB2AABBFC4006D0290 /* Sources */ = {
@@ -1102,6 +1140,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = K4ZMXMC2TC;
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = NO;
@@ -1292,6 +1331,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = K4ZMXMC2TC;
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = NO;
@@ -1475,6 +1515,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		14C6ECE12C33CF4800F0CF25 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.28.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		14C6ECE22C33CF4800F0CF25 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 14C6ECE12C33CF4800F0CF25 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 148358B72AABBFC4006D0290 /* Project object */;
 }
