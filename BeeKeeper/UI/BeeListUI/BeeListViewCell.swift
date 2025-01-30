@@ -63,8 +63,7 @@ class BeeListViewCell: UITableViewCell {
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        contentView.layer.borderColor = selected ? UIColor.yellow.cgColor : UIColor.clear.cgColor
-        contentView.layer.borderWidth = 2
+        contentView.backgroundColor = selected ? .orange : UIColor.orange.withAlphaComponent(0.6)
     }
     
     func setBee(_ bee: Bee) {

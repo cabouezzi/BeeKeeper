@@ -47,7 +47,6 @@ class ApiaryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        apiaryView.overlay.mapButton.isHidden = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -207,7 +206,12 @@ class ApiaryViewController: UIViewController {
     func popToShop() {
         let shopView = ShopView(frame: apiaryView.frame)
         shopView.shopDelegate = self
+        shopView.alpha = 0
         apiaryView.addSubview(shopView)
+        UIView.animate(withDuration: 0.25) { [weak shopView] in
+            shopView?.alpha = 1
+        }
+        apiaryView.overlay.hideSharedHud()
     }
     
     func popToEvolution() {
@@ -220,20 +224,17 @@ class ApiaryViewController: UIViewController {
     }
     
     func popToBeeList(_ bee: Bee? = nil) {
-        let vc = BeeListViewController(frame: apiaryView.frame, bees: apiaryView.apiary.bees)
-        vc.onSelect { [weak self, weak vc] bee in
-            vc?.removeFromParent()
+        let view = BeeListView(frame: apiaryView.frame, bees: apiaryView.apiary.bees)
+        view.beeListViewDelegate = self
+        view.onSelect { [weak self] bee in
             self?.selectNode(bee)
         }
-        vc.onRelease { [weak self, weak vc] in
+        view.onRelease { [weak self, weak view] in
             guard case .idle = self?.state else { return }
             GameManager.shared.releaseBees()
-            vc?.removeFromParent()
+            view?.removeFromSuperview()
         }
-        if let bee = bee {
-            vc.selectBee(bee)
-        }
-        addChild(vc)
+        apiaryView.addSubview(view)
     }
     
     func popToInspectionView(for structure: Structure) {
@@ -553,22 +554,35 @@ extension ApiaryViewController: ShopViewDelegate {
         shopView.removeFromSuperview()
     }
     
-    func shopView(_ shopView: ShopView, itemsForSection section: ShopView.Section) -> [ShopItem] {
-        switch section {
-        case .structures:
-            return [
-                ShopItem(name: "Hive", description: nil, cost: Resources(), newProduct: { Hive() }),
-                ShopItem(name: "Incubator", description: nil, cost: Resources(), newProduct: { Incubator() }),
-                ShopItem(name: "Honey Jar Rack", description: nil, cost: Resources(), newProduct: { HoneyStorage() }),
-                ShopItem(name: "Pollen Jar Rack", description: nil, cost: Resources(), newProduct: { PollenStorage() }),
-            ]
-        case .flowers:
-            return [
-                ShopItem(name: "Daisy", description: "A flower", cost: Resources(), newProduct: { Daisy() }),
-                ShopItem(name: "Lavender", description: "A purple flower", cost: Resources(), newProduct: { Lavender() }),
-                ShopItem(name: "Rose", description: "A red flower", cost: Resources(), newProduct: { Rose() })
-            ]
-        case .buy: return []
+    func shopViewItems(_ shopView: ShopView) -> [ShopItem] {
+        return [
+            ShopItem(name: "Hive", description: nil, cost: Resources(), newProduct: { Hive() }),
+            ShopItem(name: "Incubator", description: nil, cost: Resources(), newProduct: { Incubator() }),
+            ShopItem(name: "Honey Jar Rack", description: nil, cost: Resources(), newProduct: { HoneyStorage() }),
+            ShopItem(name: "Pollen Jar Rack", description: nil, cost: Resources(), newProduct: { PollenStorage() }),
+            ShopItem(name: "Daisy", description: "A flower", cost: Resources(), newProduct: { Daisy() }),
+            ShopItem(name: "Lavender", description: "A purple flower", cost: Resources(), newProduct: { Lavender() }),
+            ShopItem(name: "Rose", description: "A red flower", cost: Resources(), newProduct: { Rose() })
+        ]
+    }
+    
+    func shopViewDidDismiss(_ shopView: ShopView) {
+        UIView.animate(withDuration: 0.25) { [weak shopView] in
+            shopView?.alpha = 0
+        } completion: { [weak shopView] _ in
+            shopView?.removeFromSuperview()
         }
+        apiaryView.overlay.showSharedHud()
+    }
+}
+
+// MARK: - BeeListViewDelegate
+extension ApiaryViewController: BeeListViewDelegate {
+    func beeListViewDidDismiss(_ beeListView: BeeListView) {
+        beeListView.removeFromSuperview()
+    }
+    
+    func beeListView(_ beeListView: BeeListView, didSelectBee bee: Bee) {
+        selectNode(bee)
     }
 }

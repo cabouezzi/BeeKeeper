@@ -56,6 +56,7 @@ class ApiaryOverlay: SKScene {
         let spacing = section - buttonSize
         let leftButtons = [achievementsButton, tasksButton, mapButton]
         
+#if DEBUG
         for (index, button) in leftButtons.enumerated() {
             button.anchorPoint = CGPoint(x: 0.5, y: 0.5)
             button.size = CGSize(width: buttonSize, height: buttonSize)
@@ -63,6 +64,7 @@ class ApiaryOverlay: SKScene {
             button.position.y = size.height - CGFloat(index + 2) * section
             sharedHud.addChild(button)
         }
+#endif
         
         // Bee list
         beesButton.anchorPoint = CGPoint(x: 0.5, y: 0.5)
