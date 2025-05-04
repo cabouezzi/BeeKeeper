@@ -66,6 +66,7 @@ class EvolutionGeneDataView: UIScrollView {
         addConstraints([
             iconView.centerXAnchor.constraint(equalTo: centerXAnchor),
             iconView.topAnchor.constraint(equalTo: topAnchor, constant: inset),
+            iconView.heightAnchor.constraint(equalToConstant: size),
             titleLabel.topAnchor.constraint(equalTo: iconView.bottomAnchor, constant: inset),
             titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             detailsLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: inset),

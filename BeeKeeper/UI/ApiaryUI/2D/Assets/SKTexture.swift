@@ -27,6 +27,7 @@ extension SKTexture {
     static let move = SKTexture(imageNamed: "moveButton")
     static let unlink = SKTexture(imageNamed: "unlinkButton")
     static let backArrow = SKTexture(imageNamed: "backButton")
+    static let honeycomb = SKTexture(imageNamed: "honeycombButton")
     
     // Evolution
     static let starsBackground = SKTexture(imageNamed: "Stars")

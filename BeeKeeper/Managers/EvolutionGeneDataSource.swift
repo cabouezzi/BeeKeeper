@@ -22,7 +22,7 @@ final class EvolutionGeneDataSource: EvolutionViewDataSource {
                                  cost: Resources(money: 10000, honey: 10000, pollen: 10000, beeBread: 10000))
         }
         #if !RELEASE
-        data = GeneData(gene: data.gene, details: data.details, cost: Resources())
+        data = GeneData(gene: data.gene, details: gene.details, cost: Resources())
         #endif
         return data
     }
