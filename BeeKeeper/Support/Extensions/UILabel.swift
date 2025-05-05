@@ -13,3 +13,13 @@ extension UILabel {
         shadowColor = color
     }
 }
+
+extension UITextField {
+    func setShadow(_ color: UIColor = .black) {
+        layer.shadowOpacity = 1
+        layer.shadowRadius = 0
+        layer.shadowColor = color.cgColor
+        let size = font?.pointSize ?? 20
+        layer.shadowOffset = CGSize(width: size * 0.05, height: size * 0.05)
+    }
+}

@@ -110,10 +110,6 @@ class SFXManager: NSObject {
     
     func apiaryAmbience() {
         playMusic(.birds)
-        looper.samples = [playerForMusic(.childish)].compactMap({ $0 })
-        looper.samples.forEach({ $0.volume = 0.5 })
-        looper.separationInterval = 60
-        looper.next()
     }
     
     private func loadPlayer(_ filepath: String?) throws -> AVAudioPlayer {
@@ -152,19 +148,23 @@ class SFXManager: NSObject {
     }
     
     func playMusic(_ music: Music) {
-        guard let plater = try? loadPlayer(music.filepath) else {
+        guard SettingsManager.shared.shouldPlayMusic, let player = try? loadPlayer(music.filepath) else {
             return
         }
         switch music {
         case .birds:
-            plater.volume = 0.2
+            player.volume = 0.2
+            looper.samples = [playerForMusic(.childish)].compactMap({ $0 })
+            looper.samples.forEach({ $0.volume = 0.5 })
+            looper.separationInterval = 60
+            looper.next()
         default:
             break
         }
-        plater.play()
-        plater.delegate = self
-        plater.numberOfLoops = .max
-        musicPlayer = plater
+        player.play()
+        player.delegate = self
+        player.numberOfLoops = .max
+        musicPlayer = player
     }
     
     func stopMusic() {

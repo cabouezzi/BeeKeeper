@@ -132,6 +132,7 @@ class Structure: BKNode, Model, Codable {
     
     final func hideBorder() {
         border?.removeFromParentNode()
+        border = nil
     }
     
     func accept<T>(_ visitor: T) -> T.ReturnType where T : ModelVisitor {

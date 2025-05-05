@@ -42,11 +42,11 @@ extension Gene {
             return "These bees are now walking Van de Graaff generators. Pollen leaps onto them mid-flight. It’s like magic. Or magnetism. Or… some kind of sticky electricity thing. The science is solid, trust me."
 
         case .stripesI:
-            return "Subtle patterns are forming on their abdomens—gray stripes. It’s a start, but predators still seem unconvinced. I’ll tweak the pigmentation genes. These bees will be fashion-forward and fearsome."
-        case .stripesII:
             return "Success! A beautiful burnt-orange pattern now covers the bees. It’s like Halloween meets hazard tape. Predators are pausing more often… and I’m taking more photos than I should."
+        case .stripesII:
+            return "Vibrant yellow! Even brighter than last time. These bees now flash a classic warning signal—like nature’s highlighter pens. I’m pretty sure the birds got the message."
         case .stripesIII:
-            return "Vibrant yellow! Finally, classic aposematism! These stripes practically shout 'Sting incoming!' from 20 meters away. I believe I’ve achieved peak intimidation via pigmentation."
+            return "Bright green! Unexpected, but effective. It turns out predators really don’t like bees that glow like radioactive limes. Bold, bizarre, and beautifully bioengineered!"
 
         case .stingerI:
             return "I tried petting one of the early models. Big mistake. They sting once, fall over, and… well, that’s it. I’ve located a gene sequence that might allow stingers to retract. If this works, they’ll defend themselves and live to buzz another day!"

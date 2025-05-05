@@ -11,6 +11,7 @@ class SettingsManager {
     static let shared = SettingsManager()
     
     @UserDefaultsKey(key: .firstLogin, defaultValue: true) var isFirstLogin
+    @UserDefaultsKey(key: .playMusic, defaultValue: false) var shouldPlayMusic
     
     private init() {
         

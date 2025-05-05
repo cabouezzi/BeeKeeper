@@ -66,6 +66,7 @@ class ApiaryViewController: UIViewController {
         apiaryView.overlay.evolutionButton.onTap(popToEvolution)
         apiaryView.overlay.mapButton.onTap(popToMap)
         apiaryView.overlay.beesButton.onTap({ [unowned self] in popToBeeList() })
+        apiaryView.overlay.settingsButton.onTap(popToSettings)
     }
     
     final func selectNode(_ node: SCNNode & Model) {
@@ -159,6 +160,7 @@ class ApiaryViewController: UIViewController {
                     if isNew {
                         try GameManager.shared.addStructure(structure)
                     }
+                    apiaryView.overlay.resources.update(animated: true)
                     clear(true)
                 } catch {
                     SFXManager.shared.playSound(.failure)
@@ -240,6 +242,10 @@ class ApiaryViewController: UIViewController {
     func popToInspectionView(for structure: Structure) {
         let view = InspectionView(structure: structure, frame: apiaryView.frame)
         apiaryView.addSubview(view)
+    }
+    
+    func popToSettings() {
+        print("Not implemented yet")
     }
     
     // MARK: - Gesture Recognizers
@@ -466,9 +472,9 @@ extension ApiaryViewController: ModelVisitor {
         apiaryView.camera.follow(model)
         apiaryView.overlay.setButtons(
             title: model.nickname,
-            SKButton(texture: SKTexture.edit, onTap: {
-                self.apiaryView.camera.follow(nil)
+            SKButton(texture: SKTexture.edit, onTap: { [unowned self] in
                 self.beginAssigningBee(model)
+                self.apiaryView.camera.follow(nil)
             }),
             SKButton(texture: SKTexture.info, title: "Info", onTap: { [unowned self] in
                 self.popToBeeList(model)
@@ -478,7 +484,7 @@ extension ApiaryViewController: ModelVisitor {
     
     func visitHive(_ model: Hive) -> () {
         apiaryView.overlay.setButtons(title: model.name, [
-            SKButton(texture: SKTexture.blankWhite, title: "Add Honeycomb", onTap: {
+            SKButton(texture: SKTexture.honeycomb, onTap: {
                 do {
                     try model.addHoneycomb()
                 } catch {
@@ -556,13 +562,13 @@ extension ApiaryViewController: ShopViewDelegate {
     
     func shopViewItems(_ shopView: ShopView) -> [ShopItem] {
         return [
-            ShopItem(name: "Hive", description: nil, cost: Resources(), newProduct: { Hive() }),
-            ShopItem(name: "Incubator", description: nil, cost: Resources(), newProduct: { Incubator() }),
-            ShopItem(name: "Honey Jar Rack", description: nil, cost: Resources(), newProduct: { HoneyStorage() }),
-            ShopItem(name: "Pollen Jar Rack", description: nil, cost: Resources(), newProduct: { PollenStorage() }),
-            ShopItem(name: "Daisy", description: "A flower", cost: Resources(), newProduct: { Daisy() }),
-            ShopItem(name: "Lavender", description: "A purple flower", cost: Resources(), newProduct: { Lavender() }),
-            ShopItem(name: "Rose", description: "A red flower", cost: Resources(), newProduct: { Rose() })
+            ShopItem(name: "Hive", description: nil, cost: Resources(honey: 200, pollen: 200), newProduct: { Hive() }),
+            ShopItem(name: "Incubator", description: nil, cost: Resources(pollen: 800), newProduct: { Incubator() }),
+            ShopItem(name: "Honey Jug", description: nil, cost: Resources(pollen: 200), newProduct: { HoneyStorage() }),
+            ShopItem(name: "Pollen Jar Rack", description: nil, cost: Resources(honey: 200), newProduct: { PollenStorage() }),
+            ShopItem(name: "Daisy", description: "A flower", cost: Resources(pollen: 50), newProduct: { Daisy() }),
+            ShopItem(name: "Lavender", description: "A purple flower", cost: Resources(pollen: 80), newProduct: { Lavender() }),
+            ShopItem(name: "Rose", description: "A red flower", cost: Resources(pollen: 120), newProduct: { Rose() })
         ]
     }
     
