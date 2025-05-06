@@ -6,6 +6,7 @@
 //
 
 import AVFoundation
+import Combine
 
 enum SFXError: LocalizedError {
     case unknownURL
@@ -99,13 +100,28 @@ class SFXManager: NSObject {
         }
     }
     
-    private var bag: Set<AVAudioPlayer> = []
+    private var bag = Set<AVAudioPlayer>()
     private var musicPlayer: AVAudioPlayer?
     
     private let looper = MusicLooper()
+    private var cancellables = Set<AnyCancellable>()
     
     private override init() {
         super.init()
+        // Subscribe to music‐volume changes
+        SettingsManager.shared.$musicVolume.publisher
+            .sink { [weak self] newVolume in
+                self?.musicPlayer?.volume = newVolume
+                self?.looper.samples.forEach({ $0.volume = newVolume })
+            }
+            .store(in: &cancellables)
+        
+        // Subscribe to SFX‐volume changes
+        SettingsManager.shared.$soundEffectsVolume.publisher
+            .sink { [weak self] newVolume in
+                self?.bag.forEach { $0.volume = newVolume }
+            }
+            .store(in: &cancellables)
     }
     
     func apiaryAmbience() {
@@ -135,9 +151,8 @@ class SFXManager: NSObject {
     }
     
     func playSound(_ sound: Sounds) {
-        guard let player = try? loadPlayer(sound.filepath) else {
-            return
-        }
+        guard let player = try? loadPlayer(sound.filepath) else { return }
+        player.volume = SettingsManager.shared.soundEffectsVolume
         player.play()
         player.delegate = self
         bag.insert(player)
@@ -148,14 +163,17 @@ class SFXManager: NSObject {
     }
     
     func playMusic(_ music: Music) {
-        guard SettingsManager.shared.shouldPlayMusic, let player = try? loadPlayer(music.filepath) else {
-            return
-        }
+        guard SettingsManager.shared.musicVolume > 0,
+              let player = try? loadPlayer(music.filepath)
+        else { return }
+        
+        player.volume = SettingsManager.shared.musicVolume
+        
         switch music {
         case .birds:
-            player.volume = 0.2
+            player.volume /= 2
             looper.samples = [playerForMusic(.childish)].compactMap({ $0 })
-            looper.samples.forEach({ $0.volume = 0.5 })
+            looper.samples.forEach({ $0.volume = player.volume * 2 })
             looper.separationInterval = 60
             looper.next()
         default:
@@ -183,7 +201,7 @@ class SFXManager: NSObject {
 extension SFXManager: AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         if !flag {
-            print("Audio play failed to play sound: \(String(describing: player.url))")
+            print("Audio player failed to play sound: \(String(describing: player.url))")
         }
         bag.remove(player)
     }

@@ -9,6 +9,7 @@ import UIKit
 import SceneKit
 import SpriteKit
 import AVFoundation
+import SwiftUI
 
 fileprivate enum GameState {
     case idle
@@ -245,7 +246,26 @@ class ApiaryViewController: UIViewController {
     }
     
     func popToSettings() {
-        print("Not implemented yet")
+        let settingsView = SettingsView()
+        let hostingController = UIHostingController(rootView: settingsView)
+        hostingController.view.backgroundColor = .clear
+        
+        addChild(hostingController)
+        view.addSubview(hostingController.view)
+        hostingController.didMove(toParent: self)
+        
+        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            hostingController.view.widthAnchor.constraint(equalTo: view.widthAnchor),
+            hostingController.view.heightAnchor.constraint(equalTo: view.heightAnchor),
+            hostingController.view.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            hostingController.view.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+        
+        settingsView.viewModel.onDismiss = { [weak hostingController] in
+            hostingController?.view.removeFromSuperview()
+            hostingController?.removeFromParent()
+        }
     }
     
     // MARK: - Gesture Recognizers
