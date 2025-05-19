@@ -582,13 +582,13 @@ extension ApiaryViewController: ShopViewDelegate {
     
     func shopViewItems(_ shopView: ShopView) -> [ShopItem] {
         return [
-            ShopItem(name: "Hive", description: nil, cost: Resources(honey: 200, pollen: 200), newProduct: { Hive() }),
-            ShopItem(name: "Incubator", description: nil, cost: Resources(pollen: 800), newProduct: { Incubator() }),
-            ShopItem(name: "Honey Jug", description: nil, cost: Resources(pollen: 200), newProduct: { HoneyStorage() }),
-            ShopItem(name: "Pollen Jar Rack", description: nil, cost: Resources(honey: 200), newProduct: { PollenStorage() }),
-            ShopItem(name: "Daisy", description: "A flower", cost: Resources(pollen: 50), newProduct: { Daisy() }),
-            ShopItem(name: "Lavender", description: "A purple flower", cost: Resources(pollen: 80), newProduct: { Lavender() }),
-            ShopItem(name: "Rose", description: "A red flower", cost: Resources(pollen: 120), newProduct: { Rose() })
+            ShopItem(name: "Hive", description: nil, cost: Resources(honey: 5000, pollen: 2000), newProduct: { Hive() }),
+            ShopItem(name: "Incubator", description: nil, cost: Resources(honey: 50000, pollen: 1500), newProduct: { Incubator() }),
+            ShopItem(name: "Honey Jug", description: nil, cost: Resources(honey: 1000, pollen: 200), newProduct: { HoneyStorage() }),
+            ShopItem(name: "Pollen Jar Rack", description: nil, cost: Resources(honey: 1000, pollen: 500), newProduct: { PollenStorage() }),
+            ShopItem(name: "Daisy", description: "A flower", cost: Resources(honey: 500, pollen: 300), newProduct: { Daisy() }),
+            ShopItem(name: "Lavender", description: "A purple flower", cost: Resources(honey: 1000, pollen: 500), newProduct: { Lavender() }),
+            ShopItem(name: "Rose", description: "A red flower", cost: Resources(honey: 2500, pollen: 1000), newProduct: { Rose() })
         ]
     }
     

@@ -11,6 +11,7 @@ struct GeneData {
     let cost: Resources
 }
 
+// MARK: Details (description)
 extension Gene {
     var details: String {
         switch self {
@@ -75,3 +76,66 @@ extension Gene {
     }
 }
 
+// MARK: Costs
+extension Gene {
+    var cost: Resources {
+        switch self {
+        case .enzymesI:
+            return Resources(honey: 500, pollen: 300, beeBread: 0)
+        case .enzymesII:
+            return Resources(honey: 1000, pollen: 500, beeBread: 0)
+        case .enzymesIII:
+            return Resources(honey: 15000, pollen: 8000, beeBread: 0)
+            
+        case .engineerI:
+            return Resources(honey: 1500, pollen: 1000, beeBread: 0)
+        case .engineerII:
+            return Resources(honey: 3000, pollen: 1500, beeBread: 0)
+        case .engineerIII:
+            return Resources(honey: 15000, pollen: 8000, beeBread: 1000)
+            
+        case .furI:
+            return Resources(honey: 500, pollen: 400, beeBread: 0)
+        case .furII:
+            return Resources(honey: 3000, pollen: 1500, beeBread: 0)
+            
+        case .electricChargeI:
+            return Resources(honey: 800, pollen: 600, beeBread: 0)
+        case .electricChargeII:
+            return Resources(honey: 3000, pollen: 1500, beeBread: 0)
+        case .electricChargeIII:
+            return Resources(honey: 12000, pollen: 6000, beeBread: 500)
+            
+        case .stripesI:
+            return Resources(honey: 400, pollen: 300, beeBread: 0)
+        case .stripesII:
+            return Resources(honey: 1500, pollen: 800, beeBread: 0)
+        case .stripesIII:
+            return Resources(honey: 15000, pollen: 7500, beeBread: 600)
+            
+        case .stingerI:
+            return Resources(honey: 500, pollen: 400, beeBread: 0)
+        case .stingerII:
+            return Resources(honey: 2000, pollen: 1200, beeBread: 0)
+        case .stingerIII:
+            return Resources(honey: 18000, pollen: 9000, beeBread: 1000)
+            
+        case .venomI:
+            return Resources(honey: 2000, pollen: 1200, beeBread: 0)
+        case .venomII:
+            return Resources(honey: 1500, pollen: 800, beeBread: 0)
+            
+        case .beeBread:
+            return Resources(honey: 30000, pollen: 15000, beeBread: 0)
+            
+        case .sustainability:
+            return Resources(honey: 40000, pollen: 20000, beeBread: 5000)
+            
+        case .bioluminescence:
+            return Resources(honey: 75000, pollen: 37500, beeBread: 1000)
+            
+        case .royalJelly:
+            return Resources(honey: 50000, pollen: 25000, beeBread: 1000)
+        }
+    }
+}

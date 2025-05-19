@@ -21,7 +21,7 @@ class Bee: SCNNode, Model, Producer, Codable {
     private var animationState: AnimationState = .droning
     
     // Producer
-    var production: Resources = Resources(honey: 0.5, pollen: 0.5, beeBread: 1)
+    var production: Resources = Resources(honey: 0.03, pollen: 0.02)
     var producerAssignment: Structure?
     var producerAssignmentId: UUID?
     
@@ -184,6 +184,47 @@ class Bee: SCNNode, Model, Producer, Codable {
         } else if genetics.contains(.stingerI) {
             stinger?.geometry = Meshes.Bee.Stinger.plain
         }
+        
+        if genetics.contains(.enzymesI) {
+            production.honey += production.honey * 0.05
+        }
+        if genetics.contains(.enzymesII) {
+            production.honey += production.honey * 0.05
+        }
+        if genetics.contains(.enzymesIII) {
+            production.honey += production.honey * 0.05
+        }
+
+        if genetics.contains(.electricChargeI) {
+            production.pollen += production.pollen * 0.05
+        }
+        if genetics.contains(.electricChargeII) {
+            production.pollen += production.pollen * 0.05
+        }
+        if genetics.contains(.electricChargeIII) {
+            production.pollen += production.pollen * 0.05
+        }
+
+        if genetics.contains(.stingerI) {
+            intimidation += intimidation * 0.05
+            stingerDamage += stingerDamage * 0.05
+        }
+        if genetics.contains(.stingerII) {
+            intimidation += intimidation * 0.05
+            stingerDamage += stingerDamage * 0.05
+        }
+        if genetics.contains(.stingerIII) {
+            intimidation += intimidation * 0.05
+            stingerDamage += stingerDamage * 0.05
+        }
+
+        if genetics.contains(.venomI) {
+            venomDamage += venomDamage * 0.05
+        }
+        if genetics.contains(.venomII) {
+            venomDamage += venomDamage * 0.05
+        }
+
     }
     
     func accept<T>(_ visitor: T) -> T.ReturnType where T : ModelVisitor {
