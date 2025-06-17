@@ -14,8 +14,8 @@ enum ContainerError: LocalizedError {
 }
 
 class Container: Structure {
-    var containing = Resources()
-    var maximum: Resources = Resources()
+    @Published var containing = Resources()
+    @Published var maximum: Resources = Resources()
     
     var isFull: Bool {
         return containing.canAfford(maximum)

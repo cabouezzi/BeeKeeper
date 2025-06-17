@@ -19,6 +19,7 @@ final class HoneyStorage: Container {
     
     override func loadNode() {
         name = "Honey Storage"
+        self.details = "A sturdy glass vessel for storing harvested honey. Increases your maximum honey capacity."
         let node = SCNNode(geometry: Meshes.Structure.honeyStorage)
         node.eulerAngles.y = .pi
         addChildNode(node)

@@ -26,5 +26,6 @@ class Lavender: Flower {
     override func loadNode() {
         name = "Lavender"
         geometry = Meshes.Flowers.lavender
+        self.details = "A fragrant flower often planted for its rich nectar. Produces enough pollen to support three bees."
     }
 }

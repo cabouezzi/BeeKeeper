@@ -26,5 +26,6 @@ class Daisy: Flower {
     override func loadNode() {
         name = "Daisy"
         geometry = Meshes.Flowers.daisy
+        self.details = "A common flower found near apiaries. Produces enough pollen to support two bees."
     }
 }

@@ -19,6 +19,7 @@ final class PollenStorage: Container {
     
     override func loadNode() {
         name = "Pollen Storage"
+        self.details = "Wooden shelves stacked with jars to organize foraged pollen. Increases your maximum pollen capacity."
         let rack = SCNNode(geometry: Meshes.Structure.pollenStorage)
         rack.scale = SCNVector3(1.5, 1.5, 1.5)
         addChildNode(rack)

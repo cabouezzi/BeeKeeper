@@ -28,7 +28,7 @@ class Incubator: Structure {
         fileprivate(set) var finishTime: Date
         fileprivate(set) var incubatedBee: Bee
         
-        var timeLeft: TimeInterval { return finishTime.distance(to: Date()) }
+        var timeLeft: TimeInterval { return finishTime.timeIntervalSince(.now) }
         
         init (started startDate: Date, incubationPeriod: TimeInterval, bee: Bee) {
             self.startTime = startDate
@@ -57,6 +57,7 @@ class Incubator: Structure {
         name = "Incubator"
         geometry = Meshes.Structure.incubator
         eulerAngles.y = -.pi / 2
+        self.details = "A warm chamber where young bees are raised from eggs. Used to incubate new bees using pollen."
     }
     
     required init?(coder: NSCoder) {

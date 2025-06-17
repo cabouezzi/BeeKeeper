@@ -26,6 +26,7 @@ class Rose: Flower {
     override func loadNode() {
         name = "Rose"
         geometry = Meshes.Flowers.rose
+        self.details = "A rare and vibrant flower bred for high yield. Produces enough pollen to support four bees."
     }
     
     override func pollinationNode() -> SCNNode {

@@ -22,6 +22,7 @@ struct DiscreteRect: Codable {
 
 class Structure: BKNode, Model, Codable {
     let id: UUID
+    var details: String = "A little something for the apiary."
     /// A set of bees assigned to the structure.For collectors, the bees with produce resources.
     fileprivate(set) var assignedBees: Set<Bee>
     var maximumAssignedBees: Int
@@ -85,6 +86,7 @@ class Structure: BKNode, Model, Codable {
         pivot = SCNMatrix4MakeTranslation(mid.x, boundingBox.min.y, mid.z)
     }
     
+    /// Called after every initialization method. Use this function to set any static structure-dependent properties, such as names or details.
     open func loadNode() {}
     
     open func onSelect() {}

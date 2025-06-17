@@ -163,8 +163,7 @@ class SFXManager: NSObject {
     }
     
     func playMusic(_ music: Music) {
-        guard SettingsManager.shared.musicVolume > 0,
-              let player = try? loadPlayer(music.filepath)
+        guard let player = try? loadPlayer(music.filepath)
         else { return }
         
         player.volume = SettingsManager.shared.musicVolume

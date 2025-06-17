@@ -169,31 +169,9 @@ class ApiaryOverlay: SKScene {
         sharedHud.fadeDown()
     }
     
-    func closeHud() {
-        currentHud?.fadeDownAndRemove()
-    }
-    
     /// The label for a structure, located above the buttons. Contains the name, level, etc. of the selected entity.
     private func structureDescriptionNode(_ structure: Structure) -> SKNode {
         let node = SKLabelNode(text: (structure.name ?? "Structure") + "Lvl.\(structure.level)")
         return node
-    }
-    
-    /// Creates a new HUD to that displays information for the given incubator.
-    func showIncubatorHud(_ incubator: Incubator) {
-        setButtons([])
-        let hud = IncubationHud(size: CGSize(width: size.width * 0.95, height: size.height / 2), incubator: incubator)
-        hud.position = convertPoint(fromView: self.view?.center ?? .zero)
-        currentHud = hud
-        addChild(hud)
-    }
-    
-    /// Creates a new HUD to that displays information for the given incubator.
-    func showStructureHud(_ structure: Structure) {
-        setButtons([])
-        let hud = StructureHud(size: CGSize(width: size.width * 0.95, height: size.height / 2), structure: structure)
-        hud.position = convertPoint(fromView: self.view?.center ?? .zero)
-        currentHud = hud
-        addChild(hud)
     }
 }

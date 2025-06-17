@@ -12,8 +12,8 @@ extension TimeInterval {
     var hours: Double { return self / minutes / 60 }
     var days: Double { return self / hours / 24 }
     
-    init(days: Double = 0, hours: Double = 0, minutes: Double = 0) {
-        self = (days * 86400) + (hours * 3600) + (minutes * 60)
+    init(days: Double = 0, hours: Double = 0, minutes: Double = 0, seconds: Double = 0) {
+        self = (days * 86400) + (hours * 3600) + (minutes * 60) + seconds
     }
     
     func formattedString() -> String {

@@ -79,7 +79,6 @@ class ApiaryViewController: UIViewController {
     }
     
     final func clearHud() {
-        apiaryView.overlay.closeHud()
         apiaryView.overlay.showSharedHud()
         apiaryView.overlay.setButtons()
         apiaryView.camera.defaultView()
@@ -240,20 +239,21 @@ class ApiaryViewController: UIViewController {
         apiaryView.addSubview(view)
     }
     
-    func popToInspectionView(for structure: Structure) {
-        let view = InspectionView(structure: structure, frame: apiaryView.frame)
-        apiaryView.addSubview(view)
-    }
-    
-    func popToSettings() {
-        let settingsView = SettingsView()
-        let hostingController = UIHostingController(rootView: settingsView)
+    private func popToMiniScreen(_ screen: some View) {
+        let anyView = AnyView(screen)
+        let hostingController = UIHostingController(rootView: anyView)
         hostingController.view.backgroundColor = .clear
-        
+        hostingController.rootView = AnyView(
+            // Order matters: ViewModifier captures immediate environment values when setting the closure
+            hostingController.rootView
+                .dismissable()
+                .environment(\.hostingController, hostingController)
+        )
         addChild(hostingController)
-        view.addSubview(hostingController.view)
-        hostingController.didMove(toParent: self)
         
+        view.addSubview(hostingController.view)
+        
+        hostingController.didMove(toParent: self)
         hostingController.view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             hostingController.view.widthAnchor.constraint(equalTo: view.widthAnchor),
@@ -261,11 +261,17 @@ class ApiaryViewController: UIViewController {
             hostingController.view.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             hostingController.view.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
-        
-        settingsView.viewModel.onDismiss = { [weak hostingController] in
-            hostingController?.view.removeFromSuperview()
-            hostingController?.removeFromParent()
-        }
+    }
+    
+    func popToInspectionView(for structure: Structure) {
+        let viewModel = StructureDetailsViewModel(structure: structure)
+        let view = StructureDetailsView(viewModel: viewModel)
+        popToMiniScreen(view)
+    }
+    
+    func popToSettings() {
+        let settingsView = SettingsView()
+        popToMiniScreen(settingsView)
     }
     
     // MARK: - Gesture Recognizers

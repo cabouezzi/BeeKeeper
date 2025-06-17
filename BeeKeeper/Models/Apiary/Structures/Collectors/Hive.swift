@@ -37,6 +37,7 @@ class Hive: Container, Collector {
     
     override func loadNode() {
         name = "Hive"
+        self.details = "A structured home for bees. Allows bees to produce and store honey in honeycombs."
         geometry = Meshes.Structure.hive
         cover.pivot = SCNMatrix4MakeTranslation(0, -cover.geometry!.height / 2, -cover.geometry!.depth * 0.45)
         cover.position.y = geometry!.height
