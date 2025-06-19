@@ -8,6 +8,6 @@
 import Combine
 
 class EvolutionDetailsViewModel: ObservableObject {
-    @Published var gene: Gene = .furI
+    @Published var gene: Gene = EvolutionResearchManager.shared.currentResearch?.reward ?? .furI
     @Published var unlockedGenes: Set<Gene> = GameManager.shared.account.unlockedGenes
 }

@@ -85,6 +85,11 @@ class EvolutionViewController: UIViewController, ObservableObject {
         
         addGestureRecognizers()
         animateCenterNode()
+        
+        if let research = EvolutionResearchManager.shared.currentResearch {
+            model.gene = research.reward
+            showData()
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -190,6 +195,11 @@ class EvolutionViewController: UIViewController, ObservableObject {
     
     @objc
     private func tapGestureRecognizer(_ gestureRecognizer: UITapGestureRecognizer) {
+        if let research = EvolutionResearchManager.shared.currentResearch {
+            model.gene = research.reward
+            return
+        }
+        
         let pointInView = gestureRecognizer.location(in: evolutionView)
         guard !hostingController.view.frame.contains(pointInView) || hostingController.view.alpha == 0 else { return }
         let point = evolutionView.convert(pointInView, to: evolutionView.evolutionScene)
