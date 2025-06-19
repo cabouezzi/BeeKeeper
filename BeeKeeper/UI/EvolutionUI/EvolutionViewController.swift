@@ -7,26 +7,31 @@
 //
 
 import SpriteKit
+import SwiftUI
+import Combine
 
-protocol EvolutionViewDataSource: AnyObject {
-    func geneData(for gene: Gene) -> GeneData
-}
-
-class EvolutionViewController: UIViewController {
-    private let evolutionView: EvolutionView
-    private let dataView: EvolutionGeneDataView
+class EvolutionViewController: UIViewController, ObservableObject {
+    let model = EvolutionDetailsViewModel()
+    private var cancellables = Set<AnyCancellable>()
     
-    weak var dataSource: EvolutionViewDataSource? = EvolutionGeneDataSource.shared
+    private let evolutionView: EvolutionView
+    let hostingController: UIHostingController<AnyView>
     
     init(frame: CGRect) {
         evolutionView = EvolutionView(frame: frame)
-        
-        let width = frame.width / 3
-        let dataRect = CGRect(x: frame.width - width, y: 0, width: width, height: frame.height).insetBy(dx: 10, dy: 10)
-        dataView = EvolutionGeneDataView(frame: dataRect)
-        dataView.backgroundColor = .white.withAlphaComponent(0.3)
-        evolutionView.addSubview(dataView)
+        hostingController = UIHostingController(rootView: AnyView(EvolutionDetailsView(viewModel: model)))
         super.init(nibName: nil, bundle: nil)
+        
+        hostingController.view.backgroundColor = .clear
+        addChild(hostingController)
+        view.addSubview(hostingController.view)
+        hostingController.didMove(toParent: self)
+        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            hostingController.view.rightAnchor.constraint(equalTo: evolutionView.rightAnchor),
+            hostingController.view.bottomAnchor.constraint(equalTo: evolutionView.bottomAnchor),
+            hostingController.view.widthAnchor.constraint(lessThanOrEqualToConstant: evolutionView.frame.width / 2),
+        ])
     }
     
     required init?(coder: NSCoder) {
@@ -44,6 +49,13 @@ class EvolutionViewController: UIViewController {
                 icon.isHidden = true
             }
         }
+        
+        model.$unlockedGenes
+            .sink { genes in
+                self.updateLockNodes()
+                print("Genes updated")
+            }
+            .store(in: &cancellables)
         
         updateLockNodes()
         drawDirectedEdges()
@@ -73,26 +85,6 @@ class EvolutionViewController: UIViewController {
         
         addGestureRecognizers()
         animateCenterNode()
-        
-        dataView.purchaseButton.addAction { [unowned self] in
-            guard let data = dataView.data else { return }
-            // Buy gene
-            if !GameManager.shared.account.unlockedGenes.contains(data.gene) {
-                do {
-                    guard GameManager.shared.getAllResources().canAfford(data.cost) else { throw ContainerError.containerInsufficient }
-                    try GameManager.shared.unlockGene(data.gene)
-                    // FIXME: The force success is to intentionally crash if we can't afford it. This should never happen, but in the event it does, the crash prevents saving the gene as unlocked.
-                    try! GameManager.shared.remove(data.cost)
-                    if let icon = evolutionView.iconForGene(data.gene) {
-                        icon.childNode(withName: "lock")?.removeFromParent()
-                    }
-                    updateLockNodes()
-                    print("Successfully unlocked \(data.gene)")
-                } catch {
-                    print(error.localizedDescription)
-                }
-            }
-        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -100,20 +92,15 @@ class EvolutionViewController: UIViewController {
         SFXManager.shared.stopMusic()
     }
     
-    func showData(for gene: Gene, animated: Bool = false) {
-        dataView.isUserInteractionEnabled = true
-        if let data = dataSource?.geneData(for: gene) {
-            dataView.setGeneData(data)
-        }
-        UIView.animate(withDuration: animated ? 0.15 : 0) { [unowned dataView] in
-            dataView.alpha = 1
+    func showData(animated: Bool = false) {
+        UIView.animate(withDuration: animated ? 0.15 : 0) { [unowned hostingController] in
+            hostingController.view.alpha = 1
         }
     }
     
     func hideData(animated: Bool = false) {
-        dataView.isUserInteractionEnabled = false
-        UIView.animate(withDuration: animated ? 0.15 : 0) { [unowned dataView] in
-            dataView.alpha = 0
+        UIView.animate(withDuration: animated ? 0.15 : 0) { [unowned hostingController] in
+            hostingController.view.alpha = 0
         }
     }
     
@@ -166,24 +153,30 @@ class EvolutionViewController: UIViewController {
     }
     
     private func updateLockNodes() {
-        let leaves = Gene.allCases
-            .filter { g in
-                guard !GameManager.shared.account.unlockedGenes.contains(g) else { return false }
-                let prereq = GeneNetwork.shared.prerequisites(for: g)
-                return prereq.isEmpty || prereq.contains(where: { GameManager.shared.account.unlockedGenes.contains($0) })
+        for gene in Gene.allCases {
+            // Unlocked genes
+            if GameManager.shared.account.unlockedGenes.contains(gene) {
+                guard let target = evolutionView.evolutionScene.childNode(withName: gene.rawValue) else { continue }
+                let lockNode: SKNode? = target.childNode(withName: "lock")
+                lockNode?.removeFromParent()
+                target.isHidden = false
+            // Locked Genes
+            } else {
+                // Leaf, display locks for next available upgrades
+                let prereq = GeneNetwork.shared.prerequisites(for: gene)
+                if prereq.isEmpty || prereq.contains(where: { GameManager.shared.account.unlockedGenes.contains($0) }) {
+                    guard let leaf = evolutionView.evolutionScene.childNode(withName: gene.rawValue) else { continue }
+                    var lockNode: SKNode! = leaf.childNode(withName: "lock")
+                    if lockNode == nil {
+                        lockNode = SKSpriteNode(texture: SKTexture.evolutionLock)
+                        lockNode.name = "lock"
+                        lockNode.isUserInteractionEnabled = false
+                        lockNode.zPosition = leaf.zPosition + 1
+                        leaf.addChild(lockNode)
+                    }
+                    leaf.isHidden = false
+                }
             }
-        
-        for lockedGene in leaves {
-            guard let target = evolutionView.evolutionScene.childNode(withName: lockedGene.rawValue) else { continue }
-            var lockNode: SKNode! = target.childNode(withName: "lock")
-            if lockNode == nil {
-                lockNode = SKSpriteNode(texture: SKTexture.evolutionLock)
-                lockNode.name = "lock"
-                lockNode.isUserInteractionEnabled = false
-                lockNode.zPosition = target.zPosition + 1
-                target.addChild(lockNode)
-            }
-            target.isHidden = false
         }
     }
     
@@ -198,6 +191,7 @@ class EvolutionViewController: UIViewController {
     @objc
     private func tapGestureRecognizer(_ gestureRecognizer: UITapGestureRecognizer) {
         let pointInView = gestureRecognizer.location(in: evolutionView)
+        guard !hostingController.view.frame.contains(pointInView) || hostingController.view.alpha == 0 else { return }
         let point = evolutionView.convert(pointInView, to: evolutionView.evolutionScene)
         guard let node = evolutionView.evolutionScene.nodes(at: point).first(where: { !$0.isHidden && $0.isUserInteractionEnabled }),
               let name = node.name,
@@ -207,7 +201,8 @@ class EvolutionViewController: UIViewController {
         }
         SFXManager.shared.playSound(.pop)
         node.pop()
-        showData(for: gene, animated: true)
+        model.gene = gene
+        showData(animated: true)
     }
 
     private var cameraStartPosition: CGPoint = CGPoint.zero

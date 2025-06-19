@@ -69,8 +69,8 @@ struct StructureDetailsView: View {
                         VStack {
                             Text("Status").fontWeight(.semibold)
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                            if let period = incubator.currentPeriod {
-                                SmartCountdownView(timeLeft: period.timeLeft)
+                            if let period = incubator.currentIncubation {
+                                SmartCountdownView(timeLeft: period.timeRemaining)
                                     .font(.title)
                             }
                             
@@ -78,7 +78,7 @@ struct StructureDetailsView: View {
                                 
                                 Button("Speed Up") {
                                     do {
-                                        try incubator.forceFinish()
+                                        try incubator.forceComplete()
                                     } catch {
                                         print(error.localizedDescription)
                                     }

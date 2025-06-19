@@ -23,29 +23,12 @@ enum IncubatorError: LocalizedError {
 }
 
 class Incubator: Structure {
-    struct IncubationPeriod: Codable {
-        fileprivate(set) var startTime: Date
-        fileprivate(set) var finishTime: Date
-        fileprivate(set) var incubatedBee: Bee
-        
-        var timeLeft: TimeInterval { return finishTime.timeIntervalSince(.now) }
-        
-        init (started startDate: Date, incubationPeriod: TimeInterval, bee: Bee) {
-            self.startTime = startDate
-            self.finishTime = startTime.addingTimeInterval(incubationPeriod)
-            self.incubatedBee = bee
-        }
-    }
-    
-    private(set) var currentPeriod: IncubationPeriod?
+    private(set) var currentIncubation: TimedReward<Bee>?
     
     var state: IncubatorState {
-        let now = Date()
-        switch currentPeriod?.finishTime.compare(now) {
-        case .orderedAscending: return .finished
-        case .orderedDescending, .orderedSame: return .incubating
-        case nil: return .idle
-        }
+        guard let endDate = currentIncubation?.endDate else { return .idle }
+        
+        return Date.now >= endDate ? .finished : .incubating
     }
     
     required init() {
@@ -70,13 +53,13 @@ class Incubator: Structure {
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        currentPeriod = try container.decodeIfPresent(IncubationPeriod.self, forKey: .currentPeriod)
+        currentIncubation = try container.decodeIfPresent(TimedReward<Bee>.self, forKey: .currentPeriod)
         try super.init(from: decoder)
     }
     
     override func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(currentPeriod, forKey: .currentPeriod)
+        try container.encodeIfPresent(currentIncubation, forKey: .currentPeriod)
         try super.encode(to: encoder)
     }
     
@@ -85,22 +68,20 @@ class Incubator: Structure {
     }
     
     func startIncubating(_ period: TimeInterval) throws {
-        currentPeriod = IncubationPeriod(started: Date(), incubationPeriod: period, bee: Bee(GameManager.shared.account.unlockedGenes))
+        currentIncubation = TimedReward(duration: period, reward: Bee(GameManager.shared.account.unlockedGenes))
     }
     
     func hatch() throws {
-        guard let currentPeriod = currentPeriod else { throw IncubatorError.notStarted }
+        guard let currentPeriod = currentIncubation else { throw IncubatorError.notStarted }
         guard state == .finished else { throw IncubatorError.notFinished }
-        try GameManager.shared.hatchBee(currentPeriod.incubatedBee)
-        self.currentPeriod = nil
+        try GameManager.shared.hatchBee(currentPeriod.reward)
+        self.currentIncubation = nil
     }
     
-    func forceFinish() throws {
+    func forceComplete() throws {
         #if !RELEASE
-        if currentPeriod == nil {
-            throw IncubatorError.notStarted
-        }
-        currentPeriod?.finishTime = .now
+        guard let period = currentIncubation else { throw IncubatorError.notStarted }
+        period.forceComplete()
         #endif
     }
 }

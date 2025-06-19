@@ -12,6 +12,14 @@ import Combine
 
 @propertyWrapper
 struct UserDefaultsKey<T: Codable> {
+    enum Key: String {
+        case firstLogin = "first-login"
+        case musicVolume = "music-volume"
+        case soundEffectsVolume = "sound-effects-volume"
+        case beeEffectsVolume = "bee-effects-volume"
+        case geneResearch = "gene-research"
+    }
+    
     let key: String
     let defaultValue: T
     
@@ -27,7 +35,7 @@ struct UserDefaultsKey<T: Codable> {
         self.subject = CurrentValueSubject(initial)
     }
     
-    init(key: SettingsManager.Key, defaultValue: T) {
+    init(key: UserDefaultsKey.Key, defaultValue: T) {
         self.key = key.rawValue
         self.defaultValue = defaultValue
         

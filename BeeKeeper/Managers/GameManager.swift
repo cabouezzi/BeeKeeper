@@ -87,11 +87,7 @@ final class GameManager: NSObject {
         gameTicker.start()
     }
     
-    func unlockGene(_ gene: Gene) throws {
-        let prereq = GeneNetwork.shared.prerequisites(for: gene)
-        guard prereq.allSatisfy({ account.unlockedGenes.contains($0) }) else {
-            throw GeneError.missingPrerequisites(prereq.filter({ !account.unlockedGenes.contains($0) }))
-        }
+    func unlockGene(_ gene: Gene) {
         account.unlockedGenes.insert(gene)
     }
     

@@ -1,0 +1,108 @@
+//
+//  EvolutionDetailsView.swift
+//  BeeKeeper
+//
+//  Created by Chaniel Abou-Ezzi on 6/17/25.
+//
+
+import SwiftUI
+
+struct EvolutionDetailsView: View {
+    @Environment(\.universalDismiss) var universalDismiss
+    @ObservedObject var viewModel: EvolutionDetailsViewModel
+    
+    init(viewModel: EvolutionDetailsViewModel) {
+        self.viewModel = viewModel
+    }
+    
+    var body: some View {
+        VStack() {
+            Label(title: {
+                Text(viewModel.gene.rawValue)
+            }, icon: {
+                Image(viewModel.gene.icon).resizable()
+            })
+            .labelStyle(FontMatchedLabelStyle())
+            .font(.system(.largeTitle, design: .rounded))
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .foregroundColor(.white)
+            
+            Text(viewModel.gene.details)
+                .font(.body)
+            
+            TimelineView(.animation) { _ in
+                switch EvolutionResearchManager.shared.researchState {
+                case .idle:
+                    if GameManager.shared.account.unlockedGenes.contains(viewModel.gene) {
+                        Text("Owned")
+                            .fontWeight(.semibold)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding()
+                            .background(Color.black.opacity(0.1))
+                            .cornerRadius(10)
+                    } else {
+                        Grid(alignment: .leading, horizontalSpacing: 16, verticalSpacing: 8) {
+                            Text("Cost:")
+                                .fontWeight(.semibold)
+                            AttributedStringView(attributedString: viewModel.gene.cost.attributedString())
+                            
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding()
+                        .background(Color.black.opacity(0.1))
+                        .cornerRadius(10)
+                        
+                        Button("Research") {
+                            _ = try? EvolutionResearchManager.shared.beginResearch(for: viewModel.gene)
+                        }
+                        .foregroundColor(.white)
+                        .buttonStyle(BarButtonStyle(color: .orange))
+                    }
+                    
+                case .researching(let research):
+                    SmartCountdownView(timeLeft: research.timeRemaining)
+                        .font(.title)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color.black.opacity(0.2))
+                        .foregroundColor(.white)
+                        .cornerRadius(12)
+                    Button("Speed Up") {
+                        try? EvolutionResearchManager.shared.forceComplete()
+                    }
+                    .foregroundColor(.white)
+                    .buttonStyle(BarButtonStyle(color: .black))
+                    
+                case .completed(let research):
+                    SmartCountdownView(timeLeft: 0)
+                        .font(.title)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color.black.opacity(0.2))
+                        .foregroundColor(.white)
+                        .cornerRadius(12)
+                    Button("Claim") {
+                        try? EvolutionResearchManager.shared.claimResearch()
+                        viewModel.unlockedGenes = viewModel.unlockedGenes.union([research.reward])
+                    }
+                    .foregroundColor(.white)
+                    .buttonStyle(BarButtonStyle(color: .orange))
+                }
+            }
+        }
+        .padding()
+        .background(Color.white.opacity(0.3))
+        .foregroundColor(Color(uiColor: .white))
+        .font(.system(.body, design: .rounded))
+        .cornerRadius(12)
+        .padding()
+    }
+}
+
+#Preview {
+    ZStack {
+        Color.blue.frame(maxWidth: .infinity, maxHeight: .infinity)
+            .ignoresSafeArea()
+        EvolutionDetailsView(viewModel: EvolutionDetailsViewModel())
+    }
+}

@@ -9,13 +9,6 @@ import Foundation
 import Combine
 
 class SettingsManager {
-    enum Key: String {
-        case firstLogin = "first-login"
-        case musicVolume = "music-volume"
-        case soundEffectsVolume = "sound-effects-volume"
-        case beeEffectsVolume = "bee-effects-volume"
-    }
-    
     static let shared = SettingsManager()
     
     @UserDefaultsKey(key: .firstLogin, defaultValue: true) var isFirstLogin

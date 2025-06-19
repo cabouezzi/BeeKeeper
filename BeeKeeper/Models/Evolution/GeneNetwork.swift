@@ -10,10 +10,14 @@ import Foundation
 
 enum GeneError: LocalizedError {
     case missingPrerequisites(Set<Gene>)
+    case alreadyResearched(Gene)
+    case nothingResearching
     
     var errorDescription: String? {
         switch self {
         case .missingPrerequisites(let genes): return "The following prerequisites are required: \(genes.map({ $0.rawValue }).joined(separator: ", "))"
+        case .alreadyResearched(let gene): return "\(gene.rawValue) has already been researched"
+        case .nothingResearching: return "Nothing is currently being researched"
         }
     }
 }

@@ -39,7 +39,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 _ = GameManager.shared
                 _ = SettingsManager.shared
                 _ = DatabaseService.shared
-                _ = EvolutionGeneDataSource.shared
+                _ = EvolutionResearchManager.shared
             }
             
             let loadAccount = Task {

@@ -53,7 +53,7 @@ class ApiaryOverlay: SKScene {
         
         // Achievements, tasks, map
         let section = min(size.height / 6, size.width / 10)
-        let buttonSize = section * 0.85
+        let buttonSize = section * 0.9
         let spacing = section - buttonSize
         let leftButtons = [achievementsButton, tasksButton, mapButton]
         
@@ -62,7 +62,7 @@ class ApiaryOverlay: SKScene {
             button.anchorPoint = CGPoint(x: 0.5, y: 0.5)
             button.size = CGSize(width: buttonSize, height: buttonSize)
             button.position.x = section / 2 + spacing
-            button.position.y = size.height - CGFloat(index + 2) * section
+            button.position.y = size.height - (CGFloat(index) + 1.5) * section 
             sharedHud.addChild(button)
         }
 #endif

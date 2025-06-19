@@ -5,10 +5,10 @@
 //  Created by Chaniel Ezzi on 1/27/24.
 //
 
-struct GeneData {
-    let gene: Gene
-    let details: String
-    let cost: Resources
+extension Gene {
+    var icon: ImageResource {
+        return ImageResource(name: self.rawValue, bundle: .main)
+    }
 }
 
 // MARK: Details (description)
@@ -79,6 +79,7 @@ extension Gene {
 // MARK: Costs
 extension Gene {
     var cost: Resources {
+        return Resources()
         switch self {
         case .enzymesI:
             return Resources(honey: 500, pollen: 300, beeBread: 0)
