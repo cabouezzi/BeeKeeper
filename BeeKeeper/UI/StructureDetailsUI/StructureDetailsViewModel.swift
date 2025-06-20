@@ -10,12 +10,6 @@ import Combine
 final class StructureDetailsViewModel: ObservableObject {
     let structure: Structure
     
-    convenience init() {
-        let incubator = Incubator()
-        try? incubator.startIncubating(.init(seconds: 10))
-        self.init(structure: incubator)
-    }
-    
     init(structure: Structure) {
         self.structure = structure
     }

@@ -7,7 +7,7 @@
 
 import SceneKit
 
-class Bee: SCNNode, Model, Producer, Codable {
+class Bee: SCNNode, Model, Producer, Codable, Identifiable {
     private enum AnimationState: Equatable {
         /// The case of being in the hive at night
         case dormant(_ hive: Hive)

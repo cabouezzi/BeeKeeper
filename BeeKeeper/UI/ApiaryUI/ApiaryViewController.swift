@@ -226,17 +226,12 @@ class ApiaryViewController: UIViewController {
     }
     
     func popToBeeList(_ bee: Bee? = nil) {
-        let view = BeeListView(frame: apiaryView.frame, bees: apiaryView.apiary.bees)
-        view.beeListViewDelegate = self
-        view.onSelect { [weak self] bee in
-            self?.selectNode(bee)
-        }
-        view.onRelease { [weak self, weak view] in
-            guard case .idle = self?.state else { return }
-            GameManager.shared.releaseBees()
-            view?.removeFromSuperview()
-        }
-        apiaryView.addSubview(view)
+        let viewModel = BeeViewModel(
+            bees: GameManager.shared.apiary.bees.sorted(by: { $0.nickname < $1.nickname }),
+            selectedBee: bee
+        )
+        let beeView = BeeView(viewModel: viewModel)
+        popToMiniScreen(beeView)
     }
     
     private func popToMiniScreen(_ screen: some View) {

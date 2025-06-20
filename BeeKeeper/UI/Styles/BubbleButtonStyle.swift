@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct BarButtonStyle: ButtonStyle {
+struct BubbleButtonStyle: ButtonStyle {
     let color: Color
     let edges: Edge.Set
     let padding: CGFloat?

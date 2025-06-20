@@ -44,7 +44,7 @@ struct MiniScreenView<Content: View>: View {
         ZStack {
             content()
                 .padding()
-                .frame(maxWidth: 400)
+                .frame(maxWidth: 600)
                 .background(Image(.backgroundWood).resizable().scaledToFill())
                 .cornerRadius(20)
                 .overlay(

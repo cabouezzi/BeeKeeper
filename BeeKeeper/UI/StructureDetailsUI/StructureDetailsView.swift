@@ -13,14 +13,13 @@ struct StructureDetailsView: View {
     
     var body: some View {
         MiniScreenView {
-            VStack(spacing: 24) {
+            VStack(spacing: 10) {
                 // Header
                 HStack(alignment: .top) {
                     VStack {
                         Text(viewModel.structure.name ?? "Structure")
                             .font(.system(.title, design: .rounded))
                             .frame(maxWidth: .infinity)
-                            .foregroundColor(.white)
                         
                         Text(viewModel.structure.details)
                             .font(.body)
@@ -28,15 +27,17 @@ struct StructureDetailsView: View {
                 }
                 
                 // MARK: Containers
-                Grid(alignment: .leading, horizontalSpacing: 16, verticalSpacing: 8) {
-                    if let container = viewModel.structure as? Container {
+                if let container = viewModel.structure as? Container {
+                    Grid(alignment: .leading, horizontalSpacing: 16, verticalSpacing: 8) {
                         GridRow {
                             Text("Containing:").fontWeight(.semibold)
                             if container.containing.isEmpty() {
                                 Text("Empty")
+                                    .frame(maxWidth: .infinity, alignment: .leading)
                             } else {
                                 AttributedStringView(attributedString: container.containing.attributedString(roundDecimals: true))
                                     .font(.body)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
                             }
                         }
                         GridRow {
@@ -45,18 +46,48 @@ struct StructureDetailsView: View {
                                 .font(.body)
                         }
                     }
-                    
-                    // Basic info
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding()
+                    .background(Color.black.opacity(0.1))
+                    .cornerRadius(10)
+                }
+                
+                // MARK: Basic info
+                Grid(alignment: .leading, horizontalSpacing: 16, verticalSpacing: 8) {
                     GridRow {
                         Text("Area:").fontWeight(.semibold)
                         Text("\(viewModel.structure.area.width) x \(viewModel.structure.area.height)")
+                            .frame(maxWidth: .infinity, alignment: .leading)
                     }
-                    
                     GridRow {
-                        Text("Maximum Bees:").fontWeight(.semibold)
-                        Text(viewModel.structure.maximumAssignedBees == 0 ? "-" : viewModel.structure.maximumAssignedBees.description)
+                        Text("Workers:").fontWeight(.semibold)
+                            .fixedSize()
+                        Text("\(viewModel.structure.assignedBees.count) / \(viewModel.structure.maximumAssignedBees)")
                     }
                     
+                    let columns: [GridItem] = Array(repeating: GridItem(.flexible(), spacing: 10), count: 5)
+                    LazyVGrid(columns: columns, alignment: .center, spacing: 10) {
+                        ForEach(0..<viewModel.structure.maximumAssignedBees, id: \.self) { i in
+                            VStack(spacing: 0) {
+                                Image(.bee)
+                                    .renderingMode(.template)
+                                    .iconSize(.title1)
+                                    .foregroundColor(i < viewModel.structure.assignedBees.count ? .orange : .brown)
+                                
+                                if i < viewModel.structure.assignedBees.count {
+                                    Text("Demetrius")
+                                        .font(.caption)
+                                        .lineLimit(1)
+                                } else {
+                                    Text("Assign")
+                                        .font(.caption)
+                                        .lineLimit(1)
+                                        .foregroundColor(Color.brown)
+                                }
+                            }
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        }
+                    }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding()
@@ -120,7 +151,6 @@ struct StructureDetailsView: View {
                         .padding()
                         .frame(maxWidth: .infinity)
                         .background(Color.black.opacity(0.1))
-                        .foregroundColor(.white)
                         .cornerRadius(12)
                     }
                 }
@@ -130,7 +160,6 @@ struct StructureDetailsView: View {
                     .padding()
                     .frame(maxWidth: .infinity)
                     .background(Color(uiColor: .darkBrown))
-                    .foregroundColor(.white)
                     .cornerRadius(12)
             }
             .foregroundColor(Color(uiColor: .white))
@@ -141,5 +170,17 @@ struct StructureDetailsView: View {
 }
 
 #Preview {
-    StructureDetailsView(viewModel: StructureDetailsViewModel())
+    let viewModel = {
+        let incubator = Incubator()
+        try? incubator.startIncubating(.init(seconds: 10))
+        return StructureDetailsViewModel(structure: incubator)
+    }()
+    StructureDetailsView(viewModel: viewModel)
+    
+    let hiveModel = {
+        let hive = Hive()
+        try! Bee().assign(to: hive)
+        return StructureDetailsViewModel(structure: hive)
+    }()
+    StructureDetailsView(viewModel: hiveModel)
 }

@@ -56,7 +56,7 @@ struct EvolutionDetailsView: View {
                             _ = try? EvolutionResearchManager.shared.beginResearch(for: viewModel.gene)
                         }
                         .foregroundColor(.white)
-                        .buttonStyle(BarButtonStyle(color: .orange))
+                        .buttonStyle(BubbleButtonStyle(color: .orange))
                     }
                     
                 case .researching(let research):
@@ -71,7 +71,7 @@ struct EvolutionDetailsView: View {
                         try? EvolutionResearchManager.shared.forceComplete()
                     }
                     .foregroundColor(.white)
-                    .buttonStyle(BarButtonStyle(color: .black))
+                    .buttonStyle(BubbleButtonStyle(color: .black))
                     
                 case .completed(let research):
                     SmartCountdownView(timeLeft: 0)
@@ -86,7 +86,7 @@ struct EvolutionDetailsView: View {
                         viewModel.unlockedGenes = viewModel.unlockedGenes.union([research.reward])
                     }
                     .foregroundColor(.white)
-                    .buttonStyle(BarButtonStyle(color: .orange))
+                    .buttonStyle(BubbleButtonStyle(color: .orange))
                 }
             }
         }

@@ -25,6 +25,7 @@
 		145749532B62FFC4004FAD7D /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145749522B62FFC4004FAD7D /* DatabaseService.swift */; };
 		1457495A2B63676B004FAD7D /* EvolutionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145749592B63676B004FAD7D /* EvolutionView.swift */; };
 		14636B1E2D4B4E3D009787D9 /* BeeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14636B1D2D4B4E3D009787D9 /* BeeListView.swift */; };
+		146CA1DF2E04DF900025925F /* HeightReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146CA1DE2E04DF8F0025925F /* HeightReader.swift */; };
 		1471B95A2B659550006DE737 /* EvolutionResearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1471B9592B659550006DE737 /* EvolutionResearchManager.swift */; };
 		1471B95C2B659633006DE737 /* GeneData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1471B95B2B659633006DE737 /* GeneData.swift */; };
 		1471B95F2B659B32006DE737 /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1471B95E2B659B32006DE737 /* UIView.swift */; };
@@ -122,7 +123,9 @@
 		14B17EC32E031C67008F899D /* TimedReward.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B17EC22E031C63008F899D /* TimedReward.swift */; };
 		14B17EC82E0362B2008F899D /* FontMatchedLabelStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B17EC72E0362AD008F899D /* FontMatchedLabelStyle.swift */; };
 		14B17ECA2E036CCC008F899D /* EvolutionDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B17EC92E036CBB008F899D /* EvolutionDetailsViewModel.swift */; };
-		14B17ECE2E03B7AE008F899D /* BarButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B17ECD2E03B7AE008F899D /* BarButtonStyle.swift */; };
+		14B17ECE2E03B7AE008F899D /* BubbleButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B17ECD2E03B7AE008F899D /* BubbleButtonStyle.swift */; };
+		14B17ED02E03E1A5008F899D /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B17ECF2E03E1A3008F899D /* Image.swift */; };
+		14B17ED22E03EC16008F899D /* BeeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14B17ED12E03EC0C008F899D /* BeeView.swift */; };
 		14BB763B2B12903300E15654 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BB763A2B12903300E15654 /* AppDelegate.swift */; };
 		14C6ECE02C33CDF200F0CF25 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 14C6ECDF2C33CDF200F0CF25 /* GoogleService-Info.plist */; };
 		14C6ECE32C33CF4800F0CF25 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 14C6ECE22C33CF4800F0CF25 /* FirebaseCrashlytics */; };
@@ -179,6 +182,7 @@
 		145749522B62FFC4004FAD7D /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
 		145749592B63676B004FAD7D /* EvolutionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvolutionView.swift; sourceTree = "<group>"; };
 		14636B1D2D4B4E3D009787D9 /* BeeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeeListView.swift; sourceTree = "<group>"; };
+		146CA1DE2E04DF8F0025925F /* HeightReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeightReader.swift; sourceTree = "<group>"; };
 		1471B9592B659550006DE737 /* EvolutionResearchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvolutionResearchManager.swift; sourceTree = "<group>"; };
 		1471B95B2B659633006DE737 /* GeneData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneData.swift; sourceTree = "<group>"; };
 		1471B95E2B659B32006DE737 /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
@@ -281,7 +285,9 @@
 		14B17EC22E031C63008F899D /* TimedReward.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimedReward.swift; sourceTree = "<group>"; };
 		14B17EC72E0362AD008F899D /* FontMatchedLabelStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontMatchedLabelStyle.swift; sourceTree = "<group>"; };
 		14B17EC92E036CBB008F899D /* EvolutionDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EvolutionDetailsViewModel.swift; sourceTree = "<group>"; };
-		14B17ECD2E03B7AE008F899D /* BarButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarButtonStyle.swift; sourceTree = "<group>"; };
+		14B17ECD2E03B7AE008F899D /* BubbleButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BubbleButtonStyle.swift; sourceTree = "<group>"; };
+		14B17ECF2E03E1A3008F899D /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
+		14B17ED12E03EC0C008F899D /* BeeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeeView.swift; sourceTree = "<group>"; };
 		14BB763A2B12903300E15654 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		14C6ECDF2C33CDF200F0CF25 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		14D7C5622B5C31A500CC35CB /* StructureBorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructureBorder.swift; sourceTree = "<group>"; };
@@ -351,6 +357,7 @@
 		145749442B619301004FAD7D /* BeeListUI */ = {
 			isa = PBXGroup;
 			children = (
+				14B17ED12E03EC0C008F899D /* BeeView.swift */,
 				145749472B619349004FAD7D /* BeeListViewCell.swift */,
 				14EC1FDC2B8329FC00F1D3E2 /* BeeListViewController.swift */,
 				14636B1D2D4B4E3D009787D9 /* BeeListView.swift */,
@@ -665,7 +672,7 @@
 		14835A7A2AB5299D006D0290 /* Styles */ = {
 			isa = PBXGroup;
 			children = (
-				14B17ECD2E03B7AE008F899D /* BarButtonStyle.swift */,
+				14B17ECD2E03B7AE008F899D /* BubbleButtonStyle.swift */,
 				14B17EC72E0362AD008F899D /* FontMatchedLabelStyle.swift */,
 				14835A7B2AB529A5006D0290 /* BubbleStyle.swift */,
 			);
@@ -695,6 +702,7 @@
 				148BBEC92B1BD03F00C86AB5 /* TimeInterval.swift */,
 				14835A302AB02A60006D0290 /* SKNode.swift */,
 				1471B96F2B684015006DE737 /* UILabel.swift */,
+				14B17ECF2E03E1A3008F899D /* Image.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -765,6 +773,7 @@
 			isa = PBXGroup;
 			children = (
 				1485C7332DDDDD610071DE4B /* DismissableView.swift */,
+				146CA1DE2E04DF8F0025925F /* HeightReader.swift */,
 			);
 			path = Modifiers;
 			sourceTree = "<group>";
@@ -1021,7 +1030,7 @@
 				148359FF2AB01091006D0290 /* GameManager.swift in Sources */,
 				142211062B56213E0060C51A /* SCNVector3.swift in Sources */,
 				1405AC2D2B158C3F003B0079 /* GeneNetwork.swift in Sources */,
-				14B17ECE2E03B7AE008F899D /* BarButtonStyle.swift in Sources */,
+				14B17ECE2E03B7AE008F899D /* BubbleButtonStyle.swift in Sources */,
 				14835A2E2AB013AE006D0290 /* SKTexture.swift in Sources */,
 				14835A072AB01091006D0290 /* Structure.swift in Sources */,
 				14EC1FDD2B8329FC00F1D3E2 /* BeeListViewController.swift in Sources */,
@@ -1029,8 +1038,10 @@
 				14B17EB62E00AAFC008F899D /* StructureDetailsView.swift in Sources */,
 				14835A132AB01091006D0290 /* Hive.swift in Sources */,
 				14B17EC82E0362B2008F899D /* FontMatchedLabelStyle.swift in Sources */,
+				146CA1DF2E04DF900025925F /* HeightReader.swift in Sources */,
 				14AB5C9B2B5F1AED002750B2 /* Comparable.swift in Sources */,
 				145749532B62FFC4004FAD7D /* DatabaseService.swift in Sources */,
+				14B17ED02E03E1A5008F899D /* Image.swift in Sources */,
 				14B17EBD2E01C8D0008F899D /* StructureDetailsViewModel.swift in Sources */,
 				148359EF2AB01091006D0290 /* ApiaryViewController.swift in Sources */,
 				14835A212AB01091006D0290 /* Resource.swift in Sources */,
@@ -1055,6 +1066,7 @@
 				148359F72AB01091006D0290 /* ApiaryOverlay.swift in Sources */,
 				14835A952AC6732E006D0290 /* PollenStorage.swift in Sources */,
 				148359FB2AB01091006D0290 /* UserDefaultsKey.swift in Sources */,
+				14B17ED22E03EC16008F899D /* BeeView.swift in Sources */,
 				14BB763B2B12903300E15654 /* AppDelegate.swift in Sources */,
 				14835A172AB01091006D0290 /* Apiary.swift in Sources */,
 				14835A312AB02A60006D0290 /* SKNode.swift in Sources */,

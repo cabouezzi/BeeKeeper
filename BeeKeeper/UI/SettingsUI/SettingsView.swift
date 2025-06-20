@@ -12,7 +12,7 @@ struct SettingsView: View {
     
     var body: some View {
         MiniScreenView {
-            VStack(spacing: 24) {
+            VStack {
                 // Header
                 HStack {
                     Spacer()
