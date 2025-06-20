@@ -11,6 +11,8 @@ struct StructureDetailsView: View {
     @Environment(\.universalDismiss) var universalDismiss
     @ObservedObject var viewModel: StructureDetailsViewModel
     
+    @State private var contentHeight: CGFloat = 0
+    @State private var showBeeList: Bool = false
     @State private var showNamingScreen: Bool = false
     @State private var newBeeName: String = ""
     
@@ -18,6 +20,8 @@ struct StructureDetailsView: View {
         ZStack {
             if showNamingScreen {
                 NamePopUp()
+            } else if showBeeList {
+                BeesPopUp()
             }
             
             MiniScreenView {
@@ -94,6 +98,11 @@ struct StructureDetailsView: View {
                                     }
                                 }
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                .onTapGesture {
+                                    if i >= viewModel.structure.assignedBees.count {
+                                        showBeeList = true
+                                    }
+                                }
                             }
                         }
                     }
@@ -168,8 +177,57 @@ struct StructureDetailsView: View {
                 .foregroundColor(Color(uiColor: .white))
                 .shadow(radius: 1, y: 2)
                 .font(.system(.body, design: .rounded))
+                .bindHeight(to: $contentHeight)
             }
         }
+    }
+    
+    @ViewBuilder
+    private func BeesPopUp() -> some View {
+        let beeViewModel = BeeViewModel(bees: GameManager.shared.apiary.bees)
+        ZStack {
+            Color.black
+                .opacity(0.7)
+                .ignoresSafeArea()
+                .frame(maxWidth: .infinity)
+                .onTapGesture {
+                    showBeeList = false
+                }
+            
+            VStack {
+                BeeSelectorView(viewModel: beeViewModel)
+                
+                Button("Assign") {
+                    do {
+                        try beeViewModel.selectedBee?.assign(to: viewModel.structure)
+                        showBeeList = false
+                    } catch {
+                        print(error.localizedDescription)
+                    }
+                }
+                .padding()
+                .frame(maxWidth: .infinity)
+                .background(Color(uiColor: .orange))
+                .foregroundColor(.white)
+                .cornerRadius(12)
+                .contentShape(RoundedRectangle(cornerRadius: 12))
+            }
+            .frame(maxWidth: 200, maxHeight: contentHeight - 20)
+            .padding()
+            .background(
+                Image(.backgroundWood)
+                    .resizable()
+                    .scaledToFill()
+            )
+            .cornerRadius(20)
+            .overlay(
+                RoundedRectangle(cornerRadius: 20)
+                    .stroke(Color(uiColor: .darkBrown), lineWidth: 5)
+            )
+            .padding()
+        }
+        .zIndex(2)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     
     @ViewBuilder
@@ -177,7 +235,7 @@ struct StructureDetailsView: View {
         if let incubator = viewModel.structure as? Incubator {
             MiniScreenView {
                 VStack(spacing: 16) {
-                    Text("Name your new bee")
+                    Text("A new bee has Hatched!")
                         .font(.headline.bold())
                         .fontDesign(.rounded)
                         .foregroundStyle(Color.white)
@@ -224,17 +282,17 @@ struct StructureDetailsView: View {
 }
 
 #Preview {
-    let viewModel = {
-        let incubator = Incubator()
-        try? incubator.startIncubating(.init(seconds: 10))
-        return StructureDetailsViewModel(structure: incubator)
-    }()
-    StructureDetailsView(viewModel: viewModel)
-    
-//    let hiveModel = {
-//        let hive = Hive()
-//        try! Bee().assign(to: hive)
-//        return StructureDetailsViewModel(structure: hive)
+//    let viewModel = {
+//        let incubator = Incubator()
+//        try? incubator.startIncubating(.init(seconds: 10))
+//        return StructureDetailsViewModel(structure: incubator)
 //    }()
-//    StructureDetailsView(viewModel: hiveModel)
+//    StructureDetailsView(viewModel: viewModel)
+    
+    let hiveModel = {
+        let hive = Hive()
+        try! Bee().assign(to: hive)
+        return StructureDetailsViewModel(structure: hive)
+    }()
+    StructureDetailsView(viewModel: hiveModel)
 }

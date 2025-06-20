@@ -8,13 +8,15 @@
 import SwiftUI
 import SceneKit
 
-class BeeViewModel: ObservableObject {
+final class BeeViewModel: ObservableObject {
     @Published var bees: [Bee]
     @Published var selectedBee: Bee?
+    var onRelease: () -> Void
     
-    init(bees: [Bee], selectedBee: Bee? = nil) {
+    init(bees: [Bee], selectedBee: Bee? = nil, onRelease: @escaping () -> Void = {}) {
         self.bees = bees
         self.selectedBee = selectedBee ?? bees.first ?? nil
+        self.onRelease = onRelease
     }
 }
 
@@ -50,49 +52,14 @@ struct BeeView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .background(Color.black.opacity(0.1))
                             .cornerRadius(10)
-                            .bindHeight(to: $gridHeight)
                         }
+                        .bindHeight(to: $gridHeight)
                         .font(.body)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     }
                     
-                    VStack {
-                        HStack {
-                            Label {
-                                Text("Bees")
-                                    .font(.headline)
-                            } icon: {
-                                Image(.bee)
-                                    .resizable()
-                                    .foregroundColor(.brown)
-                            }
-                            Spacer()
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .labelStyle(FontMatchedLabelStyle())
-
-                        List(viewModel.bees, id: \.self) { bee in
-                            Button(action: {
-                                viewModel.selectedBee = bee
-                                SFXManager.shared.playSound(.pop)
-                            }) {
-                                Text(bee.nickname)
-                                    .lineLimit(1)
-                                    .truncationMode(.tail)
-                                    .font(.caption)
-                            }
-                            .contentShape(RoundedRectangle(cornerRadius: 12))
-                            .listRowBackground(
-                                (bee == viewModel.selectedBee ? Color.orange : Color.black.opacity(0.1))
-                                    .cornerRadius(10)
-                            )
-                        }
+                    BeeSelectorView(viewModel: viewModel)
                         .frame(height: gridHeight)
-                        .frame(maxWidth: .infinity)
-                        .listStyle(.plain)
-                        .listRowSpacing(5)
-                        .foregroundStyle(.white)
-                    }
                 }
                 
                 // Buttons

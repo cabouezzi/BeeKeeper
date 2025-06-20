@@ -234,7 +234,7 @@ class ApiaryViewController: UIViewController {
         popToMiniScreen(beeView)
     }
     
-    private func popToMiniScreen(_ screen: some View) {
+    func popToMiniScreen(_ screen: some View) {
         let anyView = AnyView(screen)
         let hostingController = UIHostingController(rootView: anyView)
         hostingController.view.backgroundColor = .clear
@@ -600,16 +600,5 @@ extension ApiaryViewController: ShopViewDelegate {
             shopView?.removeFromSuperview()
         }
         apiaryView.overlay.showSharedHud()
-    }
-}
-
-// MARK: - BeeListViewDelegate
-extension ApiaryViewController: BeeListViewDelegate {
-    func beeListViewDidDismiss(_ beeListView: BeeListView) {
-        beeListView.removeFromSuperview()
-    }
-    
-    func beeListView(_ beeListView: BeeListView, didSelectBee bee: Bee) {
-        selectNode(bee)
     }
 }

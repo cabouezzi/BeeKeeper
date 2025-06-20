@@ -248,14 +248,16 @@ class TutorialViewController: ApiaryViewController {
     }
     
     override func popToBeeList(_ bee: Bee? = nil) {
-        let vc = BeeListViewController(frame: apiaryView.frame, bees: apiaryView.apiary.bees)
-        vc.onRelease { [weak self] in
+        let viewModel = BeeViewModel(
+            bees: GameManager.shared.apiary.bees.sorted(by: { $0.nickname < $1.nickname }),
+            selectedBee: bee
+        )
+        viewModel.selectedBee = bee
+        viewModel.onRelease = { [weak self] in
             self?.endTutorial()
         }
-        if let bee = bee {
-            vc.selectBee(bee)
-        }
-        addChild(vc)
+        let beeView = BeeView(viewModel: viewModel)
+        popToMiniScreen(beeView)
     }
     
     func endTutorial() {
