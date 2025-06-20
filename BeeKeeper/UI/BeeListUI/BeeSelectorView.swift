@@ -23,7 +23,7 @@ struct BeeSelectorView: View {
                 } icon: {
                     Image(.bee)
                         .resizable()
-                        .foregroundColor(.brown)
+                        .foregroundColor(Color(uiColor: .darkBrown))
                 }
                 Spacer()
             }
@@ -35,10 +35,18 @@ struct BeeSelectorView: View {
                     viewModel.selectedBee = bee
                     SFXManager.shared.playSound(.pop)
                 }) {
-                    Text(bee.nickname)
-                        .lineLimit(1)
-                        .truncationMode(.tail)
-                        .font(.caption)
+                    Label {
+                        Text(bee.nickname)
+                            .lineLimit(1)
+                            .truncationMode(.tail)
+                            .font(.caption)
+                    } icon: {
+                        Image(bee.producerAssignment is Flower ? .flower : .hive)
+                            .resizable()
+                            .foregroundStyle(Color(uiColor: .baige))
+                            .opacity(bee.producerAssignment == nil ? 0 : 1)
+                    }
+                    .labelStyle(FontMatchedLabelStyle())
                 }
                 .contentShape(RoundedRectangle(cornerRadius: 12))
                 .listRowBackground(
@@ -49,7 +57,12 @@ struct BeeSelectorView: View {
             .frame(maxWidth: .infinity)
             .listStyle(.plain)
             .listRowSpacing(5)
-            .foregroundStyle(.white)
         }
+        .foregroundStyle(.white)
     }
+}
+
+#Preview {
+    BeeSelectorView(viewModel: .init(bees: GameManager.shared.apiary.bees.sorted(by: { $0.nickname < $1.nickname })))
+        .background(Color.blue)
 }

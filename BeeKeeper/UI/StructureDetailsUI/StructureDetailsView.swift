@@ -43,13 +43,15 @@ struct StructureDetailsView: View {
                         Grid(alignment: .leading, horizontalSpacing: 16, verticalSpacing: 8) {
                             GridRow {
                                 Text("Containing:").fontWeight(.semibold)
-                                if container.containing.isEmpty() {
-                                    Text("Empty")
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                } else {
-                                    AttributedStringView(attributedString: container.containing.attributedString(roundDecimals: true))
-                                        .font(.body)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                TimelineView(.animation) { _ in
+                                    if container.containing.isEmpty() {
+                                        Text("Empty")
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                    } else {
+                                        AttributedStringView(attributedString: container.containing.attributedString(roundDecimals: true))
+                                            .font(.body)
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                    }
                                 }
                             }
                             GridRow {

@@ -228,9 +228,21 @@ class ApiaryViewController: UIViewController {
     func popToBeeList(_ bee: Bee? = nil) {
         let viewModel = BeeViewModel(
             bees: GameManager.shared.apiary.bees.sorted(by: { $0.nickname < $1.nickname }),
-            selectedBee: bee
+            selectedBee: bee,
         )
         let beeView = BeeView(viewModel: viewModel)
+        viewModel.onSelect = { [weak viewModel, unowned self] in
+            guard let bee = viewModel?.selectedBee else { return }
+            self.selectNode(bee)
+            viewModel?.isPresented = false
+        }
+        viewModel.onAssign = { [weak viewModel, unowned self] in
+            guard let bee = viewModel?.selectedBee else { return }
+            self.clearHud()
+            self.state = .idle
+            self.beginAssigningBee(bee)
+            viewModel?.isPresented = false
+        }
         popToMiniScreen(beeView)
     }
     
