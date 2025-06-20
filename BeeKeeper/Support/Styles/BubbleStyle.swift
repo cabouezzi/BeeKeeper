@@ -19,7 +19,6 @@ fileprivate struct BubbleStyle: ViewModifier {
             .background {
                 RoundedRectangle(cornerRadius: 10)
                     .fill().foregroundColor(color)
-                    .shadow(color: .secondary, radius: 2)
             }
     }
 }

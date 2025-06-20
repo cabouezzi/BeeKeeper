@@ -11,6 +11,7 @@ enum ApiaryError: LocalizedError {
     case overlappingStructures
     case sameBeeName
     case noBees
+    case emptyBeeName
 }
 
 class Apiary: Codable {
@@ -123,6 +124,7 @@ class Apiary: Codable {
     
     /// Adds the bee if there doesn't already exist a bee with the same name
     func addBee(_ bee: Bee) throws {
+        guard !bee.nickname.isEmpty else { throw ApiaryError.emptyBeeName}
         guard !bees.contains(where: { $0.nickname == bee.nickname }) else { throw ApiaryError.sameBeeName }
         bees.append(bee)
     }

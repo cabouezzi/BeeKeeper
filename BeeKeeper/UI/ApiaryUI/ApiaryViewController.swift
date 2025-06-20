@@ -243,6 +243,10 @@ class ApiaryViewController: UIViewController {
             self.beginAssigningBee(bee)
             viewModel?.isPresented = false
         }
+        viewModel.onRelease = { [weak viewModel] in
+            viewModel?.isPresented = false
+            GameManager.shared.releaseBees()
+        }
         popToMiniScreen(beeView)
     }
     

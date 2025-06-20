@@ -14,7 +14,26 @@ struct ViewHeightKey: PreferenceKey {
     }
 }
 
-struct BindHeight: ViewModifier {
+fileprivate struct BindWidth: ViewModifier {
+    @Binding var width: CGFloat
+
+    func body(content: Content) -> some View {
+        content
+            .overlay(
+                GeometryReader { geo in
+                    Color.clear
+                        .onAppear {
+                            width = geo.size.width
+                        }
+                        .onChange(of: geo.frame(in: .local).width) { newWidth in
+                            width = newWidth
+                        }
+                }
+            )
+    }
+}
+
+fileprivate struct BindHeight: ViewModifier {
     @Binding var height: CGFloat
 
     func body(content: Content) -> some View {
@@ -34,6 +53,10 @@ struct BindHeight: ViewModifier {
 }
 
 extension View {
+    func bindWidth(to width: Binding<CGFloat>) -> some View {
+        self.modifier(BindWidth(width: width))
+    }
+    
     func bindHeight(to height: Binding<CGFloat>) -> some View {
         self.modifier(BindHeight(height: height))
     }

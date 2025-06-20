@@ -7,6 +7,16 @@
 
 import SceneKit
 
+enum StructureError: LocalizedError {
+    case maxLevelReached
+    
+    var errorDescription: String? {
+        switch self {
+        case .maxLevelReached: return "Maximum level reached."
+        }
+    }
+}
+
 /// A rectangle in discrete space.
 ///
 /// The `x` axis increases from left to right.
@@ -29,6 +39,7 @@ class Structure: BKNode, Model, Codable {
     
     // Encoding is done automatically
     private(set) var level: UInt
+    var maxLevel: UInt = 10
     
     /// The bounding rectangle of the structure on the apiary grid layout.
     /// In 3D space, this is the x-z plane:
@@ -94,7 +105,8 @@ class Structure: BKNode, Model, Codable {
     open func onUnselect() {}
     
     /// Increments the ``level``.
-    final func levelUp() {
+    final func levelUp() throws {
+        guard level < maxLevel else { throw StructureError.maxLevelReached }
         level += 1
         onLevelUp()
     }

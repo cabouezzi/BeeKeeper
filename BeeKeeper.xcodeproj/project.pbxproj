@@ -137,6 +137,9 @@
 		14E7C8322B4D13A6002376BF /* GameTicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14E7C8312B4D13A6002376BF /* GameTicker.swift */; };
 		14EB4BDA2B4F493700BCDAAA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 14EB4BD92B4F493700BCDAAA /* LaunchScreen.storyboard */; };
 		14EC1FE32B86AE2900F1D3E2 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14EC1FE22B86AE2900F1D3E2 /* LaunchView.swift */; };
+		14F4DDAB2E05DC70003F93B5 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F4DDAA2E05DC6E003F93B5 /* View.swift */; };
+		14F4DDAF2E05E253003F93B5 /* ConfirmableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F4DDAE2E05E24F003F93B5 /* ConfirmableButton.swift */; };
+		14F4DDB52E05F718003F93B5 /* BeeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F4DDB42E05F715003F93B5 /* BeeViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -297,6 +300,9 @@
 		14EB4BD92B4F493700BCDAAA /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		14EC1FE22B86AE2900F1D3E2 /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
 		14ECDA742B4FC12A00760320 /* ColladaExportNotes.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ColladaExportNotes.md; sourceTree = "<group>"; };
+		14F4DDAA2E05DC6E003F93B5 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
+		14F4DDAE2E05E24F003F93B5 /* ConfirmableButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmableButton.swift; sourceTree = "<group>"; };
+		14F4DDB42E05F715003F93B5 /* BeeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeeViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -328,6 +334,7 @@
 		141AC49B2B509C41006DD1F8 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				14F4DDAE2E05E24F003F93B5 /* ConfirmableButton.swift */,
 				1485C7312DDD34CE0071DE4B /* MiniScreenView.swift */,
 				14B17EBA2E00CC1C008F899D /* SmartCountdownView.swift */,
 				14B17EB82E00B54C008F899D /* AttributedStringView.swift */,
@@ -354,6 +361,7 @@
 			isa = PBXGroup;
 			children = (
 				14B17ED12E03EC0C008F899D /* BeeView.swift */,
+				14F4DDB42E05F715003F93B5 /* BeeViewModel.swift */,
 				146CA1E02E051CF60025925F /* BeeSelectorView.swift */,
 			);
 			path = BeeListUI;
@@ -484,7 +492,6 @@
 				1485C72C2DC96D5A0071DE4B /* SettingsUI */,
 				1471B97D2B6ADD9B006DE737 /* TutorialUI */,
 				145749542B632971004FAD7D /* LaunchUI */,
-				14835A7A2AB5299D006D0290 /* Styles */,
 				14835A702AB51852006D0290 /* ApiaryUI */,
 				14A7DE7F2AD3883300D2FD4A /* ShopUI */,
 				14A7DE862AD3AA5800D2FD4A /* EvolutionUI */,
@@ -676,6 +683,7 @@
 		14835A8F2AC60001006D0290 /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				14835A7A2AB5299D006D0290 /* Styles */,
 				14B17EB22E00AA4E008F899D /* Modifiers */,
 				14835A962AC67655006D0290 /* Extensions */,
 				148359C82AB01091006D0290 /* Wrappers */,
@@ -697,6 +705,7 @@
 				14835A302AB02A60006D0290 /* SKNode.swift */,
 				1471B96F2B684015006DE737 /* UILabel.swift */,
 				14B17ECF2E03E1A3008F899D /* Image.swift */,
+				14F4DDAA2E05DC6E003F93B5 /* View.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1002,6 +1011,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				14F4DDAF2E05E253003F93B5 /* ConfirmableButton.swift in Sources */,
 				148359F32AB01091006D0290 /* ApiaryView.swift in Sources */,
 				148BBECA2B1BD03F00C86AB5 /* TimeInterval.swift in Sources */,
 				1471B95C2B659633006DE737 /* GeneData.swift in Sources */,
@@ -1043,6 +1053,7 @@
 				14A7DE882AD3AA6100D2FD4A /* EvolutionViewController.swift in Sources */,
 				14EC1FE32B86AE2900F1D3E2 /* LaunchView.swift in Sources */,
 				14835A092AB01091006D0290 /* Container.swift in Sources */,
+				14F4DDAB2E05DC70003F93B5 /* View.swift in Sources */,
 				1471B9672B675927006DE737 /* Daisy.swift in Sources */,
 				14E7C8322B4D13A6002376BF /* GameTicker.swift in Sources */,
 				148ACE932B53540800A0F948 /* Bubble.swift in Sources */,
@@ -1052,6 +1063,7 @@
 				14766A882B747BE200D10076 /* SFXManager.swift in Sources */,
 				1485C7322DDD34D30071DE4B /* MiniScreenView.swift in Sources */,
 				14835A1B2AB01091006D0290 /* ModelVisitor.swift in Sources */,
+				14F4DDB52E05F718003F93B5 /* BeeViewModel.swift in Sources */,
 				14B17ECA2E036CCC008F899D /* EvolutionDetailsViewModel.swift in Sources */,
 				14B17EBF2E01F8D2008F899D /* EvolutionDetailsView.swift in Sources */,
 				14835A1D2AB01091006D0290 /* Bee.swift in Sources */,

@@ -252,11 +252,11 @@ class TutorialViewController: ApiaryViewController {
             bees: GameManager.shared.apiary.bees.sorted(by: { $0.nickname < $1.nickname }),
             selectedBee: bee
         )
-        viewModel.selectedBee = bee
-        viewModel.onRelease = { [weak self] in
+        let beeView = BeeView(viewModel: viewModel)
+        viewModel.onRelease = { [weak viewModel, weak self] in
+            viewModel?.isPresented = false
             self?.endTutorial()
         }
-        let beeView = BeeView(viewModel: viewModel)
         popToMiniScreen(beeView)
     }
     
@@ -265,7 +265,13 @@ class TutorialViewController: ApiaryViewController {
         navigationController?.setViewControllers([avc], animated: false)
         GameManager.shared.releaseBees()
         state = .finished
-        SettingsManager.shared.isFirstLogin = false
+        
+        Task.detached {
+            print("Started")
+            try await DatabaseService.shared.saveAccount(GameManager.shared.account)
+            SettingsManager.shared.isFirstLogin = false
+            print("Done")
+        }
     }
 }
 

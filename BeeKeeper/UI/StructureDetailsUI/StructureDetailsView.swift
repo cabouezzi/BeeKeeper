@@ -12,6 +12,7 @@ struct StructureDetailsView: View {
     @ObservedObject var viewModel: StructureDetailsViewModel
     
     @State private var contentHeight: CGFloat = 0
+    @State private var contentWidth: CGFloat = 0
     @State private var showBeeList: Bool = false
     @State private var showNamingScreen: Bool = false
     @State private var newBeeName: String = ""
@@ -61,9 +62,7 @@ struct StructureDetailsView: View {
                             }
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding()
-                        .background(Color.black.opacity(0.1))
-                        .cornerRadius(10)
+                        .bubbleStyle(color: .black.opacity(0.1))
                     }
                     
                     // MARK: Basic info
@@ -109,9 +108,7 @@ struct StructureDetailsView: View {
                         }
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding()
-                    .background(Color.black.opacity(0.1))
-                    .cornerRadius(10)
+                    .bubbleStyle(color: .black.opacity(0.1))
                     
                     // MARK: Incubator
                     if let incubator = viewModel.structure as? Incubator {
@@ -119,10 +116,24 @@ struct StructureDetailsView: View {
                             VStack {
                                 Text("Status").fontWeight(.semibold)
                                     .frame(maxWidth: .infinity, alignment: .leading)
-                                if let period = incubator.currentIncubation {
-                                    SmartCountdownView(timeLeft: period.timeRemaining)
+                                    SmartCountdownView(timeLeft: incubator.currentIncubation?.timeRemaining ?? 0)
                                         .font(.title)
-                                }
+                                        .if(incubator.currentIncubation == nil) { view in
+                                            view
+                                                .frame(maxWidth: .infinity)
+                                                .hidden()
+                                                .overlay {
+                                                    let cost = Resources()
+                                                    if cost.isEmpty() {
+                                                        Text("Free!")
+                                                            .bold()
+                                                    }
+                                                    if !cost.isEmpty() {
+                                                        AttributedStringView(attributedString: cost.attributedString(verbose: false))
+                                                    }
+                                                }
+                                        }
+                                        .bubbleStyle(color: .black.opacity(0.1))
                                 
                                 if incubator.state == .incubating {
                                     
@@ -133,11 +144,8 @@ struct StructureDetailsView: View {
                                             print(error.localizedDescription)
                                         }
                                     }
-                                    .padding()
-                                    .frame(maxWidth: .infinity)
-                                    .background(Color(uiColor: .baige))
+                                    .buttonStyle(BubbleButtonStyle(color: Color(uiColor: .baige)))
                                     .foregroundColor(Color(uiColor: .darkBrown))
-                                    .cornerRadius(12)
                                 } else if incubator.state == .idle {
                                     Button("Incubate") {
                                         do {
@@ -146,47 +154,34 @@ struct StructureDetailsView: View {
                                             print(error.localizedDescription)
                                         }
                                     }
-                                    .padding()
-                                    .frame(maxWidth: .infinity)
-                                    .background(Color(uiColor: .orange))
-                                    .foregroundColor(Color(uiColor: .white))
-                                    .cornerRadius(12)
+                                    .buttonStyle(BubbleButtonStyle(color: .orange))
                                 } else if incubator.state == .finished {
                                     Button("Hatch") {
                                         showNamingScreen = true
                                     }
-                                    .padding()
-                                    .frame(maxWidth: .infinity)
-                                    .background(Color(uiColor: .orange))
-                                    .foregroundColor(Color(uiColor: .white))
-                                    .cornerRadius(12)
+                                    .buttonStyle(BubbleButtonStyle(color: .orange))
                                 }
                             }
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(Color.black.opacity(0.1))
-                            .cornerRadius(12)
+                            .bubbleStyle(color: .black.opacity(0.1))
                         }
                     }
                     
                     // Buttons
                     Button("Close", action: universalDismiss)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color(uiColor: .darkBrown))
-                        .cornerRadius(12)
+                        .bubbleStyle(color: Color(uiColor: .darkBrown))
                 }
                 .foregroundColor(Color(uiColor: .white))
                 .shadow(radius: 1, y: 2)
                 .font(.system(.body, design: .rounded))
                 .bindHeight(to: $contentHeight)
+                .bindWidth(to: $contentWidth)
             }
         }
     }
     
     @ViewBuilder
     private func BeesPopUp() -> some View {
-        let beeViewModel = BeeViewModel(bees: GameManager.shared.apiary.bees)
+        let beeViewModel = BeeViewModel(bees: GameManager.shared.apiary.bees, selectedBee: nil)
         ZStack {
             Color.black
                 .opacity(0.7)
@@ -207,12 +202,8 @@ struct StructureDetailsView: View {
                         print(error.localizedDescription)
                     }
                 }
-                .padding()
-                .frame(maxWidth: .infinity)
-                .background(Color(uiColor: .orange))
-                .foregroundColor(.white)
-                .cornerRadius(12)
-                .contentShape(RoundedRectangle(cornerRadius: 12))
+                .foregroundStyle(Color.white)
+                .buttonStyle(BubbleButtonStyle(color: .orange))
             }
             .frame(maxWidth: 200, maxHeight: contentHeight - 20)
             .padding()
@@ -235,66 +226,70 @@ struct StructureDetailsView: View {
     @ViewBuilder
     private func NamePopUp() -> some View {
         if let incubator = viewModel.structure as? Incubator {
-            MiniScreenView {
+            ZStack {
+                Color.black
+                    .opacity(0.7)
+                    .ignoresSafeArea()
+                    .frame(maxWidth: .infinity)
+                    .onTapGesture {
+                        showBeeList = false
+                    }
+                
                 VStack(spacing: 16) {
-                    Text("A new bee has Hatched!")
+                    Text("A new bee has hatched!")
                         .font(.headline.bold())
                         .fontDesign(.rounded)
                         .foregroundStyle(Color.white)
                     
                     TextField("Name your new bee", text: $newBeeName)
                         .textFieldStyle(.plain)
-                        .background(Color.clear)
-                        .foregroundStyle(Color.white)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color.black.opacity(0.1))
-                        .cornerRadius(12)
+                        .bubbleStyle(color: .black.opacity(0.1))
                     
                     Button("OK") {
                         do {
-                            showNamingScreen = false
-                            universalDismiss()
                             incubator.currentIncubation?.reward.setNickname(newBeeName)
                             try incubator.hatch()
+                            showNamingScreen = false
+                            universalDismiss()
                         } catch {
                             print(error.localizedDescription)
                         }
                     }
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color(uiColor: .orange))
-                    .foregroundColor(.white)
-                    .cornerRadius(12)
-                    .contentShape(RoundedRectangle(cornerRadius: 12))
+                    .buttonStyle(BubbleButtonStyle(color: .orange))
                 }
+                .frame(maxWidth: contentWidth - 40)
+                .foregroundStyle(Color.white)
+                .padding()
+                .background(
+                    Image(.backgroundWood)
+                        .resizable()
+                        .scaledToFill()
+                )
+                .cornerRadius(20)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 20)
+                        .stroke(Color(uiColor: .darkBrown), lineWidth: 5)
+                )
+                .padding()
             }
             .zIndex(2)
-            .background(
-                Color.black
-                    .opacity(0.7)
-                    .ignoresSafeArea()
-                    .zIndex(1)
-                    .onTapGesture {
-                        showNamingScreen = false
-                    }
-            )
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
 }
 
 #Preview {
-//    let viewModel = {
-//        let incubator = Incubator()
-//        try? incubator.startIncubating(.init(seconds: 10))
-//        return StructureDetailsViewModel(structure: incubator)
-//    }()
-//    StructureDetailsView(viewModel: viewModel)
-    
-    let hiveModel = {
-        let hive = Hive()
-        try! Bee().assign(to: hive)
-        return StructureDetailsViewModel(structure: hive)
+    let viewModel = {
+        let incubator = Incubator()
+        try? incubator.startIncubating(.init(seconds: 10))
+        return StructureDetailsViewModel(structure: incubator)
     }()
-    StructureDetailsView(viewModel: hiveModel)
+    StructureDetailsView(viewModel: viewModel)
+    
+//    let hiveModel = {
+//        let hive = Hive()
+//        try! Bee().assign(to: hive)
+//        return StructureDetailsViewModel(structure: hive)
+//    }()
+//    StructureDetailsView(viewModel: hiveModel)
 }

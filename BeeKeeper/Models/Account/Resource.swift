@@ -71,22 +71,21 @@ struct Resources: Codable, Equatable {
         if money > 0 || verbose {
             text.append(NSAttributedString(string: money.formatted(.number.precision(decimals))))
             text.append(attachment("honeySymbol"))
-            text.append(NSAttributedString(string: delimiter))
         }
         if honey > 0 || verbose {
+            if text.length > 0 { text.append(NSAttributedString(string: delimiter)) }
             text.append(NSAttributedString(string: honey.formatted(.number.precision(decimals))))
             text.append(attachment("honeySymbol"))
-            text.append(NSAttributedString(string: delimiter))
         }
         if pollen > 0 || verbose {
+            if text.length > 0 { text.append(NSAttributedString(string: delimiter)) }
             text.append(NSAttributedString(string: pollen.formatted(.number.precision(decimals))))
             text.append(attachment("pollenSymbol"))
-            text.append(NSAttributedString(string: delimiter))
         }
         if beeBread > 0 || verbose {
+            if text.length > 0 { text.append(NSAttributedString(string: delimiter)) }
             text.append(NSAttributedString(string: beeBread.formatted(.number.precision(decimals))))
             text.append(attachment("honeySymbol"))
-            text.append(NSAttributedString(string: delimiter))
         }
         return text
     }

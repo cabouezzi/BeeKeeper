@@ -12,7 +12,7 @@ final class HoneyStorage: Container {
     
     required init() {
         super.init()
-        self.maximum = Resources(honey: 200)
+        self.maximum = Resources(honey: 1000)
         self.area = DiscreteRect(x: 0, y: 0, width: 3, height: 3)
         updateFiller()
     }
