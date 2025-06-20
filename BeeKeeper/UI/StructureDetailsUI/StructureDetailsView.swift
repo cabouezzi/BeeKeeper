@@ -83,7 +83,7 @@ struct StructureDetailsView: View {
                                         .foregroundColor(i < viewModel.structure.assignedBees.count ? .orange : .brown)
                                     
                                     if i < viewModel.structure.assignedBees.count {
-                                        Text("Demetrius")
+                                        Text(Array(viewModel.structure.assignedBees)[i].nickname)
                                             .font(.caption)
                                             .lineLimit(1)
                                     } else {

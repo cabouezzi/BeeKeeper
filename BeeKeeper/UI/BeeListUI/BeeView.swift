@@ -116,14 +116,13 @@ struct BeeView: View {
                 .frame(alignment: .trailing)
             if let attributedString = value as? NSAttributedString {
                 AttributedStringView(attributedString: attributedString)
-                    .font(.caption)
                     .frame(alignment: .leading)
             } else if let value = value as? NSNumber {
                 Text(String(format: "%.2f", value.floatValue))
-                    .font(.caption)
                     .frame(alignment: .leading)
             }
         }
+        .font(.body)
         .fixedSize(horizontal: true, vertical: false)
     }
 }
