@@ -206,14 +206,15 @@ class ApiaryViewController: UIViewController {
     // MARK: - UI Navigation
     
     func popToShop() {
-        let shopView = ShopView(frame: apiaryView.frame)
-        shopView.shopDelegate = self
-        shopView.alpha = 0
-        apiaryView.addSubview(shopView)
-        UIView.animate(withDuration: 0.25) { [weak shopView] in
-            shopView?.alpha = 1
+        let viewModel = ShopViewModel { item in
+            let structure = item.newProduct()
+            self.beginMovingStructure(structure) {
+                try GameManager.shared.remove(item.cost)
+            }
         }
-        apiaryView.overlay.hideSharedHud()
+        let shopView = ShopView(viewModel: viewModel)
+        popToMiniScreen(shopView)
+        return;
     }
     
     func popToEvolution() {
@@ -580,41 +581,5 @@ extension ApiaryViewController: SCNSceneRendererDelegate {
             apiaryView.camera.translate(vector: apiaryView.camera.velocity)
             apiaryView.camera.velocity *= Float(accelerationFactor)
         }
-    }
-}
-
-// MARK: - ShopViewDelegate
-extension ApiaryViewController: ShopViewDelegate {
-    func shopView(_ shopView: ShopView, canSelectItem item: ShopItem) -> Bool {
-        return GameManager.shared.getAllResources().canAfford(item.cost)
-    }
-    
-    func shopView(_ shopView: ShopView, didSelectItem item: ShopItem) {
-        let structure = item.newProduct()
-        beginMovingStructure(structure) {
-            try GameManager.shared.remove(item.cost)
-        }
-        shopView.removeFromSuperview()
-    }
-    
-    func shopViewItems(_ shopView: ShopView) -> [ShopItem] {
-        return [
-            ShopItem(name: "Hive", description: nil, cost: Resources(honey: 5000, pollen: 2000), newProduct: { Hive() }),
-            ShopItem(name: "Incubator", description: nil, cost: Resources(honey: 50000, pollen: 1500), newProduct: { Incubator() }),
-            ShopItem(name: "Honey Jug", description: nil, cost: Resources(honey: 1000, pollen: 200), newProduct: { HoneyStorage() }),
-            ShopItem(name: "Pollen Jar Rack", description: nil, cost: Resources(honey: 1000, pollen: 500), newProduct: { PollenStorage() }),
-            ShopItem(name: "Daisy", description: "A flower", cost: Resources(honey: 500, pollen: 300), newProduct: { Daisy() }),
-            ShopItem(name: "Lavender", description: "A purple flower", cost: Resources(honey: 1000, pollen: 500), newProduct: { Lavender() }),
-            ShopItem(name: "Rose", description: "A red flower", cost: Resources(honey: 2500, pollen: 1000), newProduct: { Rose() })
-        ]
-    }
-    
-    func shopViewDidDismiss(_ shopView: ShopView) {
-        UIView.animate(withDuration: 0.25) { [weak shopView] in
-            shopView?.alpha = 0
-        } completion: { [weak shopView] _ in
-            shopView?.removeFromSuperview()
-        }
-        apiaryView.overlay.showSharedHud()
     }
 }

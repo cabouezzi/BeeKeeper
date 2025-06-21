@@ -18,6 +18,7 @@ struct AttributedStringView: View {
                 switch component {
                 case .text(let string, let attributes):
                     textView(string: string, attributes: attributes)
+                        .lineLimit(1)
                         .background(
                             GeometryReader { geo in
                                 Color.clear.preference(key: TextHeightKey.self, value: geo.size.height)

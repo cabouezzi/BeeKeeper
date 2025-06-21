@@ -1,5 +1,5 @@
 //
-//  Untitled.swift
+//  BindDimension.swift
 //  BeeKeeper
 //
 //  Created by Chaniel Abou-Ezzi on 6/19/25.
@@ -26,6 +26,7 @@ fileprivate struct BindWidth: ViewModifier {
                             width = geo.size.width
                         }
                         .onChange(of: geo.frame(in: .local).width) { newWidth in
+                            guard newWidth != width else { return }
                             width = newWidth
                         }
                 }
@@ -45,6 +46,7 @@ fileprivate struct BindHeight: ViewModifier {
                             height = geo.size.height
                         }
                         .onChange(of: geo.frame(in: .local).height) { newHeight in
+                            guard newHeight != height else { return }
                             height = newHeight
                         }
                 }
