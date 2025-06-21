@@ -123,7 +123,7 @@ struct StructureDetailsView: View {
                                                 .frame(maxWidth: .infinity)
                                                 .hidden()
                                                 .overlay {
-                                                    let cost = Resources()
+                                                    let cost = GameManager.shared.getIncubationCost()
                                                     if cost.isEmpty() {
                                                         Text("Free!")
                                                             .bold()

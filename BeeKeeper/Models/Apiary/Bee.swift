@@ -251,7 +251,7 @@ class Bee: SCNNode, Model, Producer, Codable, Identifiable {
     }
     
     func follow(_ target: SCNNode) {
-        removeAllAnimations()
+        removeAllAnimationPlayers()
         animationState = .targeting(target)
         animationLoop()
     }
@@ -267,6 +267,11 @@ class Bee: SCNNode, Model, Producer, Codable, Identifiable {
     }
     
     // MARK: - Animations
+    
+    private func removeAllAnimationPlayers() {
+        wingArmature?.animationPlayer(forKey: "flap")?.removeAllAnimations()
+        bodyArmature?.animationPlayer(forKey: "wiggle")?.removeAllAnimations()
+    }
     
     private func animationLoop() {
         let animationPlayer: SCNAnimationPlayer
@@ -433,42 +438,48 @@ class Bee: SCNNode, Model, Producer, Codable, Identifiable {
     
     private func avoidanceForce(_ world: SCNPhysicsWorld) -> SCNVector3 {
         var force = SCNVector3.zero
-        // Avoid obstacles as much as possible
-        let collisions = Bee.directions.compactMap({ dir in
-            return world.rayTestWithSegment(from: worldPosition, to: worldPosition + dir * (maxSpeed + avoidanceDistance)).first
-        })
+        let maxDistance = maxSpeed + avoidanceDistance
+        
+        let collisions = Bee.directions.compactMap { dir -> SCNHitTestResult? in
+            return world.rayTestWithSegment(from: worldPosition, to: worldPosition + dir * maxDistance).first
+        }
+        
+        guard !collisions.isEmpty else { return .zero }
+        
+        let velocityDir = velocity.magnitude > 0 ? velocity.normalized() : SCNVector3(0, 0, 1)
         
         for collision in collisions {
-            // Don't avoid assignment
-            if let producerAssignment = producerAssignment, producerAssignment === collision.node.firstParentModelNode() {
+            if let assigned = producerAssignment, assigned === collision.node.firstParentModelNode() {
                 continue
             }
+            
             let avoidanceDirection = collision.worldNormal.normalized()
             let avoidanceForce = scaledForce(avoidanceDirection)
-            let collisionDistance = collision.worldCoordinates.distance(to: worldPosition)
-            let steerDistance = velocity.normalized().distance(to: avoidanceDirection)
             
-            // collisionDistance in [0, ∞). shorter collisionDistance -> higher priority
-            // steerDistance in [0, 2]. shorter steerDistance -> less priority
+            let collisionDistance = max(collision.worldCoordinates.distance(to: worldPosition), 0.001)
+            let steerDistance = velocityDir.distance(to: avoidanceDirection)
+            
             let priority = steerDistance / collisionDistance
             force += avoidanceForce * priority
         }
         
-        force /= Float(Bee.directions.count)
+        force /= Float(collisions.count)
+        
         if force.magnitude > maxSteerForce {
             force = force.normalized() * maxSteerForce
         }
+        
         return force
     }
     
     private func attractionForce() -> SCNVector3 {
-        guard case .targeting(let node) = animationState else { return .zero }
+        guard case .targeting(let node) = animationState else {return .zero }
         let dir = (node.worldPosition - worldPosition).normalized()
         var targetVelocity = scaledForce(dir)
         
         let distance = node.worldPosition.distance(to: worldPosition)
         if distance < attractionPerception {
-            targetVelocity = targetVelocity.normalized() * distance.clamped(min: 0.1, max: 1)
+            targetVelocity = targetVelocity.normalized() * distance.clamped(min: 0.001, max: 1)
         }
         return targetVelocity
     }
@@ -482,7 +493,7 @@ class Bee: SCNNode, Model, Producer, Codable, Identifiable {
         
         let distance = hive.worldPosition.distance(to: worldPosition)
         if distance < Float(hive.area.width) {
-            targetVelocity = targetVelocity.normalized() * distance.clamped(min: 0.1, max: 1)
+            targetVelocity = targetVelocity.normalized() * distance.clamped(min: 0.001, max: 1)
         }
         return targetVelocity
     }

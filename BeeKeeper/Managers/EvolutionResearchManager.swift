@@ -17,15 +17,17 @@ final class EvolutionResearchManager {
     static let shared = EvolutionResearchManager()
 
     var researchState: ResearchState {
-        if let research = EvolutionResearchManager.shared.currentResearch {
+        if let research = currentResearch {
             return research.isComplete ? .completed(research) : .researching(research)
         } else {
             return .idle
         }
     }
     
-    @UserDefaultsKey(key: .geneResearch, defaultValue: nil)
-    var currentResearch: TimedReward<Gene>?
+    var currentResearch: TimedReward<Gene>? {
+        get { GameManager.shared.account.research }
+        set { GameManager.shared.account.research = newValue }
+    }
     
     private init() {
         

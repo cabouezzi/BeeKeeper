@@ -38,20 +38,6 @@ extension SCNGeometry {
 }
 
 extension CAAnimation {
-    @available(*, deprecated, renamed: "animationPlayerFromScene")
-    static func animationWithSceneNamed(name: String) -> CAAnimation? {
-        var animation: CAAnimation?
-        if let scene = SCNScene(named: name) {
-            scene.rootNode.enumerateChildNodes { child, stop in
-                if !child.animationKeys.isEmpty {
-                    animation = child.animation(forKey: child.animationKeys.first!)
-                    stop.initialize(to: true)
-                }
-            }
-        }
-        return animation
-    }
-    
     static func animationPlayerFromScene(_ name: String) -> SCNAnimationPlayer? {
         var animation: SCNAnimationPlayer?
         if let scene = SCNScene(named: name) {

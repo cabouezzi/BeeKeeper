@@ -12,6 +12,8 @@ final class ResourceDisplayHud: SKNode {
     var pollenBar: ResourceBar?
     var beeBreadBar: ResourceBar?
     
+    
+    
     override init() {
         super.init()
         layout()

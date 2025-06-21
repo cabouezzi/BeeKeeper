@@ -170,8 +170,6 @@ class ApiaryView: SCNView {
         camera.follow(magnet)
         
         for bee in bees {
-            bee.position.x = 10
-            bee.position.z = 0
             bee.follow(magnet)
         }
         

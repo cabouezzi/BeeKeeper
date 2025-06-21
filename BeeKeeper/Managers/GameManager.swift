@@ -168,4 +168,39 @@ final class GameManager: NSObject {
     func addStructure<T: Structure>(_ structure: T) throws {
         try apiary.addStructure(structure)
     }
+    
+    /// Returns the cost for incubating a new bee. Dependent on number of bees, and therefore on apiary.
+    func getIncubationCost() -> Resources {
+        let beeIndex = apiary.bees.count
+        
+        switch beeIndex {
+        case 0, 1:
+            return Resources()
+            
+        case 2...8:
+            let pollen = Float(100 * Int(pow(2.0, Double(beeIndex - 2))))
+            let honey = beeIndex >= 5 ? Float(100 * (beeIndex - 4)) : 0
+            if honey > 0 {
+                return Resources(honey: honey, pollen: pollen)
+            } else {
+                return Resources(pollen: pollen)
+            }
+            
+        case 9:
+            return Resources(honey: 1000, pollen: 1500, beeBread: 1)
+            
+        case 10:
+            return Resources(honey: 1200, pollen: 2000, beeBread: 2)
+            
+        case 11:
+            return Resources(honey: 1500, pollen: 3000, beeBread: 3)
+            
+        default:
+            return Resources(money: .infinity, honey: .infinity, pollen: .infinity, beeBread: .infinity)
+        }
+    }
+    
+    func incubator() {
+        
+    }
 }

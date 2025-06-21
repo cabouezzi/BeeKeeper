@@ -10,7 +10,7 @@ import SpriteKit
 
 class ApiaryOverlay: SKScene {
     let resources = ResourceDisplayHud()
-    let nameNode = SKTextNode(text: "Chaniel's Bees", texture: .plank)
+    let nameNode = SKTextNode(text: "Chaniel's Bees", texture: .wood)
     
     let achievementsButton = SKButton(texture: SKTexture.achievements)
     let tasksButton = SKButton(texture: SKTexture.tasks)
@@ -57,16 +57,6 @@ class ApiaryOverlay: SKScene {
         let spacing = section - buttonSize
         let leftButtons = [achievementsButton, tasksButton, mapButton]
         
-#if DEBUG
-        for (index, button) in leftButtons.enumerated() {
-            button.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-            button.size = CGSize(width: buttonSize, height: buttonSize)
-            button.position.x = section / 2 + spacing
-            button.position.y = size.height - (CGFloat(index) + 1.5) * section 
-            sharedHud.addChild(button)
-        }
-#endif
-        
         // Bee list
         beesButton.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         beesButton.size = CGSize(width: buttonSize, height: buttonSize)
@@ -97,13 +87,54 @@ class ApiaryOverlay: SKScene {
         sharedHud.addChild(evolutionButton)
         
         // Name
-        let scale = min((size.width * 0.5) / nameNode.size.width, buttonSize / nameNode.size.height)
-        nameNode.anchorPoint = CGPoint(x: 0, y: 1)
-        nameNode.xScale = scale
-        nameNode.yScale = scale
-        nameNode.position.x = spacing
-        nameNode.position.y = resources.calculateAccumulatedFrame().maxY
-        addChild(nameNode)
+        nameNode.size = CGSize(width: size.width * 5 / 12, height: buttonSize)
+        nameNode.fontName = UIFont(
+            descriptor: UIFont.systemFont(ofSize: nameNode.fontSize).fontDescriptor.withDesign(.rounded)!,
+            size: nameNode.fontSize
+        ).fontName
+        
+        let maskPath = CGPath(
+            roundedRect: CGRect(
+                x: nameNode.position.x - nameNode.size.width / 2,
+                y: nameNode.position.y - nameNode.size.height / 2,
+                width: nameNode.size.width,
+                height: nameNode.size.height
+            ),
+            cornerWidth: 10,
+            cornerHeight: 10,
+            transform: nil
+        )
+        let maskNode = SKShapeNode(path: maskPath)
+        maskNode.fillColor = .white
+        maskNode.strokeColor = .clear
+        maskNode.position = .zero
+
+        let cropNode = SKCropNode()
+        cropNode.maskNode = maskNode
+        cropNode.addChild(nameNode)
+        cropNode.position = CGPoint(x: spacing + nameNode.size.width / 2, y: resources.calculateAccumulatedFrame().maxY - nameNode.size.height / 2)
+
+        let shadow = SKShapeNode(path: maskPath)
+        shadow.fillColor = .darkBrown
+        shadow.position = cropNode.position
+        shadow.position.x += 3
+        shadow.position.y -= 5
+        shadow.zPosition = cropNode.zPosition - 1
+        shadow.strokeColor = .clear
+
+        // 4. Add to scene
+        addChild(cropNode)
+        addChild(shadow)
+        
+#if DEBUG
+        for (index, button) in leftButtons.enumerated() {
+            button.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+            button.size = CGSize(width: buttonSize, height: buttonSize)
+            button.position.x = section / 2 + spacing
+            button.position.y = cropNode.calculateAccumulatedFrame().minY - (CGFloat(index) + 1) * section
+            sharedHud.addChild(button)
+        }
+#endif
         
         addChild(sharedHud)
     }
