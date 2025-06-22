@@ -19,7 +19,7 @@ struct BeeSelectorView: View {
             HStack {
                 Label {
                     Text("Bees")
-                        .font(.headline)
+                        .font(.body)
                 } icon: {
                     Image(.bee)
                         .resizable()

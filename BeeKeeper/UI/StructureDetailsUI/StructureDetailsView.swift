@@ -31,11 +31,11 @@ struct StructureDetailsView: View {
                     HStack(alignment: .top) {
                         VStack {
                             Text(viewModel.structure.name ?? "Structure")
-                                .font(.system(.title, design: .rounded))
+                                .font(.system(.body, design: .rounded))
                                 .frame(maxWidth: .infinity)
                             
                             Text(viewModel.structure.details)
-                                .font(.body)
+                                .font(.caption)
                         }
                     }
                     
@@ -50,7 +50,7 @@ struct StructureDetailsView: View {
                                             .frame(maxWidth: .infinity, alignment: .leading)
                                     } else {
                                         AttributedStringView(attributedString: container.containing.attributedString(roundDecimals: true))
-                                            .font(.body)
+                                            .font(.caption)
                                             .frame(maxWidth: .infinity, alignment: .leading)
                                     }
                                 }
@@ -58,7 +58,7 @@ struct StructureDetailsView: View {
                             GridRow {
                                 Text("Capacity:").fontWeight(.semibold)
                                 AttributedStringView(attributedString: container.maximum.attributedString())
-                                    .font(.body)
+                                    .font(.caption)
                             }
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -117,7 +117,7 @@ struct StructureDetailsView: View {
                                 Text("Status").fontWeight(.semibold)
                                     .frame(maxWidth: .infinity, alignment: .leading)
                                     SmartCountdownView(timeLeft: incubator.currentIncubation?.timeRemaining ?? 0)
-                                        .font(.title)
+                                        .font(.body)
                                         .if(incubator.currentIncubation == nil) { view in
                                             view
                                                 .frame(maxWidth: .infinity)
@@ -149,7 +149,8 @@ struct StructureDetailsView: View {
                                 } else if incubator.state == .idle {
                                     Button("Incubate") {
                                         do {
-                                            try incubator.startIncubating(100)
+                                            let time = GameManager.shared.getIncubationTime()
+                                            try incubator.startIncubating(time)
                                         } catch {
                                             print(error.localizedDescription)
                                         }
@@ -165,14 +166,10 @@ struct StructureDetailsView: View {
                             .bubbleStyle(color: .black.opacity(0.1))
                         }
                     }
-                    
-                    // Buttons
-                    Button("Close", action: universalDismiss)
-                        .bubbleStyle(color: Color(uiColor: .darkBrown))
                 }
                 .foregroundColor(Color(uiColor: .white))
                 .shadow(radius: 1, y: 2)
-                .font(.system(.body, design: .rounded))
+                .font(.system(.caption, design: .rounded))
                 .bindHeight(to: $contentHeight)
                 .bindWidth(to: $contentWidth)
             }
@@ -237,7 +234,7 @@ struct StructureDetailsView: View {
                 
                 VStack(spacing: 16) {
                     Text("A new bee has hatched!")
-                        .font(.headline.bold())
+                        .font(.body.bold())
                         .fontDesign(.rounded)
                         .foregroundStyle(Color.white)
                     

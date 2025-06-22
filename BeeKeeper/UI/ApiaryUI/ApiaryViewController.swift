@@ -406,20 +406,26 @@ class ApiaryViewController: UIViewController {
             structure.showBorder(highlight)
             
             // Moves the camera further towards direction of movement
-            let glideMargin = 0.2
-            if location.x < apiaryView.frame.width * glideMargin {
-                apiaryView.camera.velocity.x = -0.05
+            // Circular dead zone radius = 0.3·min(width, height)
+            let center = CGPoint(x: apiaryView.frame.width / 2, y: apiaryView.frame.height / 2)
+            let dx = location.x - center.x
+            let dy = location.y - center.y
+            let deadZoneRadius = 0.3 * min(apiaryView.frame.width, apiaryView.frame.height)
+            let distance = sqrt(dx*dx + dy*dy)
+            guard distance > deadZoneRadius else {
+                break
             }
-            if location.x > apiaryView.frame.width * (1 - glideMargin) {
-                apiaryView.camera.velocity.x = 0.05
-            }
-            if location.y < apiaryView.frame.height * glideMargin {
-                apiaryView.camera.velocity.z = -0.05
-            }
-            if location.y > apiaryView.frame.height * (1 - glideMargin) {
-                apiaryView.camera.velocity.z = 0.05
-            }
+            // normalized screen-space direction
+            let nx = Float(dx / apiaryView.frame.width)
+            let ny = Float(-dy / apiaryView.frame.height)
+            var velocity = SCNVector3(nx, ny, 0)
             
+            let maxSpeed: Float = 0.03
+            if velocity.magnitude > maxSpeed {
+                velocity = velocity.normalized() * maxSpeed
+            }
+            apiaryView.camera.velocity = velocity
+
         default:
             break
         }

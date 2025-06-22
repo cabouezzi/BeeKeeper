@@ -68,6 +68,10 @@ class Incubator: Structure {
     }
     
     func startIncubating(_ period: TimeInterval) throws {
+        guard state == .idle else { throw IncubatorError.notFinished }
+        let cost = GameManager.shared.getIncubationCost()
+        // TODO: Throw better error
+        try GameManager.shared.remove(cost)
         currentIncubation = TimedReward(duration: period, reward: Bee(GameManager.shared.account.unlockedGenes))
     }
     

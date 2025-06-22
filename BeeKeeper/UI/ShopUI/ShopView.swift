@@ -22,7 +22,7 @@ struct ShopView: View {
                 VStack {
                     HStack {
                         Text("Shop")
-                            .font(.title)
+                            .font(.body)
                             .bold()
                         
                         Spacer()
@@ -130,7 +130,7 @@ struct ShopView: View {
                 .cornerRadius(10)
             
             AttributedStringView(attributedString: item.cost.attributedString())
-                .font(.body)
+                .font(.caption)
                 .bubbleStyle(color: .black.opacity(0.1))
                 .minimumScaleFactor(0.1)
         }
@@ -147,7 +147,7 @@ struct ShopView: View {
     private func ItemCellBack(_ item: ShopItem) -> some View {
         VStack(alignment: .leading) {
             Text(item.description)
-                .font(.body)
+                .font(.caption)
                 .multilineTextAlignment(.leading)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                 .bubbleStyle(color: .black.opacity(0.1))

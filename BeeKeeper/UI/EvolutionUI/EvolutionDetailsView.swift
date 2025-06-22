@@ -23,12 +23,12 @@ struct EvolutionDetailsView: View {
                 Image(viewModel.gene.icon).resizable()
             })
             .labelStyle(FontMatchedLabelStyle())
-            .font(.system(.largeTitle, design: .rounded))
+            .font(.system(.body, design: .rounded))
             .frame(maxWidth: .infinity, alignment: .leading)
             .foregroundColor(.white)
             
             Text(viewModel.gene.details)
-                .font(.body)
+                .font(.caption)
             
             TimelineView(.animation) { _ in
                 switch EvolutionResearchManager.shared.researchState {
@@ -61,7 +61,7 @@ struct EvolutionDetailsView: View {
                     
                 case .researching(let research):
                     SmartCountdownView(timeLeft: research.timeRemaining)
-                        .font(.title)
+                        .font(.body)
                         .padding()
                         .frame(maxWidth: .infinity)
                         .background(Color.black.opacity(0.2))
@@ -75,7 +75,7 @@ struct EvolutionDetailsView: View {
                     
                 case .completed(let research):
                     SmartCountdownView(timeLeft: 0)
-                        .font(.title)
+                        .font(.body)
                         .padding()
                         .frame(maxWidth: .infinity)
                         .background(Color.black.opacity(0.2))
@@ -93,7 +93,7 @@ struct EvolutionDetailsView: View {
         .padding()
         .background(Color.white.opacity(0.3))
         .foregroundColor(Color(uiColor: .white))
-        .font(.system(.body, design: .rounded))
+        .font(.system(.caption, design: .rounded))
         .cornerRadius(12)
         .padding()
     }

@@ -17,7 +17,7 @@ struct SettingsView: View {
                 HStack {
                     Spacer()
                     Text("Settings")
-                        .font(.system(.title, design: .rounded))
+                        .font(.system(.body, design: .rounded))
                         .frame(maxWidth: .infinity)
                         .foregroundColor(.white)
                     Spacer()
@@ -54,7 +54,7 @@ struct SettingsView: View {
             }
             .foregroundColor(Color(uiColor: .white))
             .shadow(radius: 1, y: 2)
-            .font(.system(.body, design: .rounded))
+            .font(.system(.caption, design: .rounded))
         }
     }
 }

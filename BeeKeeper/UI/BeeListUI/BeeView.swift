@@ -61,7 +61,7 @@ struct BeeView: View {
                             HStack {
                                 Button(action: viewModel.onSelect, label: {
                                     Image(systemName: "magnifyingglass.circle.fill")
-                                        .font(.body)
+                                        .font(.caption)
                                     
                                 })
                                 .buttonStyle(BubbleButtonStyle(color: Color(uiColor: .black.withAlphaComponent(0.1)), padding: 10))
@@ -69,7 +69,7 @@ struct BeeView: View {
                                 
                                 Button(action: viewModel.onAssign, label: {
                                     Image(systemName: "pencil")
-                                        .font(.body)
+                                        .font(.caption)
                                     
                                 })
                                 .buttonStyle(BubbleButtonStyle(color: .black.opacity(0.1), padding: 12))
@@ -89,7 +89,7 @@ struct BeeView: View {
                             .font(.caption)
                         }
                         .bindHeight(to: $gridHeight)
-                        .font(.body)
+                        .font(.caption)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     }
                     
@@ -112,7 +112,7 @@ struct BeeView: View {
         }
         .foregroundColor(Color(uiColor: .white))
         .shadow(radius: 1, y: 2)
-        .font(.system(.body, design: .rounded))
+        .font(.system(.caption, design: .rounded))
         .onChange(of: viewModel.isPresented) { newValue in
             if !newValue {
                 universalDismiss()
@@ -134,7 +134,7 @@ struct BeeView: View {
                     .frame(alignment: .leading)
             }
         }
-        .font(.body)
+        .font(.caption)
         .fixedSize(horizontal: true, vertical: false)
     }
 }

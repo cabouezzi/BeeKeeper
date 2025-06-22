@@ -183,6 +183,11 @@ final class GameManager: NSObject {
     
     /// Returns the cost for incubating a new bee. Dependent on number of bees, and therefore on apiary.
     func getIncubationCost() -> Resources {
+        // Free for tutorial
+        if SettingsManager.shared.isFirstLogin {
+            return Resources()
+        }
+        
         let beeIndex = apiary.bees.count
         
         switch beeIndex {
@@ -212,7 +217,8 @@ final class GameManager: NSObject {
         }
     }
     
-    func incubator() {
-        
+    /// Returns the time for incubating a new bee. Dependent on number of bees, and therefore on apiary.
+    func getIncubationTime() -> TimeInterval {
+        return 60 * pow(Double(account.unlockedGenes.count) + 1, TimeInterval(apiary.bees.count))
     }
 }
