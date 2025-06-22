@@ -15,12 +15,16 @@ enum ApiaryError: LocalizedError {
 }
 
 class Apiary: Codable {
+    var lastOnline: Date
+    
     private(set) var wildBees: Float
     private(set) var wildGenePool: [Gene: Float]
     private(set) var bees: [Bee]
     private(set) var structures: [Structure]
     
     init() {
+        lastOnline = .now
+        
         wildBees = 1000
         wildGenePool = [:]
         
@@ -56,11 +60,12 @@ class Apiary: Codable {
     }
     
     private enum CodingKeys: CodingKey {
-        case wildBees, wildGenePool, wrappers
+        case wildBees, wildGenePool, wrappers, lastOnline
     }
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        lastOnline = try container.decodeIfPresent(Date.self, forKey: .lastOnline) ?? .now
         wildBees = try container.decodeIfPresent(Float.self, forKey: .wildBees) ?? 1000
         wildGenePool = try container.decodeIfPresent(Dictionary<Gene, Float>.self, forKey: .wildGenePool) ?? [:]
         
@@ -77,6 +82,7 @@ class Apiary: Codable {
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(lastOnline, forKey: .lastOnline)
         try container.encode(wildBees, forKey: .wildBees)
         try container.encode(wildGenePool, forKey: .wildGenePool)
         

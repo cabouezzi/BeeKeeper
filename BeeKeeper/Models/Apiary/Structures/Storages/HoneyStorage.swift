@@ -12,7 +12,7 @@ final class HoneyStorage: Container {
     
     required init() {
         super.init()
-        self.maximum = Resources(honey: 1000)
+        self.maximum = Resources(honey: 3000)
         self.area = DiscreteRect(x: 0, y: 0, width: 3, height: 3)
         updateFiller()
     }
@@ -20,6 +20,7 @@ final class HoneyStorage: Container {
     override func loadNode() {
         name = "Honey Storage"
         self.details = "A sturdy glass vessel for storing harvested honey. Increases your maximum honey capacity."
+        
         let node = SCNNode(geometry: Meshes.Structure.honeyStorage)
         node.eulerAngles.y = .pi
         addChildNode(node)

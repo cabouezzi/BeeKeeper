@@ -35,6 +35,13 @@ struct Resources: Codable, Equatable {
                          beeBread: beeBread - resources.beeBread)
     }
     
+    func multiplying(_ x: Float) -> Resources {
+        return Resources(money: money * x,
+                         honey: honey * x,
+                         pollen: pollen * x,
+                         beeBread: beeBread * x)
+    }
+    
     func canAfford(_ cost: Resources) -> Bool {
         return money >= cost.money
         && honey >= cost.honey

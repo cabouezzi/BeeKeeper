@@ -11,7 +11,7 @@ class Honeycomb: SCNNode, Collector, Codable {
     unowned var hive: Hive?
     
     var containing: Resources = Resources()
-    var maximum: Resources = Resources(honey: 100)
+    var maximum: Resources = Resources(honey: 1000)
     
     convenience override init() {
         self.init(hive: nil)
@@ -77,7 +77,7 @@ class Pollencomb: Honeycomb {
     
     override init(hive: Hive?) {
         super.init(hive: hive)
-        maximum = Resources(pollen: 100)
+        maximum = Resources(pollen: 750)
     }
     
     required init?(coder: NSCoder) {

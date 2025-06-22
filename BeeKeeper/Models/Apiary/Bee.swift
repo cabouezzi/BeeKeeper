@@ -21,7 +21,7 @@ class Bee: SCNNode, Model, Producer, Codable, Identifiable {
     private var animationState: AnimationState = .droning
     
     // Producer
-    var production: Resources = Resources(honey: 0.03, pollen: 0.02)
+    var production: Resources = Resources(honey: 3, pollen: 2)
     var producerAssignment: Structure?
     var producerAssignmentId: UUID?
     
@@ -29,7 +29,7 @@ class Bee: SCNNode, Model, Producer, Codable, Identifiable {
     private(set) var nickname: String
     var genetics: Set<Gene>
     var hunger: Float = 100
-    var consumption = Resources(honey: 0, pollen: 0.1)
+    var consumption = Resources(honey: 1, pollen: 1)
     var bodyTemperature: Float = 70
     var intimidation: Float = 5
     var stingerDamage: Float = 5

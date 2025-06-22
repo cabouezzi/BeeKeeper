@@ -94,6 +94,18 @@ final class GameManager: NSObject {
     // MARK: - Apiary-Dependent
     
     func changeApiary(_ apiary: Apiary) {
+        // Save last online data
+        self.apiary.lastOnline = .now
+        
+        // Simulate time passing for the new apiary
+        let timePassed = Date().timeIntervalSince(apiary.lastOnline)
+        for bee in apiary.bees {
+            guard let collector = bee.producerAssignment as? (Collector & Container) else { return }
+            var production = bee.production.multiplying(Float(timePassed)).multiplying(0.7)
+            try? collector.fill(&production)
+        }
+        
+        // Set new apiary
         self.apiary = apiary
     }
     

@@ -12,7 +12,7 @@ final class PollenStorage: Container {
     
     required init() {
         super.init()
-        self.maximum = Resources(pollen: 1000)
+        self.maximum = Resources(pollen: 3000)
         self.area = DiscreteRect(x: 0, y: 0, width: 3, height: 3)
         updateJars()
     }
@@ -20,6 +20,7 @@ final class PollenStorage: Container {
     override func loadNode() {
         name = "Pollen Storage"
         self.details = "Wooden shelves stacked with jars to organize foraged pollen. Increases your maximum pollen capacity."
+        
         let rack = SCNNode(geometry: Meshes.Structure.pollenStorage)
         rack.scale = SCNVector3(1.5, 1.5, 1.5)
         addChildNode(rack)

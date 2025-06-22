@@ -8,8 +8,6 @@
 import Foundation
 
 final class Account: Codable {
-    let lastOnline: Date
-    
     var apiaries: [Apiary]
     var unlockedGenes: Set<Gene>
     var research: TimedReward<Gene>?
@@ -20,6 +18,5 @@ final class Account: Codable {
         ]
         
         unlockedGenes = []
-        lastOnline = .now
     }
 }
