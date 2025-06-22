@@ -12,7 +12,7 @@ final class PollenStorage: Container {
     
     required init() {
         super.init()
-        self.maximum = Resources(pollen: 3000)
+        self.maximum = Resources(pollen: 7000)
         self.area = DiscreteRect(x: 0, y: 0, width: 3, height: 3)
         updateJars()
     }

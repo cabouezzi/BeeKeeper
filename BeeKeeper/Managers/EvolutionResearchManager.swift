@@ -44,13 +44,7 @@ final class EvolutionResearchManager {
             throw GeneError.alreadyResearched(gene)
         }
         
-        guard GameManager.shared.getAllResources().canAfford(gene.cost) else { throw ContainerError.containerInsufficient }
-        
         try GameManager.shared.remove(gene.cost)
-        //            if let icon = evolutionView.iconForGene(gene) {
-        //                icon.childNode(withName: "lock")?.removeFromParent()
-        //            }
-        //            updateLockNodes()
         let research = TimedReward(duration: TimeInterval(hours: 1), reward: gene)
         currentResearch = research
         return research

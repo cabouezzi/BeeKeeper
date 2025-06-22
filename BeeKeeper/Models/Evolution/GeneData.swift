@@ -79,64 +79,63 @@ extension Gene {
 // MARK: Costs
 extension Gene {
     var cost: Resources {
-        return Resources()
         switch self {
         case .enzymesI:
-            return Resources(honey: 500, pollen: 300, beeBread: 0)
+            return Resources(honey: 300, pollen: 500, beeBread: 0)
         case .enzymesII:
-            return Resources(honey: 1000, pollen: 500, beeBread: 0)
+            return Resources(honey: 600, pollen: 1_000, beeBread: 0)
         case .enzymesIII:
-            return Resources(honey: 15000, pollen: 8000, beeBread: 0)
+            return Resources(honey: 2_400, pollen: 4_000, beeBread: 0)
             
         case .engineerI:
-            return Resources(honey: 1500, pollen: 1000, beeBread: 0)
+            return Resources(honey: 1_000, pollen: 1_500, beeBread: 0)
         case .engineerII:
-            return Resources(honey: 3000, pollen: 1500, beeBread: 0)
+            return Resources(honey: 1_500, pollen: 3_000, beeBread: 0)
         case .engineerIII:
-            return Resources(honey: 15000, pollen: 8000, beeBread: 1000)
+            return Resources(honey: 8_000, pollen: 15_000, beeBread: 1_000)
             
         case .furI:
-            return Resources(honey: 500, pollen: 400, beeBread: 0)
+            return Resources(honey: 400, pollen: 500, beeBread: 0)
         case .furII:
-            return Resources(honey: 3000, pollen: 1500, beeBread: 0)
+            return Resources(honey: 1_500, pollen: 3_000, beeBread: 0)
             
         case .electricChargeI:
-            return Resources(honey: 800, pollen: 600, beeBread: 0)
+            return Resources(honey: 250, pollen: 2_000, beeBread: 0)
         case .electricChargeII:
-            return Resources(honey: 3000, pollen: 1500, beeBread: 0)
+            return Resources(honey: 750, pollen: 4_000, beeBread: 0)
         case .electricChargeIII:
-            return Resources(honey: 12000, pollen: 6000, beeBread: 500)
+            return Resources(honey: 1_500, pollen: 10_000, beeBread: 500)
             
         case .stripesI:
-            return Resources(honey: 400, pollen: 300, beeBread: 0)
+            return Resources(honey: 300, pollen: 800, beeBread: 0)
         case .stripesII:
-            return Resources(honey: 1500, pollen: 800, beeBread: 0)
+            return Resources(honey: 800, pollen: 1_800, beeBread: 0)
         case .stripesIII:
-            return Resources(honey: 15000, pollen: 7500, beeBread: 600)
+            return Resources(honey: 7_500, pollen: 15_000, beeBread: 600)
             
         case .stingerI:
-            return Resources(honey: 500, pollen: 400, beeBread: 0)
+            return Resources(honey: 500, pollen: 500, beeBread: 0)
         case .stingerII:
-            return Resources(honey: 2000, pollen: 1200, beeBread: 0)
+            return Resources(honey: 2_000, pollen: 2_000, beeBread: 0)
         case .stingerIII:
-            return Resources(honey: 18000, pollen: 9000, beeBread: 1000)
+            return Resources(honey: 16_000, pollen: 20_000, beeBread: 1_000)
             
         case .venomI:
-            return Resources(honey: 2000, pollen: 1200, beeBread: 0)
+            return Resources(honey: 2_000, pollen: 1_200, beeBread: 0)
         case .venomII:
-            return Resources(honey: 1500, pollen: 800, beeBread: 0)
+            return Resources(honey: 5_500, pollen: 2_800, beeBread: 0)
             
         case .beeBread:
-            return Resources(honey: 30000, pollen: 15000, beeBread: 0)
+            return Resources(honey: 22_000, pollen: 30_000, beeBread: 0)
             
         case .sustainability:
-            return Resources(honey: 40000, pollen: 20000, beeBread: 5000)
+            return Resources(honey: 40_000, pollen: 15_000, beeBread: 5_000)
             
         case .bioluminescence:
-            return Resources(honey: 75000, pollen: 37500, beeBread: 1000)
+            return Resources(honey: 37_500, pollen: 75_000, beeBread: 1_000)
             
         case .royalJelly:
-            return Resources(honey: 50000, pollen: 25000, beeBread: 1000)
+            return Resources(honey: 50_000, pollen: 25_000, beeBread: 1_000)
         }
     }
 }

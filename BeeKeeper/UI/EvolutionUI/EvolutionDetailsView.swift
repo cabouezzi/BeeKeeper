@@ -91,18 +91,33 @@ struct EvolutionDetailsView: View {
             }
         }
         .padding()
-        .background(Color.white.opacity(0.3))
+        .background(
+            Image(.backgroundHexagonsDark)
+            .resizable()
+            .scaledToFill()
+            .opacity(0.8)
+        )
         .foregroundColor(Color(uiColor: .white))
         .font(.system(.caption, design: .rounded))
         .cornerRadius(12)
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(Color.yellow.opacity(0.3), lineWidth: 2)
+        )
         .padding()
     }
 }
 
 #Preview {
     ZStack {
-        Color.blue.frame(maxWidth: .infinity, maxHeight: .infinity)
-            .ignoresSafeArea()
-        EvolutionDetailsView(viewModel: EvolutionDetailsViewModel())
+        GeometryReader { geometry in
+            Color.blue.frame(maxWidth: .infinity, maxHeight: .infinity)
+                .ignoresSafeArea()
+            HStack {
+                Spacer()
+                EvolutionDetailsView(viewModel: EvolutionDetailsViewModel())
+                    .frame(maxWidth: geometry.size.width / 3)
+            }
+        }
     }
 }

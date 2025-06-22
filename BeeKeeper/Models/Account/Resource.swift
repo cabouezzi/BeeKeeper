@@ -92,7 +92,7 @@ struct Resources: Codable, Equatable {
         if beeBread > 0 || verbose {
             if text.length > 0 { text.append(NSAttributedString(string: delimiter)) }
             text.append(NSAttributedString(string: beeBread.formatted(.number.precision(decimals))))
-            text.append(attachment("honeySymbol"))
+            text.append(attachment("beeBreadSymbol"))
         }
         return text
     }

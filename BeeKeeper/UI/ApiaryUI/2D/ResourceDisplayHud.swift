@@ -52,7 +52,7 @@ final class ResourceDisplayHud: SKNode {
         #endif
         
         if showBeeBread {
-            beeBreadBar = ResourceBar(containing: 1, capacity: 1, color: .baige, size: barSize)
+            beeBreadBar = ResourceBar(containing: 1, capacity: 1, color: .baige, size: barSize, symbolImageName: "beeBreadSymbol")
             beeBreadBar?.position.x = size.width - xOffset
             beeBreadBar?.position.y = (pollenBar?.frame.minY ?? (honeyBar?.frame.minY ?? size.height - yOffset)) - verticalBarSpacing
             addChild(beeBreadBar!)

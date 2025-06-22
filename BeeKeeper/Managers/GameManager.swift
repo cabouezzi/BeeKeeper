@@ -195,7 +195,7 @@ final class GameManager: NSObject {
             return Resources()
             
         case 2...8:
-            let pollen = Float(100 * Int(pow(2.0, Double(beeIndex - 2))))
+            let pollen = Float(100 * Int(pow(1.5, Double(beeIndex - 2))))
             let honey = beeIndex >= 5 ? Float(100 * (beeIndex - 4)) : 0
             if honey > 0 {
                 return Resources(honey: honey, pollen: pollen)
@@ -219,6 +219,6 @@ final class GameManager: NSObject {
     
     /// Returns the time for incubating a new bee. Dependent on number of bees, and therefore on apiary.
     func getIncubationTime() -> TimeInterval {
-        return 60 * pow(Double(account.unlockedGenes.count) + 1, TimeInterval(apiary.bees.count))
+        return 15 * pow(Double(account.unlockedGenes.count) + 1, TimeInterval(apiary.bees.count))
     }
 }

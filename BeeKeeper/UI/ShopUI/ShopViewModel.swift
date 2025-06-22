@@ -14,13 +14,13 @@ class ShopViewModel: ObservableObject {
     init(items: [ShopItem]? = nil, onSelectItem: @escaping (ShopItem) -> Void = { _ in }) {
         self.items = items
         ?? [
-            ShopItem(cost: Resources(honey: 6_000,   pollen: 4_000),   product: { Hive() }),
-            ShopItem(cost: Resources(honey: 500_000,  pollen: 1_500),   product: { Incubator() }),
+            ShopItem(cost: Resources(honey: 1_000,   pollen: 3_000),   product: { Hive() }),
+            ShopItem(cost: Resources(honey: 60_000,  pollen: 42_500),   product: { Incubator() }),
             ShopItem(cost: Resources(honey: 1_250,   pollen:   3_000),   product: { HoneyStorage() }),
             ShopItem(cost: Resources(honey: 3_000,   pollen:   1_250),   product: { PollenStorage() }),
-            ShopItem(cost: Resources(honey:   500,   pollen:   500),   product: { Daisy() }),
-            ShopItem(cost: Resources(honey: 2_500,   pollen:   1_000),   product: { Lavender() }),
-            ShopItem(cost: Resources(honey: 6_000,   pollen: 1_000),   product: { Rose() })
+            ShopItem(cost: Resources(honey: 100,   pollen:   100),   product: { Daisy() }),
+            ShopItem(cost: Resources(honey: 500,   pollen:   750),   product: { Lavender() }),
+            ShopItem(cost: Resources(honey: 1_000,   pollen: 1_500),   product: { Rose() })
         ]
         self.onSelectItem = onSelectItem
     }

@@ -95,6 +95,10 @@ class Hive: Container, Collector {
     @discardableResult
     func addHoneycomb() throws -> Honeycomb {
         guard honeycombs.count < 3 else { throw HiveError.maxHoneycombs }
+        
+        let cost = Resources(honey: 1_000).multiplying(pow(1.5, Float(honeycombs.count)))
+        try GameManager.shared.remove(cost)
+        
         let honeycomb = Honeycomb(hive: self)
         honeycombs.append(honeycomb)
         addChildNode(honeycomb)
@@ -102,6 +106,22 @@ class Hive: Container, Collector {
         honeycomb.position.y = (honeycomb.geometry?.height ?? 0) * 0.7
         honeycomb.position.z = Float(honeycombs.count - 2) * (geometry?.depth ?? 0) / 4
         return honeycomb
+    }
+    
+    @discardableResult
+    func addPollencomb() throws -> Pollencomb {
+        guard honeycombs.count < 3 else { throw HiveError.maxHoneycombs }
+        
+        let cost = Resources(honey: 1_000).multiplying(pow(1.5, Float(honeycombs.count)))
+        try GameManager.shared.remove(cost)
+        
+        let pollenComb = Pollencomb(hive: self)
+        honeycombs.append(pollenComb)
+        addChildNode(pollenComb)
+        
+        pollenComb.position.y = (pollenComb.geometry?.height ?? 0) * 0.7
+        pollenComb.position.z = Float(honeycombs.count - 2) * (geometry?.depth ?? 0) / 4
+        return pollenComb
     }
     
     // MARK: Collector
