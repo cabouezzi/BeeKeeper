@@ -17,9 +17,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        
         let window = UIWindow(windowScene: windowScene)
         
+        // If they haven’t accepted, show the T&C view and bail out
+        if !SettingsManager.shared.hasAcceptedTerms {
+            let tosView = TermsAndConditionsView {
+                SettingsManager.shared.hasAcceptedTerms = true
+                self.launchFlow(window)
+            }
+            
+            window.rootViewController = UIHostingController(rootView: tosView)
+            window.makeKeyAndVisible()
+            return
+        }
+        
+        launchFlow(window)
+    }
+    
+    func launchFlow(_ window: UIWindow) {
         let launchView = LaunchView(frame: window.frame)
         let launchViewController = UIViewController(nibName: nil, bundle: nil)
         launchViewController.view = launchView
@@ -67,14 +82,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             _ = await loadSingletons.result
             await launchView.progress.setProgress(0.2, animated: true)
             
-            let ViewController = try await loadAccount.result.get()
+            let ViewController = await loadAccount.result.get()
+            await launchView.progress.setProgress(0.8, animated: true)
+            let gameViewController = await ViewController.init(frame: window.frame)
             await launchView.progress.setProgress(1, animated: true)
             
             // Pause on load completion
             sleep(1)
             
             await MainActor.run {
-                let gameViewController = ViewController.init(frame: window.frame)
                 navigationController.setViewControllers([gameViewController], animated: false)
             }
         }

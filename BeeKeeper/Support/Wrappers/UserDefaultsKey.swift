@@ -18,6 +18,7 @@ struct UserDefaultsKey<T: Codable> {
         case soundEffectsVolume = "sound-effects-volume"
         case beeEffectsVolume = "bee-effects-volume"
         case geneResearch = "gene-research"
+        case hasAcceptedTerms = "hasAcceptedTerms"
     }
     
     let key: String
