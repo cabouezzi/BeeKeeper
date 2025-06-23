@@ -48,6 +48,23 @@ class ApiaryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let errorView = NotificationToastContainer()
+        let hostingController = UIHostingController(rootView: errorView)
+        hostingController.view.backgroundColor = .clear
+        hostingController.view.layer.zPosition = 100
+        hostingController.view.isUserInteractionEnabled = false
+        addChild(hostingController)
+        
+        view.addSubview(hostingController.view)
+        
+        hostingController.didMove(toParent: self)
+        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            hostingController.view.widthAnchor.constraint(equalTo: view.widthAnchor),
+            hostingController.view.heightAnchor.constraint(equalTo: view.heightAnchor),
+            hostingController.view.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            hostingController.view.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -163,8 +180,7 @@ class ApiaryViewController: UIViewController {
                     apiaryView.overlay.resources.update(animated: true)
                     clear(true)
                 } catch {
-                    SFXManager.shared.playSound(.failure)
-                    print(error.localizedDescription)
+                    ErrorReporter.show(error)
                 }
             }),
             SKButton(texture: SKTexture.blankWhite, onTap: {
@@ -532,7 +548,7 @@ extension ApiaryViewController: ModelVisitor {
                 do {
                     try model.addHoneycomb()
                 } catch {
-                    print(error.localizedDescription)
+                    ErrorReporter.show(error)
                 }
             }),
             SKButton(texture: SKTexture.check, title: "Collect", onTap: {

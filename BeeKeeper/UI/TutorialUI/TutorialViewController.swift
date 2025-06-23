@@ -12,6 +12,7 @@ import SpriteKit
 class TutorialViewController: ApiaryViewController {
     enum State {
         case initial
+        case addingHoneycomb
         case incubating
         case assigning
         case evolving
@@ -70,10 +71,42 @@ class TutorialViewController: ApiaryViewController {
         pointer?.removeFromParent()
     }
     
+    func beginTutorial() {
+        beginAskingName()
+    }
+    
+    func beginAskingName() {
+        let dialogue = [
+            "Well, well, what do we have here? A surprise visitor in the apiary! I wasn't expecting company today, but I must say, it's a pleasant change from the routine. Have you too sensed the urgency, the responsibility we bear in a world teetering on the brink?"
+        ]
+        tutorialView.queueSequence(dialogue: dialogue) { [unowned self] in
+            let view = NamePromptView { [unowned self] in
+                self.beginAddingHoneycomb()
+            }
+            popToMiniScreen(view)
+        }
+    }
+    
+    func beginAddingHoneycomb() {
+        let dialogue = [
+            "I’m The Keeper, and my purpose is crystal clear: breathe life back into the wings that once fluttered so tirelessly, restoring the harmony we've lost. If you want to help, you can start over at my little corner of experimentation. ",
+            "Let's start by putting a honeycomb into the hive so the bees have something to work on."
+        ]
+        tutorialView.queueSequence(dialogue: dialogue) { [unowned self] in
+            guard let hive = apiaryView.apiary.structures.first(where: { $0 is Hive }) as? Hive else { return }
+            let action = SCNAction.move(to: hive.worldPosition, duration: 0.5)
+            action.timingMode = .easeOut
+            apiaryView.camera.runAction(action)
+            visitHive(hive)
+            state = .addingHoneycomb
+            if let button = apiaryView.overlay.children.compactMap({ $0 as? SKButton }).first(where: { $0.texture == .honeycomb }) {
+                highlightSKNode(button)
+            }
+        }
+    }
+    
     func beginIncubatingTutorial() {
         let dialogue = [
-            "Well, well, what do we have here? A surprise visitor in the apiary! I wasn't expecting company today, but I must say, it's a pleasant change from the routine. Have you too sensed the urgency, the responsibility we bear in a world teetering on the brink?",
-            "I’m ___, and my purpose is crystal clear: breathe life back into the wings that once fluttered so tirelessly, restoring the harmony we've lost. If you want to help, you can start over at my little corner of experimentation. ",
             "See that contraption over there? Whatever genetically enhanced blueprints we got at hand, I pop that concoction into the incubator, and voila! It's like a fast-forward evolution process, bringing our buzzing friends back into the world.",
         ]
         tutorialView.queueSequence(dialogue: dialogue) { [unowned self] in
@@ -167,7 +200,7 @@ class TutorialViewController: ApiaryViewController {
         super.viewDidAppear(animated)
         if state == .initial {
             DispatchQueue.main.asyncAfter(deadline: .now().advanced(by: .seconds(3))) { [unowned self] in
-                beginIncubatingTutorial()
+                beginTutorial()
             }
         } else if state == .evolving {
             removePointer()
@@ -183,6 +216,17 @@ class TutorialViewController: ApiaryViewController {
         switch state {
         case .initial:
             return
+        case .addingHoneycomb:
+            if let spriteNode = apiaryView.overlay.nodes(at: apiaryView.overlay.convertPoint(fromView: point)).first(where: { $0.isUserInteractionEnabled }) {
+                if let button = spriteNode as? SKButton, !button.isHidden, button.texture == .honeycomb {
+                    button.pop()
+                    button.activate()
+                    SFXManager.shared.playSound(.pop)
+                    beginIncubatingTutorial()
+                    clearHud()
+                }
+                return
+            }
         case .incubating:
             if let spriteNode = apiaryView.overlay.nodes(at: apiaryView.overlay.convertPoint(fromView: point)).first(where: { $0.isUserInteractionEnabled }) {
                 if let button = spriteNode as? SKButton, !button.isHidden, button.texture == .info {
@@ -230,19 +274,11 @@ class TutorialViewController: ApiaryViewController {
     
     override func panHandler(_ gestureRecognizer: UIPanGestureRecognizer) {
         switch state {
-        case .initial:
-            return
-        case .incubating:
-            return
         case .assigning:
             super.panHandler(gestureRecognizer)
-        case .evolving:
-            return
-        case .releasing:
-            return
         case .stalling:
             super.panHandler(gestureRecognizer)
-        case .finished:
+        default:
             return
         }
     }
@@ -267,10 +303,8 @@ class TutorialViewController: ApiaryViewController {
         state = .finished
         
         Task.detached {
-            print("Started")
             try await DatabaseService.shared.saveAccount(GameManager.shared.account)
             SettingsManager.shared.isFirstLogin = false
-            print("Done")
         }
     }
 }

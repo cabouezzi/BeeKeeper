@@ -12,6 +12,19 @@ enum ApiaryError: LocalizedError {
     case sameBeeName
     case noBees
     case emptyBeeName
+    
+    var errorDescription: String? {
+        switch self {
+        case .overlappingStructures:
+            return "Structures cannot overlap."
+        case .sameBeeName:
+            return "A bee with that name already exists."
+        case .noBees:
+            return "You have no bees to assign."
+        case .emptyBeeName:
+            return "A bee's name cannot be empty."
+        }
+    }
 }
 
 class Apiary: Codable {
@@ -29,9 +42,6 @@ class Apiary: Codable {
         wildGenePool = [:]
         
         let hive = Hive()
-        try? hive.addHoneycomb()
-        try? hive.addHoneycomb()
-        try? hive.addHoneycomb()
         hive.area.x = 0
         let honeyStorage = HoneyStorage()
         honeyStorage.area.x = hive.area.width

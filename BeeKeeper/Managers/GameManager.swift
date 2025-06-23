@@ -151,7 +151,11 @@ final class GameManager: NSObject {
     /// Transfers resources from a ``Collector`` and stores them into an available storage .
     func collect(from collector: some Collector) {
         for storage in apiary.structures.compactMap({ $0 is Collector ? nil : $0 as? Container }) {
-            try? collector.transfer(to: storage)
+            do {
+                try collector.transfer(to: storage)
+            } catch {
+                ErrorReporter.show(error)
+            }
         }
         notifyObservers({ $0.gameManager(account, apiary, didUpdateResources: getAllResources()) })
     }
@@ -170,7 +174,7 @@ final class GameManager: NSObject {
             let bees = try apiary.releaseAllBees()
             notifyObservers({ $0.gameManager(account, apiary, didReleaseBees: bees) })
         } catch {
-            print(error)
+            ErrorReporter.show(error)
         }
     }
     

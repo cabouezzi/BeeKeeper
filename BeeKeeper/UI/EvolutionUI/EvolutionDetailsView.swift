@@ -53,7 +53,11 @@ struct EvolutionDetailsView: View {
                         .cornerRadius(10)
                         
                         Button("Research") {
-                            _ = try? EvolutionResearchManager.shared.beginResearch(for: viewModel.gene)
+                            do {
+                                try EvolutionResearchManager.shared.beginResearch(for: viewModel.gene)
+                            } catch {
+                                ErrorReporter.show(error)
+                            }
                         }
                         .foregroundColor(.white)
                         .buttonStyle(BubbleButtonStyle(color: .orange))
@@ -68,7 +72,11 @@ struct EvolutionDetailsView: View {
                         .foregroundColor(.white)
                         .cornerRadius(12)
                     Button("Speed Up") {
-                        try? EvolutionResearchManager.shared.forceComplete()
+                        do {
+                            try EvolutionResearchManager.shared.forceComplete()
+                        } catch {
+                            ErrorReporter.show(error)
+                        }
                     }
                     .foregroundColor(.white)
                     .buttonStyle(BubbleButtonStyle(color: .black))
@@ -82,8 +90,12 @@ struct EvolutionDetailsView: View {
                         .foregroundColor(.white)
                         .cornerRadius(12)
                     Button("Claim") {
-                        try? EvolutionResearchManager.shared.claimResearch()
-                        viewModel.unlockedGenes = viewModel.unlockedGenes.union([research.reward])
+                        do {
+                            try EvolutionResearchManager.shared.claimResearch()
+                            viewModel.unlockedGenes = viewModel.unlockedGenes.union([research.reward])
+                        } catch {
+                            ErrorReporter.show(error)
+                        }
                     }
                     .foregroundColor(.white)
                     .buttonStyle(BubbleButtonStyle(color: .orange))

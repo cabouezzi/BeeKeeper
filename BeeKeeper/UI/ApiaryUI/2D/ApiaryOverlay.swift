@@ -7,10 +7,11 @@
 
 import SceneKit
 import SpriteKit
+import Combine
 
 class ApiaryOverlay: SKScene {
     let resources = ResourceDisplayHud()
-    let nameNode = SKTextNode(text: "Chaniel's Bees", texture: .wood)
+    let nameNode = SKTextNode(text: GameManager.shared.account.name, texture: .wood)
     
     let achievementsButton = SKButton(texture: SKTexture.achievements)
     let tasksButton = SKButton(texture: SKTexture.tasks)
@@ -24,6 +25,9 @@ class ApiaryOverlay: SKScene {
     private var buttonsCache: Set<SKNode> = []
     private weak var currentHud: SKNode?
     private let sharedHud = SKNode()
+    
+    // For syncing the apiary name
+    private var cancellables = Set<AnyCancellable>()
     
     convenience override init() {
         self.init(size: .zero)
@@ -40,10 +44,21 @@ class ApiaryOverlay: SKScene {
         camera.position.y = size.height / 2
         self.camera = camera
         addChild(camera)
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handlenameChange(_:)),
+            name: .didChangeName,
+            object: nil
+        )
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     func setup() {
@@ -204,5 +219,12 @@ class ApiaryOverlay: SKScene {
     private func structureDescriptionNode(_ structure: Structure) -> SKNode {
         let node = SKLabelNode(text: (structure.name ?? "Structure") + "Lvl.\(structure.level)")
         return node
+    }
+}
+
+// TODO: Reactive programming one day
+extension ApiaryOverlay {
+    @objc private func handlenameChange(_ notification: Notification) {
+        nameNode.text = GameManager.shared.account.name
     }
 }

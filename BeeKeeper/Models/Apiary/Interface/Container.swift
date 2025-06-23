@@ -8,9 +8,23 @@
 import Foundation
 
 enum ContainerError: LocalizedError {
-    case containerFull, containerInsufficient, transferToSelf, maximumAssignedBees
-    
-    var errorDescription: String? { nil }
+    case containerFull
+    case containerInsufficient
+    case transferToSelf
+    case maximumAssignedBees
+
+    var errorDescription: String? {
+        switch self {
+        case .containerFull:
+            return "The container is full."
+        case .containerInsufficient:
+            return "There's not enough resources."
+        case .transferToSelf:
+            return "Cannot transfer to the same container."
+        case .maximumAssignedBees:
+            return "This structure already has the maximum number of bees."
+        }
+    }
 }
 
 class Container: Structure {

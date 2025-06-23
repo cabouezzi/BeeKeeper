@@ -9,6 +9,13 @@ import SceneKit
 
 enum HiveError: LocalizedError {
     case maxHoneycombs
+
+    var errorDescription: String? {
+        switch self {
+        case .maxHoneycombs:
+            return "You’ve reached the maximum number of honeycombs."
+        }
+    }
 }
 
 class Hive: Container, Collector {
@@ -19,7 +26,11 @@ class Hive: Container, Collector {
         get { honeycombs.reduce(Resources(), { $0.adding($1.containing) }) }
         set {
             var new = newValue.canAfford(containing) ? newValue.subtracting(containing) : containing.subtracting(newValue)
-            newValue.canAfford(containing) ? try? fill(&new) : try? remove(new)
+            do {
+                newValue.canAfford(containing) ? try fill(&new) : try remove(new)
+            } catch {
+                
+            }
         }
     }
     
@@ -32,7 +43,7 @@ class Hive: Container, Collector {
         self.honeycombs = []
         super.init()
         self.area = DiscreteRect(x: 0, y: 0, width: 2, height: 2)
-        self.maximumAssignedBees = 4
+        self.maximumAssignedBees = 1
     }
     
     override func loadNode() {
@@ -96,8 +107,10 @@ class Hive: Container, Collector {
     func addHoneycomb() throws -> Honeycomb {
         guard honeycombs.count < 3 else { throw HiveError.maxHoneycombs }
         
-        let cost = Resources(honey: 1_000).multiplying(pow(1.5, Float(honeycombs.count)))
+        let cost = SettingsManager.shared.isFirstLogin ? Resources() : Resources(honey: 1_000).multiplying(pow(1.5, Float(honeycombs.count)))
         try GameManager.shared.remove(cost)
+        
+        maximumAssignedBees += 1
         
         let honeycomb = Honeycomb(hive: self)
         honeycombs.append(honeycomb)
@@ -141,6 +154,9 @@ class Hive: Container, Collector {
         for honeycomb in honeycombs {
             guard !resources.isEmpty() else { return }
             try? honeycomb.fill(&resources)
+        }
+        if !resources.isEmpty() {
+            throw ContainerError.containerFull
         }
     }
     

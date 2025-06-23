@@ -141,7 +141,7 @@ struct StructureDetailsView: View {
                                         do {
                                             try incubator.forceComplete()
                                         } catch {
-                                            print(error.localizedDescription)
+                                            ErrorReporter.show(error)
                                         }
                                     }
                                     .buttonStyle(BubbleButtonStyle(color: Color(uiColor: .baige)))
@@ -152,7 +152,7 @@ struct StructureDetailsView: View {
                                             let time = GameManager.shared.getIncubationTime()
                                             try incubator.startIncubating(time)
                                         } catch {
-                                            print(error.localizedDescription)
+                                            ErrorReporter.show(error)
                                         }
                                     }
                                     .buttonStyle(BubbleButtonStyle(color: .orange))
@@ -196,7 +196,7 @@ struct StructureDetailsView: View {
                         try beeViewModel.selectedBee?.assign(to: viewModel.structure)
                         showBeeList = false
                     } catch {
-                        print(error.localizedDescription)
+                        ErrorReporter.show(error)
                     }
                 }
                 .foregroundStyle(Color.white)
@@ -249,7 +249,7 @@ struct StructureDetailsView: View {
                             showNamingScreen = false
                             universalDismiss()
                         } catch {
-                            print(error.localizedDescription)
+                            ErrorReporter.show(error)
                         }
                     }
                     .buttonStyle(BubbleButtonStyle(color: .orange))

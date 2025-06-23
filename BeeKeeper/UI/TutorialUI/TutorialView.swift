@@ -23,54 +23,95 @@ class TutorialView: UIControl {
     private var queue: [Sequence] = []
     private var currentSequence: Sequence?
     
-    let bar: UIView
+    let bar: UIImageView
+    private let topBorder = CALayer()
+    let titleLabel: UILabel
     let textLabel: UILabel
     let avatarView: UIImageView
     
     override init(frame: CGRect) {
-        bar = UIView()
+        // Setup bar as background image view with black semi-transparent top border
+        bar = UIImageView(image: UIImage(resource: .backgroundWood))
+        bar.contentMode = .scaleToFill
         bar.translatesAutoresizingMaskIntoConstraints = false
-        bar.backgroundColor = .black.withAlphaComponent(0.75)
         
+        topBorder.backgroundColor = UIColor.black.withAlphaComponent(0.3).cgColor
+        bar.layer.addSublayer(topBorder)
+        
+        // Title label (bold)
+        titleLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.font = UIFont.boldSystemFont(ofSize: UIFont.preferredFont(forTextStyle: .title3).pointSize)
+        titleLabel.textColor = .white
+        titleLabel.textAlignment = .left
+        titleLabel.numberOfLines = 1
+        titleLabel.setShadow(.black)
+        titleLabel.text = "The Keeper"
+        
+        // Dialogue text label
         textLabel = UILabel()
         textLabel.translatesAutoresizingMaskIntoConstraints = false
         textLabel.backgroundColor = .clear
+        textLabel.textColor = .white
+        textLabel.font = UIFont.preferredFont(forTextStyle: .body)
+        textLabel.textAlignment = .left
+        textLabel.numberOfLines = 0
+        textLabel.setShadow(.black)
         textLabel.text = "Whats up homie"
         
+        // Avatar
         avatarView = UIImageView()
         avatarView.translatesAutoresizingMaskIntoConstraints = false
-        avatarView.image = UIImage(named: "mannequin")
+        avatarView.image = UIImage(resource: .beekeeper)
         avatarView.contentMode = .scaleAspectFit
+        
         super.init(frame: frame)
         
-        for subview in [bar, avatarView, textLabel] {
-            addSubview(subview)
-        }
+        // Add subviews
+        addSubview(bar)
+        bar.addSubview(titleLabel)
+        bar.addSubview(textLabel)
+        addSubview(avatarView)
         
-        addConstraints([
+        // Constraints
+        NSLayoutConstraint.activate([
+            // Bar constraints
+            bar.bottomAnchor.constraint(equalTo: bottomAnchor),
+            bar.leftAnchor.constraint(equalTo: leftAnchor),
+            bar.rightAnchor.constraint(equalTo: rightAnchor),
+            bar.heightAnchor.constraint(equalToConstant: 200),
+            
+            // Title label at top of bar
+            titleLabel.leftAnchor.constraint(equalTo: avatarView.rightAnchor, constant: 10),
+            titleLabel.rightAnchor.constraint(equalTo: bar.rightAnchor, constant: -10),
+            titleLabel.topAnchor.constraint(equalTo: bar.topAnchor, constant: 10),
+            
+            // Text label below title
+            textLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
+            textLabel.leftAnchor.constraint(equalTo: titleLabel.leftAnchor),
+            textLabel.rightAnchor.constraint(equalTo: bar.rightAnchor),
+            textLabel.bottomAnchor.constraint(equalTo: bar.bottomAnchor, constant: -8),
+            
+            // Avatar constraints
             avatarView.leftAnchor.constraint(equalTo: leftAnchor),
             avatarView.bottomAnchor.constraint(equalTo: bottomAnchor),
             avatarView.heightAnchor.constraint(equalTo: bar.heightAnchor, constant: 50),
             avatarView.widthAnchor.constraint(equalTo: avatarView.heightAnchor),
-            
-            textLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
-            textLabel.leftAnchor.constraint(equalTo: avatarView.rightAnchor),
-            textLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -10),
-            textLabel.heightAnchor.constraint(equalToConstant: 200),
-            
-            bar.bottomAnchor.constraint(equalTo: bottomAnchor),
-            bar.topAnchor.constraint(equalTo: textLabel.topAnchor),
-            bar.leftAnchor.constraint(equalTo: leftAnchor),
-            bar.rightAnchor.constraint(equalTo: rightAnchor),
         ])
         
         hideDialogue(duration: 0)
+        
         let tap = UITapGestureRecognizer(target: self, action: #selector(nextDialogue))
         addGestureRecognizer(tap)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        topBorder.frame = CGRect(x: 0, y: 0, width: bar.bounds.width, height: 5)
     }
     
     func queueSequence(dialogue: [String], completion: (() -> Void)? = nil) {
@@ -102,6 +143,7 @@ class TutorialView: UIControl {
     private func hideDialogue(duration: TimeInterval = 0.5) {
         bar.fadeOut(duration: duration)
         avatarView.fadeOut(duration: duration)
+        titleLabel.fadeOut(duration: duration)
         textLabel.fadeOut(duration: duration)
         isDialogueShown = false
         isUserInteractionEnabled = false
@@ -113,21 +155,17 @@ class TutorialView: UIControl {
             let dur = 0.5
             bar.fadeIn(duration: dur)
             avatarView.fadeIn(duration: dur)
+            titleLabel.fadeIn(duration: dur)
             textLabel.fadeIn(duration: dur)
         }
-        defer {
-            isDialogueShown = true
-            isUserInteractionEnabled = true
-        }
+        
         textLabel.text = text
-        textLabel.font = .preferredFont(forTextStyle: .body)
-        textLabel.textColor = .white
-        textLabel.textAlignment = .left
-        textLabel.contentMode = .topLeft
-        textLabel.numberOfLines = 0
-        textLabel.setShadow(.black)
-        textLabel.sizeToFit()
+        
         backgroundColor = .black.withAlphaComponent(0.15)
         superview?.bringSubviewToFront(self)
+        
+        isDialogueShown = true
+        isUserInteractionEnabled = true
     }
 }
+
