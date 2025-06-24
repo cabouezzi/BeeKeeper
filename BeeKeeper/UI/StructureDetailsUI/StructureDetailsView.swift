@@ -136,16 +136,9 @@ struct StructureDetailsView: View {
                                         .bubbleStyle(color: .black.opacity(0.1))
                                 
                                 if incubator.state == .incubating {
+                                    Button("Hatch") {}
+                                    .buttonStyle(BubbleButtonStyle(color: .gray))
                                     
-                                    Button("Speed Up") {
-                                        do {
-                                            try incubator.forceComplete()
-                                        } catch {
-                                            ErrorReporter.show(error)
-                                        }
-                                    }
-                                    .buttonStyle(BubbleButtonStyle(color: Color(uiColor: .baige)))
-                                    .foregroundColor(Color(uiColor: .darkBrown))
                                 } else if incubator.state == .idle {
                                     Button("Incubate") {
                                         do {

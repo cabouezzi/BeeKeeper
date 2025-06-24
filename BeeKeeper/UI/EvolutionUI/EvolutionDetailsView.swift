@@ -71,15 +71,9 @@ struct EvolutionDetailsView: View {
                         .background(Color.black.opacity(0.2))
                         .foregroundColor(.white)
                         .cornerRadius(12)
-                    Button("Speed Up") {
-                        do {
-                            try EvolutionResearchManager.shared.forceComplete()
-                        } catch {
-                            ErrorReporter.show(error)
-                        }
-                    }
-                    .foregroundColor(.white)
-                    .buttonStyle(BubbleButtonStyle(color: .black))
+                    Button("Claim") {}
+                        .foregroundColor(.white)
+                        .buttonStyle(BubbleButtonStyle(color: .gray.opacity(0.8)))
                     
                 case .completed(let research):
                     SmartCountdownView(timeLeft: 0)
