@@ -225,4 +225,50 @@ final class GameManager: NSObject {
     func getIncubationTime() -> TimeInterval {
         return 15 * pow(Double(account.unlockedGenes.count) + 1, TimeInterval(apiary.bees.count))
     }
+    
+    
+    func getHoneycombBuildCost(_ hive: Hive) -> Resources {
+        if SettingsManager.shared.isFirstLogin && hive.honeycombs.isEmpty {
+            return Resources()
+        }
+        
+        var cost = Resources(honey: 750).multiplying(Float(hive.honeycombs.count + 1))
+        
+        for bee in hive.assignedBees {
+            if bee.genetics.contains(.engineerIII) {
+                cost = cost.subtracting(Resources(honey: 75))
+            } else if bee.genetics.contains(.engineerII) {
+                cost = cost.subtracting(Resources(honey: 50))
+            } else if bee.genetics.contains(.engineerI) {
+                cost = cost.subtracting(Resources(honey: 25))
+            }
+        }
+        
+        if !cost.canAfford(Resources()) {
+            cost = Resources()
+        }
+        return cost
+    }
+    
+    func getHoneycombBuildTime(_ hive: Hive) -> TimeInterval {
+        if SettingsManager.shared.isFirstLogin && hive.honeycombs.isEmpty {
+            return 5
+        }
+        
+        // Percentage
+        var factor: TimeInterval = 1.0
+        
+        for bee in hive.assignedBees {
+            if bee.genetics.contains(.engineerIII) {
+                factor -= 0.05
+            } else if bee.genetics.contains(.engineerII) {
+                factor -= 0.025
+            } else if bee.genetics.contains(.engineerI) {
+                factor -= 0.01
+            }
+        }
+        
+        let time = TimeInterval(hours: 1) * pow(5, TimeInterval(hive.honeycombs.count)) * factor
+        return time
+    }
 }

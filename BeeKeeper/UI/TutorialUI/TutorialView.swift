@@ -7,6 +7,7 @@
 
 import UIKit
 import SpriteKit
+import Combine
 
 class TutorialView: UIControl {
     fileprivate class Sequence {
@@ -28,6 +29,8 @@ class TutorialView: UIControl {
     let titleLabel: UILabel
     let textLabel: UILabel
     let avatarView: UIImageView
+    
+    var cancellables = Set<AnyCancellable>()
     
     override init(frame: CGRect) {
         // Setup bar as background image view with black semi-transparent top border

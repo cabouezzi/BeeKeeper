@@ -12,7 +12,7 @@ struct BubbleButtonStyle: ButtonStyle {
     let edges: Edge.Set
     let padding: CGFloat?
     
-    init(color: Color, edges: Edge.Set = .all, padding: CGFloat? = nil) {
+    init(color: Color, edges: Edge.Set = .all, padding: CGFloat = 10) {
         self.color = color
         self.edges = edges
         self.padding = padding

@@ -544,13 +544,6 @@ extension ApiaryViewController: ModelVisitor {
     
     func visitHive(_ model: Hive) -> () {
         apiaryView.overlay.setButtons(title: model.name, [
-            SKButton(texture: SKTexture.honeycomb, onTap: {
-                do {
-                    try model.addHoneycomb()
-                } catch {
-                    ErrorReporter.show(error)
-                }
-            }),
             SKButton(texture: SKTexture.check, title: "Collect", onTap: {
                 GameManager.shared.collect(from: model)
             }),
