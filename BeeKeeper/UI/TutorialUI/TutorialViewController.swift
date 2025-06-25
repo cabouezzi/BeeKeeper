@@ -230,7 +230,7 @@ class TutorialViewController: ApiaryViewController {
             return
         case .addingHoneycomb, .incubating:
             if let spriteNode = apiaryView.overlay.nodes(at: apiaryView.overlay.convertPoint(fromView: point)).first(where: { $0.isUserInteractionEnabled }) {
-                if let button = spriteNode as? SKButton, !button.isHidden, button.texture == .info {
+                if let button = spriteNode as? SKButton, !button.isHidden, (button.texture == .info || button.texture == .settings) {
                     button.pop()
                     button.activate()
                     SFXManager.shared.playSound(.pop)
