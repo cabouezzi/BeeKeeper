@@ -37,8 +37,37 @@ enum HiveError: LocalizedError {
 }
 
 class Hive: Container, Collector {
-    private(set) var honeycombs: [Honeycomb]
-    private(set) var currentConstruction: TimedReward<Honeycomb>?
+    private(set) var honeycombs: [Honeycomb] {
+        didSet {
+            bindHoneycombs()
+            onChange?()
+        }
+    }
+    private(set) var currentConstruction: TimedReward<Honeycomb>? {
+        didSet {
+            oldValue?.onChange = nil
+            bindConstruction()
+            onChange?()
+        }
+    }
+
+    override var onChange: (() -> Void)? {
+        didSet {
+            bindHoneycombs()
+            bindConstruction()
+        }
+    }
+
+    private func bindHoneycombs() {
+        for honeycomb in honeycombs {
+            honeycomb.onChange = { [weak self] in self?.onChange?() }
+        }
+    }
+
+    private func bindConstruction() {
+        currentConstruction?.onChange = { [weak self] in self?.onChange?() }
+        currentConstruction?.reward.onChange = { [weak self] in self?.onChange?() }
+    }
 
     /// Tracks where we are in the honeycomb build process
     var constructionState: HoneycombConstructionState {

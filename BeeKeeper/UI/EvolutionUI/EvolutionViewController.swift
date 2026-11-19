@@ -8,11 +8,10 @@
 
 import SpriteKit
 import SwiftUI
-import Combine
+import Observation
 
-class EvolutionViewController: UIViewController, ObservableObject {
+class EvolutionViewController: UIViewController {
     let model = EvolutionDetailsViewModel()
-    private var cancellables = Set<AnyCancellable>()
     
     private let evolutionView: EvolutionView
     let hostingController: UIHostingController<AnyView>
@@ -50,14 +49,8 @@ class EvolutionViewController: UIViewController, ObservableObject {
             }
         }
         
-        model.$unlockedGenes
-            .sink { genes in
-                self.updateLockNodes()
-                print("Genes updated")
-            }
-            .store(in: &cancellables)
-        
         updateLockNodes()
+        observeGeneUnlocks()
         drawDirectedEdges()
     }
     
@@ -181,6 +174,18 @@ class EvolutionViewController: UIViewController, ObservableObject {
                     }
                     leaf.isHidden = false
                 }
+            }
+        }
+    }
+
+    private func observeGeneUnlocks() {
+        withObservationTracking {
+            _ = model.unlockedGenes
+        } onChange: { [weak self] in
+            Task { @MainActor [weak self] in
+                guard let self else { return }
+                self.updateLockNodes()
+                self.observeGeneUnlocks()
             }
         }
     }

@@ -5,11 +5,13 @@
 //  Created by Chaniel Abou-Ezzi on 6/21/25.
 //
 
-import Combine
+import Observation
 
-class ShopViewModel: ObservableObject {
-    @Published var items: [ShopItem]
-    var onSelectItem: (ShopItem) -> Void
+@MainActor
+@Observable
+final class ShopViewModel {
+    var items: [ShopItem]
+    @ObservationIgnored var onSelectItem: (ShopItem) -> Void
     
     init(items: [ShopItem]? = nil, onSelectItem: @escaping (ShopItem) -> Void = { _ in }) {
         self.items = items

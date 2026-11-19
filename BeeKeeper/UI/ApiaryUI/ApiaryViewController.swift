@@ -11,9 +11,9 @@ import SpriteKit
 import AVFoundation
 import SwiftUI
 
-fileprivate enum GameState {
+fileprivate enum ApiaryInteractionState {
     case idle
-    case moving(_ structure: Structure, _ originalArea: DiscreteRect)
+    case moving(_ structure: Structure, _ previewArea: DiscreteRect)
     case assigning(_ bee: Bee)
     case assigningWithDrag(_ bee: Bee)
     case following(_ node: SCNNode)
@@ -21,7 +21,7 @@ fileprivate enum GameState {
 
 class ApiaryViewController: UIViewController {
     var apiaryView: ApiaryView
-    private var state: GameState = .idle
+    private var state: ApiaryInteractionState = .idle
     
     convenience init() {
         self.init(frame: .zero)
@@ -133,15 +133,18 @@ class ApiaryViewController: UIViewController {
         guard case .idle = state else { return }
         let originalArea = structure.area
         let isNew = structure.parent == nil
+
+        func overlapsExisting(at area: DiscreteRect) -> Bool {
+            apiaryView.apiary.structures.contains { $0 !== structure && $0.area.intersects(area) }
+        }
         
         func clear(_ success: Bool) {
             if !success {
                 if isNew {
                     structure.removeFromParentNode()
                 } else {
-                    structure.area = originalArea
-                    structure.position.x = Float(structure.area.x) + Float(structure.area.width) / 2
-                    structure.position.z = Float(structure.area.y) + Float(structure.area.height) / 2
+                    structure.position.x = Float(originalArea.x) + Float(originalArea.width) / 2
+                    structure.position.z = Float(originalArea.y) + Float(originalArea.height) / 2
                 }
             }
             state = .idle
@@ -161,7 +164,7 @@ class ApiaryViewController: UIViewController {
             structure.showBorder()
         }
         
-        if apiaryView.apiary.structures.contains(where: { $0.overlaps(structure) }) {
+        if overlapsExisting(at: structure.area) {
             structure.showBorder(.red)
         } else {
             structure.showBorder(.green)
@@ -170,13 +173,22 @@ class ApiaryViewController: UIViewController {
         apiaryView.overlay.setButtons(title: structure.name, [
             SKButton(texture: SKTexture.check, onTap: { [unowned self] in
                 do {
-                    try completion?()
-                    guard !apiaryView.apiary.structures.contains(where: { $0.overlaps(structure) }) else {
+                    guard case .moving(let movingStructure, let previewArea) = state,
+                          movingStructure === structure else { return }
+                    guard !overlapsExisting(at: previewArea) else {
                         throw ApiaryError.overlappingStructures
                     }
+                    try completion?()
+                    structure.area = previewArea
                     if isNew {
-                        try GameManager.shared.addStructure(structure)
+                        do {
+                            try GameManager.shared.addStructure(structure)
+                        } catch {
+                            structure.area = originalArea
+                            throw error
+                        }
                     }
+                    GameManager.shared.recordChange()
                     apiaryView.overlay.resources.update(animated: true)
                     clear(true)
                 } catch {
@@ -204,7 +216,12 @@ class ApiaryViewController: UIViewController {
             title: "Choose a Target for \(bee.nickname.prefix(10))",
             SKButton(texture: SKTexture.check, onTap: { clear() }),
             SKButton(texture: SKTexture.unlink, onTap: {
-                try? bee.assign(to: nil)
+                do {
+                    try bee.assign(to: nil)
+                    GameManager.shared.recordChange()
+                } catch {
+                    ErrorReporter.show(error)
+                }
                 clear()
             })
         )
@@ -213,7 +230,12 @@ class ApiaryViewController: UIViewController {
             guard structure.assignedBees.count < structure.maximumAssignedBees else { continue }
             structure.removeBubble()
             structure.showBubble(texture: .plus) {
-                try? bee.assign(to: structure)
+                do {
+                    try bee.assign(to: structure)
+                    GameManager.shared.recordChange()
+                } catch {
+                    ErrorReporter.show(error)
+                }
                 clear(structure)
             }
         }
@@ -400,25 +422,27 @@ class ApiaryViewController: UIViewController {
                 apiaryView.camera.velocity = SCNVector3(x: scaledVelocityX, y: 0, z: scaledVelocityY)
             }
             
-        case .moving(let structure, _):
+        case .moving(let structure, var previewArea):
             let hitTest = apiaryView.hitTest(gestureRecognizer.location(in: apiaryView), options: [.categoryBitMask: 1 << 1])
             guard let pos = hitTest.first?.worldCoordinates else { break }
             
             // The `if` statements stop the "glitching"
             let clipMargin: Float = 0.3
             if abs(pos.x - roundf(pos.x)) >= clipMargin {
-                structure.area.x = Int(round(pos.x)) - structure.area.width / 2
+                previewArea.x = Int(round(pos.x)) - previewArea.width / 2
             }
             if abs(pos.z - roundf(pos.z)) >= clipMargin {
-                structure.area.y = Int(round(pos.z)) - structure.area.height / 2
+                previewArea.y = Int(round(pos.z)) - previewArea.height / 2
             }
             
-            structure.area.x.clamp(min: -25, max: 25 - structure.area.width)
-            structure.area.y.clamp(min: -25, max: 25 - structure.area.height)
-            structure.position.x = Float(structure.area.x) + Float(structure.area.width) / 2
-            structure.position.z = Float(structure.area.y) + Float(structure.area.height) / 2
+            previewArea.x.clamp(min: -25, max: 25 - previewArea.width)
+            previewArea.y.clamp(min: -25, max: 25 - previewArea.height)
+            state = .moving(structure, previewArea)
+            structure.position.x = Float(previewArea.x) + Float(previewArea.width) / 2
+            structure.position.z = Float(previewArea.y) + Float(previewArea.height) / 2
             
-            let highlight = apiaryView.apiary.structures.contains(where: { $0.overlaps(structure) }) ? UIColor.red : .green
+            let overlaps = apiaryView.apiary.structures.contains { $0 !== structure && $0.area.intersects(previewArea) }
+            let highlight = overlaps ? UIColor.red : .green
             structure.showBorder(highlight)
             
             // Moves the camera further towards direction of movement
@@ -466,7 +490,7 @@ class ApiaryViewController: UIViewController {
             }
         }
         
-        guard case GameState.assigningWithDrag(_) = state else { return }
+        guard case ApiaryInteractionState.assigningWithDrag(_) = state else { return }
         
         if let node = hitTest.first?.node.firstParentModelNode() as? Structure {
             if node !== beeTargetCache {
@@ -480,8 +504,13 @@ class ApiaryViewController: UIViewController {
         }
         
         if gestureReconizer.state == .ended {
-            if case GameState.assigningWithDrag(let bee) = state, let target = beeTargetCache {
-                try? bee.assign(to: target)
+            if case ApiaryInteractionState.assigningWithDrag(let bee) = state, let target = beeTargetCache {
+                do {
+                    try bee.assign(to: target)
+                    GameManager.shared.recordChange()
+                } catch {
+                    ErrorReporter.show(error)
+                }
             }
             beeTargetCache?.unhighlight()
             beeTargetCache = nil

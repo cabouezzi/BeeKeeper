@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct BeeSelectorView: View {
-    @ObservedObject var viewModel: BeeViewModel
+    let viewModel: BeeViewModel
     
     init(viewModel: BeeViewModel) {
         self.viewModel = viewModel

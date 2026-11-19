@@ -12,6 +12,7 @@ enum ApiaryError: LocalizedError {
     case sameBeeName
     case noBees
     case emptyBeeName
+    case foreignAssignment
     
     var errorDescription: String? {
         switch self {
@@ -23,19 +24,55 @@ enum ApiaryError: LocalizedError {
             return "You have no bees to assign."
         case .emptyBeeName:
             return "A bee's name cannot be empty."
+        case .foreignAssignment:
+            return "Bee and structure must be in the same apiary."
         }
     }
 }
 
 class Apiary: Codable {
+    var onChange: (() -> Void)? {
+        didSet { bindContents() }
+    }
+    let id: UUID
     var lastOnline: Date
     
-    private(set) var wildBees: Float
-    private(set) var wildGenePool: [Gene: Float]
-    private(set) var bees: [Bee]
-    private(set) var structures: [Structure]
+    private(set) var wildBees: Float { didSet { onChange?() } }
+    private(set) var wildGenePool: [Gene: Float] { didSet { onChange?() } }
+    private(set) var bees: [Bee] {
+        didSet {
+            for old in oldValue where !bees.contains(where: { $0 === old }) {
+                old.onChange = nil
+                old.ownerApiary = nil
+            }
+            bindContents()
+            onChange?()
+        }
+    }
+    private(set) var structures: [Structure] {
+        didSet {
+            for old in oldValue where !structures.contains(where: { $0 === old }) {
+                old.onChange = nil
+                old.ownerApiary = nil
+            }
+            bindContents()
+            onChange?()
+        }
+    }
+
+    private func bindContents() {
+        for bee in bees {
+            bee.ownerApiary = self
+            bee.onChange = { [weak self] in self?.onChange?() }
+        }
+        for structure in structures {
+            structure.ownerApiary = self
+            structure.onChange = { [weak self] in self?.onChange?() }
+        }
+    }
     
     init() {
+        id = UUID()
         lastOnline = .now
         
         wildBees = 1000
@@ -67,14 +104,16 @@ class Apiary: Codable {
             incubator,
             flower
         ]
+        bindContents()
     }
     
     private enum CodingKeys: CodingKey {
-        case wildBees, wildGenePool, wrappers, lastOnline
+        case id, wildBees, wildGenePool, wrappers, lastOnline
     }
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decodeIfPresent(UUID.self, forKey: .id) ?? UUID()
         lastOnline = try container.decodeIfPresent(Date.self, forKey: .lastOnline) ?? .now
         wildBees = try container.decodeIfPresent(Float.self, forKey: .wildBees) ?? 1000
         wildGenePool = try container.decodeIfPresent(Dictionary<Gene, Float>.self, forKey: .wildGenePool) ?? [:]
@@ -82,16 +121,32 @@ class Apiary: Codable {
         let wrappers = try container.decode(Array<Wrapper>.self, forKey: .wrappers)
         structures = wrappers.compactMap({ $0.value as? Structure })
         bees = wrappers.compactMap({ $0.value as? Bee })
+        bindContents()
         
         for bee in bees {
             guard let id = bee.producerAssignmentId else { continue }
-            guard let structure = structures.first(where: { $0.id == id }) else { fatalError("Bee holds id to structure that doesn't exist") }
-            try? bee.assign(to: structure)
+            guard let structure = structures.first(where: { $0.id == id }) else {
+                throw DecodingError.dataCorruptedError(
+                    forKey: .wrappers,
+                    in: container,
+                    debugDescription: "Bee assignment references a missing structure."
+                )
+            }
+            do {
+                try bee.assign(to: structure)
+            } catch {
+                throw DecodingError.dataCorruptedError(
+                    forKey: .wrappers,
+                    in: container,
+                    debugDescription: "Bee assignment exceeds structure capacity."
+                )
+            }
         }
     }
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
         try container.encode(lastOnline, forKey: .lastOnline)
         try container.encode(wildBees, forKey: .wildBees)
         try container.encode(wildGenePool, forKey: .wildGenePool)
@@ -142,28 +197,45 @@ class Apiary: Codable {
     func addBee(_ bee: Bee) throws {
         guard !bee.nickname.isEmpty else { throw ApiaryError.emptyBeeName}
         guard !bees.contains(where: { $0.nickname == bee.nickname }) else { throw ApiaryError.sameBeeName }
+        if let assignedID = bee.producerAssignmentId,
+           !structures.contains(where: { $0.id == assignedID }) {
+            throw ApiaryError.foreignAssignment
+        }
+        if let assigned = bee.producerAssignment,
+           !structures.contains(where: { $0 === assigned }) {
+            throw ApiaryError.foreignAssignment
+        }
+        if let owner = bee.ownerApiary, owner !== self {
+            throw ApiaryError.foreignAssignment
+        }
         bees.append(bee)
     }
     
     /// Removes the bee with the name.
     @discardableResult
     func removeBee(withName name: String) -> Bee? {
-        for bee in bees where bee.name == name {
-            return bee
-        }
-        return nil
+        guard let index = bees.firstIndex(where: { $0.nickname == name }) else { return nil }
+        let bee = bees.remove(at: index)
+        try? bee.assign(to: nil)
+        return bee
     }
     
     // MARK: - Structures
     
     func addStructure<T:Structure>(_ structure: T) throws {
         guard !structures.contains(where: { $0.overlaps(structure) }) else { throw ApiaryError.overlappingStructures }
+        if let owner = structure.ownerApiary, owner !== self {
+            throw ApiaryError.foreignAssignment
+        }
         structures.append(structure)
     }
     
     /// Removes the structure with the same object id.
     func removeStructure<T:Structure>(_ structure: T) {
         guard let index = structures.firstIndex(where: { $0 === structure }) else { return }
+        for bee in bees where bee.producerAssignment === structure {
+            try? bee.assign(to: nil)
+        }
         structures.remove(at: index)
     }
 }

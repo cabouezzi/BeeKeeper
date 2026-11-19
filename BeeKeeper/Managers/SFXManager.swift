@@ -57,6 +57,9 @@ class SFXManager: NSObject {
         
         private var currentPlayer: AVAudioPlayer?
         private var lastPlayer: AVAudioPlayer?
+        private var pendingRestart: DispatchWorkItem?
+        private var restartToken = UUID()
+        private var isActive = false
         
         override init() {
             super.init()
@@ -68,10 +71,16 @@ class SFXManager: NSObject {
         }
         
         func stop() {
+            isActive = false
+            pendingRestart?.cancel()
+            pendingRestart = nil
+            restartToken = UUID()
             currentPlayer?.stop()
+            currentPlayer = nil
         }
         
         func next() {
+            isActive = true
             if let currentPlayer = currentPlayer {
                 lastPlayer = currentPlayer
                 currentPlayer.stop()
@@ -91,12 +100,19 @@ class SFXManager: NSObject {
         }
         
         func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+            guard isActive else { return }
             currentPlayer = nil
             lastPlayer = player
-            DispatchQueue.main.asyncAfter(deadline: .now().advanced(by: .seconds(Int(separationInterval)))) { [weak self] in
-                guard let self = self else { return }
-                next()
+            pendingRestart?.cancel()
+            let token = UUID()
+            restartToken = token
+            let work = DispatchWorkItem { [weak self] in
+                guard let self, self.restartToken == token else { return }
+                self.pendingRestart = nil
+                self.next()
             }
+            pendingRestart = work
+            DispatchQueue.main.asyncAfter(deadline: .now() + separationInterval, execute: work)
         }
     }
     
@@ -186,13 +202,7 @@ class SFXManager: NSObject {
     
     func stopMusic() {
         looper.stop()
-        let fadeDur: TimeInterval = 0 // TODO: Fade?
-        musicPlayer?.setVolume(0, fadeDuration: fadeDur)
-        // Retains a reference to the player while fading out
-        Task.detached { [musicPlayer] in
-            guard musicPlayer != nil else { return }
-            sleep(UInt32(fadeDur))
-        }
+        musicPlayer?.stop()
         musicPlayer = nil
     }
 }

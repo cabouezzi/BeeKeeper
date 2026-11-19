@@ -10,9 +10,10 @@ import SceneKit
 
 struct BeeView: View {
     @Environment(\.universalDismiss) var universalDismiss
-    @ObservedObject var viewModel: BeeViewModel
+    let viewModel: BeeViewModel
     @State private var gridHeight: CGFloat = 0
     
+    @MainActor
     init(viewModel: BeeViewModel) {
         self.viewModel = viewModel
         self.viewModel.selectedBee = self.viewModel.selectedBee ?? self.viewModel.bees.first
@@ -113,8 +114,8 @@ struct BeeView: View {
         .foregroundColor(Color(uiColor: .white))
         .shadow(radius: 1, y: 2)
         .font(.system(.caption, design: .rounded))
-        .onChange(of: viewModel.isPresented) { newValue in
-            if !newValue {
+        .onChange(of: viewModel.isPresented) { _, isPresented in
+            if !isPresented {
                 universalDismiss()
             }
         }

@@ -10,7 +10,7 @@ import SceneKit
 
 struct ShopView: View {
     @Environment(\.universalDismiss) var universalDismiss
-    @ObservedObject var viewModel: ShopViewModel
+    let viewModel: ShopViewModel
     @State private var flippedIndex: Int? = nil
 
     var body: some View {

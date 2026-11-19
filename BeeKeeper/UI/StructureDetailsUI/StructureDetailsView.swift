@@ -9,7 +9,7 @@ import SwiftUI
 
 struct StructureDetailsView: View {
     @Environment(\.universalDismiss) var universalDismiss
-    @ObservedObject var viewModel: StructureDetailsViewModel
+    let viewModel: StructureDetailsViewModel
     
     @State private var contentHeight: CGFloat = 0
     @State private var contentWidth: CGFloat = 0
@@ -97,6 +97,7 @@ struct StructureDetailsView: View {
                                             Button("Build") {
                                                 do {
                                                     try hive.startHoneycombConstruction()
+                                                    GameManager.shared.recordChange()
                                                 } catch {
                                                     ErrorReporter.show(error)
                                                 }
@@ -109,9 +110,10 @@ struct StructureDetailsView: View {
                                         } else if hive.constructionState == .finished {
                                             Button("Build") {
                                                 do {
+                                                    try hive.claimHoneycombConstruction()
+                                                    GameManager.shared.recordChange()
                                                     viewModel.didBuildHoneycomb.send(())
                                                     universalDismiss()
-                                                    try hive.claimHoneycombConstruction()
                                                 } catch {
                                                     ErrorReporter.show(error)
                                                 }
@@ -205,6 +207,7 @@ struct StructureDetailsView: View {
                                         do {
                                             let time = GameManager.shared.getIncubationTime()
                                             try incubator.startIncubating(time)
+                                            GameManager.shared.recordChange()
                                         } catch {
                                             ErrorReporter.show(error)
                                         }
@@ -248,6 +251,9 @@ struct StructureDetailsView: View {
                 Button("Assign") {
                     do {
                         try beeViewModel.selectedBee?.assign(to: viewModel.structure)
+                        if beeViewModel.selectedBee != nil {
+                            GameManager.shared.recordChange()
+                        }
                         showBeeList = false
                     } catch {
                         ErrorReporter.show(error)
@@ -300,6 +306,7 @@ struct StructureDetailsView: View {
                         do {
                             incubator.currentIncubation?.reward.setNickname(newBeeName)
                             try incubator.hatch()
+                            GameManager.shared.recordChange()
                             showNamingScreen = false
                             universalDismiss()
                         } catch {

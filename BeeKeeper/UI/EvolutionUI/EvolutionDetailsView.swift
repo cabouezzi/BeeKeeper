@@ -9,7 +9,7 @@ import SwiftUI
 
 struct EvolutionDetailsView: View {
     @Environment(\.universalDismiss) var universalDismiss
-    @ObservedObject var viewModel: EvolutionDetailsViewModel
+    let viewModel: EvolutionDetailsViewModel
     
     init(viewModel: EvolutionDetailsViewModel) {
         self.viewModel = viewModel
@@ -20,7 +20,7 @@ struct EvolutionDetailsView: View {
             Label(title: {
                 Text(viewModel.gene.rawValue)
             }, icon: {
-                Image(viewModel.gene.icon).resizable()
+                Image(viewModel.gene.iconName).resizable()
             })
             .labelStyle(FontMatchedLabelStyle())
             .font(.system(.body, design: .rounded))
@@ -55,6 +55,7 @@ struct EvolutionDetailsView: View {
                         Button("Research") {
                             do {
                                 try EvolutionResearchManager.shared.beginResearch(for: viewModel.gene)
+                                GameManager.shared.recordChange()
                             } catch {
                                 ErrorReporter.show(error)
                             }
@@ -87,6 +88,7 @@ struct EvolutionDetailsView: View {
                         do {
                             try EvolutionResearchManager.shared.claimResearch()
                             viewModel.unlockedGenes = viewModel.unlockedGenes.union([research.reward])
+                            GameManager.shared.recordChange()
                         } catch {
                             ErrorReporter.show(error)
                         }

@@ -297,15 +297,22 @@ class TutorialViewController: ApiaryViewController {
         popToMiniScreen(beeView)
     }
     
+    @MainActor
     func endTutorial() {
+        guard state != .finished else { return }
         let avc = ApiaryViewController(frame: apiaryView.frame)
         navigationController?.setViewControllers([avc], animated: false)
         GameManager.shared.releaseBees()
         state = .finished
-        
-        Task.detached {
-            try await DatabaseService.shared.saveAccount(GameManager.shared.account)
-            SettingsManager.shared.isFirstLogin = false
+
+        SettingsManager.shared.isFirstLogin = false
+        GameManager.shared.recordChange()
+        Task { @MainActor in
+            do {
+                try await GameStore.shared.flush()
+            } catch {
+                ErrorReporter.show(error)
+            }
         }
     }
 }

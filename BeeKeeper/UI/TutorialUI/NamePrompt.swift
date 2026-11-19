@@ -39,6 +39,7 @@ struct NamePromptView: View {
                             throw GenericError.custom(message: "Your name cannot be empty.")
                         }
                         GameManager.shared.account.name = name
+                        GameManager.shared.recordChange()
                         universalDismiss()
                         onDismiss()
                     } catch {

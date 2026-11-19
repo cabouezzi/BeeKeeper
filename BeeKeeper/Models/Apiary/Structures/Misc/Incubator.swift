@@ -23,7 +23,22 @@ enum IncubatorError: LocalizedError {
 }
 
 class Incubator: Structure {
-    private(set) var currentIncubation: TimedReward<Bee>?
+    private(set) var currentIncubation: TimedReward<Bee>? {
+        didSet {
+            oldValue?.onChange = nil
+            bindIncubation()
+            onChange?()
+        }
+    }
+
+    override var onChange: (() -> Void)? {
+        didSet { bindIncubation() }
+    }
+
+    private func bindIncubation() {
+        currentIncubation?.onChange = { [weak self] in self?.onChange?() }
+        currentIncubation?.reward.onChange = { [weak self] in self?.onChange?() }
+    }
     
     var state: IncubatorState {
         guard let endDate = currentIncubation?.endDate else { return .idle }

@@ -6,13 +6,14 @@
 //
 
 import Combine
+import Observation
 
-final class StructureDetailsViewModel: ObservableObject {
+@MainActor
+@Observable
+final class StructureDetailsViewModel {
     let structure: Structure
     
-    // TODO: Refactor
-    // Literally only need for the hive details in the tutorial
-    let didBuildHoneycomb = PassthroughSubject<Void, Never>()
+    @ObservationIgnored let didBuildHoneycomb = PassthroughSubject<Void, Never>()
     
     init(structure: Structure) {
         self.structure = structure

@@ -6,9 +6,7 @@
 //
 
 extension Gene {
-    var icon: ImageResource {
-        return ImageResource(name: self.rawValue, bundle: .main)
-    }
+    var iconName: String { rawValue }
 }
 
 // MARK: Details (description)
