@@ -12,6 +12,7 @@ class LaunchView: UIView {
     let logo: UIImageView
     let progress: UIProgressView
     let label: UILabel
+    private var loadingTask: Task<Void, Never>?
     
     override init(frame: CGRect) {
         background = UIImageView(frame: frame)
@@ -64,24 +65,41 @@ class LaunchView: UIView {
         ])
         
         progress.setProgress(0, animated: false)
-        loadingLoop()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func loadingLoop() {
-        var index = 0
-        Thread.detachNewThread { [weak self] in
-            while true {
-                guard let self = self else { break }
-                index = (index + 1) % 4
-                DispatchQueue.main.async {
-                    self.label.text = "Loading" + String(repeating: ".", count: index)
+    override func didMoveToWindow() {
+        super.didMoveToWindow()
+        if window == nil {
+            loadingTask?.cancel()
+            loadingTask = nil
+        } else if loadingTask == nil {
+            loadingTask = Task { @MainActor [weak self] in
+                var index = 0
+                while !Task.isCancelled {
+                    guard self != nil else { return }
+                    index = (index + 1) % 4
+                    self?.label.text = "Loading" + String(repeating: ".", count: index)
+                    do {
+                        try await Task.sleep(for: .seconds(1))
+                    } catch {
+                        return
+                    }
                 }
-                sleep(UInt32(1))
             }
         }
+    }
+
+    func showError(_ message: String) {
+        loadingTask?.cancel()
+        loadingTask = nil
+        label.text = message
+    }
+
+    deinit {
+        loadingTask?.cancel()
     }
 }

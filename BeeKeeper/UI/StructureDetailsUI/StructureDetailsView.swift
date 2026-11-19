@@ -9,7 +9,7 @@ import SwiftUI
 
 struct StructureDetailsView: View {
     @Environment(\.universalDismiss) var universalDismiss
-    @ObservedObject var viewModel: StructureDetailsViewModel
+    let viewModel: StructureDetailsViewModel
     
     @State private var contentHeight: CGFloat = 0
     @State private var contentWidth: CGFloat = 0
@@ -57,8 +57,71 @@ struct StructureDetailsView: View {
                             }
                             GridRow {
                                 Text("Capacity:").fontWeight(.semibold)
-                                AttributedStringView(attributedString: container.maximum.attributedString())
-                                    .font(.caption)
+                                if container.maximum.isEmpty() {
+                                    Text("Empty")
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                } else {
+                                    AttributedStringView(attributedString: container.maximum.attributedString())
+                                        .font(.caption)
+                                }
+                            }
+                            
+                            if let hive = viewModel.structure as? Hive {
+                                GridRow {
+                                    Text("Honeycombs:").fontWeight(.semibold)
+                                    Text("\(hive.honeycombs.count) / \(3)")
+                                }
+                                
+                                TimelineView(.animation) { context in
+                                    VStack {
+                                        SmartCountdownView(timeLeft: hive.currentConstruction?.timeRemaining ?? 0)
+                                            .font(.body)
+                                            .if(hive.currentConstruction == nil) { view in
+                                                view
+                                                    .frame(maxWidth: .infinity)
+                                                    .hidden()
+                                                    .overlay {
+                                                        let cost = GameManager.shared.getHoneycombBuildCost(hive)
+                                                        if cost.isEmpty() {
+                                                            Text("Free!")
+                                                                .bold()
+                                                        }
+                                                        if !cost.isEmpty() {
+                                                            AttributedStringView(attributedString: cost.attributedString(verbose: false))
+                                                        }
+                                                    }
+                                            }
+                                            .bubbleStyle(color: .black.opacity(0.1))
+                                        
+                                        if hive.constructionState == .idle {
+                                            Button("Build") {
+                                                do {
+                                                    try hive.startHoneycombConstruction()
+                                                    GameManager.shared.recordChange()
+                                                } catch {
+                                                    ErrorReporter.show(error)
+                                                }
+                                            }
+                                            .buttonStyle(BubbleButtonStyle(color: .orange))
+                                        } else if hive.constructionState == .building {
+                                            Button("Building") {}
+                                                .buttonStyle(BubbleButtonStyle(color: .gray))
+                                            
+                                        } else if hive.constructionState == .finished {
+                                            Button("Build") {
+                                                do {
+                                                    try hive.claimHoneycombConstruction()
+                                                    GameManager.shared.recordChange()
+                                                    viewModel.didBuildHoneycomb.send(())
+                                                    universalDismiss()
+                                                } catch {
+                                                    ErrorReporter.show(error)
+                                                }
+                                            }
+                                            .buttonStyle(BubbleButtonStyle(color: .orange))
+                                        }
+                                    }
+                                }
                             }
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -110,7 +173,7 @@ struct StructureDetailsView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .bubbleStyle(color: .black.opacity(0.1))
                     
-                    // MARK: Incubator
+                    // MARK: - Incubator
                     if let incubator = viewModel.structure as? Incubator {
                         TimelineView(.animation) { context in
                             VStack {
@@ -136,21 +199,15 @@ struct StructureDetailsView: View {
                                         .bubbleStyle(color: .black.opacity(0.1))
                                 
                                 if incubator.state == .incubating {
+                                    Button("Hatch") {}
+                                    .buttonStyle(BubbleButtonStyle(color: .gray))
                                     
-                                    Button("Speed Up") {
-                                        do {
-                                            try incubator.forceComplete()
-                                        } catch {
-                                            ErrorReporter.show(error)
-                                        }
-                                    }
-                                    .buttonStyle(BubbleButtonStyle(color: Color(uiColor: .baige)))
-                                    .foregroundColor(Color(uiColor: .darkBrown))
                                 } else if incubator.state == .idle {
                                     Button("Incubate") {
                                         do {
                                             let time = GameManager.shared.getIncubationTime()
                                             try incubator.startIncubating(time)
+                                            GameManager.shared.recordChange()
                                         } catch {
                                             ErrorReporter.show(error)
                                         }
@@ -194,6 +251,9 @@ struct StructureDetailsView: View {
                 Button("Assign") {
                     do {
                         try beeViewModel.selectedBee?.assign(to: viewModel.structure)
+                        if beeViewModel.selectedBee != nil {
+                            GameManager.shared.recordChange()
+                        }
                         showBeeList = false
                     } catch {
                         ErrorReporter.show(error)
@@ -246,6 +306,7 @@ struct StructureDetailsView: View {
                         do {
                             incubator.currentIncubation?.reward.setNickname(newBeeName)
                             try incubator.hatch()
+                            GameManager.shared.recordChange()
                             showNamingScreen = false
                             universalDismiss()
                         } catch {
@@ -276,17 +337,17 @@ struct StructureDetailsView: View {
 }
 
 #Preview {
-    let viewModel = {
-        let incubator = Incubator()
-        try? incubator.startIncubating(.init(seconds: 10))
-        return StructureDetailsViewModel(structure: incubator)
-    }()
-    StructureDetailsView(viewModel: viewModel)
-    
-//    let hiveModel = {
-//        let hive = Hive()
-//        try! Bee().assign(to: hive)
-//        return StructureDetailsViewModel(structure: hive)
+//    let viewModel = {
+//        let incubator = Incubator()
+//        try? incubator.startIncubating(.init(seconds: 10))
+//        return StructureDetailsViewModel(structure: incubator)
 //    }()
-//    StructureDetailsView(viewModel: hiveModel)
+//    StructureDetailsView(viewModel: viewModel)
+    
+    let hiveModel = {
+        let hive = Hive()
+        try! Bee().assign(to: hive)
+        return StructureDetailsViewModel(structure: hive)
+    }()
+    StructureDetailsView(viewModel: hiveModel)
 }

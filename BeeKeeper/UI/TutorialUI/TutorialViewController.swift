@@ -99,7 +99,7 @@ class TutorialViewController: ApiaryViewController {
             apiaryView.camera.runAction(action)
             visitHive(hive)
             state = .addingHoneycomb
-            if let button = apiaryView.overlay.children.compactMap({ $0 as? SKButton }).first(where: { $0.texture == .honeycomb }) {
+            if let button = apiaryView.overlay.children.compactMap({ $0 as? SKButton }).first(where: { $0.texture == .info }) {
                 highlightSKNode(button)
             }
         }
@@ -208,6 +208,18 @@ class TutorialViewController: ApiaryViewController {
         }
     }
     
+    override func popToInspectionView(for structure: Structure) {
+        let viewModel = StructureDetailsViewModel(structure: structure)
+        let view = StructureDetailsView(viewModel: viewModel)
+        viewModel.didBuildHoneycomb
+            .sink { [unowned self] in
+                beginIncubatingTutorial()
+                clearHud()
+            }
+            .store(in: &tutorialView.cancellables)
+        popToMiniScreen(view)
+    }
+    
     // MARK: Gestures
     
     override func tapHandler(_ gestureRecognizer: UITapGestureRecognizer) {
@@ -216,20 +228,9 @@ class TutorialViewController: ApiaryViewController {
         switch state {
         case .initial:
             return
-        case .addingHoneycomb:
+        case .addingHoneycomb, .incubating:
             if let spriteNode = apiaryView.overlay.nodes(at: apiaryView.overlay.convertPoint(fromView: point)).first(where: { $0.isUserInteractionEnabled }) {
-                if let button = spriteNode as? SKButton, !button.isHidden, button.texture == .honeycomb {
-                    button.pop()
-                    button.activate()
-                    SFXManager.shared.playSound(.pop)
-                    beginIncubatingTutorial()
-                    clearHud()
-                }
-                return
-            }
-        case .incubating:
-            if let spriteNode = apiaryView.overlay.nodes(at: apiaryView.overlay.convertPoint(fromView: point)).first(where: { $0.isUserInteractionEnabled }) {
-                if let button = spriteNode as? SKButton, !button.isHidden, button.texture == .info {
+                if let button = spriteNode as? SKButton, !button.isHidden, (button.texture == .info || button.texture == .settings) {
                     button.pop()
                     button.activate()
                     SFXManager.shared.playSound(.pop)
@@ -296,15 +297,22 @@ class TutorialViewController: ApiaryViewController {
         popToMiniScreen(beeView)
     }
     
+    @MainActor
     func endTutorial() {
+        guard state != .finished else { return }
         let avc = ApiaryViewController(frame: apiaryView.frame)
         navigationController?.setViewControllers([avc], animated: false)
         GameManager.shared.releaseBees()
         state = .finished
-        
-        Task.detached {
-            try await DatabaseService.shared.saveAccount(GameManager.shared.account)
-            SettingsManager.shared.isFirstLogin = false
+
+        SettingsManager.shared.isFirstLogin = false
+        GameManager.shared.recordChange()
+        Task { @MainActor in
+            do {
+                try await GameStore.shared.flush()
+            } catch {
+                ErrorReporter.show(error)
+            }
         }
     }
 }

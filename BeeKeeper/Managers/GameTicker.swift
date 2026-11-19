@@ -24,9 +24,9 @@ class GameTicker {
     }
     
     func start() {
+        guard ticker == nil else { return }
         let timer = Timer(timeInterval: 1, repeats: true, block: onTick)
         RunLoop.main.add(timer, forMode: .common)
-        timer.fire()
         ticker = timer
     }
     

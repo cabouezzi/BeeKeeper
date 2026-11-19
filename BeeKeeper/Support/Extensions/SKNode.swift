@@ -30,8 +30,10 @@ extension SKNode {
         let moveDown = SKAction.moveBy(x: 0, y:  -frame.size.height / 6, duration: 0.3)
         let sequence = SKAction.group([fadeOut, moveDown])
         sequence.timingMode = .easeOut
-        run(sequence) {
-            self.removeFromParent()
+        run(sequence) { [weak self] in
+            DispatchQueue.main.async {
+                self?.removeFromParent()
+            }
         }
     }
     

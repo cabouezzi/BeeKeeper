@@ -8,6 +8,9 @@
 import SceneKit
 
 class Bee: SCNNode, Model, Producer, Codable, Identifiable {
+    var onChange: (() -> Void)?
+    weak var ownerApiary: Apiary?
+    let id: UUID
     private enum AnimationState: Equatable {
         /// The case of being in the hive at night
         case dormant(_ hive: Hive)
@@ -23,11 +26,11 @@ class Bee: SCNNode, Model, Producer, Codable, Identifiable {
     // Producer
     var production: Resources = Resources(honey: 3, pollen: 2)
     var producerAssignment: Structure?
-    var producerAssignmentId: UUID?
+    var producerAssignmentId: UUID? { didSet { onChange?() } }
     
     // Stats
-    private(set) var nickname: String
-    var genetics: Set<Gene>
+    private(set) var nickname: String { didSet { onChange?() } }
+    var genetics: Set<Gene> { didSet { onChange?() } }
     var hunger: Float = 100
     var consumption = Resources(honey: 1, pollen: 1)
     var bodyTemperature: Float = 70
@@ -51,36 +54,32 @@ class Bee: SCNNode, Model, Producer, Codable, Identifiable {
     private var avoidanceDistance: Float = 1
     private var attraction: SCNNode? // TODO: Replace with targets from Structure class
     private var attractionPerception: Float = 4
-    
-    private static let directions: Set<SCNVector3> = {
+    private static let directions: [SCNVector3] = {
         let count = 25
-        var dirs = Set<SCNVector3>(minimumCapacity: count)
+        var directions = [SCNVector3]()
+        directions.reserveCapacity(count)
         let goldenRatio: Float = (1 + sqrt(5)) / 2
         let angleIncrement: Float = (2 * .pi) * goldenRatio
-        
-        for i in 0..<count {
-            // Ratio for spreading
-            let ratio = Float(i) / Float(count)
-            
-            // Angles
-            let polarAngle: Float = (acos(1 - 2 * ratio)).truncatingRemainder(dividingBy: .pi)
-            let azimuthalAngle: Float = (Float(angleIncrement) * Float(i)).truncatingRemainder(dividingBy: 2 * .pi)
-            
-            // Cartesian
-            let x = sin(polarAngle) * cos(azimuthalAngle)
-            let y = cos(polarAngle)
-            let z = sin(polarAngle) * sin(azimuthalAngle)
-            let vector = SCNVector3(x, y, z)
-            
-            dirs.insert(vector)
+
+        for index in 0..<count {
+            let ratio = Float(index) / Float(count)
+            let polarAngle = acos(1 - 2 * ratio).truncatingRemainder(dividingBy: .pi)
+            let azimuthalAngle = (angleIncrement * Float(index)).truncatingRemainder(dividingBy: 2 * .pi)
+            directions.append(SCNVector3(
+                sin(polarAngle) * cos(azimuthalAngle),
+                cos(polarAngle),
+                sin(polarAngle) * sin(azimuthalAngle)
+            ))
         }
-        return dirs
+        return directions
     }()
     
-    init(_ genes: Set<Gene> = []) {
+    init(_ genes: Set<Gene> = [], initialVelocity: SCNVector3? = nil) {
+        self.id = UUID()
         self.genetics = genes
         self.nickname = UUID().uuidString
         super.init()
+        if let initialVelocity { velocity = initialVelocity }
         
         loadArmature()
         loadGeneticEffects()
@@ -93,11 +92,12 @@ class Bee: SCNNode, Model, Producer, Codable, Identifiable {
     }
     
     private enum CodingKeys: CodingKey {
-        case nickname, genetics, producerAssignmentId
+        case id, nickname, genetics, producerAssignmentId
     }
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decodeIfPresent(UUID.self, forKey: .id) ?? UUID()
         producerAssignmentId = try container.decodeIfPresent(UUID.self, forKey: .producerAssignmentId)
         nickname = try container.decode(String.self, forKey: .nickname)
         genetics = try container.decode(Set<Gene>.self, forKey: .genetics)
@@ -110,6 +110,7 @@ class Bee: SCNNode, Model, Producer, Codable, Identifiable {
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
         try container.encodeIfPresent(producerAssignmentId, forKey: .producerAssignmentId)
         try container.encode(nickname, forKey: .nickname)
         try container.encode(genetics, forKey: .genetics)
@@ -337,15 +338,16 @@ class Bee: SCNNode, Model, Producer, Codable, Identifiable {
             }
             
         }
-        animationPlayer.animation.animationDidStop = { [weak self] x, y, z in
-            guard let self = self else { return }
-            if case .working(let structure) = self.animationState {
-                if let collector = structure as? Collector {
+        animationPlayer.animation.animationDidStop = { [weak self] _, _, _ in
+            Task { @MainActor [weak self] in
+                guard let self else { return }
+                if case .working(let structure) = self.animationState,
+                   let collector = structure as? Collector {
                     try? collector.accept(self)
                 }
+                self.animationState = nextState
+                self.animationLoop()
             }
-            self.animationState = nextState
-            self.animationLoop()
         }
         animationPlayer.play()
     }
@@ -399,33 +401,45 @@ class Bee: SCNNode, Model, Producer, Codable, Identifiable {
     }
     
     // MARK: - Audio
-    func playFlyingSound() {
-        guard let source = SCNAudioSource(named: "bee-buzz-1.wav") else { return }
-        source.volume = SettingsManager.shared.beeEffectsVolume * 0.2
+    private static let flyingSound: SCNAudioSource? = {
+        guard let source = SCNAudioSource(named: "bee-buzz-1.wav") else { return nil }
         source.rate = 0.5
         source.isPositional = true
         source.shouldStream = false
         source.load()
-        let player = SCNAudioPlayer(source: source)
-        addAudioPlayer(player)
-        
-        player.didFinishPlayback = { [unowned player, unowned self] in
-            removeAudioPlayer(player)
-        }
-    }
-    
-    func playWiggleSound() {
-        guard let source = SCNAudioSource(named: "bee-buzz-2.wav") else { return }
-        source.volume = SettingsManager.shared.beeEffectsVolume
+        return source
+    }()
+
+    private static let wiggleSound: SCNAudioSource? = {
+        guard let source = SCNAudioSource(named: "bee-buzz-2.wav") else { return nil }
         source.rate = 1.25
         source.isPositional = true
         source.shouldStream = false
         source.load()
+        return source
+    }()
+
+    func playFlyingSound() {
+        guard let source = Bee.flyingSound else { return }
+        source.volume = SettingsManager.shared.beeEffectsVolume * 0.2
         let player = SCNAudioPlayer(source: source)
         addAudioPlayer(player)
         
-        player.didFinishPlayback = { [unowned player, unowned self] in
-            removeAudioPlayer(player)
+        player.didFinishPlayback = { [weak player, weak self] in
+            guard let player else { return }
+            self?.removeAudioPlayer(player)
+        }
+    }
+    
+    func playWiggleSound() {
+        guard let source = Bee.wiggleSound else { return }
+        source.volume = SettingsManager.shared.beeEffectsVolume
+        let player = SCNAudioPlayer(source: source)
+        addAudioPlayer(player)
+        
+        player.didFinishPlayback = { [weak player, weak self] in
+            guard let player else { return }
+            self?.removeAudioPlayer(player)
         }
     }
     
@@ -436,39 +450,34 @@ class Bee: SCNNode, Model, Producer, Codable, Identifiable {
         return (vector.normalized() * maxSpeed) - velocity
     }
     
-    private func avoidanceForce(_ world: SCNPhysicsWorld) -> SCNVector3 {
+    private func avoidanceForce(
+        in world: SCNPhysicsWorld,
+        from origin: SCNVector3,
+        forward: SCNVector3,
+        distance: Float
+    ) -> SCNVector3 {
         var force = SCNVector3.zero
-        let maxDistance = maxSpeed + avoidanceDistance
-        
-        let collisions = Bee.directions.compactMap { dir -> SCNHitTestResult? in
-            return world.rayTestWithSegment(from: worldPosition, to: worldPosition + dir * maxDistance).first
-        }
-        
-        guard !collisions.isEmpty else { return .zero }
-        
-        let velocityDir = velocity.magnitude > 0 ? velocity.normalized() : SCNVector3(0, 0, 1)
-        
-        for collision in collisions {
-            if let assigned = producerAssignment, assigned === collision.node.firstParentModelNode() {
+        var collisionCount = 0
+        for direction in Bee.directions {
+            guard let collision = world.rayTestWithSegment(
+                from: origin,
+                to: origin + direction * distance
+            ).first else { continue }
+            collisionCount += 1
+            if let assigned = producerAssignment,
+               assigned === collision.node.firstParentModelNode() {
                 continue
             }
-            
-            let avoidanceDirection = collision.worldNormal.normalized()
-            let avoidanceForce = scaledForce(avoidanceDirection)
-            
-            let collisionDistance = max(collision.worldCoordinates.distance(to: worldPosition), 0.001)
-            let steerDistance = velocityDir.distance(to: avoidanceDirection)
-            
-            let priority = steerDistance / collisionDistance
-            force += avoidanceForce * priority
+
+            let normal = collision.worldNormal.normalized()
+            let collisionDistance = max(collision.worldCoordinates.distance(to: origin), 0.001)
+            force += scaledForce(normal) * (forward.distance(to: normal) / collisionDistance)
         }
-        
-        force /= Float(collisions.count)
-        
+        guard collisionCount > 0 else { return .zero }
+        force /= Float(collisionCount)
         if force.magnitude > maxSteerForce {
             force = force.normalized() * maxSteerForce
         }
-        
         return force
     }
     
@@ -498,11 +507,11 @@ class Bee: SCNNode, Model, Producer, Codable, Identifiable {
         return targetVelocity
     }
     
-    private func idleForce() -> SCNVector3 {
-        let dir = velocity == .zero ? worldFront : velocity.normalized()
-        return dir * (maxSpeed * 0.33 / velocity.magnitude)
+    private func idleForce(forward: SCNVector3, speed: Float) -> SCNVector3 {
+        let direction = speed > 0 ? forward : worldFront
+        return direction * (maxSpeed * 0.33 / max(speed, 0.001))
     }
-    
+
     /// Updates the position, velocity, and acceleration of the bee at a timestep.
     func droneStep(in world: SCNPhysicsWorld) {
         if case .working(_) = animationState {
@@ -510,14 +519,15 @@ class Bee: SCNNode, Model, Producer, Codable, Identifiable {
         }
         
         var acceleration = SCNVector3.zero
-        let rayTest = world.rayTestWithSegment(from: worldPosition, to: worldPosition + velocity * (maxSpeed + avoidanceDistance))
-        
-        // If not obstructed, accelerate forward
-        if rayTest.isEmpty {
-            acceleration += idleForce()
+        let origin = worldPosition
+        let speed = velocity.magnitude
+        let forward = speed > 0 ? velocity / speed : SCNVector3(0, 0, 1)
+        let probeDistance = maxSpeed + avoidanceDistance
+
+        if world.rayTestWithSegment(from: origin, to: origin + velocity * probeDistance).isEmpty {
+            acceleration += idleForce(forward: forward, speed: speed)
         }
-        
-        acceleration += avoidanceForce(world)
+        acceleration += avoidanceForce(in: world, from: origin, forward: forward, distance: probeDistance)
         acceleration += attractionForce()
         acceleration += sleepForce()
         
@@ -534,9 +544,30 @@ class Bee: SCNNode, Model, Producer, Codable, Identifiable {
             velocity = velocity.normalized() * maxSpeed
         }
         
-        var forward = worldPosition + velocity
-        forward.y = worldPosition.y
-        look(at: forward)
-        worldPosition += velocity * Float(world.timeStep)
+        let proposedPosition = origin + velocity * Float(world.timeStep)
+        let hits = world.rayTestWithSegment(
+            from: origin,
+            to: proposedPosition,
+            options: [.searchMode: SCNPhysicsWorld.TestSearchMode.all.rawValue]
+        )
+        let obstacle = hits.filter({ $0.node.firstParentModelNode() !== self })
+            .min(by: { $0.worldCoordinates.distance(to: origin) < $1.worldCoordinates.distance(to: origin) })
+        if let obstacle {
+            let normal = obstacle.worldNormal.normalized()
+            worldPosition = obstacle.worldCoordinates + normal * 0.08
+            let inwardSpeed = velocity.x * normal.x + velocity.y * normal.y + velocity.z * normal.z
+            velocity -= normal * min(inwardSpeed, 0)
+            if velocity.magnitude < 0.1 {
+                let horizontal = SCNVector3(-normal.z, 0, normal.x)
+                let tangent = horizontal.magnitude > 0.001 ? horizontal.normalized() : SCNVector3(1, 0, 0)
+                velocity = tangent * min(max(speed, 1), maxSpeed)
+            }
+        } else {
+            worldPosition = proposedPosition
+        }
+
+        var lookAtPoint = worldPosition + velocity
+        lookAtPoint.y = worldPosition.y
+        look(at: lookAtPoint)
     }
 }

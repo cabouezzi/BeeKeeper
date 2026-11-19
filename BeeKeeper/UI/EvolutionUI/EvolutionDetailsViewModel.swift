@@ -5,9 +5,11 @@
 //  Created by Chaniel Abou-Ezzi on 6/18/25.
 //
 
-import Combine
+import Observation
 
-class EvolutionDetailsViewModel: ObservableObject {
-    @Published var gene: Gene = EvolutionResearchManager.shared.currentResearch?.reward ?? .furI
-    @Published var unlockedGenes: Set<Gene> = GameManager.shared.account.unlockedGenes
+@MainActor
+@Observable
+final class EvolutionDetailsViewModel {
+    var gene: Gene = EvolutionResearchManager.shared.currentResearch?.reward ?? .furI
+    var unlockedGenes: Set<Gene> = GameManager.shared.account.unlockedGenes
 }

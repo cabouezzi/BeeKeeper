@@ -25,8 +25,11 @@ final class EvolutionResearchManager {
     }
     
     var currentResearch: TimedReward<Gene>? {
-        get { GameManager.shared.account.research }
-        set { GameManager.shared.account.research = newValue }
+        get { GameManager.shared.account.activeResearch }
+        set {
+            GameManager.shared.account.activeResearch = newValue
+            GameManager.shared.recordChange()
+        }
     }
     
     private init() {
@@ -59,5 +62,6 @@ final class EvolutionResearchManager {
     func forceComplete() throws {
         guard let research = currentResearch else { throw GeneError.nothingResearching }
         research.forceComplete()
+        GameManager.shared.recordChange()
     }
 }

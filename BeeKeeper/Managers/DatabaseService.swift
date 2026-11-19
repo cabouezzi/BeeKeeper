@@ -34,7 +34,12 @@ class Wrapper: Codable, ModelVisitor {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         kind = try container.decode(ModelKind.self, forKey: .type)
         switch kind {
-        case .unknown: fatalError()
+        case .unknown:
+            throw DecodingError.dataCorruptedError(
+                forKey: .type,
+                in: container,
+                debugDescription: "Unknown saved model kind."
+            )
         case .bee: value = try container.decode(Bee.self, forKey: .value)
         case .hive: value = try container.decode(Hive.self, forKey: .value)
         case .incubator: value = try container.decode(Incubator.self, forKey: .value)
@@ -85,32 +90,27 @@ class Wrapper: Codable, ModelVisitor {
 
 final class DatabaseService {
     static let shared = DatabaseService()
-    
-    private let _KEY = "account"
-    
-    private init() {
-        
-    }
-    
+
+    private init() {}
+
     func hasAccount() async -> Bool {
-        return UserDefaults.standard.object(forKey: _KEY) != nil
+        await LocalGameSaveService.shared.hasSave()
     }
-    
+
     func createAccount() async throws {
-        let account = Account()
-        try await saveAccount(account)
+        let account = await MainActor.run { Account() }
+        try await LocalGameSaveService.shared.saveAccount(account)
     }
-    
+
     func fetchAccount() async throws -> Account {
-        guard let data = UserDefaults.standard.object(forKey: _KEY) as? Data else { throw DatabaseServiceError.accountNonexistant }
-        let decoder = JSONDecoder()
-        let account = try decoder.decode(Account.self, from: data)
-        return account
+        do {
+            return try await LocalGameSaveService.shared.loadAccount()
+        } catch GameSaveError.missingSave {
+            throw DatabaseServiceError.accountNonexistant
+        }
     }
-    
+
     func saveAccount(_ account: Account) async throws {
-        let encoder = JSONEncoder()
-        let data = try encoder.encode(account)
-        UserDefaults.standard.set(data, forKey: _KEY)
+        try await LocalGameSaveService.shared.saveAccount(account)
     }
 }

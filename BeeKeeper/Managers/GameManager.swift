@@ -13,19 +13,39 @@ protocol GameObserver: AnyObject {
     func gameManager(_ account: Account, _ apiary: Apiary, didReleaseBees bees: [Bee])
 }
 
+enum GameManagerError: LocalizedError {
+    case noApiaries
+    case unknownApiary
+
+    var errorDescription: String? {
+        switch self {
+        case .noApiaries: "Saved account has no apiary."
+        case .unknownApiary: "Apiary does not belong to the active account."
+        }
+    }
+}
+
 /// Global functionality that represents the user's capabilities and control over the game.
 final class GameManager: NSObject {
     static let shared = GameManager()
+
+    var onChange: (() -> Void)?
+
+    func recordChange() {
+        onChange?()
+    }
     
     private(set) var account: Account
     private(set) var apiary: Apiary
     
     private let gameTicker = GameTicker()
+    private var lastCheckpoint = Date()
     
     private override init() {
         account = Account()
         apiary = account.apiaries.first!
         super.init()
+        bindAccount()
         gameTicker.setHandler { [weak self] timer in
             self?.onTick(timer.timeInterval)
         }
@@ -34,6 +54,10 @@ final class GameManager: NSObject {
     
     private func onTick(_ seconds: TimeInterval) {
         apiary.tickWildBees(seconds)
+        if Date().timeIntervalSince(lastCheckpoint) >= 30 {
+            lastCheckpoint = .now
+            recordChange()
+        }
         
         // TODO: Make formula instead of loop
         
@@ -79,34 +103,58 @@ final class GameManager: NSObject {
     // MARK: - Account-Dependent
     
     func changeAccount(to account: Account) throws {
+        guard let firstApiary = account.apiaries.first else { throw GameManagerError.noApiaries }
         // Tear down here
         gameTicker.stop()
+        self.account.onChange = nil
         self.account = account
-        guard let apiary = account.apiaries.first else { fatalError("Account doesn't have an apiary") }
-        changeApiary(apiary)
+        try changeApiary(firstApiary)
+        bindAccount()
         gameTicker.start()
+        recordChange()
+    }
+
+    private func bindAccount() {
+        account.onChange = { [weak self] in
+            self?.reconcileActiveApiary()
+            self?.recordChange()
+        }
+    }
+
+    private func reconcileActiveApiary() {
+        guard !account.apiaries.contains(where: { $0 === apiary }),
+              let replacement = account.apiaries.first else { return }
+        try? changeApiary(replacement)
     }
     
     func unlockGene(_ gene: Gene) {
         account.unlockedGenes.insert(gene)
+        recordChange()
     }
     
     // MARK: - Apiary-Dependent
     
-    func changeApiary(_ apiary: Apiary) {
+    func changeApiary(_ apiary: Apiary) throws {
+        guard account.apiaries.contains(where: { $0 === apiary }) else {
+            throw GameManagerError.unknownApiary
+        }
         // Save last online data
-        self.apiary.lastOnline = .now
+        if self.apiary !== apiary {
+            self.apiary.lastOnline = .now
+        }
         
         // Simulate time passing for the new apiary
+        self.apiary = apiary
         let timePassed = Date().timeIntervalSince(apiary.lastOnline)
         for bee in apiary.bees {
-            guard let collector = bee.producerAssignment as? (Collector & Container) else { return }
+            guard let collector = bee.producerAssignment as? (Collector & Container) else { continue }
             var production = bee.production.multiplying(Float(timePassed)).multiplying(0.7)
             try? collector.fill(&production)
         }
         
         // Set new apiary
-        self.apiary = apiary
+        apiary.lastOnline = .now
+        recordChange()
     }
     
     /// Calculates the resources contained in all containers.
@@ -137,6 +185,7 @@ final class GameManager: NSObject {
                 // Single storage covers the cost
                 try! storage.remove(resources)
                 notifyObservers({ $0.gameManager(account, apiary, didUpdateResources: getAllResources()) })
+                recordChange()
                 return
             } else {
                 // Remove as much contents as can
@@ -146,6 +195,7 @@ final class GameManager: NSObject {
         }
         
         notifyObservers({ $0.gameManager(account, apiary, didUpdateResources: getAllResources()) })
+        recordChange()
     }
     
     /// Transfers resources from a ``Collector`` and stores them into an available storage .
@@ -158,6 +208,7 @@ final class GameManager: NSObject {
             }
         }
         notifyObservers({ $0.gameManager(account, apiary, didUpdateResources: getAllResources()) })
+        recordChange()
     }
     
     /// Adds a new bee to the apiary.
@@ -167,12 +218,14 @@ final class GameManager: NSObject {
         try apiary.addBee(bee)
         
         notifyObservers({ $0.gameManager(account, apiary, didHatchBee: bee) })
+        recordChange()
     }
     
     func releaseBees() {
         do {
             let bees = try apiary.releaseAllBees()
             notifyObservers({ $0.gameManager(account, apiary, didReleaseBees: bees) })
+            recordChange()
         } catch {
             ErrorReporter.show(error)
         }
@@ -183,6 +236,7 @@ final class GameManager: NSObject {
     /// - throws: ``ApiaryError``
     func addStructure<T: Structure>(_ structure: T) throws {
         try apiary.addStructure(structure)
+        recordChange()
     }
     
     /// Returns the cost for incubating a new bee. Dependent on number of bees, and therefore on apiary.
@@ -224,5 +278,51 @@ final class GameManager: NSObject {
     /// Returns the time for incubating a new bee. Dependent on number of bees, and therefore on apiary.
     func getIncubationTime() -> TimeInterval {
         return 15 * pow(Double(account.unlockedGenes.count) + 1, TimeInterval(apiary.bees.count))
+    }
+    
+    
+    func getHoneycombBuildCost(_ hive: Hive) -> Resources {
+        if SettingsManager.shared.isFirstLogin && hive.honeycombs.isEmpty {
+            return Resources()
+        }
+        
+        var cost = Resources(honey: 750).multiplying(Float(hive.honeycombs.count + 1))
+        
+        for bee in hive.assignedBees {
+            if bee.genetics.contains(.engineerIII) {
+                cost = cost.subtracting(Resources(honey: 75))
+            } else if bee.genetics.contains(.engineerII) {
+                cost = cost.subtracting(Resources(honey: 50))
+            } else if bee.genetics.contains(.engineerI) {
+                cost = cost.subtracting(Resources(honey: 25))
+            }
+        }
+        
+        if !cost.canAfford(Resources()) {
+            cost = Resources()
+        }
+        return cost
+    }
+    
+    func getHoneycombBuildTime(_ hive: Hive) -> TimeInterval {
+        if SettingsManager.shared.isFirstLogin && hive.honeycombs.isEmpty {
+            return 5
+        }
+        
+        // Percentage
+        var factor: TimeInterval = 1.0
+        
+        for bee in hive.assignedBees {
+            if bee.genetics.contains(.engineerIII) {
+                factor -= 0.05
+            } else if bee.genetics.contains(.engineerII) {
+                factor -= 0.025
+            } else if bee.genetics.contains(.engineerI) {
+                factor -= 0.01
+            }
+        }
+        
+        let time = TimeInterval(hours: 1) * pow(5, TimeInterval(hive.honeycombs.count)) * factor
+        return time
     }
 }

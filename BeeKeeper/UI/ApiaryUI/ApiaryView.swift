@@ -169,6 +169,7 @@ class ApiaryView: SCNView {
         camera.zoom(-15)
         camera.follow(magnet)
         
+        turnLight(5)
         for bee in bees {
             bee.follow(magnet)
         }

@@ -19,7 +19,7 @@ enum FlowerGrowthState {
 class Flower: Container, Collector {
     var growthState: FlowerGrowthState = .seedling // TODO: No purpose yet
     private(set) var datePlanted: Date
-    var lifespan: TimeInterval = 0
+    var lifespan: TimeInterval = 0 { didSet { onChange?() } }
     var dateDies: Date { return datePlanted.advanced(by: lifespan)}
     
     required init() {

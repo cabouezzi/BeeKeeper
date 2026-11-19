@@ -31,20 +31,22 @@ struct DiscreteRect: Codable {
 }
 
 class Structure: BKNode, Model, Codable {
+    var onChange: (() -> Void)?
+    weak var ownerApiary: Apiary?
     let id: UUID
     var details: String = "A little something for the apiary."
     /// A set of bees assigned to the structure.For collectors, the bees with produce resources.
     fileprivate(set) var assignedBees: Set<Bee>
-    var maximumAssignedBees: Int
+    var maximumAssignedBees: Int { didSet { onChange?() } }
     
     // Encoding is done automatically
-    private(set) var level: UInt
+    private(set) var level: UInt { didSet { onChange?() } }
     var maxLevel: UInt = 10
     
     /// The bounding rectangle of the structure on the apiary grid layout.
     /// In 3D space, this is the x-z plane:
     /// `width` corresponds to its size in the x plane, and `height` corresponds to its size in the y plane.
-    var area: DiscreteRect
+    var area: DiscreteRect { didSet { onChange?() } }
     
     /// An indicator of the bounding box of the structure, defined by ``area``
     private var border: StructureBorder?
@@ -165,6 +167,9 @@ extension Bee {
             producerAssignment = nil
             producerAssignmentId = nil
             return
+        }
+        if let ownerApiary, structure.ownerApiary !== ownerApiary {
+            throw ApiaryError.foreignAssignment
         }
         guard structure.assignedBees.count < structure.maximumAssignedBees else {
             throw ContainerError.maximumAssignedBees

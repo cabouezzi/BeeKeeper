@@ -9,7 +9,7 @@ import SwiftUI
 
 struct EvolutionDetailsView: View {
     @Environment(\.universalDismiss) var universalDismiss
-    @ObservedObject var viewModel: EvolutionDetailsViewModel
+    let viewModel: EvolutionDetailsViewModel
     
     init(viewModel: EvolutionDetailsViewModel) {
         self.viewModel = viewModel
@@ -20,7 +20,7 @@ struct EvolutionDetailsView: View {
             Label(title: {
                 Text(viewModel.gene.rawValue)
             }, icon: {
-                Image(viewModel.gene.icon).resizable()
+                Image(viewModel.gene.iconName).resizable()
             })
             .labelStyle(FontMatchedLabelStyle())
             .font(.system(.body, design: .rounded))
@@ -55,6 +55,7 @@ struct EvolutionDetailsView: View {
                         Button("Research") {
                             do {
                                 try EvolutionResearchManager.shared.beginResearch(for: viewModel.gene)
+                                GameManager.shared.recordChange()
                             } catch {
                                 ErrorReporter.show(error)
                             }
@@ -71,15 +72,9 @@ struct EvolutionDetailsView: View {
                         .background(Color.black.opacity(0.2))
                         .foregroundColor(.white)
                         .cornerRadius(12)
-                    Button("Speed Up") {
-                        do {
-                            try EvolutionResearchManager.shared.forceComplete()
-                        } catch {
-                            ErrorReporter.show(error)
-                        }
-                    }
-                    .foregroundColor(.white)
-                    .buttonStyle(BubbleButtonStyle(color: .black))
+                    Button("Claim") {}
+                        .foregroundColor(.white)
+                        .buttonStyle(BubbleButtonStyle(color: .gray.opacity(0.8)))
                     
                 case .completed(let research):
                     SmartCountdownView(timeLeft: 0)
@@ -93,6 +88,7 @@ struct EvolutionDetailsView: View {
                         do {
                             try EvolutionResearchManager.shared.claimResearch()
                             viewModel.unlockedGenes = viewModel.unlockedGenes.union([research.reward])
+                            GameManager.shared.recordChange()
                         } catch {
                             ErrorReporter.show(error)
                         }

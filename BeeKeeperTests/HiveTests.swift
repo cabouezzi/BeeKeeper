@@ -1,79 +1,69 @@
-//
-//  HiveTests.swift
-//  BeeKeeperTests
-//
-//  Created by Chaniel Ezzi on 9/10/23.
-//
-
 import XCTest
 @testable import BeeKeeper
 
 final class HiveTests: XCTestCase {
-    
-    override func setUpWithError() throws {
-        
-    }
-    
-    override func tearDownWithError() throws {
-        
-    }
-    
     func testSelfTransfer() throws {
         let hive = Hive()
         XCTAssertThrowsError(try hive.transfer(to: hive))
     }
-    
-    func testCommulative() throws {
-        let hive = Hive()
-        // Assert initial stats
-        XCTAssertTrue(hive.containing == Resources(honey: 0) && hive.maximum == Resources(honey: 0))
-        
-        // Assert maximum correct
-        // Compute maximum manually
-        var max = Resources()
-        for i in 0..<3 {
-            try hive.addHoneycomb()
-            max =  max.adding(hive.honeycombs[i].maximum)
+
+    func testCumulativeCapacityAndConstructionLimit() throws {
+        try withFundedHive { hive in
+            XCTAssertEqual(hive.containing, Resources())
+            XCTAssertEqual(hive.maximum, Resources())
+
+            for _ in 0..<3 {
+                try constructHoneycomb(in: hive)
+            }
+
+            XCTAssertEqual(hive.maximum, Resources(honey: 3_000))
+            XCTAssertEqual(hive.maximumAssignedBees, 4)
+
+            for honeycomb in hive.honeycombs {
+                var fill = Resources(honey: 33, pollen: 1)
+                try honeycomb.fill(&fill)
+                XCTAssertEqual(fill, Resources(pollen: 1))
+            }
+
+            XCTAssertEqual(hive.containing, Resources(honey: 99))
+            XCTAssertThrowsError(try hive.startHoneycombConstruction())
         }
-        XCTAssertTrue(hive.containing == Resources(honey: 0) && hive.maximum == max)
-        
-        // Fill up to 99 honey, don't accept pollen
-        for honeycomb in hive.honeycombs {
-            var fill = Resources(honey: 33, pollen: 1)
-            try honeycomb.fill(&fill)
-            XCTAssertEqual(fill, Resources(pollen: 1))
-        }
-        XCTAssertTrue(hive.containing == Resources(honey: 99) && hive.maximum == max)
-        XCTAssertThrowsError(try hive.addHoneycomb())
     }
-    
-    func testOverflow() throws {
-        let hive = Hive()
-        var excess = Resources(honey: 203)
-        try hive.addHoneycomb()
-        try hive.addHoneycomb()
-        
-        // Test filling past max
-        try hive.fill(&excess)
-        XCTAssert(hive.honeycombs[0].containing.honey == 100)
-        XCTAssert(hive.honeycombs[1].containing.honey == 100)
-        XCTAssert(excess.honey == 3)
-        
-        // Test removing more than containing
-        XCTAssertThrowsError(try hive.remove(Resources(honey: 201)))
-        // Test removing less than containing
-        try hive.remove(Resources(honey: 150))
-        XCTAssert(hive.containing.honey == 50)
-        XCTAssert(
-            (hive.honeycombs[0].containing.honey == 0 && hive.honeycombs[1].containing.honey == 50) ||
-            (hive.honeycombs[0].containing.honey == 50 && hive.honeycombs[1].containing.honey == 0)
-        )
-        // Test removing containing
-        excess = Resources(honey: 200)
-        try hive.fill(&excess)
-        try hive.remove(Resources(honey: 200))
-        XCTAssert(hive.containing.isEmpty())
-        XCTAssert(hive.honeycombs.allSatisfy({ $0.containing.isEmpty() }))
-        
+
+    func testOverflowAndRemoval() throws {
+        try withFundedHive { hive in
+            try constructHoneycomb(in: hive)
+            try constructHoneycomb(in: hive)
+
+            var excess = Resources(honey: 2_003)
+            XCTAssertThrowsError(try hive.fill(&excess))
+            XCTAssertEqual(hive.honeycombs.map(\.containing.honey), [1_000, 1_000])
+            XCTAssertEqual(excess, Resources(honey: 3))
+
+            XCTAssertThrowsError(try hive.remove(Resources(honey: 2_001)))
+            try hive.remove(Resources(honey: 150))
+            XCTAssertEqual(hive.containing, Resources(honey: 1_850))
+
+            var refill = Resources(honey: 150)
+            try hive.fill(&refill)
+            XCTAssertTrue(refill.isEmpty())
+            try hive.remove(Resources(honey: 2_000))
+            XCTAssertTrue(hive.containing.isEmpty())
+            XCTAssertTrue(hive.honeycombs.allSatisfy { $0.containing.isEmpty() })
+        }
+    }
+
+    private func withFundedHive(_ body: (Hive) throws -> Void) throws {
+        let storage = try XCTUnwrap(GameManager.shared.apiary.structures.compactMap { $0 as? HoneyStorage }.first)
+        let original = storage.containing
+        defer { storage.containing = original }
+        storage.containing = Resources(honey: 6_000)
+        try body(Hive())
+    }
+
+    private func constructHoneycomb(in hive: Hive) throws {
+        try hive.startHoneycombConstruction()
+        try hive.forceCompleteConstruction()
+        try hive.claimHoneycombConstruction()
     }
 }

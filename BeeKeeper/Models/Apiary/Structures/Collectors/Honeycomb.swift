@@ -8,16 +8,19 @@
 import SceneKit
 
 class Honeycomb: SCNNode, Collector, Codable {
+    var onChange: (() -> Void)?
+    let id: UUID
     unowned var hive: Hive?
     
-    var containing: Resources = Resources()
-    var maximum: Resources = Resources(honey: 1000)
+    var containing: Resources = Resources() { didSet { onChange?() } }
+    var maximum: Resources = Resources(honey: 1000) { didSet { onChange?() } }
     
     convenience override init() {
         self.init(hive: nil)
     }
     
     init(hive: Hive?) {
+        id = UUID()
         self.hive = hive
         super.init()
         
@@ -29,11 +32,12 @@ class Honeycomb: SCNNode, Collector, Codable {
     }
     
     private enum CodingKeys: CodingKey {
-        case containing, maximum
+        case id, containing, maximum
     }
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decodeIfPresent(UUID.self, forKey: .id) ?? UUID()
         containing = try container.decode(Resources.self, forKey: .containing)
         maximum = try container.decode(Resources.self, forKey: .maximum)
         super.init()
@@ -42,6 +46,7 @@ class Honeycomb: SCNNode, Collector, Codable {
     
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
         try container.encode(containing, forKey: .containing)
         try container.encode(maximum, forKey: .maximum)
     }

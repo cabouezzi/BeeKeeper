@@ -54,6 +54,7 @@
 		147FD4622B12FB4A00764E9C /* ColladaAnimationForXcode.py in Resources */ = {isa = PBXBuildFile; fileRef = 147FD4612B12FB4A00764E9C /* ColladaAnimationForXcode.py */; };
 		148196922B5B363400328709 /* ScienceStand.scn in Resources */ = {isa = PBXBuildFile; fileRef = 148196912B5B363400328709 /* ScienceStand.scn */; };
 		148358D52AABBFC5006D0290 /* BeeKeeperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148358D42AABBFC5006D0290 /* BeeKeeperTests.swift */; };
+		BEE300000000000000000001 /* BeeFlightTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE300000000000000000002 /* BeeFlightTests.swift */; };
 		1483594F2AAD2807006D0290 /* DiscreteRectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1483594E2AAD2807006D0290 /* DiscreteRectTests.swift */; };
 		1483595B2AAD50A1006D0290 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1483595A2AAD50A1006D0290 /* main.swift */; };
 		148359642AAE03D4006D0290 /* HiveTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148359632AAE03D4006D0290 /* HiveTests.swift */; };
@@ -148,6 +149,18 @@
 		14F4DDB92E0655C5003F93B5 /* ShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F4DDB82E0655C1003F93B5 /* ShopView.swift */; };
 		14F4DDBB2E071DC4003F93B5 /* FlipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F4DDBA2E071DAC003F93B5 /* FlipView.swift */; };
 		14F4DDBF2E073F5B003F93B5 /* ShopViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14F4DDBE2E073F5A003F93B5 /* ShopViewModel.swift */; };
+		BEE100000000000000000001 /* GameStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE000000000000000000001 /* GameStore.swift */; };
+		BEE100000000000000000002 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE000000000000000000002 /* GameState.swift */; };
+		BEE100000000000000000003 /* ResourceState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE000000000000000000003 /* ResourceState.swift */; };
+		BEE100000000000000000004 /* StructureState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE000000000000000000004 /* StructureState.swift */; };
+		BEE100000000000000000005 /* TimedJobState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE000000000000000000005 /* TimedJobState.swift */; };
+		BEE100000000000000000006 /* LegacyStateAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE000000000000000000006 /* LegacyStateAdapter.swift */; };
+		BEE100000000000000000007 /* GameSaveServicing.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE000000000000000000007 /* GameSaveServicing.swift */; };
+		BEE100000000000000000008 /* LocalGameSaveService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE000000000000000000008 /* LocalGameSaveService.swift */; };
+		BEE100000000000000000009 /* GameSaveEnvelope.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE000000000000000000009 /* GameSaveEnvelope.swift */; };
+		BEE10000000000000000000A /* GameStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE00000000000000000000A /* GameStateTests.swift */; };
+		BEE10000000000000000000B /* LocalGameSaveServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE00000000000000000000B /* LocalGameSaveServiceTests.swift */; };
+		BEE10000000000000000000C /* GameStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEE00000000000000000000C /* GameStoreTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -221,6 +234,7 @@
 		148358BF2AABBFC4006D0290 /* BeeKeeper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeeKeeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		148358D02AABBFC5006D0290 /* BeeKeeperTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BeeKeeperTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		148358D42AABBFC5006D0290 /* BeeKeeperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeeKeeperTests.swift; sourceTree = "<group>"; };
+		BEE300000000000000000002 /* BeeFlightTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeeFlightTests.swift; sourceTree = "<group>"; };
 		1483594E2AAD2807006D0290 /* DiscreteRectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscreteRectTests.swift; sourceTree = "<group>"; };
 		148359582AAD50A1006D0290 /* Executable */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Executable; sourceTree = BUILT_PRODUCTS_DIR; };
 		1483595A2AAD50A1006D0290 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -318,6 +332,18 @@
 		14F4DDB82E0655C1003F93B5 /* ShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopView.swift; sourceTree = "<group>"; };
 		14F4DDBA2E071DAC003F93B5 /* FlipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlipView.swift; sourceTree = "<group>"; };
 		14F4DDBE2E073F5A003F93B5 /* ShopViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopViewModel.swift; sourceTree = "<group>"; };
+		BEE000000000000000000001 /* GameStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStore.swift; sourceTree = "<group>"; };
+		BEE000000000000000000002 /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
+		BEE000000000000000000003 /* ResourceState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceState.swift; sourceTree = "<group>"; };
+		BEE000000000000000000004 /* StructureState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructureState.swift; sourceTree = "<group>"; };
+		BEE000000000000000000005 /* TimedJobState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimedJobState.swift; sourceTree = "<group>"; };
+		BEE000000000000000000006 /* LegacyStateAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyStateAdapter.swift; sourceTree = "<group>"; };
+		BEE000000000000000000007 /* GameSaveServicing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSaveServicing.swift; sourceTree = "<group>"; };
+		BEE000000000000000000008 /* LocalGameSaveService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalGameSaveService.swift; sourceTree = "<group>"; };
+		BEE000000000000000000009 /* GameSaveEnvelope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSaveEnvelope.swift; sourceTree = "<group>"; };
+		BEE00000000000000000000A /* GameStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStateTests.swift; sourceTree = "<group>"; };
+		BEE00000000000000000000B /* LocalGameSaveServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalGameSaveServiceTests.swift; sourceTree = "<group>"; };
+		BEE00000000000000000000C /* GameStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStoreTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -451,12 +477,16 @@
 			isa = PBXGroup;
 			children = (
 				148358D42AABBFC5006D0290 /* BeeKeeperTests.swift */,
+				BEE300000000000000000002 /* BeeFlightTests.swift */,
 				1483594E2AAD2807006D0290 /* DiscreteRectTests.swift */,
 				14835A402AB4DE0D006D0290 /* ResourcesTest.swift */,
 				148359632AAE03D4006D0290 /* HiveTests.swift */,
 				14835A362AB4C471006D0290 /* HoneycombTests.swift */,
 				14835A382AB4C4F2006D0290 /* IncubatorTests.swift */,
 				1405AC2A2B15895A003B0079 /* GeneTests.swift */,
+				BEE200000000000000000007 /* Core */,
+				BEE200000000000000000008 /* Services */,
+				BEE200000000000000000009 /* App */,
 			);
 			path = BeeKeeperTests;
 			sourceTree = "<group>";
@@ -489,6 +519,9 @@
 				14835A8F2AC60001006D0290 /* Support */,
 				148359BC2AB01091006D0290 /* UI */,
 				148359CB2AB01091006D0290 /* Managers */,
+				BEE200000000000000000001 /* App */,
+				BEE200000000000000000002 /* Core */,
+				BEE200000000000000000004 /* Services */,
 				14A0B6EE2B747B0C00D41DD9 /* Sounds */,
 				148359CE2AB01091006D0290 /* Models */,
 				148359E42AB01091006D0290 /* Preview Content */,
@@ -500,8 +533,6 @@
 		148359BC2AB01091006D0290 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				14BB763A2B12903300E15654 /* AppDelegate.swift */,
-				142DF1DA2AD3804C00274986 /* SceneDelegate.swift */,
 				1485C72C2DC96D5A0071DE4B /* SettingsUI */,
 				1471B97D2B6ADD9B006DE737 /* TutorialUI */,
 				145749542B632971004FAD7D /* LaunchUI */,
@@ -568,6 +599,7 @@
 			isa = PBXGroup;
 			children = (
 				14B17EC22E031C63008F899D /* TimedReward.swift */,
+				BEE000000000000000000006 /* LegacyStateAdapter.swift */,
 				148359E62AB01091006D0290 /* Account */,
 				148359CF2AB01091006D0290 /* Apiary */,
 				148359E02AB01091006D0290 /* Evolution */,
@@ -834,6 +866,85 @@
 			path = Flowers;
 			sourceTree = "<group>";
 		};
+		BEE200000000000000000001 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				14BB763A2B12903300E15654 /* AppDelegate.swift */,
+				142DF1DA2AD3804C00274986 /* SceneDelegate.swift */,
+				BEE000000000000000000001 /* GameStore.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		BEE200000000000000000002 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				BEE200000000000000000003 /* Models */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		BEE200000000000000000003 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BEE000000000000000000002 /* GameState.swift */,
+				BEE000000000000000000003 /* ResourceState.swift */,
+				BEE000000000000000000004 /* StructureState.swift */,
+				BEE000000000000000000005 /* TimedJobState.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		BEE200000000000000000004 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				BEE200000000000000000005 /* GameSaveServicing */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		BEE200000000000000000005 /* GameSaveServicing */ = {
+			isa = PBXGroup;
+			children = (
+				BEE000000000000000000007 /* GameSaveServicing.swift */,
+				BEE000000000000000000008 /* LocalGameSaveService.swift */,
+				BEE200000000000000000006 /* DTO */,
+			);
+			path = GameSaveServicing;
+			sourceTree = "<group>";
+		};
+		BEE200000000000000000006 /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				BEE000000000000000000009 /* GameSaveEnvelope.swift */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
+		BEE200000000000000000007 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				BEE00000000000000000000A /* GameStateTests.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		BEE200000000000000000008 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				BEE00000000000000000000B /* LocalGameSaveServiceTests.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		BEE200000000000000000009 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				BEE00000000000000000000C /* GameStoreTests.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1020,7 +1131,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
+			shellScript = "if [ \"$CONFIGURATION\" = \"Release\" ]; then\n  \"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1118,6 +1229,15 @@
 				148359EB2AB01091006D0290 /* Meshes.swift in Sources */,
 				148359F52AB01091006D0290 /* AnimatedNumberNode.swift in Sources */,
 				1485C7342DDDDD640071DE4B /* DismissableView.swift in Sources */,
+				BEE100000000000000000001 /* GameStore.swift in Sources */,
+				BEE100000000000000000002 /* GameState.swift in Sources */,
+				BEE100000000000000000003 /* ResourceState.swift in Sources */,
+				BEE100000000000000000004 /* StructureState.swift in Sources */,
+				BEE100000000000000000005 /* TimedJobState.swift in Sources */,
+				BEE100000000000000000006 /* LegacyStateAdapter.swift in Sources */,
+				BEE100000000000000000007 /* GameSaveServicing.swift in Sources */,
+				BEE100000000000000000008 /* LocalGameSaveService.swift in Sources */,
+				BEE100000000000000000009 /* GameSaveEnvelope.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1129,9 +1249,13 @@
 				1483594F2AAD2807006D0290 /* DiscreteRectTests.swift in Sources */,
 				14835A372AB4C471006D0290 /* HoneycombTests.swift in Sources */,
 				148358D52AABBFC5006D0290 /* BeeKeeperTests.swift in Sources */,
+				BEE300000000000000000001 /* BeeFlightTests.swift in Sources */,
 				1405AC2B2B15895A003B0079 /* GeneTests.swift in Sources */,
 				14835A392AB4C4F2006D0290 /* IncubatorTests.swift in Sources */,
 				14835A412AB4DE0D006D0290 /* ResourcesTest.swift in Sources */,
+				BEE10000000000000000000A /* GameStateTests.swift in Sources */,
+				BEE10000000000000000000B /* LocalGameSaveServiceTests.swift in Sources */,
+				BEE10000000000000000000C /* GameStoreTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1204,7 +1328,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -1218,8 +1342,9 @@
 		1405AC212B1567FC003B0079 /* Test */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon 1";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = BeeKeeper/BeeKeeper.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -1239,7 +1364,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -1265,7 +1390,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = K4ZMXMC2TC;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = cabouezzi.BeeKeeperTests;
@@ -1341,7 +1466,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -1396,7 +1521,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -1410,8 +1535,9 @@
 		148358E52AABBFC5006D0290 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon 1";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = BeeKeeper/BeeKeeper.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -1431,7 +1557,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -1451,8 +1577,9 @@
 		148358E62AABBFC5006D0290 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon 1";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = BeeKeeper/BeeKeeper.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -1471,7 +1598,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -1497,7 +1624,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = K4ZMXMC2TC;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = cabouezzi.BeeKeeperTests;
@@ -1521,7 +1648,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = K4ZMXMC2TC;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 13.3;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = cabouezzi.BeeKeeperTests;
